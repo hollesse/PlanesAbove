@@ -10,6 +10,8 @@
   --pa-signal: #C8313E;
   --pa-sky-ink-light: #F6EEDC;
   --pa-sky-ink-dark: #1F2A33;
+  --pa-sky-ink-dark-halo: #F6EEDC; /* Kontur um dunkle Himmel-Schrift (default: helle Himmel-Tinte) */
+  --pa-sky-ink-light-halo: #1F2A33; /* Kontur um helle Himmel-Schrift (default: dunkle Himmel-Tinte) */
   --pa-muted: #5B6670;
   --pa-plane-backdrop: #C9D6E1;
   --pa-font-display: 'Archivo', sans-serif;

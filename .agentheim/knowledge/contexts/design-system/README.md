@@ -29,6 +29,7 @@ generic: frontend infrastructure with its own UX vocabulary and review process.
 - **Logo-Ankerpunkt** (logo anchor): the `data-anchor` a logo asset declares (logo-tail-center, -mid, -base, -lead, -fit, logo-fuselage-fwd; none = logo-tail) which selects the empty group of the plane silhouette the logo is placed into.
 - **Info-Leiste** (info bar): organism at the bottom of a screen in four states: one plane with route known, one plane with route unknown, two planes (two rows with Plaketten), slim "Zuletzt" bar.
 - **Übergang** (transition): a declarative spec of stacked layers with one-shot 5 s CSS animations (22 in total: plane comes/goes/switches, weather changes, daytime changes), played from a Start button.
+- **Kontur (Himmel-Tinte-Halo)** — thin outline around text lying directly on the sky, in the counter colour of its Himmel-Tinte (dark ink gets a light outline, light ink a dark one). Tokens `--pa-sky-ink-dark-halo` (default #F6EEDC) and `--pa-sky-ink-light-halo` (default #1F2A33); built from eight cqw-scaled text-shadows (Safari 16 safe), classes `pa-halo-light` / `pa-halo-dark`. Text on paper has none.
 
 ## Rules
 - **Storybook first:** a UI element the app needs that does not exist yet is first built as a story here, approved, and only then used in the app.

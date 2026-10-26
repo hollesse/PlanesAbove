@@ -75,3 +75,27 @@ test('the sky covers the whole stage in every template and page story, transitio
     }
   }
 });
+
+test('text on the sky gets an outline in the counter colour of its ink; text on paper gets none', async ({ page }) => {
+  const index = (await (await page.request.get('/index.json')).json()) as { entries: Record<string, Entry> };
+  const ids = Object.values(index.entries).filter((e) => e.type === 'story' && (e.title.startsWith('Templates/') || e.title.startsWith('Pages/') || e.title === 'Molecules/Kopfzeile')).map((e) => e.id);
+  const rgb = (hex: string) => { const n = parseInt(hex.slice(1), 16); return `rgb(${n >> 16}, ${(n >> 8) & 255}, ${n & 255})`; };
+  const LIGHT = rgb('#F6EEDC'); const DARK = rgb('#1F2A33');
+  const seen = new Set<string>();
+  for (const id of ids) {
+    await page.goto(`/iframe.html?id=${id}&viewMode=story`);
+    await page.waitForSelector('.pa-scene-header');
+    const res = await page.evaluate(() => {
+      const hdr = document.querySelector('.pa-scene-header') as HTMLElement;
+      const cs = getComputedStyle(hdr);
+      const paper = [...document.querySelectorAll('.pa-bar, .pa-bar *, .pa-info-row, .pa-info-row *, .pa-badge')].map((e) => getComputedStyle(e).textShadow);
+      return { color: cs.color, shadow: cs.textShadow, paper };
+    });
+    const counter = res.color === DARK ? LIGHT : DARK;
+    seen.add(res.color);
+    expect(res.shadow.split('rgb(').length - 1, id).toBe(8); // all directions
+    for (const part of res.shadow.match(/rgb\([^)]*\)/g)!) expect(part, id).toBe(counter);
+    for (const p of res.paper) expect(p, `${id} paper text`).toBe('none');
+  }
+  expect(seen.size, 'both inks covered').toBe(2);
+});

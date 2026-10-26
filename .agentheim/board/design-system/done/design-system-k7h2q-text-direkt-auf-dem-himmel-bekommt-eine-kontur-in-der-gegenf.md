@@ -1,7 +1,7 @@
 ---
 id: design-system-k7h2q
 title: Text direkt auf dem Himmel bekommt eine Kontur in der Gegenfarbe (dunkle Schrift hell umrandet, helle Schrift dunkel umrandet)
-status: doing
+status: done
 type: feature
 context: design-system
 created: 2026-10-26
@@ -37,3 +37,8 @@ Die Konturfarben werden als Tokens geführt (z. B. `--pa-sky-ink-dark-halo`, `--
 - Komponenten: `src/client/ui/molecules/scene-header.ts`, `src/client/ui/styles/ui.css` (`.pa-scene-header`, `.pa-ink-dark`, `.pa-ink-light`), `src/client/ui/styles/tokens.css`, Token-Story.
 - Umsetzungsidee: mehrfacher `text-shadow` (8 Richtungen, ~0.08–0.12cqw) in der Gegenfarbe ist in Safari 16 robust; `-webkit-text-stroke` würde die Glyphen nach innen ausdünnen.
 - Die Tinte-Regel selbst (hell auf Dämmerung, Nacht, Regen, Gewitter) bleibt unverändert.
+
+## Outcome
+
+The scene header (the only text directly on the sky) gets a Kontur: eight text-shadows at 0.1cqw in the counter colour of its Himmel-Tinte. The molecule adds class pa-halo-light (dark ink) or pa-halo-dark (light ink) plus data-halo. Tokens --pa-sky-ink-dark-halo and --pa-sky-ink-light-halo are in styles/tokens.css and mirrored in domain/tokens.ts, so the Farben token story shows them. Paper text (info bar, badge, rows) has no outline. Tests: unit (header classes, no halo on info row, token CSS, cqw text-shadow and no text-stroke) and a Playwright test over all Templates/Pages stories plus Molecules/Kopfzeile (both inks) checking 8 shadows in the counter colour and none on paper text. It was checked to fail with the production change reverted. Chromium only (no WebKit here). Human-eye check on a phone is still open.
+Key files: src/client/ui/styles/ui.css, tokens.css, molecules/scene-header.ts, tests/e2e/stories.spec.ts.

@@ -29,11 +29,25 @@ describe('Atomic Design Story-Hierarchie', () => {
 });
 
 describe('Tokens', () => {
+  it('halo is a cqw-scaled text-shadow, not a text-stroke (Safari 16, even outline)', async () => {
+    const css = (await import('node:fs')).readFileSync('src/client/ui/styles/ui.css', 'utf8');
+    expect(css).toMatch(/--pa-halo-w: [\d.]+cqw/);
+    expect(css).not.toContain('text-stroke');
+  });
+
+  it('css defines the sky-ink halo tokens matching COLORS', async () => {
+    const css = (await import('node:fs')).readFileSync('src/client/ui/styles/tokens.css', 'utf8');
+    expect(css).toContain(`--pa-sky-ink-dark-halo: ${COLORS.skyInkDarkHalo.value}`);
+    expect(css).toContain(`--pa-sky-ink-light-halo: ${COLORS.skyInkLightHalo.value}`);
+  });
+
   it('defines the brand colours and fonts', () => {
     expect(COLORS.ink.value).toBe('#1F2A33');
     expect(COLORS.paper.value).toBe('#ECEBE3');
     expect(COLORS.paperDark.value).toBe('#D8D6CC');
     expect(COLORS.signal.value).toBe('#C8313E');
+    expect(COLORS.skyInkDarkHalo.value).toBe('#F6EEDC');
+    expect(COLORS.skyInkLightHalo.value).toBe('#1F2A33');
     expect(FONTS.display.weights).toEqual([900]);
     expect(FONTS.mono.weights).toEqual([400, 500]);
   });
