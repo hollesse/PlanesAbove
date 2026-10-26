@@ -21,6 +21,9 @@ generic
 - **Datendatei** — die eine SQLite-Datei (WAL) auf dem gemounteten Datenvolume; enthält Sichtungslog und verwerfbare Caches; Backup = Datei kopieren (ADR 0007).
 - **Konfigurationsdatei** — die eine `config.yaml`, beim Start per Schema validiert (fail fast mit lesbarer Meldung); Änderung = Datei bearbeiten + Neustart; Geheimnisse stehen nur in Umgebungsvariablen (ADR 0007).
 - **Verwerfbarer Cache** — Routen-/Wetter-Cache mit TTL in der Datendatei; darf jederzeit gelöscht werden; adsbdb-Daten werden nie dort abgelegt (ADR 0005/0007).
+- **Compose-App** — the `docker-compose.yml` that ZimaOS installs as a custom app: the `planesabove` service, plus optional sidecars (`tts`, `storybook`) behind Compose profiles. Data and config live in host volumes under `/DATA/AppData/planesabove` (ADR 0008).
+- **Selbstheilung (client)** — the client's recovery behaviour: retry with backoff, keep the last good scene, show a subtle stale indicator after N minutes, and fully reload nightly (~04:00), on `buildId` change, on `online`, and on returning to visible (ADR 0008).
+- **Einrichtung (iPad)** — the documented one-off manual iPad setup: home-screen web app, Guided Access, Auto-Lock Never, permanently on charge, automatic iPadOS updates off. After an iPad reboot, Guided Access must be re-entered by hand (ADR 0008).
 
 ## Aggregates
 _Noch nicht modelliert — entsteht in `modeling` / bei der Arbeit an Tasks._

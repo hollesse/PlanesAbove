@@ -5,6 +5,18 @@ Newest entries on top.
 
 ---
 
+## 2026-10-26 22:46 -- Task completed (verification skipped): infrastructure-w7qbc - Decide deployment topology and kiosk operation: Docker Compose app on ZimaOS, self-recovering iPad client via Guided Access
+
+**Type:** Work / Task completion
+**Task:** infrastructure-w7qbc - Decide deployment topology and kiosk operation: Docker Compose app on ZimaOS, self-recovering iPad client via Guided Access
+**Summary:** decide Docker Compose app on ZimaOS and self-recovering iPad kiosk client
+**Duration:** ~1m
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
 ## 2026-10-26 22:45 -- Task completed (verification skipped): infrastructure-y8epz - Decide persistence and configuration: SQLite single file plus validated config file
 
 **Type:** Work / Task completion

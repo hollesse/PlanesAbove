@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 2
-- **Doing:** 1
-- **Done:** 2
+- **Doing:** 0
+- **Done:** 3
 <!-- task-counts:end -->
 
 ### Todo
@@ -24,11 +24,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **infrastructure-w7qbc** — Decide deployment topology and kiosk operation: Docker Compose app on ZimaOS, self-recovering iPad client via Guided Access (decision) — `doing/infrastructure-w7qbc-deployment-and-kiosk.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **infrastructure-w7qbc** — Decide deployment topology and kiosk operation: Docker Compose app on ZimaOS, self-recovering iPad client via Guided Access (decision) — `done/infrastructure-w7qbc-deployment-and-kiosk.md`
 - **infrastructure-y8epz** — Decide persistence and configuration: SQLite single file plus validated config file (decision) — `done/infrastructure-y8epz-persistence-and-configuration.md`
 - **infrastructure-pn3w4** — Decide runtime split and stack: home-server service computes state, tablet is a thin vanilla-JS client (decision) — `done/infrastructure-pn3w4-runtime-split-and-stack.md`
 <!-- done-list:end -->

@@ -1,7 +1,7 @@
 ---
 id: infrastructure-w7qbc
 title: Decide deployment topology and kiosk operation: Docker Compose app on ZimaOS, self-recovering iPad client via Guided Access
-status: doing
+status: done
 type: decision
 context: infrastructure
 created: 2026-10-26
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: [infrastructure-001-walking-skeleton]
 tags: [foundation, deployment, kiosk]
-related_adrs: [0001]
+related_adrs: [0001, 0008]
 related_research: []
 prior_art: []
 ---
@@ -71,3 +71,14 @@ Display runs 24/7 on an old tablet in a child's room; the builder must not have 
 - **Native Android/iOS app** — store/signing burden, contradicts "no app store".
 - **Raspberry Pi display / HDMI stick** — different hardware than the given tablet.
 - **Kubernetes/Ansible** — overkill for one host.
+
+## Outcome
+
+Decision recorded as ADR 0008 (provisional filename `0008-compose-on-zimaos-and-self-recovering-ipad-kiosk.md`, scope `global`, status `accepted`). It defines:
+- a Compose app for ZimaOS: `planesabove` service with `restart: unless-stopped`, a healthcheck and `TZ`; optional `tts` and `storybook` sidecars (TTS engine not chosen); bind mounts under `/DATA/AppData/planesabove` (`data/`, `config/`) whose contents are left to `infrastructure-y8epz`;
+- the iPad setup: home-screen web app, Guided Access, Auto-Lock Never, permanently on charge, automatic updates off, and audio that is re-armed by a tap after each reload;
+- client self-recovery: backoff retry, last good scene plus stale indicator, and full reload nightly, on `buildId` change, on `online`, and on returning to visible, deferred while narration plays;
+- the update path `git pull && docker compose up -d --build`, with the iPad following through `buildId`;
+- a failure matrix. An iPad reboot is not self-healing and needs manual Guided Access re-entry.
+
+Deviations from the architect's draft are named in the ADR: the Android/Fully Kiosk branch is removed, Piper moves to an optional sidecar instead of the single container, and systemd is dropped. No code change.
