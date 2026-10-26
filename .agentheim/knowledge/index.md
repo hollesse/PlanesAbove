@@ -23,6 +23,7 @@ For BC-scoped artifacts, see each BC's `INDEX.md`.
 ## Global ADRs (scope: global)
 
 <!-- adr-global:start -->
+- **0007** — SQLite single-file storage (better-sqlite3) and validated YAML configuration — 2026-10-26 — `decisions/0007-sqlite-single-file-and-validated-yaml-config.md`
 - **0004** — Home-server service computes state; iPad is a thin vanilla-JS browser client — 2026-10-26 — `decisions/0004-home-server-service-thin-vanilla-js-client.md`
 - **0003** — Test-driven development with unit tests; Playwright E2E tests against mocked external APIs — 2026-10-26 — `decisions/0003-tdd-unit-tests-and-playwright-e2e-with-api-mocks.md`
 - **0002** — Storybook-first UI development following Atomic Design — 2026-10-26 — `decisions/0002-storybook-first-atomic-design.md`

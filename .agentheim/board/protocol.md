@@ -5,6 +5,18 @@ Newest entries on top.
 
 ---
 
+## 2026-10-26 22:45 -- Task completed (verification skipped): infrastructure-y8epz - Decide persistence and configuration: SQLite single file plus validated config file
+
+**Type:** Work / Task completion
+**Task:** infrastructure-y8epz - Decide persistence and configuration: SQLite single file plus validated config file
+**Summary:** decide SQLite single-file storage and validated YAML configuration
+**Duration:** ~1m
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
 ## 2026-10-26 22:44 -- Batch started: [design-system-001, infrastructure-y8epz, infrastructure-w7qbc]
 
 **Type:** Work / Batch start

@@ -1,7 +1,7 @@
 ---
 id: infrastructure-y8epz
 title: Decide persistence and configuration: SQLite single file plus validated config file
-status: doing
+status: done
 type: decision
 context: infrastructure
 created: 2026-10-26
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: [infrastructure-001-walking-skeleton]
 tags: [foundation, persistence, config]
-related_adrs: [0001]
+related_adrs: [0001, 0007]
 related_research: []
 prior_art: []
 ---
@@ -62,3 +62,7 @@ The sighting log must survive restarts and be analysable in v2. Volume is tiny (
 - **Flat JSONL log** — simplest, but dedupe/analysis harder.
 - **localStorage/IndexedDB on the tablet** — volatile on kiosk devices, hard to read out.
 - **Admin UI for config** — contradicts non-goals.
+
+## Outcome
+
+Decision recorded as ADR 0007 (provisional filename `0007-sqlite-single-file-and-validated-yaml-config.md`, scope global, accepted). It adopts the architect's draft: one SQLite file (WAL) with numbered SQL migrations and per-BC table ownership, disposable caches with TTLs, and one `config.yaml` validated at startup (fail fast). Deviations named in the ADR: concrete driver `better-sqlite3`, `yaml` + `zod` validation, adsbdb results excluded from the DB (memory only, per ADR 0005), VRS snapshot as a separate replaceable file, secrets strictly from environment variables, `PRAGMA user_version` migration tracking. Volume and Compose layout is left to the deployment decision (infrastructure-w7qbc). No code changed.

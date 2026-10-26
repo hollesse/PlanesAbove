@@ -18,6 +18,9 @@ generic
 - **Dünner Client** — das Framework-freie HTML/CSS/JS auf dem iPad; pollt nur `/api/state`, ruft nie externe APIs, speichert nichts, hält die Vorlese-Sperre lokal.
 - **Browser-Baseline** — iPadOS 16 / Safari 16; Build-Ziel ES2020 (esbuild), Container Queries und `aspect-ratio` verfügbar.
 - **Mock-Modus** — Startmodus des Dienstes, in dem Flug-, Routen-, Wetter- und TTS-Adapter durch Szenario-Dateien gespeist werden (ADR 0003/0004).
+- **Datendatei** — die eine SQLite-Datei (WAL) auf dem gemounteten Datenvolume; enthält Sichtungslog und verwerfbare Caches; Backup = Datei kopieren (ADR 0007).
+- **Konfigurationsdatei** — die eine `config.yaml`, beim Start per Schema validiert (fail fast mit lesbarer Meldung); Änderung = Datei bearbeiten + Neustart; Geheimnisse stehen nur in Umgebungsvariablen (ADR 0007).
+- **Verwerfbarer Cache** — Routen-/Wetter-Cache mit TTL in der Datendatei; darf jederzeit gelöscht werden; adsbdb-Daten werden nie dort abgelegt (ADR 0005/0007).
 
 ## Aggregates
 _Noch nicht modelliert — entsteht in `modeling` / bei der Arbeit an Tasks._
