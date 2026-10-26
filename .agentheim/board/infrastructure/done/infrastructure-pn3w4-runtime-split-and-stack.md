@@ -1,7 +1,7 @@
 ---
 id: infrastructure-pn3w4
 title: Decide runtime split and stack: home-server service computes state, tablet is a thin vanilla-JS client
-status: doing
+status: done
 type: decision
 context: infrastructure
 created: 2026-10-26
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: [infrastructure-001-walking-skeleton]
 tags: [foundation, runtime, stack]
-related_adrs: [0001]
+related_adrs: [0001, 0004]
 related_research: []
 prior_art: []
 ---
@@ -83,3 +83,6 @@ Display is an old tablet (old WebView/Safari, little RAM, 24/7). Free ADS-B/rout
 - **Go/Python backend** — viable; rejected only to keep one language.
 - **Frontend framework** — bigger bundles, old-WebView risk, little gain.
 - **SSE/WebSocket push** — nicer, but polling is more robust on old WebViews and cheap on a LAN.
+
+## Outcome
+Decision recorded as global ADR (provisional `0004-home-server-service-thin-vanilla-js-client.md`, accepted). It fixes the runtime split (Node.js/TypeScript modular-monolith service in a Docker container on the ZimaOS ThinkCentre; thin framework-free iPad client polling `GET /api/state`), the browser baseline iPadOS 16 / Safari 16 with esbuild target ES2020, framework-free shared UI modules per ADR 0002, and the test stack per ADR 0003 (Vitest, Playwright WebKit, JSON scenario-file mock mode, injectable clock). Deviation from the architect's draft: build target ES2020 instead of ES2015. No code changed.

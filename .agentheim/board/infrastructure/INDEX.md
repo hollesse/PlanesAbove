@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 4
-- **Doing:** 1
-- **Done:** 0
+- **Doing:** 0
+- **Done:** 1
 <!-- task-counts:end -->
 
 ### Todo
@@ -26,11 +26,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **infrastructure-pn3w4** — Decide runtime split and stack: home-server service computes state, tablet is a thin vanilla-JS client (decision) — `doing/infrastructure-pn3w4-runtime-split-and-stack.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **infrastructure-pn3w4** — Decide runtime split and stack: home-server service computes state, tablet is a thin vanilla-JS client (decision) — `done/infrastructure-pn3w4-runtime-split-and-stack.md`
 <!-- done-list:end -->
 
 ### Backlog

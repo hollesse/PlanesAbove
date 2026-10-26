@@ -5,6 +5,18 @@ Newest entries on top.
 
 ---
 
+## 2026-10-26 22:43 -- Task completed (verification skipped): infrastructure-pn3w4 - Decide runtime split and stack: home-server service computes state, tablet is a thin vanilla-JS client
+
+**Type:** Work / Task completion
+**Task:** infrastructure-pn3w4 - Decide runtime split and stack: home-server service computes state, tablet is a thin vanilla-JS client
+**Summary:** decide runtime split and stack (home-server service, thin vanilla-JS iPad client)
+**Duration:** ~45s
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
 ## 2026-10-26 22:40 -- Batch started: [infrastructure-pn3w4, airspace-jy8hz, weather-yttgx]
 
 **Type:** Work / Batch start
