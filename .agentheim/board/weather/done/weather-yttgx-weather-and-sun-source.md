@@ -1,7 +1,7 @@
 ---
 id: weather-yttgx
 title: Decide weather and sun position: Open-Meteo for Wetterlage, locally computed sun for Tageszeit
-status: doing
+status: done
 type: decision
 context: weather
 created: 2026-10-26
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: [infrastructure-001-walking-skeleton]
 tags: [foundation, data-source, weather]
-related_adrs: [0001]
+related_adrs: [0001, 0006]
 related_research: [free-flight-weather-tts-apis-2026-10-26]
 prior_art: []
 ---
@@ -69,3 +69,6 @@ Need one of 28 skies from free data; ADR 0001 requires free, no-contract sources
 ## Alternatives considered
 - **OpenWeatherMap** — requires API key/account.
 - **DWD open data directly** — richer, heavier parsing; Bright Sky wraps it.
+
+## Outcome
+Decided and recorded ADR 0006 (provisional, scope weather): Tageszeit from locally computed solar elevation (config thresholds, default -6/+4 deg, direction splits Morgen/Abend), Wetterlage from Open-Meteo via a `WeatherSource` port with a pure, table-tested WMO to 7-state mapping (precedence Gewitter > Schnee > Regen > Nebel > cloud-based, visibility/cloud_cover refinement), 15 min polling, last-value/Klar fallback, CC BY attribution in an info view, Bright Sky as documented fallback. Deviations from the architect draft: named the concrete mapping, thresholds and precedence; dropped the SQLite cache and library name (stack-agnostic, owned by the infrastructure decision); explicitly rejected `is_day`. Terms/limits were taken from the reviewer-PASSed research citing primary Open-Meteo pages; no live re-fetch was done in this task. No code changed.
