@@ -64,3 +64,10 @@ Eine eigene Storybook-Instanz im Repo (Storybook `html`-Renderer, framework-frei
 - `svg/business-jet.svg` enthält einen leeren Pfad (`d="M Z"`), der eine Konsolenwarnung erzeugt. Bei der Übernahme bereinigen.
 - **Regel für alle Folge-Tasks (ADR 0002):** Braucht ein Task ein UI-Element, das es noch nicht gibt, entsteht es zuerst als Story in Storybook und wird abgenommen, erst dann wird es in der App verwendet. Jeder Frontend-Task hängt per `depends_on` von diesem Task ab.
 - Die Komponenten müssen auf den alten iPads laufen. Die Mindestgrenze ist iPadOS 16 / Safari 16, siehe `infrastructure-pn3w4`. Die Format-Anpassung von 5:3 auf 4:3 zeigt mehr Himmel oben und unten bzw. einen schmalen Rand. Die gestalterische Lösung legt der Betreiber bei der Abnahme fest. Storybook selbst läuft nur auf dem Entwicklungsrechner bzw. Heimserver.
+
+## Merge-conflict note (iteration 1)
+- Sibling: conductor commit b212226 — "chore: ignore agentheim worktrees, salvage and state artifacts" (added a root `.gitignore`: `.worktrees/`, `.agentheim/salvage/`, `.agentheim/state/`).
+- New base SHA: 6bff6cc7cb23aeaa1a10bdd1060ecbd157e11b89
+- Resolution allow-list: `.gitignore` (add/add)
+- Sibling stat scoped to allow-list: `.gitignore | 3 +++`
+- Salvage: `.agentheim/salvage/design-system-001-merge-conflict.patch`
