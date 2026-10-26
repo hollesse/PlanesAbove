@@ -26,7 +26,7 @@ export interface ScreenProps {
 /** Empty positioned stage in the requested format (container for cqw units). */
 export const renderStage = (aspect: ScreenAspect = '4:3'): HTMLElement => h('div', { class: `pa-screen pa-screen-${aspect.replace(':', 'x')}`, data: { aspect } });
 
-export const renderSkyLayer = (key: SkyKey): HTMLElement => h('div', { class: 'pa-layer' }, renderSky(key));
+export const renderSkyLayer = (key: SkyKey): HTMLElement => h('div', { class: 'pa-layer' }, renderSky(key, { cover: true }));
 
 /** Template: a complete screen - sky, header, planes and info bar - for the state empty, one or two. */
 export function renderScreen(props: ScreenProps): HTMLElement {

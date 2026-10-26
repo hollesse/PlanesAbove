@@ -40,3 +40,38 @@ test('fonts are served locally', async ({ page }) => {
   expect(loaded).toEqual([true, true]);
   expect(external).toEqual([]);
 });
+
+test('the sky covers the whole stage in every template and page story, transitions included, at 4:3 and 5:3', async ({ page }) => {
+  const index = (await (await page.request.get('/index.json')).json()) as { entries: Record<string, Entry> };
+  const ids = Object.values(index.entries).filter((e) => e.type === 'story' && (e.title.startsWith('Templates/') || e.title.startsWith('Pages/'))).map((e) => e.id);
+  expect(ids.length).toBeGreaterThan(0);
+  const ratio = { '4:3': 4 / 3, '5:3': 5 / 3 };
+  for (const aspect of ['4:3', '5:3'] as const) {
+    for (const id of ids) {
+      if (id.endsWith('--format-53') && aspect === '4:3') continue; // story pins its own 5:3 format
+      const label = `${id} @ ${aspect}`;
+      await page.goto(`/iframe.html?id=${id}&viewMode=story`);
+      await page.waitForSelector('.pa-sky svg');
+      // URL args cannot carry a colon value, so switch the aspect via Storybook's own channel (same as the Controls panel).
+      await page.evaluate(([storyId, a]) => (window as any).__STORYBOOK_ADDONS_CHANNEL__.emit('updateStoryArgs', { storyId, updatedArgs: { aspect: a } }), [id, aspect]);
+      await page.waitForSelector(`.pa-screen[data-aspect="${aspect}"]`);
+      const ms = await page.evaluate(() => {
+        const r = (e: Element) => e.getBoundingClientRect();
+        return [...document.querySelectorAll('.pa-sky svg')].filter((svg) => svg.closest('.pa-screen')).map((svg) => {
+          const stage = svg.closest('.pa-screen')!;
+          const st = r(stage); const sk = r(svg);
+          return { top: sk.top - st.top, left: sk.left - st.left, bottom: st.bottom - sk.bottom, right: st.right - sk.right, aspect: (stage as HTMLElement).dataset.aspect, ratio: st.width / st.height };
+        });
+      });
+      expect(ms.length, `${label} has stage skies`).toBeGreaterThan(0);
+      for (const m of ms) {
+        expect(m.aspect, label).toBe(aspect);
+        expect(Math.abs(m.ratio - ratio[aspect]), `${label} stage ratio`).toBeLessThan(0.05);
+        expect(m.top, label).toBeLessThanOrEqual(3);
+        expect(m.bottom, label).toBeLessThanOrEqual(3);
+        expect(m.left, label).toBeLessThanOrEqual(3);
+        expect(m.right, label).toBeLessThanOrEqual(3);
+      }
+    }
+  }
+});

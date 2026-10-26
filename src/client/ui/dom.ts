@@ -22,3 +22,7 @@ export function h<K extends keyof HTMLElementTagNameMap>(tag: K, props: HProps =
 
 /** Make an inline <svg> string scale to its container width. */
 export const fluidSvg = (svg: string): string => svg.replace('<svg ', '<svg style="display:block;width:100%;height:auto" ');
+
+/** Make an inline <svg> string fill its container completely (CSS "cover"): scaled to the larger axis, centered, overflow cropped, never distorted. */
+export const coverSvg = (svg: string): string =>
+  svg.replace(/ preserveAspectRatio="[^"]*"/, '').replace('<svg ', '<svg preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:100%" ');

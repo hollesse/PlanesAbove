@@ -1,7 +1,7 @@
 ---
 id: design-system-c4v3r
 title: Himmel füllt den Bildschirm im 4:3-Format lückenlos (Cover-Beschnitt statt weißer Streifen unten)
-status: doing
+status: done
 type: bug
 context: design-system
 created: 2026-10-26
@@ -48,3 +48,8 @@ Die Himmel-Ebene einer Szene füllt immer die gesamte Bühne (Cover-Verhalten): 
 - Addressed from iteration 1: transitions criterion now covered by tests/unit/transitions.test.ts; TESTS_ADDED count now correct.
 **SUGGESTED_FIX:** Measure empty, one and two at 5:3 — e.g. pass `args=aspect:5:3` in the e2e iframe URL for each Templates/Pages story (or add 5:3 variants of Leer and Zwei / a loop over both ASPECTS per state). Replace `if (!m.cover) continue;` with an assertion that every stage sky covers the stage, so the test fails without the fix.
 **ITERATION_HINT:** likely-fixable
+
+## Outcome
+Stage skies now render as cover: renderSkyLayer passes { cover: true } to renderSky, giving an SVG with preserveAspectRatio="xMidYMid slice" at width/height 100%, centered and cropped; the standalone Himmel atom keeps the full 1.6:1 motif. Transitions reuse renderSkyLayer, so both skies cover the stage throughout.
+Tests (4 new): unit - stage sky is cover for every EXAMPLE_PAGE at both 4:3 and 5:3 (asserts all six aspect/state combos empty, one, two); atom stays non-cover; every sky of every weather/time transition is cover. Playwright - every Templates/ and Pages/ story (incl. Uebergaenge and Beispielszenen with empty/one/two) is loaded at 4:3 and at 5:3 (aspect switched via Storybook's updateStoryArgs channel, since URL args cannot carry a colon value; the test asserts the stage's data-aspect and width/height ratio), and every .pa-sky svg inside a .pa-screen must cover its stage (gaps <= 3px on all sides). Format53 is skipped in the 4:3 pass as it pins 5:3.
+Sanity check: with renderSkyLayer temporarily reverted to renderSky(key) (no cover), both unit tests and the e2e test failed; with the fix restored, 44 unit tests, 4 e2e tests, typecheck and storybook build pass. Operator still to eyeball cropping of sun/moon/clouds at the edges [human-eye].

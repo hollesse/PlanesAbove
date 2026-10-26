@@ -49,4 +49,17 @@ describe('Übergänge', () => {
     const inks = t.layers.filter((l) => l.kind === 'header').map((l) => (l as { ink: string }).ink);
     expect(inks).toEqual(['dark', 'light']);
   });
+  it('every sky of every weather and time-of-day transition covers the stage (slice, 100% x 100%)', () => {
+    const specs = TRANSITIONS.filter((t) => t.group === 'Wetter wechselt' || t.group === 'Tageszeit wechselt');
+    expect(specs.length).toBe(11);
+    for (const t of specs) {
+      const svgs = renderTransitionStage(t).querySelectorAll<SVGElement>('.pa-sky svg');
+      expect(svgs.length, t.id).toBeGreaterThanOrEqual(2);
+      svgs.forEach((svg) => {
+        expect(svg.getAttribute('preserveAspectRatio'), t.id).toBe('xMidYMid slice');
+        expect(svg.style.width, t.id).toBe('100%');
+        expect(svg.style.height, t.id).toBe('100%');
+      });
+    }
+  });
 });
