@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-26 23:53 -- Batch started: [design-system-g7w4m]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-g7w4m - Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel (helle Schrift mit schwarzem Schein ca. 40 %)
+**Parallel:** no (1 worker) — builder rejected the thin outline; wants a wide soft glow
+
+---
+
 ## 2026-10-26 23:53 -- Modeling / Promoted: design-system-g7w4m - Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel (helle Schrift mit schwarzem Schein ca. 40 %)
 
 **Type:** Modeling / Promote

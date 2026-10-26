@@ -1,7 +1,7 @@
 ---
 id: design-system-g7w4m
 title: Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel (helle Schrift mit schwarzem Schein ca. 40 %)
-status: todo
+status: doing
 type: feature
 context: design-system
 created: 2026-10-26
