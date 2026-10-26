@@ -1,7 +1,7 @@
 ---
 id: infrastructure-p6s30
 title: Decide observability: health endpoint, dead-man's-switch heartbeat and structured logs
-status: todo
+status: doing
 type: decision
 context: infrastructure
 created: 2026-10-26

@@ -1,7 +1,7 @@
 ---
 id: sky-scene-xczgm
 title: Decide German speech output behind a swappable synthesizer port (Piper default, ElevenLabs etc. pluggable), played as audio on the iPad
-status: todo
+status: doing
 type: decision
 context: sky-scene
 created: 2026-10-26

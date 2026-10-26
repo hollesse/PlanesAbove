@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 1
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **airspace-h76v2** — Decide Typklasse, Kategorie and airline derivation from static curated tables (decision) — `todo/airspace-h76v2-type-class-and-airline-tables.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **airspace-h76v2** — Decide Typklasse, Kategorie and airline derivation from static curated tables (decision) — `doing/airspace-h76v2-type-class-and-airline-tables.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

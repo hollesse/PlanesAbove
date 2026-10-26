@@ -1,7 +1,7 @@
 ---
 id: airspace-h76v2
 title: Decide Typklasse, Kategorie and airline derivation from static curated tables
-status: todo
+status: doing
 type: decision
 context: airspace
 created: 2026-10-26
