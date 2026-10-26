@@ -1,7 +1,7 @@
 ---
 id: infrastructure-y8epz
 title: Decide persistence and configuration: SQLite single file plus validated config file
-status: todo
+status: doing
 type: decision
 context: infrastructure
 created: 2026-10-26

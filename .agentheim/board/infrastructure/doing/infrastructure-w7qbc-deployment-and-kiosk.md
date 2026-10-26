@@ -1,7 +1,7 @@
 ---
 id: infrastructure-w7qbc
 title: Decide deployment topology and kiosk operation: Docker Compose app on ZimaOS, self-recovering iPad client via Guided Access
-status: todo
+status: doing
 type: decision
 context: infrastructure
 created: 2026-10-26

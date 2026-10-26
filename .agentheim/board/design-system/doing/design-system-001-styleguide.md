@@ -1,7 +1,7 @@
 ---
 id: design-system-001-styleguide
 title: Storybook-Instanz nach Atomic Design mit allen vorhandenen Assets aufbauen und vom Betreiber abnehmen lassen
-status: todo
+status: doing
 type: feature
 context: design-system
 created: 2026-10-26
