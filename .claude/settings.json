@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "agentheim": {
+      "source": {
+        "source": "github",
+        "repo": "heimeshoff/agentheim"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "agentheim@agentheim": true
+  }
+}
