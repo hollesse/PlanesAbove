@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlanesAbove · Himmel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#D8D6CC;color:#1F2A33;font-family:'IBM Plex Mono',ui-monospace,monospace;}
+a{color:#1F2A33}a:hover{color:#C8313E}
+.page{max-width:1200px;margin:0 auto;padding:40px 24px 80px;display:flex;flex-direction:column;gap:56px}
+.head{display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-size:12px;letter-spacing:0.18em;text-transform:uppercase}
+h1{font-family:Archivo,sans-serif;font-weight:900;font-size:40px;margin:0;letter-spacing:-0.01em;text-transform:uppercase}
+.skies{display:flex;flex-direction:column;gap:14px}
+.grid{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:10px;align-items:center}
+.labels{font-size:12px;letter-spacing:0.14em;text-transform:uppercase;align-items:end}
+.name{font-size:13px;font-weight:500}
+.cell{display:flex;flex-direction:column;gap:4px}
+.sky{border:2px solid #1F2A33}
+.file{font-size:10px;color:#5B6670}
+.placeholder{aspect-ratio:1.6}
+#rows{display:flex;flex-direction:column;gap:14px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="head">
+    <div class="eyebrow">PlanesAbove · Illustrations-Assets</div>
+    <h1>28 Himmel · Tageszeit × Wetter</h1>
+  </div>
+
+  <div class="skies">
+    <div class="eyebrow">Himmel · 1600 × 1000 · Tageszeit × Wetter</div>
+    <div class="grid labels" id="times"></div>
+    <div id="rows"></div>
+  </div>
+</div>
+
+<script>
+const skyTimes = [['dawn','Morgendämmerung'],['day','Tag'],['dusk','Abenddämmerung'],['night','Nacht']];
+const skyWeather = [['clear','Klar'],['light','Leicht bewölkt'],['overcast','Bedeckt'],['fog','Nebel'],['rain','Regen'],['snow','Schnee'],['storm','Gewitter']];
+
+const svg = {};
+
+function render(name) {
+  const div = document.createElement('div');
+  if (!svg[name]) { div.className = 'placeholder'; return div; }
+  div.innerHTML = svg[name];
+  return div;
+}
+
+function renderRows() {
+  const rows = document.getElementById('rows');
+  rows.replaceChildren(...skyWeather.map(([w, wn]) => {
+    const row = document.createElement('div');
+    row.className = 'grid';
+    const name = document.createElement('span');
+    name.className = 'name';
+    name.textContent = wn;
+    row.append(name, ...skyTimes.map(([t]) => {
+      const file = 'sky-' + t + '-' + w;
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      const sky = document.createElement('div');
+      sky.className = 'sky';
+      sky.append(render(file));
+      const label = document.createElement('span');
+      label.className = 'file';
+      label.textContent = file + '.svg';
+      cell.append(sky, label);
+      return cell;
+    }));
+    return row;
+  }));
+}
+
+const times = document.getElementById('times');
+times.append(document.createElement('span'), ...skyTimes.map(([, n]) => {
+  const s = document.createElement('span');
+  s.textContent = n;
+  return s;
+}));
+
+renderRows();
+Promise.all(skyWeather.flatMap(([w]) => skyTimes.map(([t]) => 'sky-' + t + '-' + w)).map(async n => {
+  const r = await fetch('./svg/' + n + '.svg');
+  if (!r.ok) return;
+  svg[n] = (await r.text()).replace('<svg ', '<svg style="display:block;width:100%;height:auto" ');
+})).then(renderRows);
+</script>
+</body>
+</html>
