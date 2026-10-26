@@ -1,0 +1,21 @@
+// Public surface of the design system: the app client imports these framework-free modules (no Storybook needed).
+export * from './domain/catalog';
+export * from './domain/flight';
+export * from './domain/livery';
+export { LIVERIES, type LiveryDef } from './domain/liveries';
+export * from './domain/samples';
+export * from './domain/tokens';
+export * from './atoms/badge';
+export * from './atoms/logo';
+export * from './atoms/plane-silhouette';
+export * from './atoms/sky';
+export * from './atoms/text';
+export * from './molecules/info-row';
+export * from './molecules/painted-plane';
+export * from './molecules/scene-header';
+export * from './organisms/info-bar';
+export * from './organisms/scene-layer';
+export * from './templates/screen';
+export * from './pages/examples';
+export * from './transitions/catalog';
+export * from './transitions/player';

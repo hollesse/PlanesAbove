@@ -1,7 +1,7 @@
 ---
 id: design-system-001-styleguide
 title: Storybook-Instanz nach Atomic Design mit allen vorhandenen Assets aufbauen und vom Betreiber abnehmen lassen
-status: doing
+status: done
 type: feature
 context: design-system
 created: 2026-10-26
@@ -9,7 +9,7 @@ completed:
 depends_on: [infrastructure-pn3w4]
 blocks: [infrastructure-001-walking-skeleton]
 tags: [frontend, storybook, atomic-design, gate]
-related_adrs: [0002, 0003]
+related_adrs: [0002, 0003, 0009]
 related_research: []
 prior_art: []
 ---
@@ -71,3 +71,28 @@ Eine eigene Storybook-Instanz im Repo (Storybook `html`-Renderer, framework-frei
 - Resolution allow-list: `.gitignore` (add/add)
 - Sibling stat scoped to allow-list: `.gitignore | 3 +++`
 - Salvage: `.agentheim/salvage/design-system-001-merge-conflict.patch`
+
+## Outcome
+
+Storybook (`@storybook/html-vite`) design system built from the three Claude-Design drafts (`Flugzeugmodelle.html`, `Himmel.html`, `Screens.html`, `svg/`). Start with `npm run storybook`, static build with `npm run build-storybook`, tests with `npm test` (41 Vitest tests), `npm run typecheck`, E2E with `npm run e2e` (WebKit + Chromium) or `npm run e2e:chromium`.
+
+**What exists**
+- Atoms: Tokens (colours, Archivo 900 / IBM Plex Mono 400/500 served locally from `src/client/ui/tokens/fonts`), Himmel (Controls Tageszeit x Wetterlage + gallery of all 28), Flugzeug-Silhouette (Control + gallery of all 10), Logo (Control + gallery of 16), Nummern-Plakette, Textstile.
+- Molecules: Lackiertes Flugzeug (type x livery x logo Controls; all 42 catalog liveries; "keine Lackierung" for Light Aircraft/Glider), Kopfzeile (ink light/dark), Info-Zeile.
+- Organisms: Info-Leiste (4 states), Szenen-Ebene (0/1/2 planes).
+- Templates: Bildschirm leer/eins/zwei, default 4:3, `aspect` control for 5:3, viewports iPad Pro 12,9", iPad 9,7", Entwurf 5:3.
+- Pages: 7 example scenes; Uebergaenge: all 22 transitions of Screens.html (plane comes/goes/switches, 7 weather, 4 daytime) as playable stories with Start button, grouped per group plus a single-transition story with Controls.
+- Public surface `src/client/ui/index.ts` (framework-free modules, no Storybook import). Smoke test renders a screen in a plain jsdom document; another test bundles it with esbuild for `es2020,safari16`.
+
+**Repo layout** (documented in `README.md`): `src/client/ui/{domain,atoms,molecules,organisms,templates,pages,transitions,styles,tokens,assets,stories}`, `tests/unit`, `tests/e2e`, `scripts/`, `.storybook/`; later `src/server/` and `src/client/app/` live alongside. Decision recorded as provisional ADR 0009 (layout, livery variable standard, 4:3 default, asset pipeline).
+
+**Decisions:** livery table = the identical table of the drafts (variables as the SVGs use them; `--skin-tailband` appears nowhere); `d="M Z"` empty path removed from business-jet; c2pa metadata stripped from all SVGs; assets generated into string modules by `scripts/build-assets.mjs` (git-ignored output).
+
+**Verification:** `npm test` exit 0 (41 tests), `npm run typecheck` clean, `storybook build` succeeds, Playwright story-render test (every story renders, no page/console errors, Atomic levels visible, fonts local) 3/3 green under **Chromium**. **WebKit could not be run in this container** (`npx playwright install webkit` and launch fail on missing system libraries); the `webkit` project is configured as the required target but was NOT run. Re-run `npx playwright test --project=webkit` on the builder's machine (needs `npx playwright install webkit`).
+
+**Open for the operator**
+- [human-eye] Stories look like the Claude-Design drafts: spot-checked two screens by screenshot (Chromium); full review pending. Note: the Himmel-Tinte rule for combinations the drafts do not show (e.g. dawn + storm) is inferred (light for dusk/night/rain/storm).
+- [human-eye] Gate: operator sign-off of the design system in Storybook; only then may app tasks using these components start. Also decide the 4:3 composition (more sky vs. margin); the 4:3 stages keep the draft percentages.
+- Original drafts (`Flugzeugmodelle.html`, `Himmel.html`, `Screens.html`, `svg/`) were left untouched in the repo root; they can be deleted after sign-off (still contain Google Fonts links).
+- 13 of 16 logos reference PNGs that are not in the repo (only `lufthansa.png`); they render as dashed placeholders. See backlog item.
+- Draft deviation: Screens.html two-plane poster used slightly different plane offsets than its transitions; the transition geometry (left 5%/60%) is used for all two-plane states.

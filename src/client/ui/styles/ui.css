@@ -1,0 +1,63 @@
+@import './tokens.css';
+@import './transitions.css';
+
+.pa-root { font-family: var(--pa-font-mono); color: var(--pa-ink); }
+
+/* Text styles (atoms) */
+.pa-eyebrow { font-family: var(--pa-font-mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+.pa-route-large { font-family: var(--pa-font-display); font-weight: 900; line-height: 1; text-transform: uppercase; white-space: nowrap; }
+.pa-meta-small { font-family: var(--pa-font-mono); letter-spacing: 0.04em; white-space: nowrap; }
+
+/* Number badge (Nummern-Plakette) */
+.pa-badge { flex: none; width: 3.6cqw; height: 3.6cqw; border-radius: 50%; background: var(--pa-paper); border: 2px solid var(--pa-ink); display: flex; align-items: center; justify-content: center; font-family: var(--pa-font-display); font-weight: 900; font-size: 1.8cqw; box-sizing: border-box; }
+
+/* Plane / sky / logo atoms */
+.pa-plane { display: block; }
+.pa-plane-backdrop { background: var(--pa-plane-backdrop); padding: 6px; }
+.pa-no-livery { aspect-ratio: 2.174; display: flex; align-items: center; justify-content: center; border: 2px dashed var(--pa-muted); color: var(--pa-muted); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+.pa-sky { overflow: hidden; }
+.pa-logo { display: block; }
+
+/* Scene header molecule */
+.pa-scene-header { position: absolute; left: 3.5%; right: 3.5%; top: 5.5%; display: flex; justify-content: space-between; font-family: var(--pa-font-mono); font-size: 1.9cqw; letter-spacing: 0.18em; text-transform: uppercase; }
+.pa-ink-dark { color: var(--pa-sky-ink-dark); }
+.pa-ink-light { color: var(--pa-sky-ink-light); }
+
+/* Info bar organism */
+.pa-bar { position: absolute; left: 0; right: 0; bottom: 0; background: var(--pa-paper); border-top: 2px solid var(--pa-ink); box-sizing: border-box; }
+.pa-bar-single { height: 31%; display: flex; align-items: center; padding: 0 3.5%; }
+.pa-bar-single .pa-bar-text { display: flex; flex-direction: column; gap: 0.9cqw; min-width: 0; }
+.pa-bar-single .pa-eyebrow { font-size: 2.2cqw; letter-spacing: 0.16em; white-space: nowrap; }
+.pa-bar-single .pa-route-large { font-size: 5cqw; }
+.pa-bar-single .pa-route-unknown { color: var(--pa-muted); }
+.pa-bar-single .pa-meta-small { font-size: 2.2cqw; }
+.pa-bar-double { height: 31%; display: grid; grid-template-rows: 1fr 1fr; }
+.pa-bar-recent { height: 11%; display: flex; align-items: center; padding: 0 3.5%; }
+.pa-bar-recent .pa-meta-small { font-size: 1.9cqw; }
+
+/* Info row molecule */
+.pa-info-row { display: flex; align-items: center; gap: 2.6cqw; padding: 0 3.5%; min-height: 0; }
+.pa-info-row + .pa-info-row { border-top: 2px solid var(--pa-ink); }
+.pa-info-row-text { display: flex; flex-direction: column; gap: 0.6cqw; min-width: 0; flex: 1; }
+.pa-info-row .pa-route-large { font-size: 3.3cqw; }
+.pa-info-row .pa-eyebrow { font-size: 1.5cqw; letter-spacing: 0.12em; white-space: nowrap; }
+.pa-info-row-stats { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 0.6cqw; font-size: 1.5cqw; white-space: nowrap; }
+
+/* Scene layer + template */
+.pa-slot { position: absolute; transform-origin: 0 0; }
+.pa-slot-single { left: 14%; width: 72%; top: 12%; }
+.pa-slot-one { left: 5%; width: 50%; top: 11%; }
+.pa-slot-two { left: 60%; width: 33%; top: 34.5%; }
+.pa-badge-slot { position: absolute; }
+.pa-badge-slot-one { left: 4%; top: 10.4%; }
+.pa-badge-slot-two { left: 59%; top: 33.8%; }
+.pa-screen { position: relative; overflow: hidden; background: var(--pa-paper); border: 2px solid var(--pa-ink); container-type: inline-size; width: 100%; box-sizing: border-box; }
+.pa-screen-4x3 { aspect-ratio: 4 / 3; }
+.pa-screen-5x3 { aspect-ratio: 5 / 3; }
+.pa-layer { position: absolute; inset: 0; overflow: hidden; }
+
+/* Transition player */
+.pa-transition { display: flex; flex-direction: column; gap: 10px; }
+.pa-transition-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pa-play { font: inherit; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; background: var(--pa-ink); color: var(--pa-paper); border: 2px solid var(--pa-ink); padding: 4px 12px; border-radius: 0; cursor: pointer; flex: none; white-space: nowrap; }
+.pa-play:hover { background: var(--pa-signal); border-color: var(--pa-signal); }

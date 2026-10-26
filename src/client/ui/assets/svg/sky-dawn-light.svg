@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 1000" data-sky="dawn-light">
+  <rect class="band" x="0" y="0" width="1600" height="167.66666666666666" fill="#9DB3CF"></rect>
+  <rect class="band" x="0" y="166.66666666666666" width="1600" height="167.66666666666666" fill="#B9C3D6"></rect>
+  <rect class="band" x="0" y="333.3333333333333" width="1600" height="167.66666666666666" fill="#D6CCD3"></rect>
+  <rect class="band" x="0" y="500" width="1600" height="167.66666666666666" fill="#EBCDBE"></rect>
+  <rect class="band" x="0" y="666.6666666666666" width="1600" height="167.66666666666666" fill="#F2C9A4"></rect>
+  <rect class="band" x="0" y="833.3333333333334" width="1600" height="167.66666666666666" fill="#F4D3A2"></rect>
+  <g class="sun"><circle cx="300" cy="560" r="120" fill="#F0A24E"></circle></g>
+  <g class="cloud" fill="#E4D5CD" transform="translate(597 60) scale(1.84 1.06)"><ellipse cx="0" cy="38" rx="200" ry="36"></ellipse><circle cx="-110" cy="22" r="40"></circle><circle cx="-40" cy="6" r="62"></circle><circle cx="50" cy="12" r="58"></circle><circle cx="125" cy="26" r="38"></circle></g>
+    <g class="cloud" fill="#E4D5CD" transform="translate(131 170) scale(0.86 1.05)"><ellipse cx="0" cy="38" rx="200" ry="36"></ellipse><circle cx="-110" cy="22" r="40"></circle><circle cx="-40" cy="6" r="62"></circle><circle cx="50" cy="12" r="58"></circle><circle cx="125" cy="26" r="38"></circle></g>
+  <g class="cloud" fill="#F3E3DA" transform="translate(1214 194) scale(1.40 0.79)"><ellipse cx="0" cy="38" rx="200" ry="36"></ellipse><circle cx="-110" cy="22" r="40"></circle><circle cx="-40" cy="6" r="62"></circle><circle cx="50" cy="12" r="58"></circle><circle cx="125" cy="26" r="38"></circle></g>
+  <g class="cloud" fill="#F3E3DA" transform="translate(1633 380) scale(0.78 1.14)"><ellipse cx="0" cy="40" rx="180" ry="40"></ellipse><circle cx="-70" cy="20" r="55"></circle><circle cx="10" cy="0" r="75"></circle><circle cx="95" cy="22" r="52"></circle></g>
+  <g class="cloud" fill="#F3E3DA" transform="translate(1536 500) scale(2.06 1.52)"><ellipse cx="0" cy="40" rx="180" ry="40"></ellipse><circle cx="-70" cy="20" r="55"></circle><circle cx="10" cy="0" r="75"></circle><circle cx="95" cy="22" r="52"></circle></g>
+  <g class="cloud" fill="#F6EAE3" transform="translate(1467 643) scale(-1.50 1.39)"><ellipse cx="0" cy="40" rx="180" ry="40"></ellipse><circle cx="-70" cy="20" r="55"></circle><circle cx="10" cy="0" r="75"></circle><circle cx="95" cy="22" r="52"></circle></g>
+</svg>
