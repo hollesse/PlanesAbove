@@ -5,6 +5,18 @@ Newest entries on top.
 
 ---
 
+## 2026-10-26 23:04 -- Task completed (verification skipped): sky-scene-xczgm - Decide German speech output behind a swappable synthesizer port (Piper default, ElevenLabs etc. pluggable), played as audio on the iPad
+
+**Type:** Work / Task completion
+**Task:** sky-scene-xczgm - Decide German speech output behind a swappable synthesizer port (Piper default, ElevenLabs etc. pluggable), played as audio on the iPad
+**Summary:** decide German speech output behind a swappable SpeechSynthesizer port
+**Duration:** ~1m
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
 ## 2026-10-26 23:04 -- Task completed (verification skipped): infrastructure-p6s30 - Decide observability: health endpoint, dead-man's-switch heartbeat and structured logs
 
 **Type:** Work / Task completion

@@ -1,7 +1,7 @@
 ---
 id: sky-scene-xczgm
 title: Decide German speech output behind a swappable synthesizer port (Piper default, ElevenLabs etc. pluggable), played as audio on the iPad
-status: doing
+status: done
 type: decision
 context: sky-scene
 created: 2026-10-26
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: [infrastructure-001-walking-skeleton]
 tags: [foundation, tts, narration]
-related_adrs: [0001]
+related_adrs: [0001, 0012]
 related_research: [free-flight-weather-tts-apis-2026-10-26]
 prior_art: []
 ---
@@ -87,3 +87,14 @@ The device is an old tablet whose installed TTS voices and `speechSynthesis` sup
 - **Cloud TTS (Google/Azure)** — keys, billing, contracts; violates ADR 0001.
 - **Fully Kiosk native TTS bridge** — Android-only, couples client to one kiosk app.
 - **Pre-recorded human voice** — not feasible for composed sentences.
+
+## Outcome
+
+Decision recorded as ADR 0012 (provisional number, `0012-german-speech-output-behind-speechsynthesizer-port.md`, scope sky-scene, accepted).
+
+- Server-side `SpeechSynthesizer` port: text and voice in, audio and duration out. Adapters `piper` (default, separate GPL container, the `tts` sidecar of ADR 0008), `elevenlabs` (opt-in, key only from env) and `fake` (mock mode). Selected only via `config.yaml`.
+- Cache keyed by (adapter, voice, text). Render policy per adapter: eager for Piper, lazy for ElevenLabs because of its quota. Quota guard and fallback adapter included.
+- Client only plays an audio URL on tap. The Vorlese-Sperre ends on `ended`, with a watchdog. The `speechSynthesis` client fallback is off by default.
+- ADR 0001: ElevenLabs is opt-in only, never required, and the default path stays free.
+- Deviation from the draft: render policy is per adapter, not eager for all.
+- The real-iPad finding of the walking skeleton is not available yet. The ADR records it as a verification gate with four named checks, and the decision stands as written until they are measured.
