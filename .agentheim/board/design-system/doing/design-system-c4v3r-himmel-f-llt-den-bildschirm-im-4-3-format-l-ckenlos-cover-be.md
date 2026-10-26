@@ -1,7 +1,7 @@
 ---
 id: design-system-c4v3r
 title: Himmel füllt den Bildschirm im 4:3-Format lückenlos (Cover-Beschnitt statt weißer Streifen unten)
-status: todo
+status: doing
 type: bug
 context: design-system
 created: 2026-10-26
