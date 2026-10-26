@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-26 23:27 -- Modeling / Promoted: design-system-c4v3r - Himmel füllt den Bildschirm im 4:3-Format lückenlos (Cover-Beschnitt statt weißer Streifen unten)
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-26 23:08 -- Work session ended
 
 **Type:** Work / Session end
