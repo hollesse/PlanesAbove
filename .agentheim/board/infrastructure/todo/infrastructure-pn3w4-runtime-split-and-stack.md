@@ -27,6 +27,11 @@ Record the architecture decision as an ADR (scope: `global`), based on the archi
   - home server: Lenovo ThinkCentre running ZimaOS;
   - display: iPad Pro 12.9" 1st gen and/or a smaller iPad (iPadOS 17).
 - [ ] Browser baseline is fixed at **iPadOS 16 / Safari 16**, and the build target follows from it.
+- [ ] The ADR names the test stack in line with ADR 0003:
+  - a unit test runner (e.g. Vitest or the Node test runner);
+  - Playwright with WebKit for E2E;
+  - a mock mode for external APIs, with a scenario-file format;
+  - an injectable clock.
 - [ ] The ADR records ADR 0002 (Storybook-first, Atomic Design): client UI components are framework-free modules shared between Storybook and the app.
 - [ ] No code change required.
 

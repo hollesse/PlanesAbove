@@ -9,7 +9,7 @@ completed:
 depends_on: [infrastructure-pn3w4]
 blocks: [infrastructure-001-walking-skeleton]
 tags: [frontend, storybook, atomic-design, gate]
-related_adrs: [0002]
+related_adrs: [0002, 0003]
 related_research: []
 prior_art: []
 ---
@@ -54,6 +54,7 @@ Eine eigene Storybook-Instanz im Repo (Storybook `html`-Renderer, framework-frei
 - [ ] Die Schriften werden lokal ausgeliefert, nicht über Google Fonts.
 - [ ] Templates und Pages gibt es im Format **4:3**, dem Format der Ziel-iPads. Die 5:3-Fassung der Entwürfe ist als Viewport-Option zuschaltbar.
 - [ ] Alle Komponenten laufen in Safari 16 (iPadOS 16, Mindestgrenze). Storybook-Viewports für iPad Pro 12,9" und iPad 9,7" sind vorhanden.
+- [ ] **Test-getrieben (ADR 0003):** Die Komponenten haben Unit-Tests, z. B. Lackierung auf Typklasse anwenden, Logo-Ankerpunkte, Fallback Standard-Lackierung, Info-Leisten-Zustände. Ein Playwright-Test (WebKit) prüft, dass alle Stories fehlerfrei rendern.
 - [ ] Die Stories sehen aus wie die Claude-Design-Entwürfe. [human-eye]
 - [ ] **Gate:** Der Betreiber hat das Design-System in Storybook durchgesehen und freigegeben. Erst danach wird ein Task, der diese Komponenten in der App verwendet, nach `todo/` befördert bzw. gestartet. [human-eye]
 

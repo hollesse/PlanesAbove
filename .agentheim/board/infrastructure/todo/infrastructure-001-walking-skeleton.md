@@ -9,7 +9,7 @@ completed:
 depends_on: [design-system-001-styleguide, infrastructure-pn3w4, infrastructure-y8epz, airspace-jy8hz, airspace-h76v2, weather-yttgx, sky-scene-xczgm, infrastructure-w7qbc, infrastructure-p6s30]
 blocks: []
 tags: [foundation, walking-skeleton, prototype]
-related_adrs: [0001, 0002]
+related_adrs: [0001, 0002, 0003]
 related_research: []
 prior_art: []
 ---
@@ -43,6 +43,17 @@ Der dünnste lauffähige Durchstich durch alle Bereiche, gemäß den akzeptierte
 - [ ] Während diese Ausgabe läuft, ändert sich die Auswahl nicht, auch wenn ein Takt andere Flugzeuge liefert. Die neuere Auswahl erscheint beim ersten Takt nach Ende der Ausgabe. Eine hängende Wiedergabe wird vom Watchdog freigegeben.
 - [ ] Jeder unterschiedliche Flug im Umkreis schreibt genau eine Zeile in die Sichtungs-Tabelle: Zeit, Airline/Callsign, Typ, Typklasse, Lackierung vorhanden ja/nein. Wiederholte Takte desselben Flugs ändern die Anzahl nicht. Die Zeilen überleben einen Neustart des Dienstes.
 - [ ] Der Himmel ist ein fester Platzhalter (z. B. „Tag/Klar“), per Konfiguration austauschbar. Der echte Wetter-Himmel ist ein Folge-Task.
+- [ ] **Test-getrieben (ADR 0003):**
+  - Die Domänenlogik wurde test-first entwickelt: Auswahl der zwei nächsten, Vorlese-Sperre, Typklassen-Zuordnung, Sichtungs-Deduplizierung. Die Unit-Tests laufen offline mit einem Befehl.
+  - Jeder Adapter (Flugdaten, Route, TTS) hat Contract-Tests gegen aufgezeichnete Fixtures, einschließlich Fehlerfällen (403/429/Timeout, fehlende Felder).
+- [ ] **E2E mit Playwright (WebKit)** gegen den echten Dienst im Mock-Modus, mit gemockten externen APIs. Mindestens diese Szenarien sind grün:
+  - leerer Himmel
+  - ein Flugzeug
+  - zwei Flugzeuge, die zwei nächsten werden gewählt
+  - Wechsel während des Vorlesens wird zurückgehalten
+  - Ausfall der Quelle, dann Erholung
+
+  Die Zeit ist in den Tests steuerbar, sodass ein 30-s-Takt in Millisekunden läuft. `npm test` und `npm run e2e` (oder Äquivalente) sind im BC-README dokumentiert.
 - [ ] Die Befunde sind im Outcome festgehalten:
   - (a) genutztes iPad-Modell (iPad Pro 12,9" 1. Gen. oder das kleinere iPad), iPadOS- und Safari-Version, Bestätigung der Mindestgrenze Safari 16.
   - (b) Funktioniert deutsche Sprachausgabe auf dem echten iPad über Server-Audio, über `speechSynthesis`, beides oder keins?

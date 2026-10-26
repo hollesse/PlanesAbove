@@ -46,6 +46,9 @@ selbst gestaltbar und nicht auf ein eigenes, illustriertes Lackierungs-Set zuges
 - **Animierte Übergänge** für Flugzeug kommt/geht/wechselt, Wetter- und Tageszeitwechsel.
 - **Sichtungsprotokoll** wird still mitgeschrieben (Auswertung erst v2).
 
+### Qualitätsregel
+Entwickelt wird test-getrieben: Unit-Tests zuerst, Contract-Tests je externer Quelle gegen aufgezeichnete Fixtures. Dazu kommen End-to-End-Tests mit Playwright (WebKit, wie Safari auf dem iPad) gegen gemockte externe APIs, mit festen Szenarien wie leerer Himmel, zwei Flugzeuge, Wechsel während des Vorlesens und Quellenausfall (ADR 0003).
+
 ### Gestaltungsregel
 Jedes UI-Element entsteht zuerst in einer eigenen **Storybook-Instanz** nach Atomic Design, wird dort einzeln abgenommen und erst dann in der App verwendet (ADR 0002).
 
