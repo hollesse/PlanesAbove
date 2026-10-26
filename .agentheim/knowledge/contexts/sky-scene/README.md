@@ -29,7 +29,7 @@ _Noch offen._
 _Noch offen._
 
 ## Frontend gate
-Every frontend / UI task in this BC must `depends_on: [design-system-001-styleguide]`. No UI is built here before the styleguide is signed off.
+Every frontend / UI task in this BC must `depends_on: [design-system-001-styleguide]`. **Storybook-first (ADR 0002):** this BC only composes components that exist and are approved in the design-system Storybook. A missing UI element is first built as a story in design-system, reviewed, then used here.
 
 ## Relationships with other contexts
 - **Downstream of:** airspace (Auswahl je Takt), weather (aktueller Himmel), liveries (Lackierung je Airline × Typklasse).

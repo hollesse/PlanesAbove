@@ -1,6 +1,6 @@
 ---
 id: infrastructure-w7qbc
-title: Decide deployment topology and kiosk operation: Docker Compose on home server, self-recovering kiosk client
+title: Decide deployment topology and kiosk operation: Docker Compose app on ZimaOS, self-recovering iPad client via Guided Access
 status: todo
 type: decision
 context: infrastructure
@@ -28,7 +28,16 @@ Record the architecture decision as an ADR (scope: `global`), based on the archi
 ## Notes
 **Load-bearing for walking skeleton:** partly — serve the app, open it manually on the tablet
 
-**Architect note:** Fully Kiosk Browser needs a small one-off licence — not a data-API contract (ADR 0001 not violated), but to be accepted consciously by the builder. Night dimming/rest stays a vision open question.
+**Builder input (2026-10-26):**
+- **Server:** a Lenovo ThinkCentre running ZimaOS. Deploy as a ZimaOS custom app from a `docker-compose.yml` (ZimaOS installs compose apps natively). Data and config sit on a ZimaOS-managed volume (e.g. under `/DATA/AppData/planesabove`).
+- **Display:** an old **iPad**. Kiosk mode = Guided Access + Auto-Lock "Never" + a home-screen web app (full screen). **No Fully Kiosk licence needed.**
+- iPad specifics to cover:
+  - audio playback must start from a user tap (fine for tap-to-speak);
+  - Safari may unload background tabs (the nightly reload and `buildId` reload remain);
+  - the iPad must stay on charge 24/7 (battery-health note).
+- **Storybook:** may also run on ZimaOS as a static build for review (optional).
+
+~~Architect note: Fully Kiosk Browser needs a small one-off licence — not a data-API contract (ADR 0001 not violated), but to be accepted consciously by the builder.~~ (moot: iPad uses Guided Access.) Night dimming/rest stays a vision open question.
 
 ### Architect's ADR draft
 

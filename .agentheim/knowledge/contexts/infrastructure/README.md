@@ -1,7 +1,7 @@
 # Infrastructure
 
 ## Purpose
-Owns **globally-true** technical concerns: runtime, Tablet/Heimserver-Aufteilung, Kiosk-Dauerbetrieb, Deployment, Konfiguration (Standort, Radius), Secrets, Beobachtbarkeit, gemeinsame Transportwege. BC-local infra (a BC's own adapters, its own persistence) stays inside the originating BC.
+Owns **globally-true** technical concerns: runtime, iPad/Heimserver-Aufteilung, Kiosk-Dauerbetrieb, Deployment, Konfiguration (Standort, Radius), Secrets, Beobachtbarkeit, gemeinsame Transportwege. BC-local infra (a BC's own adapters, its own persistence) stays inside the originating BC.
 
 ## Classification
 generic
@@ -10,8 +10,8 @@ generic
 - **Papa** — Betreiber.
 
 ## Ubiquitous language
-- **Tablet** — altes Android-/iOS-Gerät im Kinderzimmer, Anzeige im Kiosk-Modus.
-- **Heimserver** — optionaler Rechner im Haus für Datenbeschaffung/Hosting.
+- **iPad** — altes iPad im Kinderzimmer; Anzeige im Vollbild mit Geführtem Zugriff (Kiosk-Ersatz).
+- **Heimserver** — Lenovo ThinkCentre mit ZimaOS, läuft durchgehend; betreibt Apps als Docker-Container.
 - **Konfiguration** — Standort, Radius und Betriebsparameter, nur für den Betreiber.
 - **Kiosk-Modus** — Vollbild-Dauerbetrieb ohne Bedienoberfläche des Geräts.
 

@@ -18,7 +18,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Todo
 <!-- todo-list:start -->
-- **sky-scene-xczgm** — Decide German speech output: server-rendered Piper audio played via audio element, Web Speech as fallback (decision) — `todo/sky-scene-xczgm-german-speech-output.md`
+- **sky-scene-xczgm** — Decide German speech output: behind a swappable synthesizer port (Piper default, ElevenLabs etc. pluggable), played as audio on the iPad (decision) — `todo/sky-scene-xczgm-german-speech-output.md`
 <!-- todo-list:end -->
 
 ### Doing

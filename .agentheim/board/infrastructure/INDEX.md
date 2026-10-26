@@ -18,9 +18,9 @@ Catalog of this bounded context's tasks by status.
 
 ### Todo
 <!-- todo-list:start -->
-- **infrastructure-001-walking-skeleton** — Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem Tablet, Tippen spricht eine Zeile, eine Sichtung wird gespeichert (spike) — depends_on: [infrastructure-pn3w4, infrastructure-y8epz, airspace-jy8hz, airspace-h76v2, weather-yttgx, sky-scene-xczgm, infrastructure-w7qbc, infrastructure-p6s30] — `todo/infrastructure-001-walking-skeleton.md`
+- **infrastructure-001-walking-skeleton** — Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert (spike) — depends_on: [design-system-001-styleguide, infrastructure-pn3w4, infrastructure-y8epz, airspace-jy8hz, airspace-h76v2, weather-yttgx, sky-scene-xczgm, infrastructure-w7qbc, infrastructure-p6s30] — `todo/infrastructure-001-walking-skeleton.md`
 - **infrastructure-p6s30** — Decide observability: health endpoint, dead-man's-switch heartbeat and structured logs (decision) — `todo/infrastructure-p6s30-health-and-alerting.md`
-- **infrastructure-w7qbc** — Decide deployment topology and kiosk operation: Docker Compose on home server, self-recovering kiosk client (decision) — `todo/infrastructure-w7qbc-deployment-and-kiosk.md`
+- **infrastructure-w7qbc** — Decide deployment topology and kiosk operation: Docker Compose app on ZimaOS, self-recovering iPad client via Guided Access (decision) — `todo/infrastructure-w7qbc-deployment-and-kiosk.md`
 - **infrastructure-y8epz** — Decide persistence and configuration: SQLite single file plus validated config file (decision) — `todo/infrastructure-y8epz-persistence-and-configuration.md`
 - **infrastructure-pn3w4** — Decide runtime split and stack: home-server service computes state, tablet is a thin vanilla-JS client (decision) — `todo/infrastructure-pn3w4-runtime-split-and-stack.md`
 <!-- todo-list:end -->

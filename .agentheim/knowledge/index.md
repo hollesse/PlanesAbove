@@ -23,6 +23,7 @@ For BC-scoped artifacts, see each BC's `INDEX.md`.
 ## Global ADRs (scope: global)
 
 <!-- adr-global:start -->
+- **0002** — Storybook-first UI development following Atomic Design — 2026-10-26 — `decisions/0002-storybook-first-atomic-design.md`
 - **0001** — Single-household, self-hosted tool using only free data sources — 2026-10-26 — `decisions/0001-single-household-self-hosted-free-data-only.md`
 <!-- adr-global:end -->
 

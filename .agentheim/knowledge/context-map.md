@@ -33,11 +33,11 @@
 - **Key actors:** Papa (später als Leser der Auswertung)
 
 ### infrastructure
-- **Purpose:** Global gültige technische Belange — Laufzeit, Tablet/Heimserver-Aufteilung, Kiosk-Betrieb, Deployment, Konfiguration, Beobachtbarkeit.
+- **Purpose:** Global gültige technische Belange — Laufzeit, iPad/Heimserver-Aufteilung (ZimaOS), Kiosk-Betrieb, Deployment, Konfiguration, Beobachtbarkeit.
 - **Classification:** generic
 
 ### design-system
-- **Purpose:** Gestaltungsgrundlage aus den Claude-Design-Entwürfen (`Flugzeugmodelle.html`, `Himmel.html`, `Screens.html`): Tokens, Typografie, Info-Leisten-Komponenten, Übergangs-Choreografie.
+- **Purpose:** Eigene Storybook-Instanz nach Atomic Design (ADR 0002) mit allen Assets, jedes einzeln abnehmbar; Gestaltungsgrundlage aus den Claude-Design-Entwürfen (`Flugzeugmodelle.html`, `Himmel.html`, `Screens.html`): Tokens, Typografie, Info-Leisten-Komponenten, Übergangs-Choreografie.
 - **Classification:** generic (Frontend-Infrastruktur)
 
 ## Relationships
@@ -47,4 +47,4 @@
 - **liveries → sky-scene** (open host / published language): sky-scene fragt „Lackierung für Airline X auf Typklasse Y“ und bekommt immer eine Antwort (notfalls Standard-Lackierung). Typklasse ist die gemeinsame Sprache zwischen airspace und liveries.
 - **airspace → sighting-log** (published events): jede neue Sichtung wird protokolliert; das Protokoll beeinflusst die Anzeige nicht.
 - **Externe Flugdaten-/Wetterquellen → airspace / weather** (anticorruption layer): kostenlose Fremd-APIs werden hinter einer Übersetzungsschicht gehalten, damit ein Quellenwechsel die Domäne nicht berührt.
-- **design-system → sky-scene** (Gate): sky-scene baut keine UI, bevor der Styleguide abgenommen ist.
+- **design-system → sky-scene** (Gate, Storybook-first): sky-scene verwendet ausschließlich abgenommene Storybook-Komponenten; fehlt ein Baustein, entsteht er zuerst in Storybook.

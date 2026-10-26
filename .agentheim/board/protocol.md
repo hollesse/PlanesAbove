@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-10-26 22:22 -- Brainstorm: PlanesAbove — Revision nach Builder-Input
+
+**Type:** Brainstorm
+**Outcome:** vision revised
+**BCs identified:** unverändert
+**Summary:** Heimserver ist ein Lenovo ThinkCentre mit ZimaOS, Anzeige voraussichtlich ein altes iPad (Geführter Zugriff statt Kiosk-App). Sprachausgabe hinter austauschbarem SpeechSynthesizer-Port (Piper Standard, ElevenLabs steckbar). Design-System wird eine eigene Storybook-Instanz nach Atomic Design; jedes UI-Element entsteht zuerst dort und wird abgenommen, bevor die App es nutzt — der Storybook-Task kommt deshalb vor den Walking Skeleton.
+**ADRs written:** 0002
+**Foundation tasks emitted:** keine neuen; angepasst: design-system-001-styleguide, infrastructure-001-walking-skeleton, infrastructure-pn3w4, infrastructure-w7qbc, sky-scene-xczgm. API-Verifikation läuft als Research.
+
+---
+
 ## 2026-10-26 22:11 -- Brainstorm: PlanesAbove — Fenster zum Himmel im Kinderzimmer
 
 **Type:** Brainstorm

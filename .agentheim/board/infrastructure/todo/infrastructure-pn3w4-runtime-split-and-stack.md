@@ -23,13 +23,19 @@ Record the architecture decision as an ADR (scope: `global`), based on the archi
 ## Acceptance criteria
 - [ ] ADR committed under `.agentheim/knowledge/decisions/`, status `accepted`, scope `global`.
 - [ ] Justification matches the architect's draft (or the user-amended version); deviations are named in the ADR.
-- [ ] Builder has confirmed a suitable always-on home machine exists (Raspberry Pi / NAS / old laptop); if not, the decision is revisited before acceptance.
+- [ ] The ADR names the concrete platform: Lenovo ThinkCentre running ZimaOS as the home server, and an old iPad as the display. The JS target is derived from the iPad's iOS/Safari version.
+- [ ] The ADR records ADR 0002 (Storybook-first, Atomic Design): client UI components are framework-free modules shared between Storybook and the app.
 - [ ] No code change required.
 
 ## Notes
 **Load-bearing for walking skeleton:** yes
 
-**Open point (from architect):** the vision says "ggf. Heimserver"; this ADR makes it required. Fallback if no home machine exists: free-tier cloud container (worse). Tablet OS/age unknown — pin the JS target in the walking skeleton once the real device is known.
+**Builder input (2026-10-26):**
+- **Home server confirmed:** an old Lenovo ThinkCentre running ZimaOS, always on. ZimaOS runs apps as Docker containers, so the single-service-in-a-container approach fits directly.
+- **Display:** most likely an **old iPad**, not Android. Expect an older Safari/WebKit; pin the target (e.g. ES2017 or lower) once the model and iOS version are known.
+- **UI:** built Storybook-first per ADR 0002. The client imports the approved design-system modules.
+
+~~Open point (from architect):~~ (resolved) the vision says "ggf. Heimserver"; this ADR makes it required. Fallback if no home machine exists: free-tier cloud container (worse). Tablet OS/age unknown — pin the JS target in the walking skeleton once the real device is known.
 
 ### Architect's ADR draft
 

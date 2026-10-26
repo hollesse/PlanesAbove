@@ -1,8 +1,8 @@
 # Vision: PlanesAbove
 
 ## Purpose
-PlanesAbove ist ein stationäres „Fenster zum Himmel“ im Kinderzimmer: ein altes Android-/iOS-Tablet
-(ggf. mit Unterstützung des Heimservers) zeigt in einer illustrierten Himmelsszene, welche
+PlanesAbove ist ein stationäres „Fenster zum Himmel“ im Kinderzimmer: ein altes iPad
+(mit einem Heimserver im Hintergrund, einem Lenovo ThinkCentre mit ZimaOS) zeigt in einer illustrierten Himmelsszene, welche
 Flugzeuge gerade über unserem Haus fliegen — in ihrer echten Lackierung, vor einem Himmel, der
 dem echten Wetter und der echten Tageszeit folgt. Es ist für Mona (4) gebaut, damit sie Flugzeuge
 und Airlines entdeckt, wiedererkennt und etwas über sie lernt — und schön genug, dass es auch für
@@ -14,7 +14,7 @@ Erwachsene als lebendiges Wandbild taugt. Vorbild ist avioframe.com.
   Steckbrief vorgelesen.
 - **Erwachsene im Zimmer** — lesen die dezente Info-Leiste (Airline, Flugnummer, Typ, Kennzeichen,
   Route, Höhe, Geschwindigkeit, Flugphase) oder genießen die Szene als Bild.
-- **Papa (Betreiber & Kurator)** — stellt Standort und Radius ein, betreibt Tablet/Heimserver,
+- **Papa (Betreiber & Kurator)** — stellt Standort und Radius ein, betreibt iPad und Heimserver,
   zeichnet neue Lackierungen und priorisiert diese Arbeit künftig anhand des Sichtungsprotokolls.
   Will das System nicht ständig reparieren müssen.
 
@@ -45,6 +45,9 @@ selbst gestaltbar und nicht auf ein eigenes, illustriertes Lackierungs-Set zuges
 - **Unbekannte Airline:** weiße Standard-Lackierung, Ansage nennt trotzdem die richtige Airline.
 - **Animierte Übergänge** für Flugzeug kommt/geht/wechselt, Wetter- und Tageszeitwechsel.
 - **Sichtungsprotokoll** wird still mitgeschrieben (Auswertung erst v2).
+
+### Gestaltungsregel
+Jedes UI-Element entsteht zuerst in einer eigenen **Storybook-Instanz** nach Atomic Design, wird dort einzeln abgenommen und erst dann in der App verwendet (ADR 0002).
 
 ## Non-goals
 - **Kein Flugtracker mit Karte** — keine Karte, keine Flugbahnen, kein Radar-Look. Eine illustrierte Szene.
@@ -78,14 +81,15 @@ selbst gestaltbar und nicht auf ein eigenes, illustriertes Lackierungs-Set zuges
 - **Standard-Lackierung** — weiß, für Airlines ohne eigene Lackierung.
 - **Route** — Abflug- → Zielort; kann **unbekannt** sein.
 - **Flugphase** — Steigflug, Sinkflug, Horizontalflug.
+- **Story** — eine einzeln ansehbare Darstellung eines UI-Bausteins in Storybook.
 - **Info-Leiste** — Textleiste für Erwachsene unten im Bild.
 - **Übergang** — animierter Wechsel (Flugzeug kommt/geht/wechselt, Wetter, Tageszeit).
 - **Sichtung** — protokollierter Eintrag, dass ein Flugzeug (Airline, Typ) im Umkreis war.
 
 ## Open questions
 - Liefert eine kostenlose Quelle verlässlich genug die **Route** (Abflug/Ziel) zu einem Flug? Kernrisiko für den Steckbrief. (open since 2026-10-26)
-- Welche Teile laufen auf dem **Tablet**, welche auf dem **Heimserver**? Altes Tablet: Browser-/Leistungsgrenzen, Dauerbetrieb, Kiosk-Modus. (open since 2026-10-26)
-- Wie klingt eine kindgerechte deutsche **Vorlesestimme** auf einem alten Tablet, und ist sie offline/kostenlos verfügbar? (open since 2026-10-26)
+- Welches **iPad-Modell und welche iOS-Version** genau? Davon hängen JS-Target, `speechSynthesis` und der Kiosk-Betrieb (Geführter Zugriff) ab. (open since 2026-10-26)
+- Wie klingt eine kindgerechte deutsche **Vorlesestimme** auf dem alten iPad? Die Sprachausgabe ist austauschbar (z. B. Piper ↔ ElevenLabs), welche klingt am besten? (open since 2026-10-26)
 - Ist der Default-Radius von 30 km am realen Standort lebendig genug — oder zu voll? Erst mit echten Daten beantwortbar. (open since 2026-10-26)
 - Wie wird **Typklasse** und **Kategorie** (Mittel-/Langstrecke) aus dem ICAO-Typcode abgeleitet? (open since 2026-10-26)
 - Darf/soll das Display nachts dunkler werden oder ganz ruhen (Kinderzimmer)? (open since 2026-10-26)
