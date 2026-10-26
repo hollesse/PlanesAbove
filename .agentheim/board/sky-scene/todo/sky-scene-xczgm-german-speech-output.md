@@ -10,7 +10,7 @@ depends_on: []
 blocks: [infrastructure-001-walking-skeleton]
 tags: [foundation, tts, narration]
 related_adrs: [0001]
-related_research: []
+related_research: [free-flight-weather-tts-apis-2026-10-26]
 prior_art: []
 ---
 
@@ -29,6 +29,19 @@ Record the architecture decision as an ADR (scope: `sky-scene`), based on the ar
 - [ ] No code change required.
 
 ## Notes
+**Verified research (2026-10-26, reviewer PASS):** `../../../knowledge/research/free-flight-weather-tts-apis-2026-10-26.md`
+- **Piper:** `rhasspy/piper` was archived on 2025-10-06. Its successor is `OHF-Voice/piper1-gpl`: **GPL-3.0**, `piper-tts` 1.8.0, with a built-in HTTP server.
+  - Run it as a **separate container behind an HTTP adapter** so the GPL does not reach our code.
+  - The voices `de_DE-thorsten` and `kerstin` are **CC0**.
+  - CPU performance on the ThinkCentre still needs measuring.
+- **ElevenLabs free tier:**
+  - 10,000 credits per month, non-commercial, personal email address, API access on the free plan unverified.
+  - Content you publish must carry an attribution.
+  - That quota is only enough if audio is rendered **on tap and cached**, not pre-rendered for every selection.
+  - So the adapter should switch to lazy synthesis, or a paid plan is needed, which ADR 0001 rules out unless it is a conscious opt-in.
+- **iPad:** `speechSynthesis` on iOS 16–18 reportedly offers only Eloquence voices, with German Anna missing. That makes server-rendered audio the right default.
+  - Autoplay is verified: audio must start from a user gesture.
+
 **Builder input (2026-10-26):** Speech output must be **easy to swap**, e.g. switch to ElevenLabs if it sounds better than Piper. The display is an **old iPad**.
 - Design: a server-side `SpeechSynthesizer` port: `synthesize(text, voice) → audio (mp3/wav) + duration`.
   - Adapters: `piper` (default, local, free), `elevenlabs` (optional, API key via env), and later others such as an OS voice.

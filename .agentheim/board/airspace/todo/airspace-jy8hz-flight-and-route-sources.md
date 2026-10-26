@@ -10,7 +10,7 @@ depends_on: []
 blocks: [infrastructure-001-walking-skeleton]
 tags: [foundation, data-source, ads-b, route]
 related_adrs: [0001]
-related_research: []
+related_research: [free-flight-weather-tts-apis-2026-10-26]
 prior_art: []
 ---
 
@@ -27,6 +27,21 @@ Record the architecture decision as an ADR (scope: `airspace`), based on the arc
 - [ ] No code change required.
 
 ## Notes
+**Verified research (2026-10-26, reviewer PASS):** `../../../knowledge/research/free-flight-weather-tts-apis-2026-10-26.md`
+- **adsb.lol holds as the primary source.** `GET /v2/point/{lat}/{lon}/{radius}` is keyless. Radius is an integer in **nm** (30 km → 17), capped at 250.
+  - Data is ODbL 1.0, so attribution is required. A key will be required "in the future" (via feeding).
+  - Adapters must tolerate missing fields (e.g. `category` and `geom_rate` are absent for MLAT).
+- **airplanes.live is out as a keyless fallback.** Users report it has been feeder-only since about Sept 2026, and its official page returns 403. Do not plan on it.
+- **OpenSky** works only with OAuth2 client credentials (no basic auth).
+  - Credits per day: anonymous 400, registered 4,000, feeders 8,000. A small bbox costs 1 credit.
+  - A 30 s cadence means 2,880 calls a day, so only a registered (free) account is viable, and then only as a fallback.
+- **Routes:**
+  - adsb.lol `POST /api/0/routeset` exists, but its response schema is unverified, and its plausibility flag is a weak heuristic.
+  - adsbdb `GET /v0/callsign/{cs}` is keyless, but its **route data may not be copied, published or put into other databases** without permission. Use only a short in-memory cache, never persist it or ship it in an open-source repo.
+  - **New CC0 option:** VRS standing-data (`vradarserver/standing-data`) has a `routes` folder under CC0. Evaluate it as an offline route source.
+- **Consequence for the decision:** the fallback chain becomes adsb.lol → OpenSky (registered, OAuth2), and airplanes.live is dropped. Route chain: VRS standing-data (offline, CC0) and/or adsb.lol routeset, with adsbdb only as a non-persisted live lookup.
+- **Open:** the routeset response format, adsb.lol's real rate limits, and when its key requirement starts.
+
 **Load-bearing for walking skeleton:** yes for positions; route lookup is a stretch
 
 **Architect caveat:** endpoint details were recalled from memory, not verified. Free route data is callsign/schedule-derived — it will sometimes be *wrong*, not just absent; the Steckbrief must never state a route that failed plausibility.

@@ -10,7 +10,7 @@ depends_on: []
 blocks: [infrastructure-001-walking-skeleton]
 tags: [foundation, data-source, weather]
 related_adrs: [0001]
-related_research: []
+related_research: [free-flight-weather-tts-apis-2026-10-26]
 prior_art: []
 ---
 
@@ -27,6 +27,14 @@ Record the architecture decision as an ADR (scope: `weather`), based on the arch
 - [ ] No code change required.
 
 ## Notes
+**Verified research (2026-10-26, reviewer PASS):** `../../../knowledge/research/free-flight-weather-tts-apis-2026-10-26.md`
+- **Open-Meteo is verified:** keyless, free for non-commercial use (explicitly including "personal home automation"), CC BY 4.0.
+  - Limits: 600 per minute, 5,000 per hour, 10,000 per day, 300,000 per month.
+  - Fields `weather_code` (WMO), `cloud_cover`, `visibility` (m) and `is_day` are confirmed live.
+  - Current values update every 15 min, so poll every 10–15 min.
+- **Attribution is required:** a link to Open-Meteo plus credit and a licence link. Decide where this appears, e.g. a small credit line or an about/info view.
+- **Bright Sky (DWD)** is keyless and free for any purpose, but it returns `condition`/`icon` strings instead of WMO codes and would need a separate mapping. DWD attribution wording is unverified.
+
 **Load-bearing for walking skeleton:** stretch — a fixed sky is enough for the first slice
 
 

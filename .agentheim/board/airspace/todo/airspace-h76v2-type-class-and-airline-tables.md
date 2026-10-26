@@ -10,7 +10,7 @@ depends_on: []
 blocks: [infrastructure-001-walking-skeleton]
 tags: [foundation, enrichment, type-class]
 related_adrs: [0001]
-related_research: []
+related_research: [free-flight-weather-tts-apis-2026-10-26]
 prior_art: []
 ---
 
@@ -26,6 +26,12 @@ Record the architecture decision as an ADR (scope: `airspace`), based on the arc
 - [ ] No code change required.
 
 ## Notes
+**Verified research (2026-10-26, reviewer PASS):** `../../../knowledge/research/free-flight-weather-tts-apis-2026-10-26.md`
+- **Seed source:** VRS standing-data (CC0-1.0), with folders `airlines`, `model-type` and `aircraft`. It is usable offline and shippable.
+- **Do not ship (licence unverified):** ICAO Doc 8643 reuse terms and tar1090-db / Mictronics.
+- **OpenFlights airlines.dat** is ODbL but a 2012 snapshot, so it is outdated.
+- **Emitter categories verified:** A1 light, A2 medium 1, A3 medium 2, A4 high vortex, A5 heavy, A6 high performance, A7 rotorcraft.
+
 **Load-bearing for walking skeleton:** yes (minimal table)
 
 
