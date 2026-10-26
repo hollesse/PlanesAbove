@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 1
-- **Doing:** 1
-- **Done:** 0
+- **Doing:** 0
+- **Done:** 1
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **airspace-jy8hz** — Decide free ADS-B position and route sources behind a replaceable port (adsb.lol / airplanes.live / adsbdb) (decision) — `doing/airspace-jy8hz-flight-and-route-sources.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **airspace-jy8hz** — Decide free ADS-B position and route sources behind a replaceable port (adsb.lol / airplanes.live / adsbdb) (decision) — `done/airspace-jy8hz-flight-and-route-sources.md`
 <!-- done-list:end -->
 
 ### Backlog

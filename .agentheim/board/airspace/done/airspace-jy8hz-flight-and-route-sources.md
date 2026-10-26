@@ -1,7 +1,7 @@
 ---
 id: airspace-jy8hz
 title: Decide free ADS-B position and route sources behind a replaceable port (adsb.lol / airplanes.live / adsbdb)
-status: doing
+status: done
 type: decision
 context: airspace
 created: 2026-10-26
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: [infrastructure-001-walking-skeleton]
 tags: [foundation, data-source, ads-b, route]
-related_adrs: [0001]
+related_adrs: [0001, 0005]
 related_research: [free-flight-weather-tts-apis-2026-10-26]
 prior_art: []
 ---
@@ -80,3 +80,6 @@ ADR 0001 allows only free, contract-free sources. Community ADS-B aggregators (a
 - **OpenSky only** — credit limits, OAuth, weaker routes.
 - **Own ADS-B receiver** — best data, but hardware and off-constraint.
 - **Scraping FlightAware/Flightradar24** — ToS violations, brittle.
+
+## Outcome
+Decision recorded as provisional ADR 0005-free-flight-and-route-sources-behind-ports.md (scope airspace, accepted). Follows the task body and verified research rather than the task title: airplanes.live dropped (feeder-only), adsbdb restricted to non-persisted live lookup, OpenSky only as registered OAuth2 fallback, VRS standing-data (CC0) as preferred offline route source. Endpoints, limits and terms were taken from the verified research report (primary sources cited there); remaining unknowns (routeset schema, adsb.lol real limits and key date, adsbdb limits) are listed in the ADR as implementation-time checks. No code changed.

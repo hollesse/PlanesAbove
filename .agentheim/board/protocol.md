@@ -5,6 +5,18 @@ Newest entries on top.
 
 ---
 
+## 2026-10-26 22:43 -- Task completed (verification skipped): airspace-jy8hz - Decide free ADS-B position and route sources behind a replaceable port (adsb.lol / airplanes.live / adsbdb)
+
+**Type:** Work / Task completion
+**Task:** airspace-jy8hz - Decide free ADS-B position and route sources behind a replaceable port (adsb.lol / airplanes.live / adsbdb)
+**Summary:** decide free ADS-B position and route sources behind replaceable ports
+**Duration:** ~45s
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
 ## 2026-10-26 22:43 -- Task completed (verification skipped): infrastructure-pn3w4 - Decide runtime split and stack: home-server service computes state, tablet is a thin vanilla-JS client
 
 **Type:** Work / Task completion

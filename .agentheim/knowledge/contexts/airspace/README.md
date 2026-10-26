@@ -18,6 +18,9 @@ core — die Auswahl-Regel und die Anreicherung (Route, Typklasse, Kategorie) be
 - **Typklasse** — eine der zehn gezeichneten Silhouetten, abgeleitet aus dem Flugzeugtyp.
 - **Kategorie** — Kurz-/Mittel-/Langstrecke etc., für den Steckbrief.
 - **Flugphase** — Steigflug, Sinkflug, Horizontalflug.
+- **Flugquelle (FlightSource)** — Port, der pro Takt die Flugzeuge im Umkreis liefert; Adapter: adsb.lol (primär), OpenSky (optional). Siehe ADR 0005.
+- **Routenquelle (RouteSource)** — Port, der zu einem Rufzeichen eine Route oder den Wert *Route unbekannt* liefert; Adapter: VRS standing-data (offline), adsb.lol routeset, adsbdb (nur nicht persistiert). Siehe ADR 0005.
+- **Veraltet (stale)** — Zustand der Auswahl bei Totalausfall aller Flugquellen: letzter guter Stand bleibt sichtbar, ist aber als veraltet markiert.
 
 ## Aggregates
 _Noch nicht modelliert — entsteht in `modeling` / bei der Arbeit an Tasks._
