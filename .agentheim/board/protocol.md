@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-10-26 23:58 -- Verification failed: design-system-g7w4m - Breiter weicher Schein statt dünner Kontur
+
+**Type:** Work / Verification failure
+**Task:** design-system-g7w4m - Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel
+**Iteration:** 1 of 3
+**Reasons:** glow blur token not shown in Token story, no test for it; TESTS_ADDED miscounted
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-26 23:53 -- Batch started: [design-system-g7w4m]
 
 **Type:** Work / Batch start

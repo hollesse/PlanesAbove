@@ -38,3 +38,11 @@ Die Kontur der Kopfzeile (Text direkt auf dem Himmel) wird ersetzt durch einen w
 ## Notes
 - Komponenten: `src/client/ui/styles/ui.css` (`.pa-halo-*`, `--pa-halo-w`), `styles/tokens.css`, `domain/tokens.ts`, `molecules/scene-header.ts`, Tests in `tests/unit/stories.test.ts`, `tests/unit/info-bar.test.ts`, `tests/e2e/stories.spec.ts`.
 - Feedback des Betreibers wörtlich: „eher einen Schein der relativ breit ist mit schwarz und ca. 40% Deckkraft … beim weißen Text“.
+
+## Verifier note (iteration 1)
+**REASONS:**
+- Check 1, criterion 3 ("Farben, Deckkraft und Breite sind Tokens in `styles/tokens.css` und erscheinen in der Token-Story") only partly met: the two glow colour tokens are mirrored into `COLORS` (domain/tokens.ts:9-10) and show in Atoms/Tokens "Farben", but the width token `--pa-sky-glow-blur: 0.8cqw` exists only in tokens.css; it is not in `COLORS`/`FONTS` and stories/tokens.stories.ts (Farben, Typografie only) never renders it. No test checks that any of the three tokens appear in the Token story.
+- Bookkeeping: TESTS_ADDED reported 1, but the diff adds no new it()/test() case — it rewrites three existing cases (two `Tokens` it()s in tests/unit/stories.test.ts, the e2e test at tests/e2e/stories.spec.ts:79) and edits assertions in tests/unit/info-bar.test.ts:56-58.
+- Fine: README_DELTA `expected` matches; `halo` fully removed; other criteria map to the rewritten tests.
+**SUGGESTED_FIX:** Make `--pa-sky-glow-blur` (and the two glow colours) appear in the Atoms/Tokens story, e.g. a "Schein" story/row rendering the blur value with a sample glow on light and dark ink; add a unit test that fails if the Token story stops showing them. Report TESTS_ADDED as the real number of new it()/test() cases.
+**ITERATION_HINT:** likely-fixable
