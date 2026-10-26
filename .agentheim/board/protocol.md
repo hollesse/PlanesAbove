@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-26 23:53 -- Modeling / Promoted: design-system-g7w4m - Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel (helle Schrift mit schwarzem Schein ca. 40 %)
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-26 23:48 -- Task verified and completed: design-system-k7h2q - Text direkt auf dem Himmel bekommt eine Kontur in der Gegenfarbe (dunkle Schrift hell umrandet, helle Schrift dunkel umrandet)
 
 **Type:** Work / Task completion

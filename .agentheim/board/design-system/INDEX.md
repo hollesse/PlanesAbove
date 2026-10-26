@@ -11,13 +11,14 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 0
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 3
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **design-system-g7w4m** — Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel (helle Schrift mit schwarzem Schein ca. 40 %) (feature) — `todo/design-system-g7w4m-breiter-weicher-schein-statt-d-nner-kontur-hinter-text-auf-d.md`
 - **design-system-001-styleguide** — Storybook-Instanz nach Atomic Design mit allen vorhandenen Assets aufbauen und vom Betreiber abnehmen lassen (feature) — depends_on: [infrastructure-pn3w4] — `todo/design-system-001-styleguide.md`
 <!-- todo-list:end -->
 
