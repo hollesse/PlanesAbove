@@ -1,0 +1,21 @@
+<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 -60 1000 460" data-type="light-aircraft">
+<g class="scale" transform="translate(234.1 118.2) scale(0.5455)">
+  <path class="paint-wings" fill="var(--skin-wings, #E1E3E1)" stroke="#1F2A33" stroke-width="11.0" stroke-linejoin="round" stroke-linecap="round" d="M252 208 L330 208 L306 172 L264 174 Z"></path>
+  <path class="paint-wings" fill="var(--skin-wings, #E1E3E1)" stroke="#1F2A33" stroke-width="11.0" stroke-linejoin="round" stroke-linecap="round" d="M470 236 L600 236 L566 134 L496 138 Z"></path>
+  <path class="paint-tail" fill="var(--skin-tail, #F4F4F2)" stroke="#1F2A33" stroke-width="11.0" stroke-linejoin="round" stroke-linecap="round" d="M248 214 L400 214 L322 126 L292 126 Z"></path>
+  <path class="paint-fuselage" fill="var(--skin-fuselage, #F4F4F2)" stroke="#1F2A33" stroke-width="11.0" stroke-linejoin="round" stroke-linecap="round" d="M240 222 Q240 238 262 241 L430 258 L700 260 Q772 258 790 238 Q784 214 744 211 L704 211 L676 191 L546 189 Q520 189 500 206 L280 206 Q240 206 240 222 Z"></path>
+  <path class="paint-belly" fill="var(--skin-belly, #D9DBD8)" stroke="none" d="M300 244.5 L430 255.8 L700 257.8 Q750 256 768 246 L768 244.5 Z"></path>
+  <rect class="paint-cheatline" fill="var(--skin-cheatline, transparent)" stroke="none" x="300" y="228" width="470" height="8"></rect>
+  <path class="paint-window-line" fill="var(--skin-window-line, #3A3F44)" stroke="none" d="M700 209 L678 193 L688 193 L712 209 Z M672 194 L612 194 L612 209 L694 209 Z M604 194 L556 194 L556 209 L604 209 Z"></path>
+  <path class="gear" fill="#1F2A33" stroke="#1F2A33" stroke-width="11.0" stroke-linejoin="round" stroke-linecap="round" d="M744 258 L752 258 L752 280 L744 280 Z"></path>
+  <ellipse class="gear" fill="#1F2A33" stroke="#1F2A33" stroke-width="11.0" stroke-linejoin="round" stroke-linecap="round" cx="748" cy="286" rx="14" ry="10"></ellipse>
+  <path class="gear" fill="#1F2A33" stroke="#1F2A33" stroke-width="11.0" stroke-linejoin="round" stroke-linecap="round" d="M560 258 L568 258 L568 284 L560 284 Z"></path>
+  <ellipse class="gear" fill="#1F2A33" stroke="#1F2A33" stroke-width="11.0" stroke-linejoin="round" stroke-linecap="round" cx="564" cy="290" rx="15" ry="11"></ellipse>
+  <ellipse class="paint-engines" fill="var(--skin-engines, #C9CCCB)" stroke="#1F2A33" stroke-width="11.0" stroke-linejoin="round" stroke-linecap="round" cx="794" cy="238" rx="6" ry="46"></ellipse>
+  <circle class="paint-engines" fill="var(--skin-engines, #C9CCCB)" stroke="#1F2A33" stroke-width="11.0" stroke-linejoin="round" stroke-linecap="round" cx="792" cy="238" r="9"></circle>
+  <path class="paint-wings" fill="var(--skin-wings, #E1E3E1)" stroke="#1F2A33" stroke-width="11.0" stroke-linejoin="round" stroke-linecap="round" d="M470 258 L600 258 L566 336 L496 340 Z"></path>
+  <path class="paint-wings" fill="var(--skin-wings, #E1E3E1)" stroke="#1F2A33" stroke-width="11.0" stroke-linejoin="round" stroke-linecap="round" d="M252 242 L330 242 L306 278 L264 276 Z"></path>
+  <g class="logo-tail" transform="translate(290 150) scale(0.4)"></g>
+  <g class="logo-fuselage" transform="translate(620 212) scale(0.16)"></g>
+</g>
+</svg>

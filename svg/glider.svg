@@ -1,0 +1,16 @@
+<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 -60 1000 460" data-type="glider">
+<g class="scale" transform="translate(204.3 102.1) scale(0.6071)">
+  <path class="paint-wings" fill="var(--skin-wings, #E1E3E1)" stroke="#1F2A33" stroke-width="9.9" stroke-linejoin="round" stroke-linecap="round" d="M258 120 L296 120 L262 92 L224 96 Z"></path>
+  <path class="paint-wings" fill="var(--skin-wings, #E1E3E1)" stroke="#1F2A33" stroke-width="9.9" stroke-linejoin="round" stroke-linecap="round" d="M436 232 L520 232 L486 6 L452 10 Z"></path>
+  <path class="paint-tail" fill="var(--skin-tail, #F4F4F2)" stroke="#1F2A33" stroke-width="9.9" stroke-linejoin="round" stroke-linecap="round" d="M246 236 L340 236 L294 118 L262 118 Z"></path>
+  <path class="paint-fuselage" fill="var(--skin-fuselage, #F4F4F2)" stroke="#1F2A33" stroke-width="9.9" stroke-linejoin="round" stroke-linecap="round" d="M240 236 Q240 246 262 248 L420 254 L560 258 Q640 262 700 262 Q782 258 800 244 Q784 226 740 220 Q704 204 656 203 L604 203 Q562 205 520 226 L430 232 L280 232 Q240 232 240 236 Z"></path>
+  <path class="paint-belly" fill="var(--skin-belly, #D9DBD8)" stroke="none" d="M300 246.5 L420 251.8 L560 255.8 Q640 259.8 700 259.8 Q760 257 782 248 L782 246.5 Z"></path>
+  <rect class="paint-cheatline" fill="var(--skin-cheatline, transparent)" stroke="none" x="300" y="238" width="420" height="7"></rect>
+  <path class="paint-window-line" fill="var(--skin-window-line, #3A3F44)" stroke="none" d="M528 228 Q566 209 606 208 L654 208 Q690 209 704 220 L702 226 L534 231 Z"></path>
+  <circle class="gear" fill="#1F2A33" stroke="#1F2A33" stroke-width="9.9" stroke-linejoin="round" stroke-linecap="round" cx="600" cy="264" r="11"></circle>
+  <path class="paint-wings" fill="var(--skin-wings, #E1E3E1)" stroke="#1F2A33" stroke-width="9.9" stroke-linejoin="round" stroke-linecap="round" d="M436 254 L520 254 L486 476 L452 480 Z"></path>
+  <path class="paint-wings" fill="var(--skin-wings, #E1E3E1)" stroke="#1F2A33" stroke-width="9.9" stroke-linejoin="round" stroke-linecap="round" d="M258 120 L296 120 L262 146 L224 142 Z"></path>
+  <g class="logo-tail" transform="translate(268 150) scale(0.3)"></g>
+  <g class="logo-fuselage" transform="translate(440 234) scale(0.1)"></g>
+</g>
+</svg>
