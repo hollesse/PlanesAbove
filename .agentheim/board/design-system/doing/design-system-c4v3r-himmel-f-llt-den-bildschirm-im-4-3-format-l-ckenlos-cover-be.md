@@ -40,3 +40,11 @@ Die Himmel-Ebene einer Szene füllt immer die gesamte Bühne (Cover-Verhalten): 
 - Bookkeeping: TESTS_ADDED reported 4, diff adds 3 (2 unit, 1 e2e).
 **SUGGESTED_FIX:** Add a unit test in tests/unit/transitions.test.ts asserting that every `.pa-sky svg` in renderTransitionStage(spec) uses preserveAspectRatio="xMidYMid slice" with width and height 100% for the weather and time-of-day transitions, and/or widen the e2e cover test to `Pages/` stories (Übergänge and Beispielszenen, ideally also at 5:3) checking every `.pa-sky svg` on the stage, not just the first. Cover empty/one/two at 5:3. Correct TESTS_ADDED to the real count.
 **ITERATION_HINT:** likely-fixable
+
+## Verifier note (iteration 2)
+**REASONS:**
+- Check 1, "In jedem Bildschirmzustand (leer, eins, zwei) im Format 4:3 und 5:3": empty and two at 5:3 are still never measured. The widened e2e test (tests/e2e/stories.spec.ts:44) loads each Templates/ and Pages/ story with default args only; every story defaults to `aspect: '4:3'` (screen.stories.ts:11, pages.stories.ts:6, transitions.stories.ts:11) except Templates `Format53` (state "Eins" only). The new unit cover test renders EXAMPLE_PAGES at 4:3 only. The test name's "(4:3 and 5:3)" overstates coverage.
+- Check 1, secondary: in the e2e cover test `if (!m.cover) continue;` skips every sky svg lacking `preserveAspectRatio="xMidYMid slice"` — without the production fix every svg is skipped and the test still passes, so it cannot fail when the fix is missing.
+- Addressed from iteration 1: transitions criterion now covered by tests/unit/transitions.test.ts; TESTS_ADDED count now correct.
+**SUGGESTED_FIX:** Measure empty, one and two at 5:3 — e.g. pass `args=aspect:5:3` in the e2e iframe URL for each Templates/Pages story (or add 5:3 variants of Leer and Zwei / a loop over both ASPECTS per state). Replace `if (!m.cover) continue;` with an assertion that every stage sky covers the stage, so the test fails without the fix.
+**ITERATION_HINT:** likely-fixable
