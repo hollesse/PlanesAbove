@@ -89,7 +89,7 @@ Jedes UI-Element entsteht zuerst in einer eigenen **Storybook-Instanz** nach Ato
 ## Open questions
 - Liefert eine kostenlose Quelle verlässlich genug die **Route** (Abflug/Ziel) zu einem Flug? Kernrisiko für den Steckbrief. (open since 2026-10-26)
   - Research vom 2026-10-26: Kostenlose Routendaten existieren (VRS standing-data CC0, adsb.lol routeset, adsbdb), sind aber aus dem Callsign abgeleitet und daher manchmal falsch. Bei adsbdb ist die Weitergabe eingeschränkt. Wie gut die Abdeckung wirklich ist, misst der Walking Skeleton.
-- Welches **iPad-Modell und welche iOS-Version** genau? Davon hängen JS-Target, `speechSynthesis` und der Kiosk-Betrieb (Geführter Zugriff) ab. (open since 2026-10-26)
+- Welches **iPad** wird genutzt? Zur Wahl stehen ein iPad Pro 12,9" 1. Gen. (iPadOS 16) und ein kleineres iPad mit Homebutton, wahrscheinlich iPad 6. Gen. oder Pro 10,5" (iPadOS 17), Modellnummer noch offen. Beide haben 4:3. Festgelegt ist die Mindestgrenze iPadOS 16 / Safari 16. (open since 2026-10-26)
 - Wie klingt eine kindgerechte deutsche **Vorlesestimme** auf dem alten iPad? Die Sprachausgabe ist austauschbar (z. B. Piper ↔ ElevenLabs), welche klingt am besten? (open since 2026-10-26)
 - Ist der Default-Radius von 30 km am realen Standort lebendig genug — oder zu voll? Erst mit echten Daten beantwortbar. (open since 2026-10-26)
 - Wie wird **Typklasse** und **Kategorie** (Mittel-/Langstrecke) aus dem ICAO-Typcode abgeleitet? (open since 2026-10-26)

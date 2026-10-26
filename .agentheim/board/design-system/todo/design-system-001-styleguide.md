@@ -52,6 +52,8 @@ Eine eigene Storybook-Instanz im Repo (Storybook `html`-Renderer, framework-frei
 - [ ] Die Übergänge Flugzeug kommt/geht/wechselt, Wetter wechselt und Tageszeit wechselt sind als Stories abspielbar.
 - [ ] Die Komponenten sind framework-freie Module, die der App-Client ohne Storybook importieren kann. Ein Smoke-Test rendert mindestens eine Komponente außerhalb von Storybook.
 - [ ] Die Schriften werden lokal ausgeliefert, nicht über Google Fonts.
+- [ ] Templates und Pages gibt es im Format **4:3**, dem Format der Ziel-iPads. Die 5:3-Fassung der Entwürfe ist als Viewport-Option zuschaltbar.
+- [ ] Alle Komponenten laufen in Safari 16 (iPadOS 16, Mindestgrenze). Storybook-Viewports für iPad Pro 12,9" und iPad 9,7" sind vorhanden.
 - [ ] Die Stories sehen aus wie die Claude-Design-Entwürfe. [human-eye]
 - [ ] **Gate:** Der Betreiber hat das Design-System in Storybook durchgesehen und freigegeben. Erst danach wird ein Task, der diese Komponenten in der App verwendet, nach `todo/` befördert bzw. gestartet. [human-eye]
 
@@ -60,4 +62,4 @@ Eine eigene Storybook-Instanz im Repo (Storybook `html`-Renderer, framework-frei
 - Die Lackierungsdefinitionen weichen zwischen den Entwürfen leicht ab (z. B. `--skin-aft-sweep-1` vs. `--skin-tailband`). Bei der Übernahme eine Variante festlegen und begründen.
 - `svg/business-jet.svg` enthält einen leeren Pfad (`d="M Z"`), der eine Konsolenwarnung erzeugt. Bei der Übernahme bereinigen.
 - **Regel für alle Folge-Tasks (ADR 0002):** Braucht ein Task ein UI-Element, das es noch nicht gibt, entsteht es zuerst als Story in Storybook und wird abgenommen, erst dann wird es in der App verwendet. Jeder Frontend-Task hängt per `depends_on` von diesem Task ab.
-- Die Komponenten müssen auf dem alten iPad laufen (JS-Target aus `infrastructure-pn3w4`). Storybook selbst läuft nur auf dem Entwicklungsrechner bzw. Heimserver.
+- Die Komponenten müssen auf den alten iPads laufen. Die Mindestgrenze ist iPadOS 16 / Safari 16, siehe `infrastructure-pn3w4`. Die Format-Anpassung von 5:3 auf 4:3 zeigt mehr Himmel oben und unten bzw. einen schmalen Rand. Die gestalterische Lösung legt der Betreiber bei der Abnahme fest. Storybook selbst läuft nur auf dem Entwicklungsrechner bzw. Heimserver.

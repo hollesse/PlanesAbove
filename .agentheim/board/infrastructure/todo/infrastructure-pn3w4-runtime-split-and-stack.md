@@ -23,7 +23,10 @@ Record the architecture decision as an ADR (scope: `global`), based on the archi
 ## Acceptance criteria
 - [ ] ADR committed under `.agentheim/knowledge/decisions/`, status `accepted`, scope `global`.
 - [ ] Justification matches the architect's draft (or the user-amended version); deviations are named in the ADR.
-- [ ] The ADR names the concrete platform: Lenovo ThinkCentre running ZimaOS as the home server, and an old iPad as the display. The JS target is derived from the iPad's iOS/Safari version.
+- [ ] The ADR names the concrete platform:
+  - home server: Lenovo ThinkCentre running ZimaOS;
+  - display: iPad Pro 12.9" 1st gen and/or a smaller iPad (iPadOS 17).
+- [ ] Browser baseline is fixed at **iPadOS 16 / Safari 16**, and the build target follows from it.
 - [ ] The ADR records ADR 0002 (Storybook-first, Atomic Design): client UI components are framework-free modules shared between Storybook and the app.
 - [ ] No code change required.
 
@@ -32,7 +35,11 @@ Record the architecture decision as an ADR (scope: `global`), based on the archi
 
 **Builder input (2026-10-26):**
 - **Home server confirmed:** an old Lenovo ThinkCentre running ZimaOS, always on. ZimaOS runs apps as Docker containers, so the single-service-in-a-container approach fits directly.
-- **Display:** most likely an **old iPad**, not Android. Expect an older Safari/WebKit; pin the target (e.g. ES2017 or lower) once the model and iOS version are known.
+- **Display:** an old iPad. Two candidate devices, both 4:3:
+  - **iPad Pro 12.9" 1st gen** (2015, max iPadOS 16)
+  - a smaller 9.7"/10.5" iPad with home button, most likely iPad 6th gen or iPad Pro 10.5" (max iPadOS 17); the builder still has to confirm the model number.
+
+  **Browser baseline: iPadOS 16 / Safari 16.** This keeps container queries (`cqw`), `aspect-ratio`, ES2020+ and ES modules available, so no ES5 down-levelling is needed.
 - **UI:** built Storybook-first per ADR 0002. The client imports the approved design-system modules.
 
 ~~Open point (from architect):~~ (resolved) the vision says "ggf. Heimserver"; this ADR makes it required. Fallback if no home machine exists: free-tier cloud container (worse). Tablet OS/age unknown — pin the JS target in the walking skeleton once the real device is known.

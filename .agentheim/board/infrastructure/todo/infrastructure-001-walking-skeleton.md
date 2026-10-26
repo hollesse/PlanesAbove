@@ -44,7 +44,7 @@ Der dünnste lauffähige Durchstich durch alle Bereiche, gemäß den akzeptierte
 - [ ] Jeder unterschiedliche Flug im Umkreis schreibt genau eine Zeile in die Sichtungs-Tabelle: Zeit, Airline/Callsign, Typ, Typklasse, Lackierung vorhanden ja/nein. Wiederholte Takte desselben Flugs ändern die Anzahl nicht. Die Zeilen überleben einen Neustart des Dienstes.
 - [ ] Der Himmel ist ein fester Platzhalter (z. B. „Tag/Klar“), per Konfiguration austauschbar. Der echte Wetter-Himmel ist ein Folge-Task.
 - [ ] Die Befunde sind im Outcome festgehalten:
-  - (a) iPad-Modell, iOS- und Safari-Version und das daraus festgelegte JS-Target.
+  - (a) genutztes iPad-Modell (iPad Pro 12,9" 1. Gen. oder das kleinere iPad), iPadOS- und Safari-Version, Bestätigung der Mindestgrenze Safari 16.
   - (b) Funktioniert deutsche Sprachausgabe auf dem echten iPad über Server-Audio, über `speechSynthesis`, beides oder keins?
   - (c) Welcher Anteil der beobachteten Callsigns bekam in einer Stunde Stichprobe eine brauchbare Route?
 
