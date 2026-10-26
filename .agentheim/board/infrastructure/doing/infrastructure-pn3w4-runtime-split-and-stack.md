@@ -1,7 +1,7 @@
 ---
 id: infrastructure-pn3w4
 title: Decide runtime split and stack: home-server service computes state, tablet is a thin vanilla-JS client
-status: todo
+status: doing
 type: decision
 context: infrastructure
 created: 2026-10-26

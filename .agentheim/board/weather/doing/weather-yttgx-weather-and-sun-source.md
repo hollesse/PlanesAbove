@@ -1,7 +1,7 @@
 ---
 id: weather-yttgx
 title: Decide weather and sun position: Open-Meteo for Wetterlage, locally computed sun for Tageszeit
-status: todo
+status: doing
 type: decision
 context: weather
 created: 2026-10-26

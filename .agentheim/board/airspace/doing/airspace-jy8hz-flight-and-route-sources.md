@@ -1,7 +1,7 @@
 ---
 id: airspace-jy8hz
 title: Decide free ADS-B position and route sources behind a replaceable port (adsb.lol / airplanes.live / adsbdb)
-status: todo
+status: doing
 type: decision
 context: airspace
 created: 2026-10-26
