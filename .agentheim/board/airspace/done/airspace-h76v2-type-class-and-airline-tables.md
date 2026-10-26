@@ -1,7 +1,7 @@
 ---
 id: airspace-h76v2
 title: Decide Typklasse, Kategorie and airline derivation from static curated tables
-status: doing
+status: done
 type: decision
 context: airspace
 created: 2026-10-26
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: [infrastructure-001-walking-skeleton]
 tags: [foundation, enrichment, type-class]
-related_adrs: [0001]
+related_adrs: [0001, 0010]
 related_research: [free-flight-weather-tts-apis-2026-10-26]
 prior_art: []
 ---
@@ -65,3 +65,7 @@ Live data gives the ICAO type code (e.g. A388, B738) and a coarse emitter catego
 ## Alternatives considered
 - **Live type/airline API lookups** — extra dependency and latency for static data.
 - **Heuristics on wingspan/engines** — no such data from ADS-B.
+
+## Outcome
+
+Decision recorded as ADR 0010 (provisional number; conductor finalizes): Typklasse, Kategorie, Besonderheit, airline and livery are derived from three static, versioned, repo-shipped tables (`type-classes`, `airlines`, `airline-liveries`), validated at load against the ADR 0009 Typklasse ids and livery catalog ids. Seeded from CC0 VRS standing-data plus hand curation of ~100 dominant types; ICAO Doc 8643, tar1090-db/Mictronics and OpenFlights are not shipped. Unknown type falls back by emitter category (A1-A7 mapping fixed in the ADR), else neutral class with Kategorie "unbekannt"; unknown airline prefix gives the Standard-Lackierung (`def`); unmapped keys are reported to the sighting-log. Deviations from the architect's draft (separate airline-liveries table, licence-based seed decision, full fallback table, callsign pattern guard) are named in the ADR. No code changed. Provisional file: 0010-typklasse-kategorie-airline-from-static-curated-tables.md.
