@@ -1,7 +1,7 @@
 ---
 id: infrastructure-p6s30
 title: Decide observability: health endpoint, dead-man's-switch heartbeat and structured logs
-status: doing
+status: done
 type: decision
 context: infrastructure
 created: 2026-10-26
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: [infrastructure-001-walking-skeleton]
 tags: [foundation, observability]
-related_adrs: [0001]
+related_adrs: [0001, 0011]
 related_research: []
 prior_art: []
 ---
@@ -60,3 +60,7 @@ Weeks of unattended running are the goal; a silent failure is the main risk. The
 - **Prometheus/Grafana** — heavy for one household.
 - **SMTP email alerts** — needs mail config; push is simpler.
 - **No monitoring** — conflicts with the near-zero-maintenance goal.
+
+## Outcome
+
+Decision-only. ADR 0011 (provisional number) records the observability design: JSON-line logs with transition-based error logging and rotation; a tiered `/healthz` (`ok`/`degraded` HTTP 200, `failing` HTTP 503) with per-source freshness rules, client-silence detection and DB writability; and an optional dead-man's-switch heartbeat (`HEARTBEAT_URL`, env only, sent only while `ok`, off-box healthchecks.io recommended). Builds on ADR 0008's Docker healthcheck and ADR 0007's env-only secrets. Deviations from the architect draft are named in the ADR. No code changed.

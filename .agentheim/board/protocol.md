@@ -5,6 +5,18 @@ Newest entries on top.
 
 ---
 
+## 2026-10-26 23:04 -- Task completed (verification skipped): infrastructure-p6s30 - Decide observability: health endpoint, dead-man's-switch heartbeat and structured logs
+
+**Type:** Work / Task completion
+**Task:** infrastructure-p6s30 - Decide observability: health endpoint, dead-man's-switch heartbeat and structured logs
+**Summary:** decide health endpoint, dead-man heartbeat and structured logs
+**Duration:** ~1m
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
 ## 2026-10-26 23:03 -- Task completed (verification skipped): airspace-h76v2 - Decide Typklasse, Kategorie and airline derivation from static curated tables
 
 **Type:** Work / Task completion

@@ -23,6 +23,7 @@ For BC-scoped artifacts, see each BC's `INDEX.md`.
 ## Global ADRs (scope: global)
 
 <!-- adr-global:start -->
+- **0011** — Health endpoint, dead-man's-switch heartbeat and structured logs — 2026-10-26 — `decisions/0011-health-endpoint-heartbeat-and-structured-logs.md`
 - **0008** — Docker Compose app on ZimaOS; self-recovering iPad kiosk client — 2026-10-26 — `decisions/0008-compose-on-zimaos-and-self-recovering-ipad-kiosk.md`
 - **0007** — SQLite single-file storage (better-sqlite3) and validated YAML configuration — 2026-10-26 — `decisions/0007-sqlite-single-file-and-validated-yaml-config.md`
 - **0004** — Home-server service computes state; iPad is a thin vanilla-JS browser client — 2026-10-26 — `decisions/0004-home-server-service-thin-vanilla-js-client.md`

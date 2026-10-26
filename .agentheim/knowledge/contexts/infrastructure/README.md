@@ -24,6 +24,11 @@ generic
 - **Compose-App** — the `docker-compose.yml` that ZimaOS installs as a custom app: the `planesabove` service, plus optional sidecars (`tts`, `storybook`) behind Compose profiles. Data and config live in host volumes under `/DATA/AppData/planesabove` (ADR 0008).
 - **Selbstheilung (client)** — the client's recovery behaviour: retry with backoff, keep the last good scene, show a subtle stale indicator after N minutes, and fully reload nightly (~04:00), on `buildId` change, on `online`, and on returning to visible (ADR 0008).
 - **Einrichtung (iPad)** — the documented one-off manual iPad setup: home-screen web app, Guided Access, Auto-Lock Never, permanently on charge, automatic iPadOS updates off. After an iPad reboot, Guided Access must be re-entered by hand (ADR 0008).
+- **Gesundheitsstatus (health status)** — result of `GET /healthz`: `ok`, `degraded` (a source, the client or an age threshold is stale; HTTP 200) or `failing` (database not writable or scheduler stalled; HTTP 503). Per-source last-success ages, last client poll, DB writability and `buildId`. Calls no external API (ADR 0011, builds on ADR 0008).
+- **Heartbeat (dead-man's-switch)** — the service pings an off-box URL (`HEARTBEAT_URL`, env only) every few minutes only while status is `ok`; missing pings make the external service notify the builder's phone. Optional; absent URL disables it (ADR 0011).
+- **Client-Stille** — no `/api/state` request for N minutes (default 10); counts as `degraded` because the iPad is probably dead or unplugged (ADR 0011).
+- **Stale-but-serving** — a failing source degrades the scene (stale marker, "Zuletzt ...") but never blanks it; only the health status and heartbeat reflect the failure (ADR 0011).
+- **Strukturiertes Log** — JSON lines on stdout (`ts`, `level`, `msg`, `source`, `durationMs`, `errorClass`); errors logged on state transitions, never secrets; Docker json-file rotation (ADR 0011).
 
 ## Aggregates
 _Noch nicht modelliert — entsteht in `modeling` / bei der Arbeit an Tasks._
