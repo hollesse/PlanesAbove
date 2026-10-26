@@ -1,7 +1,7 @@
 ---
 id: design-system-k7h2q
 title: Text direkt auf dem Himmel bekommt eine Kontur in der Gegenfarbe (dunkle Schrift hell umrandet, helle Schrift dunkel umrandet)
-status: todo
+status: doing
 type: feature
 context: design-system
 created: 2026-10-26

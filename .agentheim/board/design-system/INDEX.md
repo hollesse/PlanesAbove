@@ -11,19 +11,19 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 2
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **design-system-k7h2q** — Text direkt auf dem Himmel bekommt eine Kontur in der Gegenfarbe (dunkle Schrift hell umrandet, helle Schrift dunkel umrandet) (feature) — `todo/design-system-k7h2q-text-direkt-auf-dem-himmel-bekommt-eine-kontur-in-der-gegenf.md`
 - **design-system-001-styleguide** — Storybook-Instanz nach Atomic Design mit allen vorhandenen Assets aufbauen und vom Betreiber abnehmen lassen (feature) — depends_on: [infrastructure-pn3w4] — `todo/design-system-001-styleguide.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **design-system-k7h2q** — Text direkt auf dem Himmel bekommt eine Kontur in der Gegenfarbe (dunkle Schrift hell umrandet, helle Schrift dunkel umrandet) (feature) — `doing/design-system-k7h2q-text-direkt-auf-dem-himmel-bekommt-eine-kontur-in-der-gegenf.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
