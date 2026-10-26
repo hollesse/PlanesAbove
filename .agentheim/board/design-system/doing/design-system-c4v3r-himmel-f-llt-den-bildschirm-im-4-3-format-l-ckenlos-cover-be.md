@@ -32,3 +32,11 @@ Die Himmel-Ebene einer Szene füllt immer die gesamte Bühne (Cover-Verhalten): 
 - Verwandte Komponenten: `src/client/ui/atoms/sky.ts`, `src/client/ui/dom.ts` (`fluidSvg`), `src/client/ui/templates/screen.ts`, `src/client/ui/styles/ui.css` (`.pa-sky`, `.pa-layer`, `.pa-screen-*`), `src/client/ui/transitions/`.
 - Seitlicher Beschnitt bei 4:3: je ca. 8,3 % links und rechts.
 - Später möglich (nicht in diesem Task): eigene 4:3-Himmel mit mehr Himmel oben für die Motive, die unter dem Beschnitt leiden.
+
+## Verifier note (iteration 1)
+**REASONS:**
+- Check 1: the criterion "Auch in den Übergangs-Stories (Wetter wechselt, Tageszeit wechselt) füllen beide Himmel die Bühne während des gesamten Übergangs" has no test. Production path is correct (transitions/player.ts:24 builds every sky layer via renderSkyLayer; catalog.ts:65 weather/time specs animate opacity only), but tests/unit/screen.test.ts only checks renderScreen over EXAMPLE_PAGES and the e2e test (tests/e2e/stories.spec.ts:44) filters to `Templates/` stories only, so `Pages/Übergänge` is never measured.
+- Check 1, secondary: "every state (empty, one, two) in 4:3 and 5:3" — the e2e test only reaches 5:3 through the single Templates story Format53 ("Eins"); empty and two at 5:3 are never measured.
+- Bookkeeping: TESTS_ADDED reported 4, diff adds 3 (2 unit, 1 e2e).
+**SUGGESTED_FIX:** Add a unit test in tests/unit/transitions.test.ts asserting that every `.pa-sky svg` in renderTransitionStage(spec) uses preserveAspectRatio="xMidYMid slice" with width and height 100% for the weather and time-of-day transitions, and/or widen the e2e cover test to `Pages/` stories (Übergänge and Beispielszenen, ideally also at 5:3) checking every `.pa-sky svg` on the stage, not just the first. Cover empty/one/two at 5:3. Correct TESTS_ADDED to the real count.
+**ITERATION_HINT:** likely-fixable
