@@ -71,6 +71,16 @@ sources:
       climbMetersPerKm: 150    # altitude envelope above the origin: m per km distance (+ profileSlackM); departure routes are longer than the straight line
       descentMetersPerKm: 80   # envelope before the destination
       profileSlackM: 1500
+      detourHeadingDeviationDeg: 90  # detoured leg (its great circle crosses a closed airspace): no corridor check, this heading tolerance instead of maxHeadingDeviationDeg (0..180)
+      closedAirspaceSampleKm: 100    # sampling step along the great circle when testing against the polygons
+      # closedAirspaces: replaces the built-in list entirely (no merge); [] disables detour detection. Defaults (12 coarse polygons, state 2026-10-27:
+      # Russland, Belarus, Ukraine, Iran, Irak, Libanon, Jordanien, Persischer Golf, Syrien, Sudan, Jemen, Nordkorea) live in
+      # src/server/modules/airspace/closed-airspace.ts. Review them when EASA CZIBs expire or change (https://www.easa.europa.eu/en/conflict-zone-status/active).
+      # closedAirspaces:
+      #   - name: Russland
+      #     since: 2022-02-28
+      #     note: optional free text
+      #     polygon: [[69.5, 28.5], [82, 60], [82, 180], [64, 180], [43, 135], [50, 120], [50, 87], [42, 48], [46, 38], [52, 31], [56, 28], [60, 28]]  # [lat, lon], >= 3 corners
     compareAll: false          # true = ask every source and record conflicts (differing plausible routes) for stats:routes; costs extra requests
 
 # German speech (ADR 0012). piper = the `tts` sidecar container; fake = silent clip (mock/testing only).

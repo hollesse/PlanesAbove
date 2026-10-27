@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 1
-- **Doing:** 1
-- **Done:** 16
+- **Doing:** 0
+- **Done:** 17
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **airspace-v4kqz** — Gesperrte Lufträume in der Plausibilitätsprüfung: schneidet der Großkreis einen gesperrten Luftraum, entfällt die Korridorprüfung und die erlaubte Kursabweichung steigt (Befund KAL908 London–Seoul) (bug) — `doing/airspace-v4kqz-luftraumsperrungen-korridor-aus-bei-umleitung.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **airspace-v4kqz** — Gesperrte Lufträume in der Plausibilitätsprüfung: schneidet der Großkreis einen gesperrten Luftraum, entfällt die Korridorprüfung und die erlaubte Kursabweichung steigt (Befund KAL908 London–Seoul) (bug) — `done/airspace-v4kqz-luftraumsperrungen-korridor-aus-bei-umleitung.md`
 - **airspace-f9cjz** — Airline-Lackierungszuordnung für alle Katalog-Lackierungen vervollständigen (Emirates, Qatar, United, Jet2, KLM Cityhopper …) und Lackierungen standardmäßig einschalten (bug) — `done/airspace-f9cjz-lackierungszuordnung-vervollstaendigen-und-lackierungen-einschalten.md`
 - **airspace-hw8f9** — Flugphasen-Prüfung nur unterhalb der Reiseflughöhe, ab 5 m/s und erst 400 km vom Flughafen; Steigprofil nahe dem Abflughafen lockern (Abflugrouten sind länger als die Luftlinie) (bug) — `done/airspace-hw8f9-flugphasen-pruefung-nur-unterhalb-der-reiseflughoehe.md`
 - **airspace-prwpv** — Abgelehnte Routen je Takt gegen die aktuelle Position neu prüfen statt 10 Minuten negativ zu cachen; Korridor auf 50 km + 8 % lockern (bug) — `done/airspace-prwpv-abgelehnte-routen-je-takt-neu-pruefen-korridor-lockern.md`

@@ -3,6 +3,7 @@
 import type { Clock } from '../../clock';
 import { distanceKm } from './selection';
 import { angleDiffDeg, bearingDeg, crossTrackKm } from './geo';
+import { closedAirspaceHit, DEFAULT_CLOSED_AIRSPACES, type ClosedAirspace } from './closed-airspace';
 import type { Logger } from '../../logger';
 import type { LatLon, LookupContext, Route, RouteOrigin, RouteSource } from './model';
 
@@ -12,8 +13,10 @@ export const formatRoute = (r: Route): string => (r.legs && r.legs.length > 2 ? 
 export interface PlausibilityConfig {
   corridorBaseKm: number; corridorPercent: number; corridorMaxKm: number; originZoneKm: number; destinationZoneKm: number; minHeadingCheckAltitudeM: number;
   maxHeadingDeviationDeg: number; maxClimbDistanceKm: number; climbMetersPerKm: number; descentMetersPerKm: number; profileSlackM: number; phaseMaxAltitudeM: number; phaseMinRateMs: number;
+  /** Allowed heading deviation on a detoured leg (great circle crosses a closed airspace; replaces maxHeadingDeviationDeg, corridor is skipped). */
+  detourHeadingDeviationDeg: number; closedAirspaceSampleKm: number; closedAirspaces: ClosedAirspace[];
 }
-export const DEFAULT_PLAUSIBILITY: PlausibilityConfig = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5 };
+export const DEFAULT_PLAUSIBILITY: PlausibilityConfig = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5, detourHeadingDeviationDeg: 90, closedAirspaceSampleKm: 100, closedAirspaces: DEFAULT_CLOSED_AIRSPACES };
 /** Own ADS-B observation of the plane; every field may be missing (e.g. MLAT has no track). */
 export interface Observation { trackDeg?: number; verticalRateMs?: number; altitudeM?: number }
 
@@ -22,9 +25,12 @@ const CRUISE_CEILING_M = 12500; // above this the altitude envelope no longer co
 type Pt = { lat: number; lon: number };
 
 /** One leg a -> b passes every check: corridor (cross-track), altitude profile, flight phase, heading (the last two only far from the airports). */
-function legPlausible(a: Pt, b: Pt, position: LatLon, obs: Observation, c: PlausibilityConfig): boolean {
+function legPlausible(a: Pt, b: Pt, position: LatLon, obs: Observation, c: PlausibilityConfig, log?: Logger): boolean {
   const len = distanceKm(a, b);
-  if (crossTrackKm(a, b, position) > Math.min(c.corridorBaseKm + (c.corridorPercent / 100) * len, c.corridorMaxKm)) return false;
+  // A leg whose great circle crosses a closed airspace is flown around it: no corridor, wider heading tolerance (airspace-v4kqz).
+  const detour = closedAirspaceHit(a, b, c.closedAirspaces, c.closedAirspaceSampleKm);
+  if (detour) log?.log('debug', 'route plausibility', { detoured: true, airspace: detour });
+  else if (crossTrackKm(a, b, position) > Math.min(c.corridorBaseKm + (c.corridorPercent / 100) * len, c.corridorMaxKm)) return false;
   const dOrigin = distanceKm(a, position), dDest = distanceKm(position, b);
   const alt = obs.altitudeM;
   if (alt !== undefined) {
@@ -35,15 +41,15 @@ function legPlausible(a: Pt, b: Pt, position: LatLon, obs: Observation, c: Plaus
   // A climb/descent only counts below phaseMaxAltitudeM (above it vertical rates are cruise noise / step descents), above phaseMinRateMs and beyond maxClimbDistanceKm of the airport.
   if (vr !== undefined && alt !== undefined && alt < c.phaseMaxAltitudeM && ((vr > c.phaseMinRateMs && dOrigin > c.maxClimbDistanceKm) || (vr < -c.phaseMinRateMs && dDest > c.maxClimbDistanceKm))) return false;
   if (obs.trackDeg !== undefined && alt !== undefined && alt > c.minHeadingCheckAltitudeM && dOrigin > c.originZoneKm && dDest > c.destinationZoneKm
-    && angleDiffDeg(bearingDeg(position, b), obs.trackDeg) > c.maxHeadingDeviationDeg) return false;
+    && angleDiffDeg(bearingDeg(position, b), obs.trackDeg) > (detour ? c.detourHeadingDeviationDeg : c.maxHeadingDeviationDeg)) return false;
   return true;
 }
 
 /** Own check against position and (optionally) own observation: the plane must lie in a cross-track corridor around the great circle of one leg and fit that leg's heading/phase/altitude profile (multi-leg: any leg passing everything). Falls back to the vendor flag when airports lack coordinates. */
-export function isPlausibleRoute(route: Route, position: LatLon, obs: Observation = {}, cfg: PlausibilityConfig = DEFAULT_PLAUSIBILITY): boolean {
+export function isPlausibleRoute(route: Route, position: LatLon, obs: Observation = {}, cfg: PlausibilityConfig = DEFAULT_PLAUSIBILITY, log?: Logger): boolean {
   const legs = route.legs && route.legs.length >= 2 ? route.legs : [route.from, route.to];
   if (legs.every((l) => typeof l.lat === 'number' && typeof l.lon === 'number')) {
-    return legs.slice(1).some((to, i) => legPlausible({ lat: legs[i].lat as number, lon: legs[i].lon as number }, { lat: to.lat as number, lon: to.lon as number }, position, obs, cfg));
+    return legs.slice(1).some((to, i) => legPlausible({ lat: legs[i].lat as number, lon: legs[i].lon as number }, { lat: to.lat as number, lon: to.lon as number }, position, obs, cfg, log));
   }
   return route.vendorPlausible !== false;
 }
@@ -83,7 +89,7 @@ export class RouteService {
     if (hit && hit.until > now) {
       if (!hit.info && hit.rejected?.length) {
         const obs = { trackDeg: ctx?.trackDeg, verticalRateMs: ctx?.verticalRateMs, altitudeM: ctx?.altitudeM };
-        const ok = hit.rejected.find((x) => isPlausibleRoute(x.route, position, obs, this.o.plausibility));
+        const ok = hit.rejected.find((x) => isPlausibleRoute(x.route, position, obs, this.o.plausibility, this.o.log));
         if (ok) { // became plausible with the plane's new position: show it, no source is asked again
           const info: RouteInfo = { text: formatRoute(ok.route), source: ok.origin };
           this.cache.set(callsign, { until: hit.until, info });
@@ -106,7 +112,7 @@ export class RouteService {
       try {
         const r = await src.lookup(callsign, position, ctx);
         if (!r) { attempts.push({ source: src.name, outcome: 'unknown' }); continue; }
-        if (!isPlausibleRoute(r, position, { trackDeg: ctx?.trackDeg, verticalRateMs: ctx?.verticalRateMs, altitudeM: ctx?.altitudeM }, this.o.plausibility)) { attempts.push({ source: src.name, outcome: 'rejected' }); rejected.push({ route: r, source: src.name, origin: originOf(r, src) }); continue; }
+        if (!isPlausibleRoute(r, position, { trackDeg: ctx?.trackDeg, verticalRateMs: ctx?.verticalRateMs, altitudeM: ctx?.altitudeM }, this.o.plausibility, this.o.log)) { attempts.push({ source: src.name, outcome: 'rejected' }); rejected.push({ route: r, source: src.name, origin: originOf(r, src) }); continue; }
         attempts.push({ source: src.name, outcome: 'hit' });
         texts.add(formatRoute(r));
         if (!info) { info = { text: formatRoute(r), source: originOf(r, src) }; chosen = src.name; }

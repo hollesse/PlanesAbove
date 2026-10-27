@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:22 -- Task verified and completed: airspace-v4kqz - Gesperrte Lufträume in der Plausibilitätsprüfung: schneidet der Großkreis einen gesperrten Luftraum, entfällt die Korridorprüfung und die erlaubte Kursabweichung steigt (Befund KAL908 London–Seoul)
+
+**Type:** Work / Task completion
+**Task:** airspace-v4kqz - Gesperrte Lufträume in der Plausibilitätsprüfung: schneidet der Großkreis einen gesperrten Luftraum, entfällt die Korridorprüfung und die erlaubte Kursabweichung steigt (Befund KAL908 London–Seoul)
+**Summary:** Gesperrte Luftraeume (12 grobe Polygone, konfigurierbar) in der Plausibilitaetspruefung: umgeleitete Legs korridorfrei mit Kurstoleranz 90 Grad; KAL908 London-Seoul plausibel; Verifier PASS it.1 (464 Tests)
+**Duration:** (unknown)
+**Verification:** PASS (iteration 1)
+**Files changed:** 0
+**Tests added:** 0
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 21:18 -- Modeling / Promoted: airspace-b7kx2 - Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen
 
 **Type:** Modeling / Promote

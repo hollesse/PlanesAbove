@@ -1,7 +1,7 @@
 ---
 id: airspace-v4kqz
 title: Gesperrte Lufträume in der Plausibilitätsprüfung: schneidet der Großkreis einen gesperrten Luftraum, entfällt die Korridorprüfung und die erlaubte Kursabweichung steigt (Befund KAL908 London–Seoul)
-status: doing
+status: done
 type: bug
 context: airspace
 created: 2026-10-27
@@ -102,3 +102,7 @@ Die Koordinaten sind absichtlich grob (Landesgrenzen auf 1–2° gerundet); es g
 Captured via `modeling` on 2026-10-27 (Entscheidung des Betreibers liegt vor, direkt promoted). Prüfung „Erdkrümmung“: der Korridor rechnet bereits sphärisch (Großkreis + cross-track in `geo.ts`), die 601 km bei KAL908 sind der echte Abstand zum Großkreis. Die Polygonliste ist eine Konfiguration mit Datum und Quelle, keine Live-NOTAM-Anbindung (keine freie, lizenzrechtlich saubere API bekannt; ADR 0001 verbietet kostenpflichtige Quellen). Die Polygone werden vom Betreiber bei Lageänderung von Hand gepflegt.
 
 **Validierung der Sperrliste (Kurzrecherche 2026-10-27).** EASA führt aktuell als CZIB: Russland (2025-01 R3), Iran (2026-04-R2), Irak (2026-05-R2), Libanon (2026-06-R2), Persischer Golf/Golf von Oman (2026-07-R3), Jordanien (2026-08-R3), Saudi-Arabien Jeddah FIR (2026-09-R1, nur zwei Teilgebiete, daher nicht als Polygon), Syrien (Teil der FIR), Sudan, Jemen, Libyen und Afghanistan (letztere beiden nur unterhalb FL320). Ukraine und Belarus sind vollständig bzw. per EU-Verbot geschlossen. Die Nahost-Bulletins laufen bis 2026-11-16 und werden regelmäßig verlängert; die Liste ist bei Ablauf vom Betreiber zu prüfen. Quellen: https://www.easa.europa.eu/en/conflict-zone-status/active , https://safeairspace.net/summary/ , https://www.easa.europa.eu/en/domains/air-operations/czibs
+
+## Outcome
+
+Neues Modul closed-airspace.ts (sphärische Abtastung des Großkreises alle closedAirspaceSampleKm, Ray-Casting-Punkt-in-Polygon, Datumsgrenze geprüft, 12 Default-Polygone exakt aus dem Task). legPlausible überspringt bei Treffer den Korridor und nutzt detourHeadingDeviationDeg 90; Debug-Log `route plausibility` {detoured, airspace}. Config sources.route.plausibility um detourHeadingDeviationDeg, closedAirspaceSampleKm, closedAirspaces erweitert (zod; Liste ersetzt Defaults, [] schaltet ab); Doku in config.example.yaml, README.md und BC-README. Tests tests/unit/server/closed-airspace.test.ts: KAL908 plausibel (601 km neben dem Großkreis, Russland getroffen) und ohne Sperrliste abgelehnt, Kurs 230 abgelehnt, Steigflug 60 km von Frankfurt abgelehnt, FRA–HEL/FRA–IST ohne Treffer, FRA–NRT/LHR–ICN Russland, FRA–DXB Irak/Iran/Golf, YVR–NRT Datumsgrenze sauber, zod-Ablehnungen, kein Merge. Verifier PASS Iteration 1: typecheck sauber, vitest 41 Dateien / 464 Tests grün, Build ok, Playwright chromium 10 grün; der eine rote Test (skeleton.spec.ts, data-livery def vs lh) ist auf main vor diesem Task bereits rot (vom Verifier an 02be2c8 nachgestellt) und betrifft Lackierungen, nicht Routen. Keine FlightAware-Aufrufe, nichts persistiert.

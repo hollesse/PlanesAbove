@@ -3,9 +3,10 @@ import fs from 'node:fs';
 import YAML from 'yaml';
 import { z } from 'zod';
 
+import { DEFAULT_CLOSED_AIRSPACES } from './modules/airspace/closed-airspace';
 import { FLIGHT_SOURCE_NAMES } from './modules/airspace/flight-source-names';
 const FLIGHTAWARE_DEFAULTS = { timeoutMs: 8000, monthlyBudgetUsd: 4.5, monthlyRequestCap: 900, usageSyncMinutes: 30, usageLagMinutes: 15, billingPeriodStartDay: 1 };
-const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5 };
+const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5, detourHeadingDeviationDeg: 90, closedAirspaceSampleKm: 100, closedAirspaces: DEFAULT_CLOSED_AIRSPACES };
 const ROUTE_DEFAULTS = { enabled: true, order: ['hexdb' as const, 'adsbdb' as const, 'vrs' as const], hexdb: { timeoutMs: 5000, backoffMinutes: 5 }, adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS, plausibility: PLAUSIBILITY_DEFAULTS };
 
 const schema = z.object({
@@ -72,6 +73,16 @@ const schema = z.object({
         profileSlackM: z.number().positive().default(1500),
         phaseMaxAltitudeM: z.number().positive().default(8000),
         phaseMinRateMs: z.number().positive().default(5),
+        /** Heading tolerance on a detoured leg (great circle crosses a closed airspace; airspace-v4kqz). */
+        detourHeadingDeviationDeg: z.number().positive().max(180).default(90),
+        closedAirspaceSampleKm: z.number().positive().default(100),
+        /** Replaces the default list entirely (no merge); [] disables detour detection. Corners are [lat, lon]. */
+        closedAirspaces: z.array(z.object({
+          name: z.string().min(1),
+          since: z.string().min(1),
+          note: z.string().optional(),
+          polygon: z.array(z.tuple([z.number().min(-90).max(90), z.number().min(-180).max(180)])).min(3),
+        })).default(DEFAULT_CLOSED_AIRSPACES),
       }).default(PLAUSIBILITY_DEFAULTS),
       /** FlightAware AeroAPI: paid, opt-in last resort with a hard budget (ADR 0018). Only active when listed in `order` and FLIGHTAWARE_API_KEY is set in the environment (never here). */
       flightaware: z.object({
