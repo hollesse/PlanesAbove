@@ -53,9 +53,9 @@ describe('Info-Leiste', () => {
     expect(light.textContent).toBe('Der Himmel über Kirchstrasse 17Live · 19:42');
     expect(light.className).toContain('pa-ink-light');
     expect(renderSceneHeader({ place: 'x', clock: '1', ink: 'dark' }).className).toContain('pa-ink-dark');
-    // Kontur in der Gegenfarbe der Tinte
-    expect(light.classList.contains('pa-halo-dark')).toBe(true);
-    expect(renderSceneHeader({ place: 'x', clock: '1', ink: 'dark' }).classList.contains('pa-halo-light')).toBe(true);
-    expect(renderInfoRow({ n: 1, flight: SAMPLE_FLIGHTS.D }).outerHTML).not.toContain('pa-halo');
+    // Schein je Tinte
+    expect(light.classList.contains('pa-glow-on-light-ink')).toBe(true);
+    expect(renderSceneHeader({ place: 'x', clock: '1', ink: 'dark' }).classList.contains('pa-glow-on-dark-ink')).toBe(true);
+    expect(renderInfoRow({ n: 1, flight: SAMPLE_FLIGHTS.D }).outerHTML).not.toContain('pa-glow');
   });
 });

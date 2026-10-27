@@ -23,10 +23,10 @@
 .pa-scene-header { position: absolute; left: 3.5%; right: 3.5%; top: 5.5%; display: flex; justify-content: space-between; font-family: var(--pa-font-mono); font-size: 1.9cqw; letter-spacing: 0.18em; text-transform: uppercase; }
 .pa-ink-dark { color: var(--pa-sky-ink-dark); }
 .pa-ink-light { color: var(--pa-sky-ink-light); }
-.pa-halo-light { --pa-halo: var(--pa-sky-ink-dark-halo); }
-.pa-halo-dark { --pa-halo: var(--pa-sky-ink-light-halo); }
-/* Kontur in der Gegenfarbe: 8 text-shadows (alle Richtungen), cqw-skaliert. */
-.pa-halo-light, .pa-halo-dark { --pa-halo-w: 0.1cqw; text-shadow: var(--pa-halo-w) 0 var(--pa-halo), calc(-1 * var(--pa-halo-w)) 0 var(--pa-halo), 0 var(--pa-halo-w) var(--pa-halo), 0 calc(-1 * var(--pa-halo-w)) var(--pa-halo), var(--pa-halo-w) var(--pa-halo-w) var(--pa-halo), calc(-1 * var(--pa-halo-w)) var(--pa-halo-w) var(--pa-halo), var(--pa-halo-w) calc(-1 * var(--pa-halo-w)) var(--pa-halo), calc(-1 * var(--pa-halo-w)) calc(-1 * var(--pa-halo-w)) var(--pa-halo); }
+.pa-glow-on-light-ink { --pa-glow: var(--pa-sky-glow-on-light-ink); }
+.pa-glow-on-dark-ink { --pa-glow: var(--pa-sky-glow-on-dark-ink); }
+/* Weicher, breiter Schein ohne Offset: zwei gestapelte text-shadows (eng = Dichte nah an der Schrift, weit = Ausstrahlung), cqw-skaliert. */
+.pa-glow-on-light-ink, .pa-glow-on-dark-ink { text-shadow: 0 0 calc(var(--pa-sky-glow-blur) * 0.5) var(--pa-glow), 0 0 var(--pa-sky-glow-blur) var(--pa-glow); }
 
 /* Info bar organism */
 .pa-bar { position: absolute; left: 0; right: 0; bottom: 0; background: var(--pa-paper); border-top: 2px solid var(--pa-ink); box-sizing: border-box; }

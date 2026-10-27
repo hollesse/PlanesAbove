@@ -10,8 +10,9 @@
   --pa-signal: #C8313E;
   --pa-sky-ink-light: #F6EEDC;
   --pa-sky-ink-dark: #1F2A33;
-  --pa-sky-ink-dark-halo: #F6EEDC; /* Kontur um dunkle Himmel-Schrift (default: helle Himmel-Tinte) */
-  --pa-sky-ink-light-halo: #1F2A33; /* Kontur um helle Himmel-Schrift (default: dunkle Himmel-Tinte) */
+  --pa-sky-glow-on-light-ink: rgba(0, 0, 0, 0.4); /* Schein hinter heller Himmel-Schrift */
+  --pa-sky-glow-on-dark-ink: rgba(255, 255, 255, 0.4); /* Schein hinter dunkler Himmel-Schrift */
+  --pa-sky-glow-blur: 0.8cqw; /* Breite des Scheins (weich, ohne Offset) */
   --pa-muted: #5B6670;
   --pa-plane-backdrop: #C9D6E1;
   --pa-font-display: 'Archivo', sans-serif;

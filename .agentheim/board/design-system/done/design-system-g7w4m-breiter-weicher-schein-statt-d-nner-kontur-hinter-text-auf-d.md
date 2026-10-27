@@ -1,7 +1,7 @@
 ---
 id: design-system-g7w4m
 title: Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel (helle Schrift mit schwarzem Schein ca. 40 %)
-status: doing
+status: done
 type: feature
 context: design-system
 created: 2026-10-26
@@ -46,3 +46,11 @@ Die Kontur der Kopfzeile (Text direkt auf dem Himmel) wird ersetzt durch einen w
 - Fine: README_DELTA `expected` matches; `halo` fully removed; other criteria map to the rewritten tests.
 **SUGGESTED_FIX:** Make `--pa-sky-glow-blur` (and the two glow colours) appear in the Atoms/Tokens story, e.g. a "Schein" story/row rendering the blur value with a sample glow on light and dark ink; add a unit test that fails if the Token story stops showing them. Report TESTS_ADDED as the real number of new it()/test() cases.
 **ITERATION_HINT:** likely-fixable
+
+## Outcome
+
+The thin 8-direction "Kontur" (halo) on text lying directly on the sky is replaced by a wide, soft "Schein" (glow): two stacked, offset-free text-shadows blurred with a cqw-based radius (`--pa-sky-glow-blur: 0.8cqw`), black 40 % behind light ink (`--pa-sky-glow-on-light-ink`) and white 40 % behind dark ink (`--pa-sky-glow-on-dark-ink`). Classes `pa-glow-on-light-ink` / `pa-glow-on-dark-ink` in `src/client/ui/styles/ui.css`; tokens in `styles/tokens.css` and mirrored in `domain/tokens.ts` (COLORS plus new GLOW_BLUR); applied in `molecules/scene-header.ts`. All halo tokens/classes are removed; text on paper stays without glow. Only `text-shadow` is used (Safari 16 safe).
+
+Iteration 2 (verifier fix): the new Atoms/Tokens story "Schein" (`stories/tokens.stories.ts`) renders the blur token name/value and a sample text with the glow on a light-ink and a dark-ink sky swatch, showing both glow colours. Two new unit tests in `tests/unit/stories.test.ts`: one renders the Schein story and asserts the three token names/values and both glow classes appear (verified to fail when the story export is removed), one asserts GLOW_BLUR mirrors tokens.css.
+
+Tests: 2 new it() cases (both iteration 2; iteration 1 added none). Existing tests modified: 4 (two `Tokens` it()s in stories.test.ts rewritten for glow, assertions edited in info-bar.test.ts, the e2e test in stories.spec.ts rewritten). `npm test` 48/48 green, typecheck clean. Playwright e2e not re-run in iteration 2 (no e2e change). Open: [human-eye] operator checks legibility and look in Storybook on a phone.

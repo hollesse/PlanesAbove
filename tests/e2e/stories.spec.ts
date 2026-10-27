@@ -76,11 +76,10 @@ test('the sky covers the whole stage in every template and page story, transitio
   }
 });
 
-test('text on the sky gets an outline in the counter colour of its ink; text on paper gets none', async ({ page }) => {
+test('text on the sky gets a wide soft glow per ink (black 40% on light ink, white 40% on dark ink); text on paper gets none', async ({ page }) => {
   const index = (await (await page.request.get('/index.json')).json()) as { entries: Record<string, Entry> };
   const ids = Object.values(index.entries).filter((e) => e.type === 'story' && (e.title.startsWith('Templates/') || e.title.startsWith('Pages/') || e.title === 'Molecules/Kopfzeile')).map((e) => e.id);
-  const rgb = (hex: string) => { const n = parseInt(hex.slice(1), 16); return `rgb(${n >> 16}, ${(n >> 8) & 255}, ${n & 255})`; };
-  const LIGHT = rgb('#F6EEDC'); const DARK = rgb('#1F2A33');
+  const LIGHT = 'rgb(246, 238, 220)';
   const seen = new Set<string>();
   for (const id of ids) {
     await page.goto(`/iframe.html?id=${id}&viewMode=story`);
@@ -91,10 +90,21 @@ test('text on the sky gets an outline in the counter colour of its ink; text on 
       const paper = [...document.querySelectorAll('.pa-bar, .pa-bar *, .pa-info-row, .pa-info-row *, .pa-badge')].map((e) => getComputedStyle(e).textShadow);
       return { color: cs.color, shadow: cs.textShadow, paper };
     });
-    const counter = res.color === DARK ? LIGHT : DARK;
+    const layers = res.shadow.match(/rgba?\([^)]*\)\s+[-\d.]+px\s+[-\d.]+px\s+[-\d.]+px/g)!;
+    expect(layers.length, id).toBeGreaterThanOrEqual(1);
+    expect(layers.length, id).toBeLessThanOrEqual(2); // no 8-direction outline
     seen.add(res.color);
-    expect(res.shadow.split('rgb(').length - 1, id).toBe(8); // all directions
-    for (const part of res.shadow.match(/rgb\([^)]*\)/g)!) expect(part, id).toBe(counter);
+    const expected = res.color === LIGHT ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)';
+    const blurs: number[] = [];
+    for (const l of layers) {
+      const m = /^(rgba?\([^)]*\))\s+([-\d.]+)px\s+([-\d.]+)px\s+([-\d.]+)px$/.exec(l)!;
+      expect(m[1], id).toBe(expected);
+      expect(Number(m[2]), `${id} x offset`).toBe(0);
+      expect(Number(m[3]), `${id} y offset`).toBe(0);
+      blurs.push(Number(m[4]));
+    }
+    expect(Math.max(...blurs), `${id} widest layer is wide`).toBeGreaterThan(3);
+    expect(Math.min(...blurs), `${id} every layer is soft`).toBeGreaterThan(1);
     for (const p of res.paper) expect(p, `${id} paper text`).toBe('none');
   }
   expect(seen.size, 'both inks covered').toBe(2);

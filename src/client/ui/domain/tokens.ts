@@ -6,11 +6,14 @@ export const COLORS = {
   signal: { value: '#C8313E', name: 'Signalrot' },
   skyInkLight: { value: '#F6EEDC', name: 'Himmel-Tinte hell' },
   skyInkDark: { value: '#1F2A33', name: 'Himmel-Tinte dunkel' },
-  skyInkDarkHalo: { value: '#F6EEDC', name: 'Kontur um dunkle Himmel-Schrift (hell)' },
-  skyInkLightHalo: { value: '#1F2A33', name: 'Kontur um helle Himmel-Schrift (dunkel)' },
+  skyGlowOnLightInk: { value: 'rgba(0, 0, 0, 0.4)', name: 'Schein hinter heller Himmel-Schrift (schwarz 40 %)' },
+  skyGlowOnDarkInk: { value: 'rgba(255, 255, 255, 0.4)', name: 'Schein hinter dunkler Himmel-Schrift (weiß 40 %)' },
   muted: { value: '#5B6670', name: 'Gedämpft' },
   planeBackdrop: { value: '#C9D6E1', name: 'Flugzeug-Hintergrund (Entwurf)' },
 } as const;
+
+/** Breite des Scheins (mirrors --pa-sky-glow-blur in styles/tokens.css). */
+export const GLOW_BLUR = { token: '--pa-sky-glow-blur', value: '0.8cqw', name: 'Schein-Breite' } as const;
 
 export const FONTS = {
   display: { family: 'Archivo', weights: [900], role: 'Route, Plakette, Überschriften' },
