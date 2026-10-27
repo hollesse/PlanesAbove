@@ -58,14 +58,14 @@ describe('route_lookups persistence', () => {
     expect(db.prepare("SELECT name FROM sqlite_master WHERE name = 'route_lookups'").get()).toBeTruthy();
   });
   it('recordLookup writes one row per asked source against the visit sighting; chosen and conflict flagged', () => {
-    const db = openDatabase(':memory:'); const repo = new SightingRepository(db, 1800_000);
+    const db = openDatabase(':memory:'); const repo = new SightingRepository(db, 1800_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     repo.observe({ ...base, icao24: 'a', slot: 1 }, 1000);
     repo.recordLookup('a', [{ source: 'hexdb', outcome: 'hit' }, { source: 'vrs', outcome: 'hit' }], true, 'hexdb', 1000);
     expect(db.prepare('SELECT source, outcome, conflict, chosen FROM route_lookups ORDER BY id').all()).toEqual([
       { source: 'hexdb', outcome: 'hit', conflict: 1, chosen: 1 }, { source: 'vrs', outcome: 'hit', conflict: 1, chosen: 0 }]);
   });
   it('ignores a lookup for an unknown icao24', () => {
-    const db = openDatabase(':memory:'); new SightingRepository(db, 1).recordLookup('zz', [{ source: 'vrs', outcome: 'unknown' }], false, null, 0);
+    const db = openDatabase(':memory:'); new SightingRepository(db, 1, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' }).recordLookup('zz', [{ source: 'vrs', outcome: 'unknown' }], false, null, 0);
     expect(db.prepare('SELECT COUNT(*) AS n FROM route_lookups').get()).toEqual({ n: 0 });
   });
 });
@@ -85,7 +85,7 @@ describe('SkyService Takt writes findings, no route text of adsbdb', () => {
     const db = openDatabase(file);
     const everywhere: Route = { from: { name: 'Zzyzx', city: 'Zzyzx' }, to: { name: 'Qwertyland', city: 'Qwertyland' }, vendorPlausible: true, source: 'adsbdb' };
     const s = new SkyService({
-      config: parseConfig('location: { lat: 50.05, lon: 8.57 }\nmode: live\n'), clock, log: silentLogger, flight: new ScenarioFlightSource(driver), tables: defaultTables(), sightings: new SightingRepository(db, 1800_000), buildId: 't', timeZone: 'UTC',
+      config: parseConfig('location: { lat: 50.05, lon: 8.57 }\nmode: live\n'), clock, log: silentLogger, flight: new ScenarioFlightSource(driver), tables: defaultTables(), sightings: new SightingRepository(db, 1800_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' }), buildId: 't', timeZone: 'UTC',
       routes: new RouteService([fake('hexdb', null), fake('adsbdb', everywhere)], clock, { ttlMs: 3600_000, negativeTtlMs: 3600_000 }),
       audio: new AudioService(new FakeSpeechSynthesizer(), { voice: 'v', render: 'lazy', log: silentLogger }),
     });
@@ -136,7 +136,7 @@ describe('route_lookups schema, migration and live path (compareAll)', () => {
     const driver = new ScenarioDriver(parseScenario(JSON.stringify({ name: 't', startTime: nowIso, steps: [{ at: 0, planes: [{ icao24: 'a', distanceKm: 8, bearingDeg: 0, altitudeFt: 5000, speedKt: 450, callsign: 'DLH400', typeCode: 'A20N' }] }] })), clock, clock.now());
     const db = openDatabase(file);
     const s = new SkyService({
-      config: parseConfig('location: { lat: 50.05, lon: 8.57 }\nmode: live\n'), clock, log: silentLogger, flight: new ScenarioFlightSource(driver), tables: defaultTables(), sightings: new SightingRepository(db, 1800_000), buildId: 't', timeZone: 'UTC',
+      config: parseConfig('location: { lat: 50.05, lon: 8.57 }\nmode: live\n'), clock, log: silentLogger, flight: new ScenarioFlightSource(driver), tables: defaultTables(), sightings: new SightingRepository(db, 1800_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' }), buildId: 't', timeZone: 'UTC',
       routes: new RouteService(chain, clock, { ttlMs: 3600_000, negativeTtlMs: 3600_000, compareAll }),
       audio: new AudioService(new FakeSpeechSynthesizer(), { voice: 'v', render: 'lazy', log: silentLogger }),
     });
@@ -177,7 +177,7 @@ describe('routeStats + CLI', () => {
   const NOW = Date.parse('2026-10-27T12:00:00Z');
   const seed = () => {
     const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'pa-')), 's.db');
-    const db = openDatabase(file); const repo = new SightingRepository(db, 1800_000);
+    const db = openDatabase(file); const repo = new SightingRepository(db, 1800_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     const b = { typklasse: 'narrow', liveryPresent: false, distanceKm: 1, route: null };
     repo.observe({ ...b, icao24: 'v', callsign: 'DLH400', airline: 'Lufthansa', slot: 1, route: 'A → B', routeSource: 'vrs' }, NOW - 3600_000);
     repo.recordLookup('v', [{ source: 'adsbdb', outcome: 'unavailable' }, { source: 'vrs', outcome: 'hit' }], false, 'vrs', NOW - 3600_000);
@@ -205,11 +205,11 @@ describe('routeStats + CLI', () => {
     expect(formatRouteStats(s)).toContain('RYR12A');
   });
   const cli = (...args: string[]) => spawnSync(process.execPath, [path.resolve(import.meta.dirname, '../../../scripts/stats-routes.mjs'), ...args], { encoding: 'utf8' });
-  it('CLI --json has the stable keys days, sources, unknown, airlines, conflicts', () => {
+  it('CLI --json has the stable keys standort, standorte, days, sources, unknown, airlines, conflicts', () => {
     const { file } = seed();
     const r = cli('--db', file, '--days', '7', '--json');
     expect(r.status).toBe(0);
-    expect(Object.keys(JSON.parse(r.stdout))).toEqual(['days', 'sources', 'unknown', 'airlines', 'conflicts']);
+    expect(Object.keys(JSON.parse(r.stdout))).toEqual(['standort', 'standorte', 'days', 'sources', 'unknown', 'airlines', 'conflicts']);
   });
   it('CLI text output works; missing --db or missing file exits non-zero', () => {
     const { file } = seed();

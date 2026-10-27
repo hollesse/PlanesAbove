@@ -17,7 +17,7 @@ function rig(steps: ScenarioStep[], extraConfig = '') {
   const clock = new FakeClock(Date.parse('2026-10-27T10:00:00Z'));
   const config = parseConfig(HOME + extraConfig);
   const driver = new ScenarioDriver(parseScenario(JSON.stringify({ name: 't', startTime: '2026-10-27T10:00:00Z', steps })), clock, clock.now());
-  const sightings = new SightingRepository(openDatabase(':memory:'), 30 * 60_000);
+  const sightings = new SightingRepository(openDatabase(':memory:'), 30 * 60_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
   const svc = new SkyService({
     config, clock, log: silentLogger, flight: new ScenarioFlightSource(driver), tables: defaultTables(), sightings, buildId: 'test', timeZone: 'UTC',
     routes: new RouteService(new ScenarioRouteSource(driver), clock, { ttlMs: 1e9, negativeTtlMs: 1e9 }),

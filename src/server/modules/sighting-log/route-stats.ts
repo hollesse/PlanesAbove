@@ -9,14 +9,34 @@ export interface SourceStat { source: string; hit: number; unknown: number; unav
 export interface UnknownStat { time: string; callsign: string | null; airline: string | null; typklasse: string }
 export interface AirlineStat { prefix: string; total: number; unknown: number; unknownShare: number }
 export interface ConflictStat { time: string; callsign: string | null; sources: string[]; chosen: string | null }
-export interface RouteStats { days: DayStat[]; sources: SourceStat[]; unknown: UnknownStat[]; airlines: AirlineStat[]; conflicts: ConflictStat[] }
+export interface StandortStat { id: number | null; place: string | null; lat: number | null; lon: number | null; radiusKm: number | null; sightings: number }
+/** Which observation point to evaluate: a point id, the rows without one ('unbekannt'), or everything ('alle'). */
+export type StandortFilter = number | 'unbekannt' | 'alle';
+export interface RouteStats { standort: StandortFilter; standorte: StandortStat[]; days: DayStat[]; sources: SourceStat[]; unknown: UnknownStat[]; airlines: AirlineStat[]; conflicts: ConflictStat[] }
 
 const share = (n: number, d: number): number => (d === 0 ? 0 : Math.round((n / d) * 1000) / 1000);
 const prefixOf = (callsign: string | null): string => (callsign && /^[A-Z]{3}[0-9]/.test(callsign) ? callsign.slice(0, 3) : '?');
 
-export function routeStats(db: StatsDb, opts: { days: number; nowMs: number }): RouteStats {
+/** `hasPoints` is false for a database from before migration 0006 (no observation_points table / column): everything is "unbekannt". */
+export function routeStats(db: StatsDb, opts: { days: number; nowMs: number; standort?: StandortFilter; hasPoints?: boolean }): RouteStats {
   const since = opts.nowMs - opts.days * 86_400_000;
-  const sightings = db.prepare('SELECT id, callsign, airline, typklasse, route_source AS rs, first_seen_at AS t FROM sightings WHERE slot IS NOT NULL AND last_seen_ms >= ? ORDER BY first_seen_at, id').all(since) as { id: number; callsign: string | null; airline: string | null; typklasse: string; rs: string | null; t: string }[];
+  const hasPoints = opts.hasPoints ?? true;
+  let standort: StandortFilter = opts.standort ?? 'alle';
+  if (opts.standort === undefined && hasPoints) {
+    const newest = db.prepare('SELECT observation_point_id AS pid FROM sightings ORDER BY last_seen_ms DESC, id DESC LIMIT 1').all() as { pid: number | null }[];
+    standort = newest.length === 0 || newest[0].pid === null ? (newest.length === 0 ? 'alle' : 'unbekannt') : newest[0].pid;
+  } else if (opts.standort === undefined) standort = 'unbekannt';
+  const pidCol = hasPoints ? 's.observation_point_id' : 'NULL';
+  const filterSql = standort === 'alle' ? '' : standort === 'unbekannt' ? ` AND ${pidCol} IS NULL` : ` AND ${pidCol} = ${Number(standort)}`;
+
+  const counts = new Map<number | null, number>();
+  for (const r of db.prepare(`SELECT ${pidCol} AS pid, COUNT(*) AS n FROM sightings s WHERE s.slot IS NOT NULL AND s.last_seen_ms >= ? GROUP BY ${pidCol}`).all(since) as { pid: number | null; n: number }[]) counts.set(r.pid, r.n);
+  const standorte: StandortStat[] = hasPoints
+    ? (db.prepare('SELECT id, place, lat, lon, radius_km AS radiusKm FROM observation_points ORDER BY id').all() as Omit<StandortStat, 'sightings'>[]).map((p) => ({ ...p, sightings: counts.get(p.id) ?? 0 }))
+    : [];
+  standorte.push({ id: null, place: null, lat: null, lon: null, radiusKm: null, sightings: counts.get(null) ?? 0 });
+
+  const sightings = db.prepare(`SELECT s.id, s.callsign, s.airline, s.typklasse, s.route_source AS rs, s.first_seen_at AS t FROM sightings s WHERE s.slot IS NOT NULL AND s.last_seen_ms >= ?${filterSql} ORDER BY s.first_seen_at, s.id`).all(since) as { id: number; callsign: string | null; airline: string | null; typklasse: string; rs: string | null; t: string }[];
 
   const byDay = new Map<string, DayStat>();
   const byPrefix = new Map<string, { total: number; unknown: number }>();
@@ -35,7 +55,7 @@ export function routeStats(db: StatsDb, opts: { days: number; nowMs: number }): 
   }
   for (const d of byDay.values()) d.knownShare = share(d.total - d.none, d.total);
 
-  const lookups = db.prepare('SELECT l.sighting_id AS sid, l.source, l.outcome, l.conflict, l.chosen FROM route_lookups l JOIN sightings s ON s.id = l.sighting_id WHERE s.slot IS NOT NULL AND s.last_seen_ms >= ? ORDER BY l.id').all(since) as { sid: number; source: string; outcome: string; conflict: number; chosen: number }[];
+  const lookups = db.prepare('SELECT l.sighting_id AS sid, l.source, l.outcome, l.conflict, l.chosen FROM route_lookups l JOIN sightings s ON s.id = l.sighting_id WHERE s.slot IS NOT NULL AND s.last_seen_ms >= ?'+filterSql+' ORDER BY l.id').all(since) as { sid: number; source: string; outcome: string; conflict: number; chosen: number }[];
   const bySource = new Map<string, SourceStat>();
   const conflictBySighting = new Map<number, { sources: Set<string>; chosen: string | null }>();
   for (const l of lookups) {
@@ -54,6 +74,8 @@ export function routeStats(db: StatsDb, opts: { days: number; nowMs: number }): 
   const conflicts: ConflictStat[] = [...conflictBySighting].flatMap(([sid, c]) => { const s = byId.get(sid); return s ? [{ time: s.t, callsign: s.callsign, sources: [...c.sources], chosen: c.chosen }] : []; });
 
   return {
+    standort,
+    standorte,
     days: [...byDay.values()],
     sources: [...bySource.values()].sort((a, b) => a.source.localeCompare(b.source)),
     unknown,
@@ -66,7 +88,9 @@ const pct = (x: number): string => `${Math.round(x * 100)}%`;
 
 export function formatRouteStats(s: RouteStats): string {
   const out: string[] = [];
-  out.push('Routen je Tag (Sichtungen mit Slot, nach endgueltiger Quelle)');
+  out.push(`Standort-Filter: ${s.standort}`, 'Standorte (Sichtungen mit Slot im Fenster)');
+  for (const o of s.standorte) out.push(o.id === null ? `  unbekannt  ${o.sightings} Sichtungen` : `  ${o.id}  ${o.place}  ${o.lat}/${o.lon}  Radius ${o.radiusKm} km  ${o.sightings} Sichtungen`);
+  out.push('', 'Routen je Tag (Sichtungen mit Slot, nach endgueltiger Quelle)');
   for (const d of s.days) out.push(`  ${d.date}  gesamt ${d.total}  vrs ${d.vrs}  adsbdb ${d.adsbdb}  hexdb ${d.hexdb}${d.other ? `  andere ${d.other}` : ''}  none ${d.none}  bekannt ${pct(d.knownShare)}`);
   out.push('', 'Befunde je Quelle');
   for (const r of s.sources) out.push(`  ${r.source}  hit ${r.hit}  unknown ${r.unknown}  unavailable ${r.unavailable}  rejected ${r.rejected}  gewaehlt ${r.chosen}`);

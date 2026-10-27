@@ -123,7 +123,7 @@ describe('route chain [hexdb, adsbdb, vrs]', () => {
 describe('sighting-log: hexdb text never persisted', () => {
   const base = { icao24: 'abc123', callsign: 'LHX1HL', typklasse: 'narrowbody', liveryPresent: false, distanceKm: 5 };
   it('hexdb sighting: route NULL, route_source hexdb; a later vrs or flightaware hit replaces the finding; hexdb never downgrades', () => {
-    const repo = new SightingRepository(openDatabase(':memory:'), 30 * 60_000);
+    const repo = new SightingRepository(openDatabase(':memory:'), 30 * 60_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     repo.observe({ ...base, route: 'Cologne Bonn → Munich', routeSource: 'hexdb' }, 0);
     expect(repo.list()[0]).toMatchObject({ route: null, routeSource: 'hexdb' });
     expect(repo.routeKnownCount()).toBe(1);
@@ -145,7 +145,7 @@ describe('sighting-log: hexdb text never persisted', () => {
     const driver = new ScenarioDriver(parseScenario(JSON.stringify({ name: 't', startTime: '2026-10-27T10:00:00Z', steps: [{ at: 0, planes: [{ icao24: 'a', distanceKm: 8, bearingDeg: 0, altitudeFt: 36000, speedKt: 450, callsign: 'LHX1HL', typeCode: 'A20N' }] }] })), clock, clock.now());
     const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'pa-')), 'x.db');
     const db = openDatabase(file);
-    const sightings = new SightingRepository(db, 30 * 60_000);
+    const sightings = new SightingRepository(db, 30 * 60_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     const hex = new HexdbRouteSource({ fetch: reply(200, fixture('LHX1HL')), userAgent: 'UA', timeoutMs: 1000, backoffMs: 1000, clock, log: silentLogger });
     const svc = new SkyService({
       config: parseConfig('location: { lat: 50.45, lon: 9.0 }\nmode: live\n'), clock, log: silentLogger, flight: new ScenarioFlightSource(driver), tables: defaultTables(), sightings, buildId: 't', timeZone: 'UTC',

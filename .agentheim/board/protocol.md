@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:34 -- Task verified and completed: sighting-log-k4m7q - Beobachtungsstandort je Sichtung mitloggen (Tabelle observation_points, Standortwechsel beendet den Besuch, Statistik je Standort)
+
+**Type:** Work / Task completion
+**Task:** sighting-log-k4m7q - Beobachtungsstandort je Sichtung mitloggen (Tabelle observation_points, Standortwechsel beendet den Besuch, Statistik je Standort)
+**Summary:** Beobachtungsstandort je Sichtung (Tabelle observation_points, Migration 0006); Standortwechsel beendet den Besuch; stats:routes filtert je Standort (--standort)
+**Duration:** 6m50s
+**Verification:** PASS (iteration 1)
+**Files changed:** 15
+**Tests added:** 8
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 19:33 -- Task verified and completed: airspace-n8c4t - Unmapped Keys aus dem Live-Betrieb kuratieren: 30 Airline-Präfixe und 13 Typcodes in die Tabellen aufnehmen, ZZZZ als "kein Typcode" behandeln
 
 **Type:** Work / Task completion

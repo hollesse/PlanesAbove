@@ -135,7 +135,7 @@ describe('route chain [adsbdb, vrs] (ADR 0016)', () => {
 describe('sighting-log: adsbdb text never persisted (ADR 0016)', () => {
   const base = { icao24: 'abc123', callsign: 'QTR56H', typklasse: 'widebody', liveryPresent: false, distanceKm: 5 };
   it('adsbdb sighting: route NULL, route_source adsbdb; COALESCE never writes adsbdb text; VRS keeps text', () => {
-    const repo = new SightingRepository(openDatabase(':memory:'), 30 * 60_000);
+    const repo = new SightingRepository(openDatabase(':memory:'), 30 * 60_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     repo.observe({ ...base, route: 'Doha → London', routeSource: 'adsbdb' }, 0);
     repo.observe({ ...base, route: 'Doha → London', routeSource: 'adsbdb' }, 30_000);
     repo.observe({ ...base, icao24: 'v1', route: 'Frankfurt → New York', routeSource: 'vrs' }, 0);
@@ -147,7 +147,7 @@ describe('sighting-log: adsbdb text never persisted (ADR 0016)', () => {
   it('the SQLite file contains no adsbdb route text', () => {
     const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'pa-')), 'x.db');
     const db = openDatabase(file);
-    const repo = new SightingRepository(db, 30 * 60_000);
+    const repo = new SightingRepository(db, 30 * 60_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     repo.observe({ ...base, route: 'Doha → Heathrow', routeSource: 'adsbdb' }, 0);
     db.pragma('wal_checkpoint(TRUNCATE)'); db.close();
     expect(fs.readFileSync(file).includes('Heathrow')).toBe(false);
@@ -178,7 +178,7 @@ describe('licence boundary on the live path and chain behaviour (ADR 0016)', () 
     const driver = new ScenarioDriver(parseScenario(JSON.stringify({ name: 't', startTime: '2026-10-27T10:00:00Z', steps: [{ at: 0, planes: [{ icao24: 'a', distanceKm: 8, bearingDeg: 0, altitudeFt: 36000, speedKt: 450, callsign: 'DLH400', typeCode: 'A20N' }] }] })), clock, clock.now());
     const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'pa-')), 'x.db');
     const db = openDatabase(file);
-    const sightings = new SightingRepository(db, 30 * 60_000);
+    const sightings = new SightingRepository(db, 30 * 60_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     const place = parseConfig('location: { lat: 50.05, lon: 8.57 }\nmode: live\n');
     const everywhere: Route = { from: { name: 'Zzyzx', city: 'Zzyzx' }, to: { name: 'Qwertyland', city: 'Qwertyland' }, source: 'adsbdb', vendorPlausible: true };
     const svc = new SkyService({
@@ -194,12 +194,12 @@ describe('licence boundary on the live path and chain behaviour (ADR 0016)', () 
     expect(fs.readFileSync(file).includes('Qwertyland')).toBe(false);
   });
   it('repository never stores unlabelled route text', () => {
-    const repo = new SightingRepository(openDatabase(':memory:'), 30 * 60_000);
+    const repo = new SightingRepository(openDatabase(':memory:'), 30 * 60_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     repo.observe({ icao24: 'u', typklasse: 'x', liveryPresent: false, distanceKm: 1, route: 'Leak → Text' }, 0);
     expect(repo.list()[0]).toMatchObject({ route: null, routeSource: null });
   });
   it('UPDATE keeps route and route_source consistent: adsbdb first then vrs upgrades both; vrs is never downgraded', () => {
-    const repo = new SightingRepository(openDatabase(':memory:'), 30 * 60_000);
+    const repo = new SightingRepository(openDatabase(':memory:'), 30 * 60_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     const b = { icao24: 'k', typklasse: 'x', liveryPresent: false, distanceKm: 1 };
     repo.observe({ ...b, route: 'A → B', routeSource: 'adsbdb' }, 0);
     expect(repo.list()[0]).toMatchObject({ route: null, routeSource: 'adsbdb' });

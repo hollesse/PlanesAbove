@@ -295,7 +295,7 @@ describe('usage sync', () => {
 describe('persistence of FlightAware routes', () => {
   it('route text and route_source flightaware are stored; findings go to route_lookups; adsbdb text still is not', () => {
     const db = openDatabase(':memory:');
-    const repo = new SightingRepository(db, 30 * 60_000);
+    const repo = new SightingRepository(db, 30 * 60_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     const base = { icao24: 'abc', callsign: 'LHX1HL', typklasse: 'narrowbody', liveryPresent: false, distanceKm: 3, slot: 1 };
     repo.observe({ ...base, route: 'Cologne/Bonn → Munich', routeSource: 'flightaware' }, T0);
     repo.observe({ ...base, icao24: 'def', route: 'X → Y', routeSource: 'adsbdb' }, T0);

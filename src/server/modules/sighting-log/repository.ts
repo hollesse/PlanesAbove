@@ -38,11 +38,29 @@ export interface Sighting {
 interface Row { id: number; icao24: string; callsign: string | null; airline: string | null; type_code: string | null; typklasse: string; livery_present: number; route: string | null; route_source: string | null; slot: number | null; closest_distance_km: number; first_seen_at: string; last_seen_at: string; last_seen_ms: number }
 const toSighting = (r: Row): Sighting => ({ id: r.id, icao24: r.icao24, callsign: r.callsign, airline: r.airline, typeCode: r.type_code, typklasse: r.typklasse, liveryPresent: r.livery_present === 1, route: r.route, routeSource: r.route_source, slot: r.slot, closestDistanceKm: r.closest_distance_km, firstSeenAt: r.first_seen_at, lastSeenAt: r.last_seen_at, lastSeenAtMs: r.last_seen_ms });
 
+function findOrCreatePoint(db: Db, p: ObservationPoint): number {
+  const lat = round4(p.lat), lon = round4(p.lon);
+  return db.transaction(() => {
+    const row = db.prepare('SELECT id, place FROM observation_points WHERE lat = ? AND lon = ? AND radius_km = ?').get(lat, lon, p.radiusKm) as { id: number; place: string } | undefined;
+    if (row) {
+      if (row.place !== p.place) db.prepare('UPDATE observation_points SET place = ? WHERE id = ?').run(p.place, row.id);
+      return row.id;
+    }
+    return Number(db.prepare('INSERT INTO observation_points (lat, lon, radius_km, place, first_used_at) VALUES (?,?,?,?,?)').run(lat, lon, p.radiusKm, p.place, new Date().toISOString()).lastInsertRowid);
+  })();
+}
+
+/** The observation point the service looks from: identity is lat/lon (4 decimals) + radiusKm, `place` is only a label. */
+export interface ObservationPoint { lat: number; lon: number; radiusKm: number; place: string }
+const round4 = (x: number): number => Math.round(x * 10_000) / 10_000;
+
 export class SightingRepository {
   private dedup: SightingDedup;
-  constructor(private readonly db: Db, gapMs: number) {
+  private readonly pointId: number;
+  constructor(private readonly db: Db, gapMs: number, point: ObservationPoint) {
+    this.pointId = findOrCreatePoint(db, point);
     const hydrate: Record<string, number> = {};
-    for (const r of db.prepare('SELECT icao24, MAX(last_seen_ms) AS ms FROM sightings GROUP BY icao24').all() as { icao24: string; ms: number }[]) hydrate[r.icao24] = r.ms;
+    for (const r of db.prepare('SELECT icao24, MAX(last_seen_ms) AS ms FROM sightings WHERE observation_point_id = ? GROUP BY icao24').all(this.pointId) as { icao24: string; ms: number }[]) hydrate[r.icao24] = r.ms;
     this.dedup = new SightingDedup(gapMs, hydrate);
   }
 
@@ -55,18 +73,18 @@ export class SightingRepository {
     const route = routeSource === 'vrs' || routeSource === 'flightaware' ? s.route : null;
     const iso = new Date(nowMs).toISOString();
     if (verdict === 'new') {
-      this.db.prepare('INSERT INTO sightings (icao24, callsign, airline, type_code, typklasse, livery_present, route, route_source, slot, closest_distance_km, first_seen_at, last_seen_at, last_seen_ms) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)')
-        .run(s.icao24, s.callsign ?? null, s.airline ?? null, s.typeCode ?? null, s.typklasse, s.liveryPresent ? 1 : 0, route, routeSource, s.slot ?? null, s.distanceKm, iso, iso, nowMs);
+      this.db.prepare('INSERT INTO sightings (icao24, callsign, airline, type_code, typklasse, livery_present, route, route_source, slot, closest_distance_km, first_seen_at, last_seen_at, last_seen_ms, observation_point_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)')
+        .run(s.icao24, s.callsign ?? null, s.airline ?? null, s.typeCode ?? null, s.typklasse, s.liveryPresent ? 1 : 0, route, routeSource, s.slot ?? null, s.distanceKm, iso, iso, nowMs, this.pointId);
     } else {
-      this.db.prepare(`UPDATE sightings SET last_seen_at = ?, last_seen_ms = ?, closest_distance_km = MIN(closest_distance_km, ?), route = CASE WHEN route_source IS NULL OR (route_source IN ('adsbdb', 'hexdb') AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route) ELSE route END, route_source = CASE WHEN route_source IS NULL OR (route_source IN ('adsbdb', 'hexdb') AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route_source) ELSE route_source END, slot = COALESCE(slot, ?) WHERE id = (SELECT id FROM sightings WHERE icao24 = ? ORDER BY last_seen_ms DESC, id DESC LIMIT 1)`)
-        .run(iso, nowMs, s.distanceKm, routeSource, route, routeSource, routeSource, s.slot ?? null, s.icao24);
+      this.db.prepare(`UPDATE sightings SET last_seen_at = ?, last_seen_ms = ?, closest_distance_km = MIN(closest_distance_km, ?), route = CASE WHEN route_source IS NULL OR (route_source IN ('adsbdb', 'hexdb') AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route) ELSE route END, route_source = CASE WHEN route_source IS NULL OR (route_source IN ('adsbdb', 'hexdb') AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route_source) ELSE route_source END, slot = COALESCE(slot, ?) WHERE id = (SELECT id FROM sightings WHERE icao24 = ? AND observation_point_id = ? ORDER BY last_seen_ms DESC, id DESC LIMIT 1)`)
+        .run(iso, nowMs, s.distanceKm, routeSource, route, routeSource, routeSource, s.slot ?? null, s.icao24, this.pointId);
     }
     return verdict;
   }
 
   /** Record what one route lookup found for the visit's sighting (findings only, ADR 0016): one row per asked source. */
   recordLookup(icao24: string, attempts: { source: string; outcome: string }[], conflict: boolean, chosen: string | null, nowMs: number): void {
-    const row = this.db.prepare('SELECT id FROM sightings WHERE icao24 = ? ORDER BY last_seen_ms DESC, id DESC LIMIT 1').get(icao24) as { id: number } | undefined;
+    const row = this.db.prepare('SELECT id FROM sightings WHERE icao24 = ? AND observation_point_id = ? ORDER BY last_seen_ms DESC, id DESC LIMIT 1').get(icao24, this.pointId) as { id: number } | undefined;
     if (!row) return;
     const ins = this.db.prepare('INSERT INTO route_lookups (sighting_id, source, outcome, conflict, chosen, looked_up_at) VALUES (?,?,?,?,?,?)');
     const iso = new Date(nowMs).toISOString();
@@ -83,7 +101,7 @@ export class SightingRepository {
   }
 
   latest(): Sighting | undefined {
-    const r = this.db.prepare('SELECT * FROM sightings ORDER BY last_seen_ms DESC, id DESC LIMIT 1').get() as Row | undefined;
+    const r = this.db.prepare('SELECT * FROM sightings WHERE observation_point_id = ? ORDER BY last_seen_ms DESC, id DESC LIMIT 1').get(this.pointId) as Row | undefined;
     return r && toSighting(r);
   }
 

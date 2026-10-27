@@ -68,7 +68,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
 
   fs.mkdirSync(config.dataDir, { recursive: true });
   const db = openDatabase(path.join(config.dataDir, 'planesabove.db'));
-  const sightings = new SightingRepository(db, config.sightings.visitGapMinutes * 60_000);
+  const sightings = new SightingRepository(db, config.sightings.visitGapMinutes * 60_000, { lat: config.location.lat, lon: config.location.lon, radiusKm: config.radiusKm, place: config.place });
 
   const fetchFn: Fetch = o.fetch ?? ((url, init) => fetch(url, init));
   const ua = config.sources.userAgent;

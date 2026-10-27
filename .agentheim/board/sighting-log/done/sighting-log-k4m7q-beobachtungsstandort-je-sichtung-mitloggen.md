@@ -1,7 +1,7 @@
 ---
 id: sighting-log-k4m7q
 title: Beobachtungsstandort je Sichtung mitloggen (Tabelle observation_points, Standortwechsel beendet den Besuch, Statistik je Standort)
-status: doing
+status: done
 type: feature
 context: sighting-log
 created: 2026-10-27
@@ -46,3 +46,7 @@ Form: eigene Tabelle `observation_points` statt denormalisierter Spalten, weil I
 Der Standort ist pro Prozess konstant (Config beim Start); deshalb reicht ein Hydrate-Filter, `SightingDedup` bleibt unverändert. Wechsel A, B, A innerhalb von `visitGap` setzt die alte A-Zeile fort (gleicher Standort, echte Kontinuität).
 
 Prior art: sighting-log-m7p2v (Statistik-CLI, `--json`, Schema-Test) — dort die Konventionen für `scripts/stats-routes.mjs` und `route-stats.ts` (keine Laufzeit-Imports, erasable syntax) übernehmen.
+
+## Outcome
+
+Migration 0006 (`src/server/migrations/0006-observation-points.ts`) adds `observation_points(id, lat, lon, radius_km, place, first_used_at)` with `UNIQUE(lat, lon, radius_km)` and the nullable `sightings.observation_point_id` (additive, no backfill). `SightingRepository(db, gapMs, point)` find-or-creates the point at start (lat/lon rounded to 4 decimals, `place` relabelled only); new rows carry the point id, and hydrate, the continue-visit UPDATE, `recordLookup` and `latest()` only consider the current point, so a location change ends the visit. `recordLookup`'s signature is unchanged. `app.ts` passes `config.location`, `radiusKm`, `place`. `stats:routes` (`scripts/stats-routes.mjs`, `route-stats.ts`) defaults to the newest sighting's point, accepts `--standort <id|unbekannt|alle>` (invalid value exits non-zero), prints the filter plus a Standorte overview, and `--json` gains `standort` and `standorte`; a pre-0006 DB yields only the "unbekannt" group. Root README documents the new flag. Tests: `tests/unit/server/observation-points.test.ts` (migration, find-or-create, visit end, hydrate, lookup/latest, CLI), `observation-point-wiring.test.ts` (startService path), existing constructor calls and the JSON-keys test updated. `npm test` (406+1 tests) and `npm run typecheck` are green.

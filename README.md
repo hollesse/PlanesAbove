@@ -47,7 +47,7 @@ npm test                   # Unit- + Contract-Tests (Vitest, offline, ohne Netz)
 npm run typecheck
 npm run e2e                # baut Storybook + Dienst; Playwright WebKit + Chromium gegen den echten Dienst im Mock-Modus
 npm run e2e:chromium       # nur Chromium (WebKit laeuft in Containern ohne Systembibliotheken nicht)
-npm run stats:routes -- --db data/planesabove.db --days 7 [--json]   # Routen-Statistik aus dem Sichtungsprotokoll (Quellen, Unbekannte, Konflikte)
+npm run stats:routes -- --db data/planesabove.db --days 7 [--json] [--standort <id|unbekannt|alle>]   # Routen-Statistik aus dem Sichtungsprotokoll (Quellen, Unbekannte, Konflikte)
 ```
 
 ### Mock-Modus und Szenarien
@@ -74,7 +74,7 @@ Contract-Fixtures liegen in `tests/fixtures/` (`vrs/` ist eine aufgezeichnete Te
 Welche Routenquelle liefert wie oft was? Das beantwortet
 
 ```
-npm run stats:routes -- --db data/planesabove.db --days 7 [--json]
+npm run stats:routes -- --db data/planesabove.db --days 7 [--json] [--standort <id|unbekannt|alle>]   # standardmaessig nur der Standort der neuesten Sichtung
 ```
 
 Der Befehl liest die SQLite-Datei nur lesend; es muss kein Dienst laufen. Ausgewertet werden nur gezeigte Sichtungen (`slot IS NOT NULL`) der letzten `--days` Tage. Ausgegeben werden Tabellen:

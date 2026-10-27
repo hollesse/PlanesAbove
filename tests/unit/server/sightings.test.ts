@@ -40,7 +40,7 @@ describe('SightingRepository on SQLite', () => {
   const tmp = () => path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'pa-')), 'planesabove.db');
 
   it('writes exactly one row for a flight observed across several Takte', () => {
-    const repo = new SightingRepository(openDatabase(':memory:'), 30 * MIN);
+    const repo = new SightingRepository(openDatabase(':memory:'), 30 * MIN, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     repo.observe(input(), 0);
     repo.observe(input({ distanceKm: 5 }), 30_000);
     repo.observe(input({ distanceKm: 9 }), 60_000);
@@ -49,14 +49,14 @@ describe('SightingRepository on SQLite', () => {
     expect(rows[0]).toMatchObject({ icao24: 'abc123', callsign: 'DLH400', airline: 'Lufthansa', typeCode: 'A20N', typklasse: 'narrowbody', liveryPresent: true, firstSeenAt: '1970-01-01T00:00:00.000Z', closestDistanceKm: 5 });
   });
   it('stores the Auswahl slot (1/2 when shown, null otherwise) and keeps the first one', () => {
-    const repo = new SightingRepository(openDatabase(':memory:'), 30 * MIN);
+    const repo = new SightingRepository(openDatabase(':memory:'), 30 * MIN, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     repo.observe(input({ icao24: 'a', slot: 2 }), 0);
     repo.observe(input({ icao24: 'a', slot: 1 }), 1000);
     repo.observe(input({ icao24: 'b' }), 0);
     expect(repo.list().map((s) => [s.icao24, s.slot])).toEqual([['a', 2], ['b', null]]);
   });
   it('writes one row per distinct flight', () => {
-    const repo = new SightingRepository(openDatabase(':memory:'), 30 * MIN);
+    const repo = new SightingRepository(openDatabase(':memory:'), 30 * MIN, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     repo.observe(input({ icao24: 'a' }), 0);
     repo.observe(input({ icao24: 'b', callsign: undefined, airline: undefined }), 0);
     expect(repo.list()).toHaveLength(2);
@@ -64,9 +64,9 @@ describe('SightingRepository on SQLite', () => {
   it('survives a restart: reopening the file keeps rows and does not duplicate the ongoing visit', () => {
     const file = tmp();
     const db1 = openDatabase(file);
-    new SightingRepository(db1, 30 * MIN).observe(input(), 1_000_000);
+    new SightingRepository(db1, 30 * MIN, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' }).observe(input(), 1_000_000);
     db1.close();
-    const repo2 = new SightingRepository(openDatabase(file), 30 * MIN);
+    const repo2 = new SightingRepository(openDatabase(file), 30 * MIN, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     expect(repo2.list()).toHaveLength(1);
     repo2.observe(input(), 1_030_000);
     expect(repo2.list()).toHaveLength(1);
@@ -74,14 +74,14 @@ describe('SightingRepository on SQLite', () => {
     expect(repo2.list()).toHaveLength(2);
   });
   it('counts unmapped type codes and airline prefixes (ADR 0010 #5)', () => {
-    const repo = new SightingRepository(openDatabase(':memory:'), 30 * MIN);
+    const repo = new SightingRepository(openDatabase(':memory:'), 30 * MIN, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     repo.reportUnmapped('type', 'ZZZZ');
     repo.reportUnmapped('type', 'ZZZZ');
     repo.reportUnmapped('airline', 'QQQ');
     expect(repo.unmapped()).toEqual([{ kind: 'airline', key: 'QQQ', count: 1 }, { kind: 'type', key: 'ZZZZ', count: 2 }]);
   });
   it('returns the latest sighting for the "Zuletzt" bar', () => {
-    const repo = new SightingRepository(openDatabase(':memory:'), 30 * MIN);
+    const repo = new SightingRepository(openDatabase(':memory:'), 30 * MIN, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
     expect(repo.latest()).toBeUndefined();
     repo.observe(input({ icao24: 'a' }), 1000);
     repo.observe(input({ icao24: 'b', callsign: 'RYR1', airline: 'Ryanair' }), 5000);
