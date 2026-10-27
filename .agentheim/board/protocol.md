@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 14:18 -- Modeling / Captured: sighting-log-m7p2v - Routen-Statistik: je Tag und Quelle zählen, Liste der Flüge mit Route unbekannt, Konflikte zwischen Quellen
+
+**Type:** Modeling / Capture
+**BC:** sighting-log
+**Filed to:** backlog
+**Summary:** Routen-Statistik je Tag und Quelle, Liste der Sichtungen mit Route unbekannt, Konflikt-Protokollierung zwischen Quellen, per /api/stats/routes oder npm-Skript.
+
+---
+
 ## 2026-10-27 14:18 -- Modeling / Captured: airspace-w3k8d - hexdb.io als zweite Routenquelle zwischen adsbdb und VRS, mit Konfliktregel bei widersprüchlichen Online-Antworten
 
 **Type:** Modeling / Capture
