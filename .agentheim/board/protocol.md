@@ -5,6 +5,16 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 14:45 -- Modeling / Refined: sighting-log-m7p2v - Routen-Statistik je Quelle, Liste der Unbekannten, Konflikte
+
+**Type:** Modeling / Refine
+**BC:** sighting-log
+**Status after:** todo
+**Summary:** Builder-Entscheidungen: nur Quellen-Befunde (hit/unknown/unavailable/rejected + Konflikt-Flag) persistieren, keine Flughafen-Codes von adsbdb/hexdb; Zugang per CLI npm run stats:routes ueber die SQLite-Datei, kein Endpunkt. Neue Tabelle route_lookups (Migration 0003), RouteInfo.attempts aus airspace. 12 maschinell pruefbare Kriterien inkl. Lizenz- und Schema-Test.
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 14:18 -- Modeling / Captured: sighting-log-m7p2v - Routen-Statistik: je Tag und Quelle zählen, Liste der Flüge mit Route unbekannt, Konflikte zwischen Quellen
 
 **Type:** Modeling / Capture
