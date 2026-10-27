@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 07:31 -- Modeling / Promoted: sky-scene-w9n4f - Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist
+
+**Type:** Modeling / Promote
+**BC:** sky-scene
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 07:19 -- Task verified and completed: design-system-r5d7v - Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“)
 
 **Type:** Work / Task completion
