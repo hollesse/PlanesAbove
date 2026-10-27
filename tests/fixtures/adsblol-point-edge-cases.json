@@ -1,0 +1,6 @@
+{"ac":[
+{"hex":"3c6444","type":"adsb_icao","flight":"DLH4TC  ","r":"D-AIXP","t":"A359","alt_baro":"ground","gs":12.5,"lat":50.04,"lon":8.55,"category":"A5"},
+{"hex":"abcdef","type":"mlat","lat":50.1,"lon":8.6,"alt_baro":3200,"gs":120,"mlat":["lat","lon"]},
+{"hex":"nopos1","flight":"NOPOS1  ","t":"B738","alt_baro":10000},
+{"hex":"4ca123","type":"adsb_icao","flight":"RYR1724 ","r":"EI-DCL","t":"B738","alt_baro":31000,"alt_geom":31500,"gs":455.2,"geom_rate":-1200,"track":88.1,"category":"A3","lat":50.2,"lon":8.9}
+],"msg":"No error","now":1793061790500,"total":4}

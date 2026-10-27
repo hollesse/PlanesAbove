@@ -1,0 +1,7 @@
+{
+  "name": "one-plane", "startTime": "2026-10-27T10:00:00Z",
+  "steps": [ { "at": 0,
+    "planes": [ { "icao24": "3c6444", "callsign": "DLH400", "typeCode": "A20N", "registration": "D-AIBI", "distanceKm": 8, "bearingDeg": 90, "altitudeFt": 36000, "speedKt": 470 } ],
+    "routes": { "DLH400": { "from": "Frankfurt", "to": "New York" } },
+    "tts": { "durationMs": 1200 } } ]
+}

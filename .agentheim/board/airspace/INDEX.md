@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 0
+- **Backlog:** 1
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 2
@@ -32,6 +32,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **airspace-m3w9c** — VRS standing-data (CC0) als bevorzugte RouteSource mit Offline-Snapshot (feature) — `backlog/airspace-m3w9c-vrs-standing-data-cc0-als-bevorzugte-routesource-mit-offline.md`
 <!-- backlog-list:end -->
 
 ## Pointers

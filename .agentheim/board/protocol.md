@@ -5,6 +5,20 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 01:08 -- Task verified and completed: infrastructure-001 - Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert
+
+**Type:** Work / Task completion
+**Task:** infrastructure-001 - Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert
+**Summary:** walking skeleton built end to end in mock mode and E2E, device acceptance split out
+**Duration:** ~25m
+**Verification:** PASS (iteration 2)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 82
+**Tests added:** 142
+**ADRs written:** 0013
+
+---
+
 ## 2026-10-27 01:03 -- Verification failed: infrastructure-001 - Walking skeleton
 
 **Type:** Work / Verification failure

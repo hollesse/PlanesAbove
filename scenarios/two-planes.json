@@ -1,0 +1,11 @@
+{
+  "name": "two-planes", "startTime": "2026-10-27T10:00:00Z",
+  "steps": [ { "at": 0,
+    "planes": [
+      { "icao24": "far000", "callsign": "THY1HN", "typeCode": "A333", "distanceKm": 25, "bearingDeg": 10, "altitudeFt": 38000, "speedKt": 480 },
+      { "icao24": "near00", "callsign": "RYR1724", "typeCode": "B738", "registration": "EI-DCL", "distanceKm": 3, "bearingDeg": 200, "altitudeFt": 31000, "speedKt": 440, "verticalRateFpm": -1200 },
+      { "icao24": "mid000", "callsign": "DLH400", "typeCode": "A20N", "distanceKm": 12, "bearingDeg": 90, "altitudeFt": 36000, "speedKt": 470 }
+    ],
+    "routes": { "DLH400": { "from": "Frankfurt", "to": "New York" } },
+    "tts": { "durationMs": 1200 } } ]
+}

@@ -1,0 +1,53 @@
+# PlanesAbove on ZimaOS (custom app) or any Docker host: `docker compose up -d --build` (ADR 0008).
+# Before the first start: copy config.example.yaml to /DATA/AppData/planesabove/config/config.yaml and set your location.
+services:
+  planesabove:
+    build: .
+    image: planesabove:local
+    container_name: planesabove
+    restart: unless-stopped
+    ports:
+      - "8080:8080"            # plain HTTP on the LAN only; the iPad opens http://<server>:8080/
+    environment:
+      CONFIG_PATH: /config/config.yaml
+      TZ: ${TZ:-Europe/Berlin}  # household time zone: nightly reload, clock label
+      # Secrets only via environment (ADR 0007), never in config.yaml, e.g. HEARTBEAT_URL later.
+    volumes:
+      - /DATA/AppData/planesabove/data:/data      # SQLite file (sighting log), audio cache
+      - /DATA/AppData/planesabove/config:/config:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  # Optional TTS sidecar (profile "tts"): docker compose --profile tts up -d --build
+  # Then set in config.yaml:  speech: { adapter: piper, endpoint: "http://tts:5000" }
+  tts:
+    profiles: ["tts"]
+    build: ./docker/piper
+    image: planesabove-tts:local
+    container_name: planesabove-tts
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  # Optional Storybook review site (profile "storybook", ADR 0008). Never opened by the iPad.
+  # Build the static site first: npm run build-storybook ; then: docker compose --profile storybook up -d storybook
+  storybook:
+    profiles: ["storybook"]
+    image: nginx:alpine
+    container_name: planesabove-storybook
+    restart: unless-stopped
+    ports:
+      - "6006:80"
+    volumes:
+      - ./storybook-static:/usr/share/nginx/html:ro
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }

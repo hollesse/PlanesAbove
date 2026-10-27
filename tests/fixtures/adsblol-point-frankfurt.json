@@ -1,0 +1,10 @@
+{"ac":[
+{"hex":"3e1215","type":"adsb_icao","flight":"CHX77   ","r":"D-HYAV","t":"EC45","alt_baro":425,"alt_geom":775,"gs":37.3,"track":200.38,"baro_rate":128,"squawk":"0020","emergency":"none","category":"A7","lat":50.027176,"lon":8.244348,"nic":9,"rc":75,"seen_pos":0.772,"version":2,"nic_baro":1,"nac_p":10,"nac_v":2,"sil":3,"sil_type":"perhour","gva":2,"sda":2,"alert":0,"spi":0,"mlat":[],"tisb":[],"messages":4021,"seen":0.8,"rssi":-27.0,"dst":12.605,"dir":263.9},
+{"hex":"40768a","type":"adsb_icao","flight":"EZY25YP ","r":"G-UZHV","t":"A20N","alt_baro":37975,"alt_geom":39350,"gs":393.7,"ias":246,"tas":444,"mach":0.776,"wd":312,"ws":53,"oat":-58,"tat":-32,"track":292.40,"track_rate":0.00,"roll":-0.18,"mag_heading":290.92,"true_heading":294.71,"baro_rate":0,"geom_rate":0,"squawk":"3247","emergency":"none","category":"A3","nav_qnh":1012.8,"nav_altitude_mcp":38016,"lat":50.013428,"lon":8.826141,"nic":8,"rc":186,"seen_pos":0.048,"version":2,"nic_baro":1,"nac_p":9,"nac_v":1,"sil":3,"sil_type":"perhour","gva":2,"sda":3,"alert":0,"spi":0,"mlat":[],"tisb":[],"messages":162620,"seen":0.0,"rssi":-10.0,"dst":10.099,"dir":102.4}
+]
+,"msg": "No error"
+,"now": 1793061790500
+,"total": 2
+,"ctime": 1793061790500
+,"ptime": 0
+}

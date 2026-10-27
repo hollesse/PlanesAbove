@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 0
+- **Backlog:** 1
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 6
@@ -37,6 +37,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **design-system-r5d7v** — Stale-Hinweis (neuer Baustein) vom Betreiber abnehmen (chore) — `backlog/design-system-r5d7v-stale-hinweis-neuer-baustein-vom-betreiber-abnehmen.md`
 <!-- backlog-list:end -->
 
 ## Pointers

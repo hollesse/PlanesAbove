@@ -1,0 +1,60 @@
+# PlanesAbove configuration (ADR 0007). Copy to config.yaml (not committed), edit, restart the container.
+# Secrets (API keys, HEARTBEAT_URL) are NEVER put here - only in environment variables.
+
+# live = real adsb.lol data; mock = scenario file (see scenarios/), used by the E2E tests.
+mode: live
+# scenario: scenarios/one-plane.json     # required when mode is mock
+
+# REQUIRED. Sample coordinates (Frankfurt am Main) - replace with the house location.
+location:
+  lat: 50.05
+  lon: 8.57
+
+# Shown in the header as "Der Himmel über <place>".
+place: dem Haus
+
+radiusKm: 30               # planes within this radius are considered (30 km = 17 nm)
+pollIntervalSeconds: 30    # the Takt
+port: 8080
+dataDir: /data             # SQLite file + audio cache (mounted volume in Docker; default ./data)
+logLevel: info             # debug | info | warn | error
+
+# Placeholder sky until the weather module exists (ADR 0006): dawn|day|dusk|night x clear|light|overcast|fog|rain|snow|storm
+sky:
+  time: day
+  weather: clear
+
+# Skeleton: only the white Standard-Lackierung is drawn. Set true to use airline liveries where the catalog has one.
+liveries:
+  enabled: false
+
+sources:
+  userAgent: "PlanesAbove/0.1 (self-hosted, single household)"
+  flight:
+    timeoutMs: 8000
+  route:
+    enabled: true
+    timeoutMs: 5000
+    cacheTtlHours: 6
+    negativeTtlMinutes: 10
+
+# German speech (ADR 0012). piper = the `tts` sidecar container; fake = silent clip (mock/testing only).
+speech:
+  adapter: piper
+  voice: de_DE-thorsten
+  endpoint: http://tts:5000
+  render: eager            # eager | lazy
+  timeoutMs: 15000
+
+# Settings handed to the iPad client with every state.
+client:
+  pollIntervalSeconds: 10
+  staleAfterMinutes: 5
+  reloadAt: "04:00"        # nightly reload, local time
+  speechWatchdogSeconds: 60
+
+sightings:
+  visitGapMinutes: 30      # a flight absent longer than this starts a new sighting
+
+health:
+  clientSilenceMinutes: 10

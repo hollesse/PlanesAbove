@@ -1,0 +1,11 @@
+node_modules
+dist
+storybook-static
+test-results
+playwright-report
+.git
+.worktrees
+.agentheim
+data
+config.yaml
+.env

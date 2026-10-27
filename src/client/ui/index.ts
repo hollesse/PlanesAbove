@@ -9,6 +9,7 @@ export * from './atoms/badge';
 export * from './atoms/logo';
 export * from './atoms/plane-silhouette';
 export * from './atoms/sky';
+export * from './atoms/stale-notice';
 export * from './atoms/text';
 export * from './molecules/info-row';
 export * from './molecules/painted-plane';

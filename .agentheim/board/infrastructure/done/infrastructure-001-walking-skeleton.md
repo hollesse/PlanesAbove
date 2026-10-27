@@ -1,7 +1,7 @@
 ---
 id: infrastructure-001-walking-skeleton
 title: Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert
-status: doing
+status: done
 type: spike
 context: infrastructure
 created: 2026-10-26
@@ -9,7 +9,7 @@ completed:
 depends_on: [design-system-001, infrastructure-pn3w4, infrastructure-y8epz, airspace-jy8hz, airspace-h76v2, weather-yttgx, sky-scene-xczgm, infrastructure-w7qbc, infrastructure-p6s30]
 blocks: []
 tags: [foundation, walking-skeleton, prototype]
-related_adrs: [0001, 0002, 0003, 0004, 0005, 0006, 0007, 0008, 0009, 0010, 0011, 0012]
+related_adrs: [0001, 0002, 0003, 0004, 0005, 0006, 0007, 0008, 0009, 0010, 0011, 0012, 0013]
 related_research: []
 prior_art: [design-system-001, design-system-c4v3r, design-system-v8q3n, design-system-q7m3k]
 ---
@@ -84,3 +84,33 @@ Der Skeleton wird in der Cloud-Umgebung gebaut; dort gibt es keinen Heimserver, 
 - Not blocking: sighting-log ("Besuch"/visitGap) and design-system ("Stale-Hinweis") terms can't go via this task's README_DELTA; the conductor carries them over.
 **SUGGESTED_FIX:** Replace the Mock-Modus append with a `replace` merging both definitions. Then either fix the three ADR departures (Auswahl slot column, persisted route cache, storybook profile) or list them as explicit scope cuts in ADR 0013.
 **ITERATION_HINT:** likely-fixable
+
+## Outcome
+
+The walking skeleton runs end to end. Everything provable without a device is proven in the cloud; the device-bound parts are described step by step in the root `README.md` ("Betrieb auf dem Heimserver (ZimaOS) und iPad-Pruefung") and carried by `infrastructure-d3v7k`.
+
+**What exists**
+- Service `src/server/` (modular monolith, one module per BC under `modules/`): `airspace` (normalised `Flugzeug`, `selectNearest`, curated type-class/airline/livery tables validated against the design-system catalog, adsb.lol FlightSource, adsb.lol routeset RouteSource, `RouteService` with plausibility rule + memory cache), `sighting-log` (dedup per flight and visit, SQLite repository with Auswahl slot, unmapped-key reports), `sky-scene` (Takt `SkyService`, German Steckbrief text with pronunciation dictionary, `SpeechSynthesizer` port with `piper` and `fake` adapters, audio cache/delivery), `weather` (fixed config sky). Plus zod+yaml config, better-sqlite3 with numbered migrations, injectable `FakeClock`, JSON-line logger, `/healthz` (ok/degraded/failing), `/api/state`, `/audio/<key>.wav`, static client, mock-mode endpoints.
+- Client `src/client/app/`: polls `/api/state`, renders the approved `renderScreen`, tap on plane or text speaks via `<audio>` Narrator, `VorleseSperre` with watchdog, capped backoff, stale marker, buildId/nightly/online/visibility reloads (deferred while speaking). Built by `scripts/build.mjs` (esbuild es2020/safari16).
+- New design-system piece (ADR 0002): atom `Stale-Hinweis` + 2 stories + optional `stale` prop on the Screen template. Needs operator approval (`design-system-r5d7v` filed).
+- Deployment: `Dockerfile`, `docker-compose.yml` (planesabove + optional `tts` and `storybook` profiles, restart unless-stopped, /healthz healthcheck, json-file rotation, bind mounts under /DATA/AppData/planesabove, TZ), `docker/piper/Dockerfile`, `config.example.yaml` (sample coordinates only), `.dockerignore`.
+
+**Acceptance criteria**
+1. Start on home server with real location, `/healthz` OK, iPad shows scene on LAN URL: [-> infrastructure-d3v7k]. Cloud proof: `docker compose config`, `--profile tts config` and `--profile storybook config` validate (`deploy-files.test.ts` checks the profiles); live boot against adsb.lol (Frankfurt sample, 17 nm) returned `/healthz` status ok with a successful poll. No Docker daemon was available, so the image was NOT built or run. Steps: README "Betrieb" 1-3.
+2. Real planes, silhouette in white default livery, max 2, the 2 nearest, callsign/type/altitude in the info bar; empty sky / "Zuletzt": real-data cross-check [-> infrastructure-d3v7k]. Mock/E2E proof: `tests/e2e/skeleton.spec.ts` "ein Flugzeug", "zwei Flugzeuge", "leerer Himmel"; unit `sky-service.test.ts` (one plane, three planes -> two nearest, "Zuletzt ... vor 6 Min", livery `def` unless enabled), `selection.test.ts`. 
+3. Selection updates every 30 s; source/net outage keeps last good scene with stale marker and recovers by itself: `e2e "Ausfall der Quelle ..."`, `sky-service.test.ts` outage test, `app.test.ts` (client offline -> stale after threshold -> recovery, server-flagged stale immediately), `client-logic.test.ts` (backoff).
+4. Tap speaks a German line; clear on the real iPad [human-eye] [-> infrastructure-d3v7k]. Proven here: composed text (`steckbrief.test.ts`), tap resolution and Narrator (`narrator.test.ts`, `client-logic.test.ts` tapTarget, e2e click on info bar starts playback in Chromium with the fake silent WAV).
+5. No selection change while speaking; newer selection after the end; watchdog frees hanging playback: `sperre.test.ts`, `narrator.test.ts` (ended/error/stalled/rejected play(), watchdog duration), `app.test.ts`, `e2e "Wechsel waehrend des Vorlesens ..."`.
+6. One sighting row per distinct flight with time, airline/callsign, type, class, livery yes/no; repeated Takte do not change the count; rows survive restart: `sightings.test.ts` (dedup, Auswahl slot, file DB reopened, unmapped keys), `sky-service.test.ts`, `e2e "ein Flugzeug"` (3 further Takte -> still 1 row) and "zwei Flugzeuge" (3 flights in radius -> 3 rows).
+7. Placeholder sky, configurable: `config.ts` `sky:` (default day/clear), `config.test.ts`; real weather sky is a follow-up (weather BC task already in backlog).
+8. Test-driven: domain logic test-first (two-nearest selection, type-class mapping, dedup, Vorlese-Sperre; the red run was observed for selection, the others were written test-and-implementation together in one step). `npm test` runs 189 tests offline (exit 0). Contract tests with fixtures incl. 403/429/5xx/timeout/network/parse/missing fields: `adsb-lol.contract.test.ts` (real recorded response `tests/fixtures/adsblol-point-frankfurt.json` + constructed edge cases), `route.test.ts` (constructed routeset fixture + empty-201 as recorded live), `speech.contract.test.ts` (constructed WAV fixture; piper 5xx/404/429/timeout/garbage).
+9. E2E with Playwright against the real service in mock mode, five scenarios green: `tests/e2e/skeleton.spec.ts` (empty sky, one plane, two planes -> two nearest, switch during narration held back, outage then recovery), controllable time via `POST /mock/advance`. Chromium: 10/10 e2e green (5 skeleton + 5 existing story specs). WebKit project is configured but WebKit cannot launch in this container; NOT run, to be run by the operator (`npm run e2e`). `npm test` / `npm run e2e` documented in root README and BC README delta.
+10. Findings (a)-(c): [-> infrastructure-d3v7k]. Interim observation for (c): a live POST to adsb.lol `/api/0/routeset` returned HTTP 201 with an empty body, so that source alone may yield a very low route share; VRS standing-data follow-up filed (`airspace-m3w9c`).
+
+**Operator deploy + iPad check:** root `README.md`, section "Betrieb auf dem Heimserver (ZimaOS) und iPad-Pruefung" (steps 1-9: config, `docker compose --profile tts up -d --build`, /healthz, iPad home-screen app + Guided Access, tracker cross-check, speech check, hourly route sample SQL, record findings a-c, update path).
+
+**Deviations / honest limits**
+- Piper request shape, voice name and pip extras are unverified (no Piper container reachable); routeset response schema is unverified. See ADR-0013 (provisional).
+- Heartbeat, VRS routes (incl. the persisted route cache), ElevenLabs adapter and real weather were cut from the spike (follow-ups filed; recorded in ADR-0013).
+- Client bundle is about 1.5 MB (inlined SVG/PNG logos); acceptable on LAN, optimisation is not part of the spike.
+- For other BC READMEs (not targetable here): airspace could add "Auswahl (2 nächste, eigene Haversine-Distanz)", sky-scene "Vorlese-Sperre/Narrator/Stale-Hinweis", sighting-log "Besuch (visitGap, Dedup je icao24)", design-system "Stale-Hinweis (Atom)".

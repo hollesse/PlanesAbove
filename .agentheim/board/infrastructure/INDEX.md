@@ -10,10 +10,10 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 1
+- **Backlog:** 3
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 4
+- **Doing:** 0
+- **Done:** 5
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **infrastructure-001** — Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert (spike) — `doing/infrastructure-001-walking-skeleton.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **infrastructure-001** — Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert (spike) — `done/infrastructure-001-walking-skeleton.md`
 - **infrastructure-p6s30** — Decide observability: health endpoint, dead-man's-switch heartbeat and structured logs (decision) — `done/infrastructure-p6s30-health-and-alerting.md`
 - **infrastructure-w7qbc** — Decide deployment topology and kiosk operation: Docker Compose app on ZimaOS, self-recovering iPad client via Guided Access (decision) — `done/infrastructure-w7qbc-deployment-and-kiosk.md`
 - **infrastructure-y8epz** — Decide persistence and configuration: SQLite single file plus validated config file (decision) — `done/infrastructure-y8epz-persistence-and-configuration.md`
@@ -36,6 +36,8 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **infrastructure-q2w8h** — Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind (chore) — `backlog/infrastructure-q2w8h-test-sichert-ab-dass-die-mock-endpunkte-im-live-modus-nicht.md`
+- **infrastructure-b4k8n** — Heartbeat (Dead-Man's-Switch) und Log-Erinnerungen nach ADR 0011 nachziehen (feature) — `backlog/infrastructure-b4k8n-heartbeat-dead-man-s-switch-und-log-erinnerungen-nach-adr-00.md`
 - **infrastructure-d3v7k** — Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad (chore) — `backlog/infrastructure-d3v7k-ger-teabnahme-des-walking-skeletons-auf-zimaos-heimserver-un.md`
 <!-- backlog-list:end -->
 

@@ -1,0 +1,5 @@
+html, body { margin: 0; height: 100%; background: #0d0f12; overflow: hidden; -webkit-text-size-adjust: 100%; }
+body { display: flex; align-items: center; justify-content: center; }
+/* The 4:3 screen fills the iPad; on other displays it is letterboxed. */
+#app { width: min(100vw, calc(100vh * 4 / 3)); }
+#app .pa-screen { border: none; }

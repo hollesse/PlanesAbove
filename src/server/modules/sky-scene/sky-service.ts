@@ -1,0 +1,128 @@
+// The Takt: poll the flight source, select, enrich, log sightings, and hold the current scene state (ADR 0004/0005).
+import type { Clock } from '../../clock';
+import type { Config } from '../../config';
+import type { Logger } from '../../logger';
+import type { SceneState, ScenePlane } from '../../../shared/state';
+import type { FlightPhase } from '../airspace/model';
+import { SourceError, type FlightSource, type Flugzeug } from '../airspace/model';
+import type { RouteService } from '../airspace/route-service';
+import { selectNearest } from '../airspace/selection';
+import { resolveAirline, resolveLivery, resolveTypeClass, type Tables } from '../airspace/typeclass';
+import type { SightingRepository } from '../sighting-log/repository';
+import type { AudioService } from './audio-service';
+import { composeSpeech } from './steckbrief';
+
+export interface FlightHealth { lastSuccessAt: number | null; lastTickAt: number | null; consecutiveFailures: number; lastErrorClass: string | null }
+
+const climbOrDescent = (rateMs: number | undefined): FlightPhase => (rateMs === undefined ? 'level' : rateMs > 2.5 ? 'climb' : rateMs < -2.5 ? 'descent' : 'level');
+
+export class SkyService {
+  private planes: ScenePlane[] = [];
+  private stale = false;
+  readonly health: FlightHealth = { lastSuccessAt: null, lastTickAt: null, consecutiveFailures: 0, lastErrorClass: null };
+
+  constructor(private readonly d: {
+    config: Config; clock: Clock; log: Logger; flight: FlightSource; routes: RouteService; tables: Tables;
+    sightings: SightingRepository; audio: AudioService; buildId: string; timeZone?: string;
+  }) {}
+
+  /** One 30 s Takt. Never throws: a failed source keeps the last good scene and marks it stale. */
+  async tick(): Promise<void> {
+    const { config, clock, log, flight } = this.d;
+    const now = clock.now();
+    this.health.lastTickAt = now;
+    let aircraft: Flugzeug[];
+    try {
+      aircraft = await flight.fetchAircraft(config.location, config.radiusKm);
+    } catch (e) {
+      const cls = e instanceof SourceError ? e.errorClass : 'network';
+      if (this.health.consecutiveFailures === 0) log.warn('flight source failed', { source: flight.name, errorClass: cls });
+      this.health.consecutiveFailures++;
+      this.health.lastErrorClass = cls;
+      this.stale = true;
+      return;
+    }
+    if (this.health.consecutiveFailures > 0) log.info('flight source recovered', { source: flight.name, failures: this.health.consecutiveFailures });
+    this.health.consecutiveFailures = 0;
+    this.health.lastErrorClass = null;
+    this.health.lastSuccessAt = now;
+    this.stale = false;
+
+    const inRadius = selectNearest(aircraft, config.location, config.radiusKm, Number.MAX_SAFE_INTEGER);
+    const chosen = inRadius.slice(0, 2);
+    const planes: ScenePlane[] = [];
+    const routeById = new Map<string, string | null>();
+    for (const c of chosen) {
+      const a = c.aircraft;
+      const route = await this.d.routes.routeFor(a.callsign, a);
+      routeById.set(a.icao24, route);
+      planes.push(this.toScenePlane(a, route));
+    }
+    inRadius.forEach((c, i) => this.recordSighting(c.aircraft, c.distanceKm, routeById.get(c.aircraft.icao24) ?? null, i < 2 ? i + 1 : null, now));
+    this.planes = planes;
+  }
+
+  private identify(a: Flugzeug) {
+    const t = this.d.tables;
+    const tc = resolveTypeClass(t, a.typeCode, a.emitterCategory);
+    const airline = resolveAirline(t, a.callsign);
+    const livery = resolveLivery(t, airline?.prefix, tc.typklasse, this.d.config.liveries.enabled);
+    return { tc, airline, livery };
+  }
+
+  private toScenePlane(a: Flugzeug, route: string | null): ScenePlane {
+    const { tc, airline, livery } = this.identify(a);
+    const altitudeM = a.altitudeM ?? 0;
+    const text = composeSpeech({ airlineName: airline?.name, callsign: a.callsign, typeName: tc.typeName, altitudeM: a.altitudeM });
+    return {
+      icao24: a.icao24,
+      plane: { type: tc.typklasse, livery: livery.liveryId },
+      flight: {
+        operator: airline?.name ?? '',
+        callsign: a.callsign,
+        aircraft: tc.typeName ?? a.typeCode ?? 'Flugzeug',
+        registration: a.registration ?? '',
+        route,
+        altitudeM,
+        speedKmh: a.speedKmh ?? 0,
+        phase: climbOrDescent(a.verticalRateMs),
+      },
+      speech: { text, ...this.d.audio.register(text) },
+    };
+  }
+
+  private recordSighting(a: Flugzeug, distanceKm: number, route: string | null, slot: number | null, now: number): void {
+    const { tc, airline, livery } = this.identify(a);
+    const verdict = this.d.sightings.observe({ icao24: a.icao24, callsign: a.callsign, airline: airline?.name, typeCode: a.typeCode, typklasse: tc.typklasse, liveryPresent: livery.present, distanceKm, route, slot }, now);
+    if (verdict === 'new') {
+      if (tc.unmapped && a.typeCode) this.d.sightings.reportUnmapped('type', a.typeCode);
+      if (airline && !airline.name) this.d.sightings.reportUnmapped('airline', airline.prefix);
+    }
+  }
+
+  private recentText(now: number): string | undefined {
+    const s = this.d.sightings.latest();
+    if (!s) return undefined;
+    const minutes = Math.max(0, Math.floor((now - s.lastSeenAtMs) / 60_000));
+    const who = [s.airline, s.callsign].filter(Boolean).join(' ') || 'Flugzeug';
+    return `Zuletzt: ${who} · ${minutes === 0 ? 'gerade eben' : `vor ${minutes} Min`}`;
+  }
+
+  state(): SceneState {
+    const { config, clock } = this.d;
+    const now = clock.now();
+    const clockLabel = new Intl.DateTimeFormat('de-DE', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: this.d.timeZone }).format(new Date(this.health.lastSuccessAt ?? now));
+    return {
+      buildId: this.d.buildId,
+      serverTime: now,
+      stale: this.stale,
+      lastSuccessAt: this.health.lastSuccessAt,
+      place: config.place,
+      clock: clockLabel,
+      sky: config.sky,
+      planes: this.planes,
+      recent: this.planes.length === 0 ? this.recentText(now) : undefined,
+      client: config.client,
+    };
+  }
+}
