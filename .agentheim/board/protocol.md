@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:22 -- Work session ended
+
+**Type:** Work
+**Scoped run:** airspace-v4kqz — integrated (Verifier PASS it.1).
+**Note:** tests/e2e/skeleton.spec.ts:19 (data-livery def vs lh) ist auf main seit der Lackierungs-Arbeit rot, unabhaengig von diesem Task.
+
+---
+
 ## 2026-10-27 21:22 -- Task verified and completed: airspace-v4kqz - Gesperrte Lufträume in der Plausibilitätsprüfung: schneidet der Großkreis einen gesperrten Luftraum, entfällt die Korridorprüfung und die erlaubte Kursabweichung steigt (Befund KAL908 London–Seoul)
 
 **Type:** Work / Task completion
