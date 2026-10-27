@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:32 -- Modeling / Refined: infrastructure-d3v7k - Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
+
+**Type:** Modeling / Refine
+**BC:** infrastructure
+**Status after:** todo
+**Summary:** Dritter Durchgang: alle drei Abhängigkeiten sind done, Kriterien und Aufteilung Worker/Betreiber bestätigt; Notes ergänzt (README-Betriebsabschnitt als einzig veralteter Teil, stats:routes --standort, docker=Podman-Alias lokal). Task bereit.
+**Split into:** none
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 21:28 -- Modeling / Promoted: sky-scene-n0sfy - Flugzeug-Übergänge (kommt / geht / wechselt) in der Live-Szene abspielen statt hart zu schneiden; Diff per icao24, Übergang-Sperre puffert den neuesten Stand
 
 **Type:** Modeling / Promote
