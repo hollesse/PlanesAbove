@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:17 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** ~12m (scoped run airspace-w3k8d)
+**Completed:** 1 — airspace-w3k8d (PASS it. 1)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** 1 worker, 1 verifier
+**Commits:** batch start 4727254, integrating 6298b16
+**Vision-conformance:** in scope (Routenquellen)
+**Batch mix:** 1 airspace task
+**Carry-over:** none
+
+---
+
 ## 2026-10-27 19:16 -- Task verified and completed: airspace-w3k8d - hexdb.io als Routenquelle, vorerst an erster Stelle vor adsbdb und VRS; Konfliktregel: erste plausible Route gewinnt
 
 **Type:** Work / Task completion
