@@ -19,7 +19,7 @@ Am 2026-10-27 passierten zwei falsche Routen (umgewidmete Eurowings-Flugnummern 
 
 ## What
 - `isPlausibleRoute` erhält zusätzlich Beobachtungsdaten: `track`, `verticalRateMs`, `altitudeM` (vom Takt aus dem `Flugzeug` übergeben; bei fehlendem `track`, z. B. MLAT, entfällt die Richtungsprüfung).
-- **Schutzzone um die Flughäfen (Betreiber-Entscheidung):** Kurs- und Phasenprüfung laufen nur, wenn das Flugzeug weiter als `plausibility.airportZoneKm` (Default 50) sowohl vom Abflug- als auch vom Zielflughafen der geprüften Route entfernt ist. Innerhalb der Zone zählt nur der Korridor, weil Abflug- und Anflugrouten in alle Richtungen führen.
+- **Schutzzone um die Flughäfen (Betreiber-Entscheidung 2026-10-27):** Die Kursprüfung läuft nur, wenn das Flugzeug weiter als `plausibility.originZoneKm` (Default 60; Abflugroute plus Streckendrehung) vom Abflughafen UND weiter als `plausibility.destinationZoneKm` (Default 80; Anflugroute, Warteschleifen, Radarvektoren) vom Zielflughafen der geprüften Route entfernt ist UND höher als `plausibility.minHeadingCheckAltitudeM` (Default 3000) fliegt. Innerhalb der Zone oder darunter zählt nur der Korridor. Die Phasenprüfung braucht keine Zone (sie wird mit der Distanz erst strenger).
 - **Richtung:** Peilung vom Standort zum nächsten Zwischenziel/Ziel der Route gegen `track`; Abweichung über `plausibility.maxHeadingDeviationDeg` (Default 65) → Route unbekannt.
 - **Flugphase:** Steigflug (`verticalRateMs` > ca. 2,5 m/s ≈ 500 ft/min) bei Abstand zum Abflughafen > `plausibility.maxClimbDistanceKm` (Default 250) → unbekannt; Sinkflug analog gegen das Ziel.
 - **Engerer Korridor:** Querabstand (Cross-Track) zur Großkreislinie statt Ellipse: erlaubt `corridorBaseKm` (Default 50) + `corridorPercent` (Default 5) × Streckenlänge; Mehrleg-Routen je Leg, plausibel wenn ein Leg passt.
@@ -30,7 +30,7 @@ Am 2026-10-27 passierten zwei falsche Routen (umgewidmete Eurowings-Flugnummern 
 - [ ] Testfall EWG9YV (Split–Köln, Position Oberweyer, Kurs 140°, Reiseflug): abgelehnt wegen Richtung.
 - [ ] Testfall EWG16Y (Stuttgart–Larnaca, Position Oberweyer, Steigflug +12 m/s, 210 km von Stuttgart): abgelehnt wegen Querabstand (134 km > 50 + 5 % × 2521) und/oder Phase.
 - [ ] Positivfälle bleiben plausibel: LHX1979 Köln–München, AUA166D Düsseldorf–Wien, DLH400 Frankfurt–New York (Steigflug 60 km von Frankfurt, innerhalb der Schutzzone → nur Korridor).
-- [ ] Schutzzone: ein Flugzeug 30 km vom Abflughafen mit Kurs 180° gegen eine Route Richtung 0° wird NICHT abgelehnt (Zone), dasselbe 80 km entfernt schon.
+- [ ] Schutzzone: 50 km vom Abflughafen mit Kurs 180° gegen eine Route Richtung 0° wird NICHT abgelehnt (Zone 60 km); 70 km entfernt in 5000 m Höhe schon; 70 km entfernt in 2500 m Höhe wieder nicht (Höhen-Guard); 70 km vor dem Zielflughafen mit Gegenkurs nicht (Zone 80 km).
 - [ ] Fehlender `track` oder `verticalRateMs`: nur Korridor-Prüfung, keine Ablehnung aus Richtung/Phase.
 - [ ] Mehrleg-Route: plausibel, wenn ein Leg alle Prüfungen besteht.
 - [ ] Config-Validierung aller Schwellen (positive Zahlen, Grad 0–180); Defaults wie oben.

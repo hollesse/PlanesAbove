@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:39 -- Modeling / Captured: airspace-c5t9m - airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben)
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** airplanes.live-Adapter entfernen (feeder-only, kein eigener Feeder geplant); Kette wird adsb-fi -> adsb-lol; ADR 0019 Nachtrag.
+
+---
+
 ## 2026-10-27 18:34 -- Modeling / Captured: airspace-p8w2k - Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand
 
 **Type:** Modeling / Capture
