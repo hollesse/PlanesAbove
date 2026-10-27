@@ -11,19 +11,19 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 3
-- **Todo:** 2
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 2
 - **Done:** 7
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **airspace-b9r4w** — adsb.lol als dritte Flugquelle mit persistiertem Tagesbudget (400 von 500 Requests) und Auswertung der Rate-Limit-Header (feature) — `todo/airspace-b9r4w-adsb-lol-als-dritte-flugquelle-mit-tagesbudget.md`
-- **airspace-v6m3h** — airplanes.live als zweite Flugquelle in der FlightSource-Kette (feature) — `todo/airspace-v6m3h-airplanes-live-als-zweite-flugquelle.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **airspace-b9r4w** — adsb.lol als dritte Flugquelle mit persistiertem Tagesbudget (400 von 500 Requests) und Auswertung der Rate-Limit-Header (feature) — `doing/airspace-b9r4w-adsb-lol-als-dritte-flugquelle-mit-tagesbudget.md`
+- **airspace-v6m3h** — airplanes.live als zweite Flugquelle in der FlightSource-Kette (feature) — `doing/airspace-v6m3h-airplanes-live-als-zweite-flugquelle.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

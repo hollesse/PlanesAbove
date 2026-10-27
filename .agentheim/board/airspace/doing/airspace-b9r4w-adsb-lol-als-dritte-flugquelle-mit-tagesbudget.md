@@ -1,7 +1,7 @@
 ---
 id: airspace-b9r4w
 title: adsb.lol als dritte Flugquelle mit persistiertem Tagesbudget (400 von 500 Requests) und Auswertung der Rate-Limit-Header
-status: todo
+status: doing
 type: feature
 context: airspace
 created: 2026-10-27

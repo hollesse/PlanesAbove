@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:19 -- Batch started: [airspace-v6m3h, airspace-b9r4w]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-v6m3h - airplanes.live als zweite Flugquelle in der FlightSource-Kette, airspace-b9r4w - adsb.lol als dritte Flugquelle mit persistiertem Tagesbudget (400 von 500 Requests) und Auswertung der Rate-Limit-Header
+**Parallel:** yes (2 workers) — merge order v6m3h then b9r4w (both register in app.ts / flight-source-names.ts)
+
+---
+
 ## 2026-10-27 18:19 -- Modeling / Promoted: airspace-b9r4w - adsb.lol als dritte Flugquelle mit persistiertem Tagesbudget (400 von 500 Requests) und Auswertung der Rate-Limit-Header
 
 **Type:** Modeling / Promote
