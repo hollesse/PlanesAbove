@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 07:14 -- Batch started: [design-system-r5d7v]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-r5d7v - Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“)
+**Parallel:** no (1 worker) — operator rejected the separate stale notice
+
+---
+
 ## 2026-10-27 07:14 -- Modeling / Promoted: design-system-r5d7v - Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“)
 
 **Type:** Modeling / Promote

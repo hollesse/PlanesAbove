@@ -1,7 +1,7 @@
 ---
 id: design-system-r5d7v
 title: Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“)
-status: todo
+status: doing
 type: feature
 context: design-system
 created: 2026-10-27
