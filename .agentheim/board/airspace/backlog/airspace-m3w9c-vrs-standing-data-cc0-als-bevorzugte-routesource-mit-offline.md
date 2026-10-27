@@ -27,3 +27,9 @@ ADR 0005 nennt VRS standing-data als bevorzugte Routenquelle. Im Skeleton gibt e
 - [ ] Contract-Tests gruen (bekannte Route, unbekanntes Callsign, kaputte Zeile).
 - [ ] Konfigurierbare Reihenfolge `sources.route.order`.
 - [ ] Routen-Cache ueberlebt einen Neustart (Test), adsbdb-Ergebnisse werden nie geschrieben.
+## Notes
+Befund aus dem Live-Test am 2026-10-27 (Oberweyer, echter Betrieb, 176 Sichtungen, 0 mit Route):
+- `POST https://api.adsb.lol/api/0/routeset` antwortet aktuell fuer **jeden** Callsign mit HTTP 201 und leerem Body, auch fuer bekannte (DLH400, RYR6ZM). Request entspricht OpenAPI (`{"planes":[{"callsign","lat","lng"}]}`) und dem Quellcode (`api_routes.py`), der eine JSON-Liste liefern muesste. Der Endpunkt ist serverseitig tot; der Adapter wertet das korrekt als Route unbekannt, loggt aber nichts. Nicht erneut dagegen bauen.
+- Der deprecated `GET /api/0/route/{callsign}` leitet per 302 auf einen **statischen VRS-Spiegel von adsb.lol** um, der funktioniert: `https://vrs-standing-data.adsb.lol/routes/<erste zwei Zeichen des Callsigns>/<CALLSIGN>.json`. Beispiele: `routes/RY/RYR6ZM.json` -> LEAL-EGBB (Alicante -> Birmingham), `routes/DL/DLH400.json` -> EDDF-KJFK. Felder: `callsign`, `number`, `airline_code`, `airport_codes` (ICAO, mit `-`), `_airport_codes_iata`, `_airports[]` (name, icao, iata, lat, lon, ...). Unbekannte Callsigns liefern 404 mit HTML-Body (EWG9UX, LOT1RF, CFG068 am Testtag).
+- Das ist dieselbe Datenbasis (VRS standing-data, CC0) wie der Offline-Snapshot; der Spiegel taugt als Online-Fallback oder als Quelle fuer Fixtures, ersetzt den Snapshot aber nicht (Lücken bei Charter-/Nicht-Linien-Callsigns sind zu erwarten).
+- Zusatz fuer diese Task oder einen eigenen Chore: leere/unerwartete Antworten der Routenquelle als `warn` loggen, damit ein toter Endpunkt nicht wochenlang unsichtbar bleibt.
