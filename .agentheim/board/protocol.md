@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 11:56 -- Capture / Captured: airspace-h9x4p - Nähe nach Sichtbarkeit gewichten statt rein horizontaler Distanz
+
+**Type:** Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** selectNearest soll Hoehe einbeziehen (Schraegdistanz oder Hoehenmalus), damit sichtbare tiefe Flieger hohe Airliner schlagen
+
+---
+
 ## 2026-10-27 11:56 -- Capture / Captured: airspace-f7k2m - Ultraleicht und unbekannte Typcodes werden als narrowbody gezeichnet (Ikarus C42 D-MMDP)
 
 **Type:** Capture
