@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 2
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **sky-scene-g3r8w** — Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel (feature) — `todo/sky-scene-g3r8w-mindesthaltezeit-pro-slot-gegen-flackern-beim-flugzeugwechsel.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **sky-scene-g3r8w** — Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel (feature) — `doing/sky-scene-g3r8w-mindesthaltezeit-pro-slot-gegen-flackern-beim-flugzeugwechsel.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 14:01 -- Batch started: [sky-scene-g3r8w]
+
+**Type:** Work / Batch start
+**Tasks:** sky-scene-g3r8w - Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel
+**Parallel:** no (1 worker) — single ready task
+
+---
+
 ## 2026-10-27 13:58 -- Modeling / Promoted: sky-scene-g3r8w - Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel
 
 **Type:** Modeling / Promote
