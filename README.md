@@ -48,6 +48,7 @@ npm run typecheck
 npm run e2e                # baut Storybook + Dienst; Playwright WebKit + Chromium gegen den echten Dienst im Mock-Modus
 npm run e2e:chromium       # nur Chromium (WebKit laeuft in Containern ohne Systembibliotheken nicht)
 npm run stats:routes -- --db data/planesabove.db --days 7 [--json] [--standort <id|unbekannt|alle>]   # Routen-Statistik aus dem Sichtungsprotokoll (Quellen, Unbekannte, Konflikte)
+npm run stats:liveries -- --db data/planesabove.db --days 30 [--json] [--standort <id|unbekannt|alle>]   # Lackierungs-Statistik: Airlines, die mit der Standard-Lackierung gezeigt wurden
 ```
 
 ### Mock-Modus und Szenarien
@@ -68,6 +69,23 @@ npm run stats:routes -- --db data/planesabove.db --days 7 [--json] [--standort <
 **Flugquelle und Attribution.** Positionen kommen keyless von [adsb.fi](https://adsb.fi) (open data, `GET opendata.adsb.fi/api/v3/lat/{lat}/lon/{lon}/dist/{nm}`; nur persoenliche, nicht-kommerzielle Nutzung, 1 Request/s), bei Ausfall von den naechsten Quellen aus `sources.flight.order` (Default `[adsb-fi, adsb-lol]`; Namen ohne Adapter werden beim Start mit Warnung uebersprungen). Pro Takt wird die erste verfuegbare Quelle gefragt, bei Fehler sofort die naechste. Backoff je Quelle: bei 429 Pause bis `Retry-After` bzw. `x-ratelimit-reset`; bei adsb.fi jede 4xx-Antwort mindestens 60 s (4xx zaehlen dort zur IP-Sperre); sonst Circuit Breaker (3 Fehler in Folge: 30 s, verdoppelnd bis 5 min, mit Jitter). `/healthz` zeigt `flight.active` und den Zustand je Quelle, bei adsb-lol zusaetzlich `budget` (used/cap/remaining/resetsAt). adsb.lol hat ein persistiertes Tagesbudget (`sources.flight.adsbLol.dailyRequestCap`, Default 400 von 500 Requests je UTC-Tag; bei Erreichen wird die Quelle bis 00:00 UTC uebersprungen, auch nach Neustart; ein niedrigerer `x-ratelimit-remaining`-Header gewinnt, bei 429 gilt `x-ratelimit-reset` exakt). Attribution: Data: [adsb.fi](https://adsb.fi) (Failover: [adsb.lol](https://adsb.lol), ODbL 1.0).
 
 Contract-Fixtures liegen in `tests/fixtures/` (`vrs/` ist eine aufgezeichnete Teilmenge der VRS standing-data vom 2026-10-27, Details in `vrs/README.txt`; `adsblol-point-frankfurt.json` ist eine echte Antwort vom 2026-10-27; `adsbfi-v3-point-oberweyer.json` ist eine echte adsb.fi-v3-Antwort vom 2026-10-27 (`/api/v3/lat/50.45/lon/8.09/dist/17`, keyless, 3 Flugzeuge); die uebrigen sind konstruiert, siehe Kommentare in den Tests).
+
+## Lackierungs-Statistik
+
+Welche Airlines fliegen ueber dem Haus, werden aber mit der Standard-Lackierung (weiss) gezeigt? Das beantwortet
+
+```
+npm run stats:liveries -- --db data/planesabove.db --days 30 [--json] [--standort <id|unbekannt|alle>]   # standardmaessig nur der Standort der neuesten Sichtung
+```
+
+Der Befehl liest die SQLite-Datei nur lesend (wie `stats:routes`). Ausgewertet werden gezeigte Sichtungen (`slot IS NOT NULL`) der letzten `--days` Tage; `light-aircraft` und `glider` zaehlen nicht (dort gibt es keine Lackierung). Ausgegeben werden:
+
+- **Kopfzeile**: Anteil der Sichtungen mit vorhandener Lackierung.
+- **Airlines mit Standard-Lackierung**: Name, Praefix, Anzahl, dazu die Typklassen (z. B. `Emirates UAE 7 (double-decker 4, widebody 3)`), absteigend.
+- **Praefixe ohne Airline-Eintrag**: die Zeilen `kind = 'airline'` aus `unmapped_keys` (ueber alle Zeiten und Standorte, nicht fensterbezogen); auch diese fallen auf die Standard-Lackierung.
+- **Sichtungen ohne Airline** (Rufzeichen ohne Praefix-Muster): eine Summenzeile.
+
+Ob der Grund ein fehlendes Katalog-Design oder eine fehlende Zuordnung ist, weiss das Log nicht. `--json` liefert `standort`, `standorte`, `airlines`, `unmappedPrefixes`, `withoutAirline`, `presentShare`.
 
 ## Routen-Statistik
 

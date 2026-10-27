@@ -1,7 +1,7 @@
 ---
 id: sighting-log-t8tfb
 title: Lackierungs-Statistik „npm run stats:liveries“: welche Airlines wie oft mit der Standard-Lackierung gezeigt wurden, weil kein Design oder keine Zuordnung vorlag
-status: doing
+status: done
 type: feature
 context: sighting-log
 created: 2026-10-27
@@ -39,3 +39,9 @@ Die Auswertung sagt nicht, ob der Grund „kein Katalog-Design“ oder „keine 
 - Abgespalten aus design-system-t6wz4 beim Refine am 2026-10-27 (Statistik-Teil gehört in dieses BC).
 - Stand 2026-10-27 in `data/planesabove.db`: SunExpress 10, Emirates 7, Qatar 4, United 4, Cathay Pacific 3, je 1 Cargolux, DHL Air, Etihad, Icelandair, Lufthansa Cargo, Singapore; unmapped: EXS 17, KLC 13, LHX 10, OCN 9, TKJ 8, CAI 5, NJE 4, CXI 4, AEE 4, CCA 4, VIR 4.
 - Unabhängig von airspace-f9cjz lauffähig; sinnvoll erst nach dessen Merge zu lesen.
+
+## Outcome
+
+Implemented `npm run stats:liveries` (scripts/stats-liveries.mjs + src/server/modules/sighting-log/livery-stats.ts, self-contained, erasable syntax). liveryStats returns { standort, standorte, airlines, unmappedPrefixes, withoutAirline, presentShare }; missing unmapped_keys yields an empty section. Root README section "Lackierungs-Statistik" and package.json script added; tests in tests/unit/server/livery-stats.test.ts. Full suite 447 passed, typecheck clean.
+
+Operator DB (copy, --days 30, default standort unbekannt): "Lackierung vorhanden: 49%"; Airlines: SunExpress SXS 11 (narrowbody 11), Emirates UAE 7 (double-decker 4, widebody 3), Qatar Airways QTR 4, United UAL 4, Cathay Pacific CPA 3, ...; unmapped: EXS 17, KLC 13, LHX 11, OCN 9, TKJ 8, ...

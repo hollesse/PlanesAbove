@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:54 -- Task verified and completed: sighting-log-t8tfb - Lackierungs-Statistik „npm run stats:liveries“: welche Airlines wie oft mit der Standard-Lackierung gezeigt wurden, weil kein Design oder keine Zuordnung vorlag
+
+**Type:** Work / Task completion
+**Task:** sighting-log-t8tfb - Lackierungs-Statistik „npm run stats:liveries“: welche Airlines wie oft mit der Standard-Lackierung gezeigt wurden, weil kein Design oder keine Zuordnung vorlag
+**Summary:** Lackierungs-Statistik npm run stats:liveries (Airlines mit Standard-Lackierung je Typklasse, unmapped Präfixe, ohne Airline, Anteil vorhanden; --standort wie stats:routes)
+**Duration:** 5m10s
+**Verification:** PASS (iteration 1)
+**Files changed:** 5
+**Tests added:** 7
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 19:54 -- Task verified and completed: airspace-f9cjz - Airline-Lackierungszuordnung für alle Katalog-Lackierungen vervollständigen (Emirates, Qatar, United, Jet2, KLM Cityhopper …) und Lackierungen standardmäßig einschalten
 
 **Type:** Work / Task completion

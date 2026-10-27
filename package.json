@@ -12,6 +12,7 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "stats:routes": "node scripts/stats-routes.mjs",
+    "stats:liveries": "node scripts/stats-liveries.mjs",
     "storybook": "npm run assets && storybook dev -p 6006",
     "build-storybook": "npm run assets && storybook build -o storybook-static",
     "pretest:e2e": "npm run build-storybook && npm run build",
