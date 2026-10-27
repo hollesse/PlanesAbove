@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 22:08 -- Modeling / Refined: airspace-cn6t7 - Routenanzeige bei langen Flughafennamen
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** backlog
+**Summary:** Zwei Betreiber-Entscheidungen festgehalten: Mehrleg-Routen zeigen nur Start → Ende, Zwischenstopp klein in der Eyebrow (RouteInfo liefert Legs, sky-scene bildet route/via); Layout bei langen Namen wird Storybook-first mit drei Alternativ-Stories entschieden. Aufteilung in design-system-Spike plus Umsetzungstask geplant, noch nicht erzeugt (Sitzung durch Usage-Limit beendet).
+
+---
+
 ## 2026-10-27 21:57 -- Modeling / Captured: design-system-z9rzp - Flugphase als Pfeil vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen mehr Platz haben
 
 **Type:** Modeling / Capture

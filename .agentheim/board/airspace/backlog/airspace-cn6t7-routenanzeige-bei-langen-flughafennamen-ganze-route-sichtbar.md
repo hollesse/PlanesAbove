@@ -6,7 +6,7 @@ type: bug
 context: airspace
 created: 2026-10-27
 completed:
-depends_on: []
+depends_on: [design-system-001-styleguide, design-system-z9rzp]
 blocks: []
 tags: [captured, route, display, layout, e2e]
 related_adrs: [0021]
@@ -15,23 +15,27 @@ prior_art: []
 ---
 
 ## Why
-Die Routenanzeige im Steckbrief kann länger werden als der verfügbare Platz. Mehrleg-Routen (z. B. Hongkong → Sharjah → Köln) mit langen Stadtnamen laufen dann ab oder werden abgeschnitten. Die Anzeige muss die ganze Route zeigen.
-
-Außerdem soll ein automatischer Test belegen, dass die längsten Flughafennamen der Tabelle vollständig sichtbar bleiben. Das Projekt nutzt Playwright, nicht Cypress; der Test entsteht daher als Playwright-E2E.
+Die Routenanzeige im Steckbrief kann länger werden als der verfügbare Platz. Die Zeile ist heute `white-space: nowrap` in cqw-Schrift (5cqw Einzelansicht, 3.3cqw Zwei-Flugzeuge). Die längsten Einträge der Flughafen-Tabelle (ADR 0021) sind „Santiago de Compostela (SCQ)" (28 Zeichen) und „Jerez de la Frontera (XRY)" (26); schon zwei solche Namen (57 Zeichen) brauchen bei 5cqw rund die doppelte Bildschirmbreite, eine dreilegige Route (83 Zeichen) die dreifache.
 
 ## What
-- Entscheidung offen: Umgang mit überlangen Texten (Umbruch über mehrere Zeilen, Verkleinerung der Schrift, Kürzung mit Ellipse, Anzeige in einer zweiten Zeile). Die Ganze-Route-Anforderung gilt in jedem Fall; Kürzung nur von Stadtnamen, nie einzelne Legs weglassen.
-- Die Flughafen-Tabelle (ADR 0021) liefert die Anzeigetexte in der Form `Stadt (IATA)`. Die beiden längsten Einträge der Tabelle werden für den Test ermittelt, nicht geraten.
-- Playwright-Test: Mehrleg-Route mit den beiden längsten Flughafennamen (Route mit drei Legs, damit die Kette lang wird), im Mock-Modus rendern, prüfen dass alle Legs im sichtbaren Bereich liegen und nichts abgeschnitten wird (Element-Bounding-Box innerhalb des Containers, kein horizontaler Überlauf).
-- Test läuft im WebKit-Projekt (Pflichtziel, ADR 0003/0004).
+Refinement 2026-10-27 mit dem Betreiber, zwei Entscheidungen sind gefallen:
+
+1. **Mehrleg-Routen zeigen im Steckbrief nur Start → Ende.** Zwischenstopps wandern klein in die Eyebrow-Zeile („über Sharjah") und bleiben im gesprochenen Steckbrief. Der persistierte Routentext (`formatRoute`, `sightings.route`, `route-why`) bleibt die volle Kette „A → B → C"; nur die Anzeige trennt. Dafür muss `RouteInfo` (airspace) neben `text` die Leg-Anzeigetexte in Reihenfolge liefern, und sky-scene bildet daraus `FlightInfo.route` (erster → letzter) und ein neues `FlightInfo.via` (Zwischenstopp-Städte); `formatEyebrow` hängt „· über X" an.
+2. **Der Umgang mit zwei langen Namen wird Storybook-first entschieden (ADR 0002), nicht hier implementiert.** Erst drei Alternativen als zusätzliche Stories (nur Story-lokales CSS, Komponente und ui.css unverändert), dann Abnahme durch den Betreiber. Kandidaten: (a) erst Stufen-Verkleinerung nach Länge, dann Umbruch nur vor dem Pfeil; (b) Umbruch vor dem Pfeil plus Verkleinerung; (c) nur einzeilige Verkleinerung. Ein Flughafenname bricht in keiner Variante innerhalb des Namens um.
+
+**Geplante Aufteilung (nächste Modeling-Sitzung ausführen):**
+- `airspace-cn6t7` (dieser Task, airspace mit sky-scene-Berührung): Punkt 1, Unit-Tests, keine Layoutänderung → todo-fähig.
+- neuer design-system-Spike: drei Alternativen mit Worst-Case-Daten (57 Zeichen, Einzel- und Zwei-Flugzeuge-Ansicht), depends_on design-system-z9rzp (schafft erst Platz), Ergebnis = gewählte Variante in den Notes; Stop-loss: ist die Wahl nach der ersten Variante schon klar, festhalten und abbrechen.
+- neuer design-system-Task (backlog, hängt am Spike): gewählte Variante umsetzen plus Playwright-Test im Projekt `webkit`, der eine Route mit den zwei längsten Tabellen-Namen rendert und prüft, dass alle Teile innerhalb des Routen-Containers liegen (Bounding-Box, kein horizontaler Überlauf).
 
 ## Acceptance criteria
-- [ ] Ein Playwright-Test rendert eine Mehrleg-Route mit den zwei längsten Flughafennamen aus der Tabelle; alle Legs und Pfeile liegen innerhalb des Routen-Containers, kein Text wird abgeschnitten.
-- [ ] Der Test läuft im Projekt `webkit` grün (`npx playwright test --project=webkit`).
-- [ ] Bei sehr langen Texten erscheint kein horizontaler Seitenüberlauf auf Phone-/iPad-Breite.
-- [ ] Der Umgang mit überlangen Texten ist in der Task-Notiz entschieden und im README der Anzeige beschrieben.
+- [ ] `RouteInfo` liefert die Leg-Anzeigetexte in Reihenfolge; `formatRoute`/persistierter Text unverändert (bestehende Tests, inkl. airspace-w1q3x UPS1-Fall, bleiben grün).
+- [ ] Unit-Test sky-scene: Route `VHHH → OMSJ → EDDK` ergibt `route = "Hongkong (HKG) → Köln (CGN)"` und `via = ["Sharjah"]`; zweilegige Route ergibt `via = []`.
+- [ ] `formatEyebrow` zeigt bei `via` „· über Sharjah" (mehrere Stopps mit Komma); Unit-Test.
+- [ ] Gesprochener Steckbrief unverändert (Test belegt gleichen Text wie vorher).
+- [ ] `npm test`, `npm run typecheck`, `npm run build` grün; airspace-README (Mehrlegige Route) ergänzt um „Anzeige Start → Ende, Zwischenstopp in der Eyebrow".
 
 ## Notes
-Captured via `quick-capture` on 2026-10-27 — raw, unrefined. Needs a `modeling` refine pass before it can be promoted.
-Offene Frage für die Refinement-Runde: Umbruch, Verkleinerung, Kürzung oder zweite Zeile? Vorschlag: Umbruch über mehrere Zeilen als Default, Verkleinerung nur als Fallback.
-Routing-Vermutung: airspace (Anzeige der Route nach ADR 0021); falls die Layout-Entscheidung eher zur Client-Komponente gehört, kann sie nach sky-scene oder design-system wandern. Antwort mit einer BC-Angabe verschiebt die Task per `reroute`.
+- Captured via `quick-capture` 2026-10-27; refined 2026-10-27 (Betreiber-Entscheidungen oben). Layout-Frage und Playwright-Test gehen in die zwei design-system-Tasks, die noch zu erzeugen sind.
+- Einstiegspunkte: `src/server/modules/airspace/route-service.ts` (`RouteInfo`, `formatRoute`, `airportLabel`), `src/server/modules/sky-scene/sky-service.ts` (`toScenePlane`), `src/shared/state.ts`, `src/client/ui/domain/flight.ts` (`formatEyebrow`), `src/client/ui/styles/ui.css` (`.pa-route-large`).
+- Zusammenhang: design-system-z9rzp schafft Platz in der Zwei-Flugzeuge-Ansicht; airspace-w1q3x liefert die Mehrleg-Route, deren Startflughafen hier sichtbar wird.
