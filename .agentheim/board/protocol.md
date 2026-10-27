@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 14:18 -- Modeling / Captured: airspace-w3k8d - hexdb.io als zweite Routenquelle zwischen adsbdb und VRS, mit Konfliktregel bei widersprüchlichen Online-Antworten
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** hexdb.io als zweite Routenquelle zwischen adsbdb und VRS (Messung: schliesst ca. jede fuenfte Luecke), nie persistiert, Konfliktregel beim Refinen zu entscheiden.
+
+---
+
 ## 2026-10-27 14:08 -- Work session ended
 
 **Type:** Work / Session end

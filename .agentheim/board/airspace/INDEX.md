@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 1
+- **Backlog:** 2
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 5
@@ -35,6 +35,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **airspace-w3k8d** — hexdb.io als zweite Routenquelle zwischen adsbdb und VRS, mit Konfliktregel bei widersprüchlichen Online-Antworten (feature) — `backlog/airspace-w3k8d-hexdb-als-zweite-routenquelle-zwischen-adsbdb-und-vrs.md`
 - **airspace-p2v6d** — Persistierter Routen-Cache fuer Online-Quellen (feature) — `backlog/airspace-p2v6d-persistierter-routen-cache-fuer-online-quellen.md`
 <!-- backlog-list:end -->
 
