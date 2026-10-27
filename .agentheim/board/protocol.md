@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 13:58 -- Modeling / Promoted: sky-scene-g3r8w - Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel
+
+**Type:** Modeling / Promote
+**BC:** sky-scene
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 13:58 -- Modeling / Refined: sky-scene-g3r8w - Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel
 
 **Type:** Modeling / Refine

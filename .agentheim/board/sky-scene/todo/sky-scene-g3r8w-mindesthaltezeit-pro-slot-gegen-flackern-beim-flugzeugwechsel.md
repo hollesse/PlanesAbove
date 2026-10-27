@@ -1,7 +1,7 @@
 ---
 id: sky-scene-g3r8w
 title: Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel
-status: backlog
+status: todo
 type: feature
 context: sky-scene
 created: 2026-10-27

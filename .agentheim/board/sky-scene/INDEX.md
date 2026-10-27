@@ -10,14 +10,15 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 2
-- **Todo:** 0
+- **Backlog:** 1
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 2
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **sky-scene-g3r8w** — Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel (feature) — `todo/sky-scene-g3r8w-mindesthaltezeit-pro-slot-gegen-flackern-beim-flugzeugwechsel.md`
 <!-- todo-list:end -->
 
 ### Doing
@@ -44,7 +45,6 @@ prior-art matcher additionally checks `done-archive/` when present.
 
 ### Backlog
 <!-- backlog-list:start -->
-- **sky-scene-g3r8w** — Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel (feature) — `backlog/sky-scene-g3r8w-mindesthaltezeit-pro-slot-gegen-flackern-beim-flugzeugwechsel.md`
 - **sky-scene-t6h2p** — ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback (feature) — `backlog/sky-scene-t6h2p-elevenlabs-adapter-opt-in-mit-zeichenbudget-und-piper-fallba.md`
 <!-- backlog-list:end -->
 
