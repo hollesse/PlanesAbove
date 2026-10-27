@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 0
+- **Backlog:** 1
 - **Todo:** 1
 - **Doing:** 0
 - **Done:** 18
@@ -49,6 +49,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **airspace-cn6t7** — Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen (bug) — `backlog/airspace-cn6t7-routenanzeige-bei-langen-flughafennamen-ganze-route-sichtbar.md`
 <!-- backlog-list:end -->
 
 ## Pointers

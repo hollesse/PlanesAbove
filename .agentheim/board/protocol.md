@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:53 -- Capture / Captured: airspace-cn6t7 - Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen
+
+**Type:** Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** Routenanzeige kann länger sein als der Platz; Umgang offen (Umbruch, Verkleinerung, Kürzung). Playwright-Test mit den zwei längsten Flughafennamen, ganze Route muss sichtbar sein.
+
+---
+
 ## 2026-10-27 21:50 -- Modeling / Captured: airspace-w1q3x - hexdb und VRS immer beide fragen; eine VRS-Mehrleg-Route, deren Endstück zur hexdb-Route passt, gewinnt (Startflughafen bei Zwischenlandungen)
 
 **Type:** Modeling / Capture
