@@ -34,7 +34,7 @@ selbst gestaltbar und nicht auf ein eigenes, illustriertes Lackierungs-Set zuges
   schrittweise verbessert.
 
 ### v1-Verhalten (vereinbart)
-- Bis zu **zwei Flugzeuge** gleichzeitig, ausgewählt als die **zwei nächsten** im Umkreis.
+- Bis zu **zwei Flugzeuge** gleichzeitig, ausgewählt als die **zwei nächsten** im Umkreis (reiner Bodenabstand); ein Flugzeug behält seinen Slot mindestens N Takte (Default 3) und die Slot-Positionen bleiben stabil (ADR 0017).
 - Aktualisierung im **30-Sekunden-Takt** (API-schonend).
 - **Vorlese-Sperre:** Während vorgelesen wird, wird nichts getauscht; frühester Wechsel beim
   nächsten Takt nach Ende des Vorlesens.

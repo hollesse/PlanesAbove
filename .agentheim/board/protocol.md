@@ -5,6 +5,16 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 13:58 -- Modeling / Refined: sky-scene-g3r8w - Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel
+
+**Type:** Modeling / Refine
+**BC:** sky-scene
+**Status after:** todo
+**Summary:** Builder-Entscheidungen: reine Haltezeit ohne Hysterese (scene.slotHoldTakte, Default 3), sofortige Neubesetzung bei Verlassen des Radius, keine Slot-Tausche, Naehe bleibt reiner Bodenabstand (airspace-h9x4p deshalb dismissed). Vision v1-Satz angepasst. 12 maschinell pruefbare Kriterien inkl. E2E-Szenario slot-hold.
+**ADRs written:** 0017
+
+---
+
 ## 2026-10-27 13:58 -- Modeling / Dismissed: airspace-h9x4p
 
 **Type:** Modeling / Dismiss
