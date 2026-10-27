@@ -5,6 +5,34 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 23:17 -- Modeling / Refined: airspace-cn6t7 - Routenanzeige bei langen Flughafennamen (Aufteilung)
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** Aufteilung ausgeführt: cn6t7 behält den Datenteil (Start → Ende, Zwischenstopp in der Eyebrow); Layout-Entscheidung als Storybook-Spike, Umsetzung plus Playwright-Test als Folgetask.
+**Split into:** design-system-h3b7q, design-system-grp94
+
+---
+
+## 2026-10-27 23:14 -- Modeling / Captured: design-system-grp94 - Lange Route: gewählte Variante in der Info-Leiste umsetzen; Playwright-Test (WebKit) mit den zwei längsten Flughafennamen
+
+**Type:** Modeling / Capture
+**BC:** design-system
+**Filed to:** backlog
+**Summary:** Umsetzung der im Spike h3b7q gewählten Variante plus Playwright-WebKit-Test mit den zwei längsten Flughafennamen der Tabelle; backlog bis die Variante feststeht.
+
+---
+
+## 2026-10-27 23:14 -- Modeling / Captured: design-system-h3b7q - Lange Route in der Info-Leiste: drei Alternativen als Storybook-Entwürfe, Betreiber wählt eine
+
+**Type:** Modeling / Capture
+**BC:** design-system
+**Filed to:** todo
+**Summary:** Spike aus airspace-cn6t7: drei Storybook-Entwürfe für überlange Routen (erst kleiner dann umbrechen / Umbruch plus Stufe / nur Verkleinerung), Komponenten unverändert, Betreiber wählt.
+
+---
+
 ## 2026-10-27 22:08 -- Modeling / Refined: airspace-cn6t7 - Routenanzeige bei langen Flughafennamen
 
 **Type:** Modeling / Refine
