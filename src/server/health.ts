@@ -10,7 +10,7 @@ export interface HealthInput {
   /** Flight-source freshness threshold; computed once by `flightMaxAgeMs(config)` (src/server/config.ts). */
   flightMaxAgeMs: number;
   /** Per-source state of the FlightSourceChain (absent in mock mode). */
-  flightChain?: { active: string | null; sources: { name: string; state: 'ok' | 'backoff' | 'blocked'; until: number | null; consecutiveFailures: number; lastErrorClass: string | null }[] };
+  flightChain?: { active: string | null; sources: { name: string; state: 'ok' | 'backoff' | 'blocked'; until: number | null; consecutiveFailures: number; lastErrorClass: string | null; budget?: { used: number; cap: number; remaining: number; resetsAt: number } }[] };
 }
 
 export interface HealthReport {

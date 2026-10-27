@@ -10,6 +10,7 @@ import { createLogger, type Logger } from './logger';
 import { loadScenario, ScenarioDriver, ScenarioFlightSource, ScenarioRouteSource } from './mock/scenario';
 import { AdsbLolFlightSource } from './modules/airspace/adapters/adsb-lol';
 import { AdsbFiFlightSource } from './modules/airspace/adapters/adsb-fi';
+import { DailyRequestBudget } from './modules/airspace/flight-source-budget';
 import { AirplanesLiveFlightSource } from './modules/airspace/adapters/airplanes-live';
 import { buildFlightSourceChain, type FlightSourceChain } from './modules/airspace/flight-source-chain';
 import type { Fetch } from './modules/airspace/adapters/http';
@@ -73,6 +74,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   const ua = config.sources.userAgent;
   let flight: FlightSource;
   let flightChain: FlightSourceChain | undefined;
+  let lolBudget: DailyRequestBudget | undefined;
   let routeSources: RouteSource[];
   let stopSnapshot: (() => void) | undefined;
   let flightaware: FlightAwareRouteSource | undefined;
@@ -83,7 +85,10 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     speech = new FakeSpeechSynthesizer(() => (driver as ScenarioDriver).current().tts);
   } else {
     const fo = { fetch: fetchFn, userAgent: ua, timeoutMs: config.sources.flight.timeoutMs };
-    flightChain = buildFlightSourceChain(config.sources.flight.order, { 'adsb-fi': new AdsbFiFlightSource(fo), 'airplanes-live': new AirplanesLiveFlightSource(fo), 'adsb-lol': new AdsbLolFlightSource(fo) }, { clock, log });
+    lolBudget = new DailyRequestBudget({ db, clock, source: 'adsb-lol', cap: config.sources.flight.adsbLol.dailyRequestCap });
+    flightChain = buildFlightSourceChain(config.sources.flight.order, { 'adsb-fi': new AdsbFiFlightSource(fo), 'airplanes-live': new AirplanesLiveFlightSource(fo), 'adsb-lol': new AdsbLolFlightSource({ ...fo, budget: lolBudget }) }, { clock, log });
+    lolBudget.onExhausted = (ms) => flightChain?.blockFor('adsb-lol', ms, 'blocked');
+    lolBudget.checkExhausted();
     flight = flightChain;
     routeSources = [];
     for (const name of config.sources.route.order) {
@@ -131,7 +136,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     try {
       if (req.method === 'GET' && url.pathname === '/api/state') { lastClientPollAt = clock.now(); return json(res, 200, sky.state()); }
       if (req.method === 'GET' && url.pathname === '/healthz') {
-        const report = evaluateHealth({ now: clock.now(), bootAt, pollIntervalMs: pollMs, flight: sky.health, dbWritable: dbWritable(), lastClientPollAt, clientSilenceMs: config.health.clientSilenceMinutes * 60_000, flightMaxAgeMs: flightMaxAgeMs(config), flightChain: flightChain?.status() });
+        const report = evaluateHealth({ now: clock.now(), bootAt, pollIntervalMs: pollMs, flight: sky.health, dbWritable: dbWritable(), lastClientPollAt, clientSilenceMs: config.health.clientSilenceMinutes * 60_000, flightMaxAgeMs: flightMaxAgeMs(config), flightChain: flightChain && { ...flightChain.status(), sources: flightChain.status().sources.map((s) => (s.name === 'adsb-lol' && lolBudget ? { ...s, budget: lolBudget.status() } : s)) } });
         return json(res, report.status === 'failing' ? 503 : 200, { ...report, buildId, uptimeSeconds: Math.round((clock.now() - bootAt) / 1000) });
       }
       const audioMatch = /^\/audio\/([0-9a-f]+)\.wav$/.exec(url.pathname);

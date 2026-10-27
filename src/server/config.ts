@@ -32,7 +32,9 @@ const schema = z.object({
       timeoutMs: z.number().int().positive().default(5000),
       /** Failover order; names without an adapter yet are skipped with a warning at start. */
       order: z.array(z.enum(FLIGHT_SOURCE_NAMES)).min(1).default([...FLIGHT_SOURCE_NAMES]),
-    }).default({ timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES] }),
+      /** adsb.lol allows 500 requests/day; stay below it (airspace-b9r4w). UTC day. */
+      adsbLol: z.object({ dailyRequestCap: z.number().int().positive().default(400) }).default({ dailyRequestCap: 400 }),
+    }).default({ timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES], adsbLol: { dailyRequestCap: 400 } }),
     route: z.object({
       enabled: z.boolean().default(true),
       /** Source order: adsbdb live lookup first, offline VRS snapshot as fallback (ADR 0016). */
@@ -63,7 +65,7 @@ const schema = z.object({
         billingPeriodStartDay: z.number().int().min(1).max(28).default(1),
       }).default(FLIGHTAWARE_DEFAULTS),
     }).default(ROUTE_DEFAULTS),
-  }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES] }, route: ROUTE_DEFAULTS }),
+  }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES], adsbLol: { dailyRequestCap: 400 } }, route: ROUTE_DEFAULTS }),
   speech: z.object({
     adapter: z.enum(['piper', 'fake']).default('piper'),
     voice: z.string().default('de_DE-thorsten'),

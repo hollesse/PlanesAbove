@@ -52,7 +52,7 @@ export class FlightSourceChain implements FlightSource {
       if (e.blockedUntil > clock.now()) continue;
       try {
         const aircraft = await e.source.fetchAircraft(center, radiusKm);
-        e.failures = 0; e.blockedUntil = 0; e.lastErrorClass = null;
+        e.failures = 0; e.lastErrorClass = null; // blockedUntil stays: a budget may have blocked the source during this very call
         if (this.active !== e.source.name) { log.info('flight source active', { from: this.active, to: e.source.name }); this.active = e.source.name; }
         return aircraft;
       } catch (err) {
@@ -64,17 +64,22 @@ export class FlightSourceChain implements FlightSource {
     throw last ?? new SourceError('unavailable', 'all flight sources are blocked');
   }
 
+  /** A later pause never shortens an existing block (e.g. a daily budget block until midnight). */
+  private extend(e: Entry, until: number, kind: 'backoff' | 'blocked'): void {
+    if (until > e.blockedUntil) { e.blockedUntil = until; e.kind = kind; }
+  }
+
   private recordFailure(e: Entry, err: SourceError): void {
     const now = this.d.clock.now();
     e.failures++;
     e.lastErrorClass = err.errorClass;
     if (err.retryAfterMs !== undefined) {
-      e.blockedUntil = now + err.retryAfterMs; e.kind = 'blocked';
+      this.extend(e, now + err.retryAfterMs, 'blocked');
       this.d.log.warn('flight source blocked', { source: e.source.name, errorClass: err.errorClass, pauseSeconds: Math.round(err.retryAfterMs / 1000), failures: e.failures });
     } else if (e.failures >= BREAKER_THRESHOLD) {
       const pause = Math.min(BREAKER_BASE_MS * 2 ** (e.failures - BREAKER_THRESHOLD), BREAKER_MAX_MS);
       const ms = Math.min(Math.round(pause * this.jitter()), BREAKER_MAX_MS);
-      e.blockedUntil = now + ms; e.kind = 'backoff';
+      this.extend(e, now + ms, 'backoff');
       this.d.log.warn('flight source in backoff', { source: e.source.name, errorClass: err.errorClass, pauseSeconds: Math.round(ms / 1000), failures: e.failures });
     }
   }
