@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 23:17 -- Modeling / Promoted: airspace-cn6t7 - Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 23:17 -- Modeling / Refined: airspace-cn6t7 - Routenanzeige bei langen Flughafennamen (Aufteilung)
 
 **Type:** Modeling / Refine
