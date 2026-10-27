@@ -33,3 +33,11 @@ Heute markiert der Dienst die Szene schon nach **einem** fehlgeschlagenen Abruf 
 ## Notes
 - Betreiber-Entscheidung 2026-10-27 nach Rückfrage: „Ja mach das so. Das passt“ (Vorschlag: Regel 1 auf 3 Takte/90 s, Regel 2 bleibt 5 min).
 - Relevante Stellen: `src/server/modules/sky-scene/sky-service.ts` (tick/state), `src/server/health.ts` (`maxAge = flightMaxAgeMs ?? 3 * pollIntervalMs`), `src/server/config.ts` (`health.flightMaxAgeSeconds`), `scenarios/outage-recovery.json`, `tests/e2e/skeleton.spec.ts`.
+
+## Verifier note (iteration 1)
+**REASONS:**
+- Check 1, criterion 2 ("ein gesetztes `health.flightMaxAgeSeconds` gilt für Szene und `/healthz` gleichermaßen; ohne Angabe gilt 3 × `pollIntervalSeconds`"): the `/healthz` half has no test. config.test.ts only checks the helper `flightMaxAgeMs`; sky-service.test.ts only the scene side. Reverting the app.ts:103 wiring (or dropping the `flightMaxAgeMs` argument) leaves every test green.
+- "Die Berechnung liegt an einer Stelle (keine zwei getrennten Defaults)" not met: src/server/health.ts:27 still has `const maxAge = i.flightMaxAgeMs ?? 3 * i.pollIntervalMs;` and `HealthInput.flightMaxAgeMs` is optional (health.ts:10) — a second copy of the default next to `flightMaxAgeMs(config)` (config.ts:57).
+- Otherwise correct: scene unit test (short outage live, exactly 90 s live, 120 s stale with last-success clock, recovery); E2E timeline consistent. The "no success since boot" case is coded via `bootAt` but untested.
+**SUGGESTED_FIX:** Make `HealthInput.flightMaxAgeMs` required and remove the `?? 3 * i.pollIntervalMs` fallback in health.ts so `flightMaxAgeMs(config)` is the only computation. Add a unit/integration test that runs the service/app with `health.flightMaxAgeSeconds: N` (and one with the default) and asserts that at N+1 s without success the scene is `stale: true` AND `/healthz` is `degraded` at the same moment, and neither at N s. Optionally cover the no-success-since-boot case.
+**ITERATION_HINT:** likely-fixable

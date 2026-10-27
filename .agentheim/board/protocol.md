@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 07:37 -- Verification failed: sky-scene-w9n4f - Stale-Schwelle 3 Takte
+
+**Type:** Work / Verification failure
+**Task:** sky-scene-w9n4f - Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist
+**Iteration:** 1 of 3
+**Reasons:** /healthz half of the shared-threshold criterion untested; health.ts keeps a second default fallback
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-27 07:31 -- Batch started: [sky-scene-w9n4f]
 
 **Type:** Work / Batch start
