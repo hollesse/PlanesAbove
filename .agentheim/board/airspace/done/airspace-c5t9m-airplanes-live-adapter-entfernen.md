@@ -1,7 +1,7 @@
 ---
 id: airspace-c5t9m
 title: airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben)
-status: doing
+status: done
 type: chore
 context: airspace
 created: 2026-10-27
@@ -31,3 +31,6 @@ airplanes.live beantwortet `point` für Nicht-Feeder mit 403 (gemessen 2026-10-2
 
 ## Notes
 Betreiber-Entscheidung 2026-10-27: "airplanes live kann dann raus, Feeder bringt mir nichts." Ersetzt die Stufe 2 aus ADR 0019 ersatzlos.
+
+## Outcome
+airplanes.live removed from the FlightSource chain. Deleted `adapters/airplanes-live.ts`, `tests/fixtures/airplaneslive-error-403.*` and `airplanes-live.contract.test.ts`; removed registration from `src/server/app.ts` and the name from `flight-source-names.ts` (config enum and default derive from it: `adsb-fi | adsb-lol`, default `[adsb-fi, adsb-lol]`; the config rejects the removed name, covered in `flight-source-chain.test.ts`). README and `config.example.yaml` cleaned; `grep -ri airplanes src tests config.example.yaml README.md` is empty. Chain tests rewritten to two stages (adsb.fi fails -> adsb.lol same Takt; budget exhausted -> skipped); `/healthz` lists exactly two sources (asserted in `flight-chain-wiring.test.ts`). ADR 0019 amendment reported as a full replacement body (`0019-flight-source-chain-adsb-fi-primary-with-failover-and-backoff.md`). `npm run typecheck`, `npm test` (363) and Playwright chromium (11) green.

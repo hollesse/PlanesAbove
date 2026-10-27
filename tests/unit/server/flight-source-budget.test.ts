@@ -87,17 +87,13 @@ describe('adsb.lol daily budget', () => {
     expect(chain.status().sources[0]).toMatchObject({ state: 'blocked', until: clock.now() + 25_203_000 });
     expect(budget.status().used).toBe(1);
   });
-  it('three stages: adsb.lol asked only when both earlier stages fail in the same Takt; skipped when exhausted', async () => {
+  it('two stages: adsb.lol asked only when adsb.fi fails in the same Takt; skipped when exhausted', async () => {
     let calls = 0;
-    const s1 = new Fake('adsb-fi'); const s2 = new Fake('airplanes-live');
-    const r = rig({ cap: 1, others: [s1, s2], fetch: async () => { calls++; return res(200, body); } });
+    const s1 = new Fake('adsb-fi');
+    const r = rig({ cap: 1, others: [s1], fetch: async () => { calls++; return res(200, body); } });
     await r.chain.fetchAircraft(C, 30);
     expect(calls).toBe(0);
-    s1.behaviour = boom; // stage 1 fails, stage 2 succeeds: adsb.lol left alone
-    await r.chain.fetchAircraft(C, 30);
-    expect(s2.calls).toBe(1);
-    expect(calls).toBe(0);
-    s2.behaviour = boom; // both fail: adsb.lol asked
+    s1.behaviour = boom; // stage 1 fails: adsb.lol asked
     await r.chain.fetchAircraft(C, 30);
     expect(calls).toBe(1);
     await expect(r.chain.fetchAircraft(C, 30)).rejects.toMatchObject({ errorClass: 'http-5xx' }); // exhausted: skipped
@@ -123,7 +119,7 @@ describe('adsb.lol daily budget', () => {
   });
   it('/healthz shows used/cap and reset for adsb-lol', async () => {
     const config = parseConfig(`port: 0\ndataDir: ${path.join(dir, 'data')}\nlocation: { lat: 50.45, lon: 8.09 }\nspeech: { adapter: fake }\nsources: { route: { enabled: false }, flight: { adsbLol: { dailyRequestCap: 5 } } }\n`);
-    svc = await startService({ config, clientDir: path.join(dir, 'client'), write: () => undefined, timeZone: 'UTC', fetch: async (url) => (url.includes('adsb.fi') || url.includes('airplanes.live') ? res(500, '') : res(200, body)) });
+    svc = await startService({ config, clientDir: path.join(dir, 'client'), write: () => undefined, timeZone: 'UTC', fetch: async (url) => (url.includes('adsb.fi') ? res(500, '') : res(200, body)) });
     const base = `http://127.0.0.1:${svc.port}`;
     await fetch(base + '/api/state');
     const h = (await (await fetch(base + '/healthz')).json()) as { flight: { sources: { name: string; budget?: { used: number; cap: number; resetsAt: number } }[] } };

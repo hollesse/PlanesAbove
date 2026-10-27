@@ -27,3 +27,6 @@ ADR 0005 named adsb.lol as the only primary flight source. On 2026-10-27 adsb.lo
 - A single source outage or rate limit no longer blanks the display; adsb.fi is the first to be asked, adsb.lol's 500/day budget is only spent on failover.
 - If adsb.fi tightens its terms or limits, only `order` changes.
 - The 4xx-pause rule makes a misconfiguration (404) visible as a blocked source rather than a hammered one.
+
+## Amendment 2026-10-27
+The chain is reduced to two stages: adsb.fi, then adsb.lol. Config enum `sources.flight.order` is now `adsb-fi | adsb-lol`, default `[adsb-fi, adsb-lol]`. Reason: the airplanes.live `point` endpoint is feeder-only (403 for non-feeders, measured 2026-10-27) and the operator runs no feeder ("Feeder bringt mir nichts"), so the stage stayed permanently ineffective and cost one failed call per hour plus a log warning. The airplanes.live adapter, its 403 fixture and its contract test were removed (airspace-c5t9m). The per-Takt failover rule, backoff and observability are unchanged.

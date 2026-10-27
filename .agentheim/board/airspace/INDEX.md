@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 3
 - **Todo:** 0
-- **Doing:** 2
-- **Done:** 9
+- **Doing:** 1
+- **Done:** 10
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 ### Doing
 <!-- doing-list:start -->
 - **airspace-p8w2k** — Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand (feature) — `doing/airspace-p8w2k-plausibilitaet-schaerfen-kurs-flugphase-querabstand.md`
-- **airspace-c5t9m** — airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben) (chore) — `doing/airspace-c5t9m-airplanes-live-adapter-entfernen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **airspace-c5t9m** — airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben) (chore) — `done/airspace-c5t9m-airplanes-live-adapter-entfernen.md`
 - **airspace-b9r4w** — adsb.lol als dritte Flugquelle mit persistiertem Tagesbudget (400 von 500 Requests) und Auswertung der Rate-Limit-Header (feature) — `done/airspace-b9r4w-adsb-lol-als-dritte-flugquelle-mit-tagesbudget.md`
 - **airspace-v6m3h** — airplanes.live als zweite Flugquelle in der FlightSource-Kette (feature) — `done/airspace-v6m3h-airplanes-live-als-zweite-flugquelle.md`
 - **airspace-k2d7f** — adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker (feature) — `done/airspace-k2d7f-adsb-fi-als-primaere-flugquelle-mit-failover-kette-und-backoff.md`

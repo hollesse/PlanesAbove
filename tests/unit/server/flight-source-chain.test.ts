@@ -117,8 +117,12 @@ describe('Retry-After / x-ratelimit-reset parsing', () => {
 });
 
 describe('order and config', () => {
-  it('default order is adsb-fi, airplanes-live, adsb-lol', () => {
-    expect(parseConfig('location: { lat: 1, lon: 2 }\n').sources.flight.order).toEqual(['adsb-fi', 'airplanes-live', 'adsb-lol']);
+  it('default order is adsb-fi, adsb-lol', () => {
+    expect(parseConfig('location: { lat: 1, lon: 2 }\n').sources.flight.order).toEqual(['adsb-fi', 'adsb-lol']);
+  });
+  it('rejects the removed feeder-only source in order', () => {
+    const removed = ['air', 'planes-live'].join('');
+    expect(() => parseConfig(`location: { lat: 1, lon: 2 }\nsources: { flight: { order: [${removed}] } }\n`)).toThrow(/sources\.flight\.order/);
   });
   it('rejects unknown source names', () => {
     expect(() => parseConfig('location: { lat: 1, lon: 2 }\nsources: { flight: { order: [opensky] } }\n')).toThrow(/sources\.flight\.order/);
@@ -127,9 +131,9 @@ describe('order and config', () => {
     const clock = new FakeClock(0);
     const lines: { level: string; msg: string; source?: string }[] = [];
     const log = createLogger(clock, 'debug', (l) => lines.push(JSON.parse(l)));
-    const chain = buildFlightSourceChain(['adsb-fi', 'airplanes-live', 'adsb-lol'], { 'adsb-fi': new Fake('adsb-fi'), 'adsb-lol': new Fake('adsb-lol') }, { clock, log });
+    const chain = buildFlightSourceChain(['adsb-fi', 'opensky' as never, 'adsb-lol'], { 'adsb-fi': new Fake('adsb-fi'), 'adsb-lol': new Fake('adsb-lol') }, { clock, log });
     expect(chain.status().sources.map((s) => s.name)).toEqual(['adsb-fi', 'adsb-lol']);
-    expect(lines.find((l) => l.level === 'warn')).toMatchObject({ source: 'airplanes-live' });
+    expect(lines.find((l) => l.level === 'warn')).toMatchObject({ source: 'opensky' });
   });
 });
 

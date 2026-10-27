@@ -24,32 +24,21 @@ async function boot(fetchImpl: Fetch) {
 }
 
 describe('flight chain in the composition root', () => {
-  it('adsb.fi healthy: it is the active source, adsb.lol is never asked, airplanes-live is registered (no skip warning)', async () => {
+  it('adsb.fi healthy: it is the active source, adsb.lol is never asked', async () => {
     const urls: string[] = [];
     const { health, lines } = await boot(async (url) => { urls.push(url); return res(200, fixture); });
     const h = await health();
     expect(h.flight.active).toBe('adsb-fi');
-    expect(h.flight.sources.map((s) => `${s.name}:${s.state}`)).toEqual(['adsb-fi:ok', 'airplanes-live:ok', 'adsb-lol:ok']);
+    expect(h.flight.sources.map((s) => `${s.name}:${s.state}`)).toEqual(['adsb-fi:ok', 'adsb-lol:ok']);
     expect(urls.some((u) => u.includes('adsb.lol'))).toBe(false);
-    expect(lines.some((l) => l.includes('"level":"warn"') && l.includes('airplanes-live'))).toBe(false);
+    expect(lines.some((l) => l.includes('"level":"warn"'))).toBe(false);
   });
   it('adsb.fi answers 429: the same Takt is served by adsb.lol, scene not stale, /healthz shows adsb-fi blocked', async () => {
-    const { health, state, lines } = await boot(async (url) => (url.includes('adsb.fi') ? res(429, '') : url.includes('airplanes.live') ? res(403, '') : res(200, fixture)));
+    const { health, state, lines } = await boot(async (url) => (url.includes('adsb.fi') ? res(429, '') : res(200, fixture)));
     expect((await state()).stale).toBe(false);
     const h = await health();
     expect(h.flight.active).toBe('adsb-lol');
     expect(h.flight.sources.find((s) => s.name === 'adsb-fi')?.state).toBe('blocked');
     expect(lines.some((l) => l.includes('flight source active') && l.includes('adsb-lol'))).toBe(true);
-  });
-  it('adsb.fi answers 429: the same Takt is served by airplanes.live (stage 2), adsb.lol is never requested', async () => {
-    const urls: string[] = [];
-    const { health, state } = await boot(async (url) => { urls.push(url); return url.includes('adsb.fi') ? res(429, '') : url.includes('airplanes.live') ? res(200, fixture) : res(500, ''); });
-    const st = (await state()) as { stale: boolean; planes?: unknown[] };
-    expect(st.stale).toBe(false);expect((st.planes ?? []).length).toBeGreaterThan(0);
-    const h = await health();
-    expect(h.flight.active).toBe('airplanes-live');
-    expect(h.flight.sources.find((s) => s.name === 'adsb-fi')?.state).toBe('blocked');
-    expect(urls.some((u) => u.includes('airplanes.live'))).toBe(true);
-    expect(urls.some((u) => u.includes('adsb.lol'))).toBe(false);
   });
 });

@@ -11,7 +11,6 @@ import { loadScenario, ScenarioDriver, ScenarioFlightSource, ScenarioRouteSource
 import { AdsbLolFlightSource } from './modules/airspace/adapters/adsb-lol';
 import { AdsbFiFlightSource } from './modules/airspace/adapters/adsb-fi';
 import { DailyRequestBudget } from './modules/airspace/flight-source-budget';
-import { AirplanesLiveFlightSource } from './modules/airspace/adapters/airplanes-live';
 import { buildFlightSourceChain, type FlightSourceChain } from './modules/airspace/flight-source-chain';
 import type { Fetch } from './modules/airspace/adapters/http';
 import { AdsbdbRouteSource } from './modules/airspace/adapters/adsbdb-route-source';
@@ -86,7 +85,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   } else {
     const fo = { fetch: fetchFn, userAgent: ua, timeoutMs: config.sources.flight.timeoutMs };
     lolBudget = new DailyRequestBudget({ db, clock, source: 'adsb-lol', cap: config.sources.flight.adsbLol.dailyRequestCap });
-    flightChain = buildFlightSourceChain(config.sources.flight.order, { 'adsb-fi': new AdsbFiFlightSource(fo), 'airplanes-live': new AirplanesLiveFlightSource(fo), 'adsb-lol': new AdsbLolFlightSource({ ...fo, budget: lolBudget }) }, { clock, log });
+    flightChain = buildFlightSourceChain(config.sources.flight.order, { 'adsb-fi': new AdsbFiFlightSource(fo), 'adsb-lol': new AdsbLolFlightSource({ ...fo, budget: lolBudget }) }, { clock, log });
     lolBudget.onExhausted = (ms) => flightChain?.blockFor('adsb-lol', ms, 'blocked');
     lolBudget.checkExhausted();
     flight = flightChain;

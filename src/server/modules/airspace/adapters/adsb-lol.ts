@@ -53,7 +53,7 @@ export class AdsbLolFlightSource implements FlightSource {
   }
 }
 
-/** The readsb `{ac: [...]}` body shared by adsb.lol, adsb.fi and airplanes.live. */
+/** The readsb `{ac: [...]}` body shared by adsb.lol and adsb.fi. */
 export function parseReadsb(text: string): Flugzeug[] {
   let body: { ac?: unknown };
   try { body = JSON.parse(text); } catch { throw new SourceError('parse', 'response is not JSON'); }

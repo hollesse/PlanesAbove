@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:54 -- Task verified and completed: airspace-c5t9m - airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben)
+
+**Type:** Work / Task completion
+**Task:** airspace-c5t9m - airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben)
+**Summary:** airplanes.live aus der FlightSource-Kette entfernt; Kette ist jetzt adsb.fi → adsb.lol; ADR 0019 amendiert
+**Duration:** 18m
+**Verification:** PASS (iteration 1)
+**Files changed:** 12
+**Tests added:** flight-source-chain.test.ts (config rejects removed source); budget and wiring tests rewritten to two stages
+**ADRs written:** 0019 (amendment)
+
+---
+
 ## 2026-10-27 18:47 -- Batch started: [airspace-c5t9m, airspace-p8w2k]
 
 **Type:** Work / Batch start
