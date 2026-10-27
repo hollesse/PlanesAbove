@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 5
+- **Doing:** 0
+- **Done:** 6
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **design-system-q7m3k** — Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern (chore) — `doing/design-system-q7m3k-fehlende-logo-pngs-f-r-13-logos-erg-nzen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **design-system-q7m3k** — Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern (chore) — `done/design-system-q7m3k-fehlende-logo-pngs-f-r-13-logos-erg-nzen.md`
 - **design-system-v8q3n** — Schein hinter der Kopfzeile verstärken (Variante E) und Kopfzeile in Plex Mono 500 (feature) — `done/design-system-v8q3n-schein-hinter-der-kopfzeile-verst-rken-variante-e-und-kopfze.md`
 - **design-system-g7w4m** — Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel (helle Schrift mit schwarzem Schein ca. 40 %) (feature) — `done/design-system-g7w4m-breiter-weicher-schein-statt-d-nner-kontur-hinter-text-auf-d.md`
 - **design-system-k7h2q** — Text direkt auf dem Himmel bekommt eine Kontur in der Gegenfarbe (dunkle Schrift hell umrandet, helle Schrift dunkel umrandet) (feature) — `done/design-system-k7h2q-text-direkt-auf-dem-himmel-bekommt-eine-kontur-in-der-gegenf.md`

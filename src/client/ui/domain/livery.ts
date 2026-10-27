@@ -45,6 +45,11 @@ const nestKeepViewBox = (s: string) =>
 const nestSquare = (s: string) => stripXml(s).replace(/<svg [^>]*>/, '<svg width="100" height="100" viewBox="0 0 100 100" overflow="visible">');
 const fill = (html: string, cls: string, inner: string) => html.replace(new RegExp(`<g class="${cls}"([^>]*)></g>`), (_m, a: string) => `<g class="${cls}"${a}>${inner}</g>`);
 
+/**
+ * Note: in the plane drafts (svg/*.svg from Claude Design) the logo-tail-lead anchor sits inside a fin-clip group,
+ * so a logo on that anchor (easyjet, pegasus) is intentionally cropped to the fin outline. Every other logo is
+ * nested with overflow="visible" and unclipped (see tests/unit/livery.test.ts).
+ */
 /** Put a logo (and its optional "-tail" companion) into the anchor groups of a plane silhouette. */
 export function placeLogo(planeSvg: string, logoSvg?: string, tailLogoSvg?: string): string {
   let html = planeSvg;

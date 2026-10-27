@@ -5,7 +5,7 @@ import { PLANE_SVG } from '../../src/client/ui/assets/generated/planes';
 import { LOGO_SVG } from '../../src/client/ui/assets/generated/logos';
 import { anchorOf, placeLogo, resolveLivery } from '../../src/client/ui/domain/livery';
 import { renderPaintedPlane } from '../../src/client/ui/molecules/painted-plane';
-import { LOGO_IDS, renderLogo } from '../../src/client/ui/atoms/logo';
+import { LOGO_IDS, logoContentBoxes, renderLogo } from '../../src/client/ui/atoms/logo';
 
 describe('Lackierung', () => {
   it('catalog has 42 liveries incl. the Standard-Lackierung', () => {
@@ -83,5 +83,58 @@ describe('Logo-Ankerpunkte', () => {
   it('renders every logo on its own', () => {
     expect(LOGO_IDS).toHaveLength(16);
     for (const id of LOGO_IDS) expect(renderLogo({ id }).querySelector('svg')).not.toBeNull();
+  });
+});
+
+describe('Logo-Assets vollstaendig und unbeschnitten', () => {
+  const fs = require('node:fs') as typeof import('node:fs');
+  const path = require('node:path') as typeof import('node:path');
+  const dirs = ['src/client/ui/assets/svg/logos', 'svg/logos'];
+
+  it('every logo SVG references a PNG that exists next to it (in the asset and the draft folder)', () => {
+    for (const dir of dirs) {
+      const svgs = fs.readdirSync(dir).filter((f) => f.endsWith('.svg'));
+      expect(svgs.length, dir).toBeGreaterThan(10);
+      for (const f of svgs) {
+        const href = /<image\b[^>]*href="([^"]+)"/.exec(fs.readFileSync(path.join(dir, f), 'utf8'))?.[1];
+        if (href && !href.startsWith('data:')) expect(fs.existsSync(href.includes('/') ? href : path.join(dir, href)), `${dir}/${f} -> ${href}`).toBe(true);
+      }
+    }
+  });
+
+  it('no generated logo falls back to the dashed missing-asset placeholder', () => {
+    for (const id of LOGO_IDS) expect(LOGO_SVG[id], id).not.toContain('data-missing-asset');
+  });
+
+  it('the logo atom viewBox encloses all painted content, so no logo is clipped', () => {
+    for (const id of LOGO_IDS) {
+      const vb = renderLogo({ id }).querySelector('svg')!.getAttribute('viewBox')!.split(/\s+/).map(Number);
+      for (const b of logoContentBoxes(LOGO_SVG[id])) {
+        expect(b.x, id).toBeGreaterThanOrEqual(vb[0] - 1e-6);
+        expect(b.y, id).toBeGreaterThanOrEqual(vb[1] - 1e-6);
+        expect(b.x + b.w, id).toBeLessThanOrEqual(vb[0] + vb[2] + 1e-6);
+        expect(b.y + b.h, id).toBeLessThanOrEqual(vb[1] + vb[3] + 1e-6);
+      }
+    }
+  });
+  it('every logo on every Typklasse is nested with overflow="visible"; only the drafts\' fin clip on logo-tail-lead crops a logo', () => {
+    let seen = 0;
+    for (const { id: type } of PLANE_TYPES) {
+      for (const logo of LOGO_IDS) {
+        const el = renderPaintedPlane({ type, livery: 'def', logo });
+        for (const svg of Array.from(el.querySelectorAll('g[class^="logo-"] svg'))) {
+          seen++;
+          const label = `${type}/${logo}`;
+          expect(svg.getAttribute('overflow'), label).toBe('visible');
+          const clip = svg.closest('[clip-path]');
+          if (clip) {
+            // intended per the Claude Design drafts (svg/narrowbody.svg): logo-tail-lead runs along the fin's leading edge, cropped to the fin outline
+            expect(svg.closest('g[class^="logo-"]')!.getAttribute('class'), `${label} clipped`).toBe('logo-tail-lead');
+            expect(clip.getAttribute('clip-path'), label).toMatch(/fin-clip/);
+          }
+        }
+      }
+    }
+    expect(seen).toBeGreaterThan(100);
   });
 });

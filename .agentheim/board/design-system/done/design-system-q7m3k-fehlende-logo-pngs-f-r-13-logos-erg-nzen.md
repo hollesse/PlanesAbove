@@ -1,7 +1,7 @@
 ---
 id: design-system-q7m3k
 title: Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern
-status: doing
+status: done
 type: chore
 context: design-system
 created: 2026-10-26
@@ -39,3 +39,11 @@ Zusätzlich festgestellt (Betreiber-Durchsicht): Einige Logos werden abgeschnitt
 - Fine: missing-PNG guard fails when a PNG is absent; `data-missing-asset` guard; TESTS_ADDED 3 matches; scope OK.
 **SUGGESTED_FIX:** Add a test for the painted-plane case: for every logo × Typklasse render the painted plane and assert the nested logo `<svg>` has `overflow="visible"` (or its content boxes fit the plane's unclipped area). Then either exempt `logo-tail-lead`'s fin clip with a comment citing the drafts as intended cropping, or show that easyjet/pegasus are not cut; record which in the Outcome.
 **ITERATION_HINT:** likely-fixable
+
+## Outcome
+
+Added the 12 missing logo PNGs (both src/client/ui/assets/svg/logos and the draft folder svg/logos), so no logo SVG falls back to the missing-asset placeholder. Fixed the logo atom viewBox in src/client/ui/atoms/logo.ts so it encloses all painted content (no clipping in Atoms/Logo).
+
+Iteration 2: added a unit test in tests/unit/livery.test.ts that renders the painted plane for every logo x every Typklasse (renderPaintedPlane) and asserts each nested logo svg carries overflow="visible" and that the only clip-path ancestor of any logo is the fin-clip around the logo-tail-lead anchor. Sanity-checked: removing overflow="visible" from nestKeepViewBox/nestSquare fails the test; wrapping logo-tail-base in a clip fails it.
+
+The fin-clip around logo-tail-lead is intentional: it exists in the original Claude Design drafts (repo-root svg/narrowbody.svg contains fin-clip twice); the logo runs along the fin's leading edge, cropped to the fin outline (easyjet, pegasus). It is kept, documented with a comment above placeLogo in src/client/ui/domain/livery.ts, and encoded in the test by exempting exactly the logo-tail-lead anchor and requiring a fin-clip reference.
