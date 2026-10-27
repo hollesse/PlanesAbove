@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:05 -- Modeling / Refined: sighting-log-k4m7q - Beobachtungsstandort je Sichtung mitloggen
+
+**Type:** Modeling / Refine
+**BC:** sighting-log
+**Status after:** todo
+**Summary:** Standort-Identitaet = Koordinaten (4 Nachkommastellen) + radiusKm, place nur Label; eigene Tabelle observation_points (Migration 0006), sightings.observation_point_id nullable, Altzeilen bleiben NULL (Gruppe unbekannt); Standortwechsel beendet den Besuch (Hydrate/UPDATE nur auf aktuellen Standort); stats:routes filtert auf Standort der neuesten Sichtung, Flag --standort (id, unbekannt, alle). Neun machine-checkable Kriterien. Kein Split.
+**ADRs written:** none
+
+---
+
+## 2026-10-27 19:05 -- Modeling / Promoted: airspace-w3k8d - hexdb.io als Routenquelle, vorerst an erster Stelle vor adsbdb und VRS; Konfliktregel: erste plausible Route gewinnt
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 19:03 -- Work session ended
 
 **Type:** Work / Session end
