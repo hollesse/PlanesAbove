@@ -11,8 +11,8 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 4
 <!-- task-counts:end -->
 
@@ -23,6 +23,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
+- **infrastructure-001** — Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert (spike) — `doing/infrastructure-001-walking-skeleton.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

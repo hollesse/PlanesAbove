@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 00:41 -- Batch started: [infrastructure-001]
+
+**Type:** Work / Batch start
+**Tasks:** infrastructure-001 - Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert
+**Parallel:** no (1 worker) — the last ready task; device acceptance split out into infrastructure-d3v7k
+
+---
+
 ## 2026-10-27 00:39 -- Design-System abgenommen
 
 **Type:** Work / Gate

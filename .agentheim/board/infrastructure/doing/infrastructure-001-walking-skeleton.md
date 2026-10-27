@@ -1,7 +1,7 @@
 ---
 id: infrastructure-001-walking-skeleton
 title: Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert
-status: todo
+status: doing
 type: spike
 context: infrastructure
 created: 2026-10-26
