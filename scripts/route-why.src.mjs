@@ -14,6 +14,7 @@ import { snapshotPaths } from '../src/server/modules/airspace/adapters/vrs-snaps
 import { DEFAULT_PLAUSIBILITY, formatRoute, isPlausibleRoute } from '../src/server/modules/airspace/route-service.ts';
 import { angleDiffDeg, bearingDeg, crossTrackKm } from '../src/server/modules/airspace/geo.ts';
 import { distanceKm } from '../src/server/modules/airspace/selection.ts';
+import { closedAirspaceHit } from '../src/server/modules/airspace/closed-airspace.ts';
 
 const { values, positionals } = parseArgs({ allowPositionals: true, options: {
   db: { type: 'string', default: 'data/planesabove.db' }, config: { type: 'string', default: 'config.yaml' }, json: { type: 'boolean', default: false },
@@ -87,14 +88,17 @@ function legBreakdown(a, b) {
   const len = distanceKm(a, b);
   const xt = crossTrackKm(a, b, position);
   const corridorKm = Math.min(plaus.corridorBaseKm + (plaus.corridorPercent / 100) * len, plaus.corridorMaxKm);
+  const detour = closedAirspaceHit(a, b, plaus.closedAirspaces ?? [], plaus.closedAirspaceSampleKm ?? 100);
+  const headingLimit = detour ? plaus.detourHeadingDeviationDeg : plaus.maxHeadingDeviationDeg;
   const dOrigin = distanceKm(a, position), dDest = distanceKm(position, b);
   const alt = obs?.altitudeM, vr = obs?.verticalRateMs, track = obs?.trackDeg;
   const up = plaus.climbMetersPerKm * dOrigin + plaus.profileSlackM, down = plaus.descentMetersPerKm * dDest + plaus.profileSlackM;
   const checks = {
-    corridor: { crossTrackKm: r1(xt), limitKm: r1(corridorKm), routeLengthKm: r1(len), ok: xt <= corridorKm },
+    detour: detour ? { closedAirspace: detour, effect: 'corridor skipped, heading limit ' + headingLimit + '°' } : { none: true },
+    corridor: detour ? { skipped: 'detoured leg (' + detour + ')', crossTrackKm: r1(xt), limitKm: r1(corridorKm) } : { crossTrackKm: r1(xt), limitKm: r1(corridorKm), routeLengthKm: r1(len), ok: xt <= corridorKm },
     altitudeProfile: alt === undefined ? { skipped: 'no altitude' } : { altitudeM: r1(alt), climbEnvelopeM: r1(up), descentEnvelopeM: r1(down), distanceFromOriginKm: r1(dOrigin), distanceToDestKm: r1(dDest), ok: !((up < 12500 && alt > up) || (down < 12500 && alt > down)) },
     phase: vr === undefined || alt === undefined ? { skipped: 'no vertical rate/altitude' } : { verticalRateMs: r1(vr), altitudeM: r1(alt), applies: alt < plaus.phaseMaxAltitudeM && Math.abs(vr) > plaus.phaseMinRateMs, ok: !(alt < plaus.phaseMaxAltitudeM && ((vr > plaus.phaseMinRateMs && dOrigin > plaus.maxClimbDistanceKm) || (vr < -plaus.phaseMinRateMs && dDest > plaus.maxClimbDistanceKm))) },
-    heading: track === undefined || alt === undefined ? { skipped: 'no track/altitude' } : (alt <= plaus.minHeadingCheckAltitudeM || dOrigin <= plaus.originZoneKm || dDest <= plaus.destinationZoneKm) ? { skipped: 'inside airport zone or below minHeadingCheckAltitudeM' } : { trackDeg: r1(track), bearingToDestDeg: r1(bearingDeg(position, b)), deviationDeg: r1(angleDiffDeg(bearingDeg(position, b), track)), limitDeg: plaus.maxHeadingDeviationDeg, ok: angleDiffDeg(bearingDeg(position, b), track) <= plaus.maxHeadingDeviationDeg },
+    heading: track === undefined || alt === undefined ? { skipped: 'no track/altitude' } : (alt <= plaus.minHeadingCheckAltitudeM || dOrigin <= plaus.originZoneKm || dDest <= plaus.destinationZoneKm) ? { skipped: 'inside airport zone or below minHeadingCheckAltitudeM' } : { trackDeg: r1(track), bearingToDestDeg: r1(bearingDeg(position, b)), deviationDeg: r1(angleDiffDeg(bearingDeg(position, b), track)), limitDeg: headingLimit, ok: angleDiffDeg(bearingDeg(position, b), track) <= headingLimit },
   };
   return { leg: `${a.city} → ${b.city}`, checks };
 }
@@ -119,7 +123,7 @@ for (const v of out.verdicts) {
   L.push(`Plausibility ${v.source} ${v.route}: ${v.plausible ? 'PLAUSIBLE' : 'REJECTED'} (isPlausibleRoute)`);
   for (const leg of v.legs) {
     L.push(`  leg ${leg.leg}`);
-    for (const [k, c] of Object.entries(leg.checks)) L.push(`    ${k}: ${c.skipped ? 'skipped (' + c.skipped + ')' : (c.ok ? 'ok ' : 'FAIL ') + JSON.stringify(c)}`);
+    for (const [k, c] of Object.entries(leg.checks)) L.push(`    ${k}: ${c.skipped ? 'skipped (' + c.skipped + ')' : !('ok' in c) ? JSON.stringify(c) : (c.ok ? 'ok ' : 'FAIL ') + JSON.stringify(c)}`);
   }
 }
 process.stdout.write(L.join('\n') + '\n');
