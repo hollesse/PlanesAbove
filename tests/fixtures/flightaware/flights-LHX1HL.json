@@ -1,0 +1,83 @@
+{
+  "flights": [
+    {
+      "ident": "LHX1979",
+      "ident_icao": "LHX1979",
+      "ident_iata": "VL1979",
+      "actual_runway_off": "13L",
+      "actual_runway_on": "08R",
+      "fa_flight_id": "LHX1979-1792908176-airline-646p",
+      "operator": "LHX",
+      "operator_icao": "LHX",
+      "operator_iata": "VL",
+      "flight_number": "1979",
+      "registration": "D-AIBM",
+      "atc_ident": "LHX1HL",
+      "inbound_fa_flight_id": "LHX1978-1792908176-airline-645p",
+      "codeshares": [
+        "DLH4051"
+      ],
+      "codeshares_iata": [
+        "LH4051"
+      ],
+      "blocked": false,
+      "diverted": false,
+      "cancelled": false,
+      "position_only": false,
+      "origin": {
+        "code": "EDDK",
+        "code_icao": "EDDK",
+        "code_iata": "CGN",
+        "code_lid": null,
+        "timezone": "Europe/Berlin",
+        "name": "Köln/Bonn",
+        "city": "Cologne/Bonn",
+        "airport_info_url": "/airports/EDDK"
+      },
+      "destination": {
+        "code": "EDDM",
+        "code_icao": "EDDM",
+        "code_iata": "MUC",
+        "code_lid": null,
+        "timezone": "Europe/Berlin",
+        "name": "München Franz Josef Strauß",
+        "city": "Munich",
+        "airport_info_url": "/airports/EDDM"
+      },
+      "departure_delay": 660,
+      "arrival_delay": 240,
+      "filed_ete": 2400,
+      "foresight_predictions_available": true,
+      "scheduled_out": "2026-10-27T12:35:00Z",
+      "estimated_out": "2026-10-27T12:35:00Z",
+      "actual_out": "2026-10-27T12:46:00Z",
+      "scheduled_off": "2026-10-27T12:45:00Z",
+      "estimated_off": "2026-10-27T12:53:37Z",
+      "actual_off": "2026-10-27T12:53:37Z",
+      "scheduled_on": "2026-10-27T13:25:00Z",
+      "estimated_on": "2026-10-27T13:34:29Z",
+      "actual_on": "2026-10-27T13:34:29Z",
+      "scheduled_in": "2026-10-27T13:35:00Z",
+      "estimated_in": "2026-10-27T13:45:00Z",
+      "actual_in": "2026-10-27T13:39:00Z",
+      "progress_percent": 100,
+      "status": "angekommen / Ankunft am Gate",
+      "aircraft_type": "A319",
+      "route_distance": 271,
+      "filed_airspeed": 354,
+      "filed_altitude": null,
+      "route": null,
+      "baggage_claim": null,
+      "seats_cabin_business": null,
+      "seats_cabin_coach": null,
+      "seats_cabin_first": null,
+      "gate_origin": "C20",
+      "gate_destination": null,
+      "terminal_origin": "1",
+      "terminal_destination": "2",
+      "type": "Airline"
+    }
+  ],
+  "links": null,
+  "num_pages": 1
+}
