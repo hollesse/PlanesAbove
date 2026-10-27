@@ -5,6 +5,16 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 00:39 -- Design-System abgenommen
+
+**Type:** Work / Gate
+**Task:** design-system-001 - Storybook-Instanz nach Atomic Design (inkl. Folgearbeiten design-system-c4v3r, design-system-k7h2q, design-system-g7w4m, design-system-v8q3n, design-system-q7m3k)
+**Gate:** Der Betreiber hat das Design-System in Storybook durchgesehen und freigegeben (ADR 0002). Die [human-eye]-Kriterien der Design-System-Tasks gelten damit als erfüllt.
+**Offen:** Playwright-Lauf unter WebKit auf dem Rechner des Betreibers (in der Cloud-Umgebung nur Chromium).
+**Next:** infrastructure-001-walking-skeleton darf starten.
+
+---
+
 ## 2026-10-27 00:32 -- Task verified and completed: design-system-q7m3k - Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern
 
 **Type:** Work / Task completion
