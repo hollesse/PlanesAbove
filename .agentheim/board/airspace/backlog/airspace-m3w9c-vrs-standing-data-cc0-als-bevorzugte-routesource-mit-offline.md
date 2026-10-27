@@ -1,35 +1,49 @@
 ---
 id: airspace-m3w9c
-title: VRS standing-data (CC0) als bevorzugte RouteSource mit Offline-Snapshot
+title: VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen
 status: backlog
 type: feature
 context: airspace
 created: 2026-10-27
 depends_on: [infrastructure-001-walking-skeleton]
-blocks: []
+blocks: [airspace-p2v6d]
 tags: [routes, follow-up]
-related_adrs: [0005, 0007, 0010]
+related_adrs: [0005, 0007, 0010, 0013, 0014]
 related_research: []
 prior_art: [infrastructure-001-walking-skeleton]
 ---
 
 ## Why
-ADR 0005 nennt VRS standing-data als bevorzugte Routenquelle. Im Skeleton gibt es nur den adsb.lol-routeset-Adapter; ein Live-Test lieferte HTTP 201 mit leerem Body, der Routenanteil koennte also sehr niedrig sein. Die Pfade unter raw.githubusercontent.com liessen sich in der Cloud nicht erraten (`routes/schema-01/<XX>/<CALLSIGN>.csv` ergab 404): das reale Layout muss zuerst geprueft werden.
+Der Live-Test vom 2026-10-27 (176 Sichtungen, 0 mit Route) zeigte: `POST adsb.lol/api/0/routeset` liefert fuer jeden Callsign HTTP 201 mit leerem Body, der Endpunkt ist tot. ADR 0014 macht deshalb den offline VRS-standing-data-Snapshot (CC0) zur einzigen Standard-Routenquelle und entfernt den routeset-Adapter. Lokaler Snapshot: kein Rate-Limit, keine Weitergabe-Risiken, funktioniert offline. Luecken (z. B. EWG9UX, LOT1RF, CFG068) bleiben real, `Route unbekannt` ist weiterhin ein regulaerer Zustand.
 
 ## What
-- `RouteSource`-Adapter, der einen periodisch aktualisierten Snapshot in `dataDir` liest (Kette: VRS zuerst, dann routeset).
-- Aufgezeichnete Fixture der echten CSV-/Datei-Struktur, Contract-Tests inkl. fehlender Felder.
-- Quellenangabe (CC0, Herkunft) im README.
-- Persistierter Routen-Cache (ADR 0007: Tabelle in derselben SQLite-Datei mit `fetched_at`/`expires_at`, positiv Stunden, negativ kuerzer); der Skeleton haelt den Cache nur im Speicher. Nur lizenzseitig erlaubte Quellen (VRS CC0) persistieren, adsbdb nie.
+- **Snapshot-Download:** periodisch `routes/schema-01/` und `airports/schema-01/` aus `vradarserver/standing-data` (GitHub-Tarball oder nur diese Baeume, ~22 MB) nach `dataDir`; Schreiben in ein temporaeres Verzeichnis, dann atomarer Austausch (rename).
+- **Index im Speicher** beim Start: Callsign -> Route. Kein HTTP pro Lookup.
+- **Layout:** `routes/schema-01/<erster Buchstabe>/<AirlineCode>-all.csv`, grosse Airlines geteilt in `<AirlineCode>-1.csv` ... `-9.csv`. Header `Callsign,Code,Number,AirlineCode,AirportCodes`; `AirportCodes` = ICAO-Codes mit `-`, auch mehr als zwei Legs. Airports: `airports/schema-01/<L>/<LL>.csv`, Header `Code,Name,ICAO,IATA,Location,CountryISO2,Latitude,Longitude,AltitudeFeet`. Alle Dateien beginnen mit UTF-8-BOM.
+- **Aufloesung** der Flughaefen zu Stadtnamen (`Location`) und Koordinaten; `formatRoute` ("Stadt -> Stadt") und `isPlausibleRoute` (Korridor-Check ueber Koordinaten) arbeiten weiter.
+- **Entfernen:** `adapters/adsb-lol-routeset.ts`, dessen Fixture und Contract-Tests; Verdrahtung in `app.ts`.
+- **Config** `sources.route`: `order` (nur `vrs`, optional `adsbdb`; Default `[vrs]`) und ein Refresh-Intervall-Schluessel (z. B. `snapshotRefreshHours`, Default 24).
+- **Logging:** fehlgeschlagener Refresh und fehlender Snapshot als `warn`.
+- README: Quellenangabe "VRS standing-data (CC0)" mit Herkunft; routeset-Hinweise entfernen.
+- Persistierter Routen-Cache ist ausgelagert nach airspace-p2v6d (ADR 0014).
 
 ## Acceptance criteria
-- [ ] Layout der VRS-Daten verifiziert und als Fixture eingecheckt.
-- [ ] Contract-Tests gruen (bekannte Route, unbekanntes Callsign, kaputte Zeile).
-- [ ] Konfigurierbare Reihenfolge `sources.route.order`.
-- [ ] Routen-Cache ueberlebt einen Neustart (Test), adsbdb-Ergebnisse werden nie geschrieben.
+- [ ] Snapshot-Download legt `routes/` und `airports/` in `dataDir` ab; der Austausch ist atomar (Test: bei abgebrochenem Download bleibt der alte Snapshot unveraendert und lesbar).
+- [ ] Config-Schluessel fuer das Refresh-Intervall existiert, ist validiert (positiv) und hat einen Default; Test, dass ein Refresh nach Ablauf (FakeClock) angestossen wird.
+- [ ] Start ohne Netz mit vorhandenem Snapshot baut den Index und liefert Routen (Test mit fehlschlagendem fetch).
+- [ ] Start ohne jeden Snapshot und ohne Netz: Service startet, loggt `warn`, jede Abfrage ergibt `Route unbekannt` (Test).
+- [ ] Fehlgeschlagener Snapshot-Refresh loggt `warn` und behaelt den bisherigen Index (Test).
+- [ ] CSV-Parser: UTF-8-BOM wird entfernt; geteilte Dateien (`RYR-1..-9`) und `-all` werden zusammengefuehrt; mehrlegige `AirportCodes` ergeben eine Route mit allen Legs; kaputte/unvollstaendige Zeilen werden uebersprungen ohne Absturz (Unit-Tests).
+- [ ] Airport-Aufloesung ICAO -> Stadtname und Koordinaten aus den Airports-CSVs; unbekannter ICAO ergibt `Route unbekannt` statt Fehler (Test).
+- [ ] `isPlausibleRoute` nutzt weiterhin die Airport-Koordinaten; unplausible Route wird als `Route unbekannt` ausgegeben (Test).
+- [ ] Contract-Tests gegen eine eingecheckte, aufgezeichnete Fixture-Teilmenge unter `tests/fixtures/` (inkl. BOM, geteilte Airline, Multi-Leg, Callsign ohne Treffer): bekannt (RYR6ZM, DLH400), unbekannt (EWG9UX), kaputte Zeile.
+- [ ] `sources.route.order` akzeptiert nur `vrs` und optional `adsbdb`; jeder andere Wert (z. B. `adsblol`) wird von der Config-Validierung abgelehnt (Test).
+- [ ] `adapters/adsb-lol-routeset.ts`, seine Fixture und Tests sind geloescht; kein Verweis mehr im Code (`grep -ri routeset src tests` leer).
+- [ ] README nennt "VRS standing-data (CC0)" als Quelle samt Link; Typecheck, Lint und Tests gruen.
+
 ## Notes
-Befund aus dem Live-Test am 2026-10-27 (Oberweyer, echter Betrieb, 176 Sichtungen, 0 mit Route):
-- `POST https://api.adsb.lol/api/0/routeset` antwortet aktuell fuer **jeden** Callsign mit HTTP 201 und leerem Body, auch fuer bekannte (DLH400, RYR6ZM). Request entspricht OpenAPI (`{"planes":[{"callsign","lat","lng"}]}`) und dem Quellcode (`api_routes.py`), der eine JSON-Liste liefern muesste. Der Endpunkt ist serverseitig tot; der Adapter wertet das korrekt als Route unbekannt, loggt aber nichts. Nicht erneut dagegen bauen.
-- Der deprecated `GET /api/0/route/{callsign}` leitet per 302 auf einen **statischen VRS-Spiegel von adsb.lol** um, der funktioniert: `https://vrs-standing-data.adsb.lol/routes/<erste zwei Zeichen des Callsigns>/<CALLSIGN>.json`. Beispiele: `routes/RY/RYR6ZM.json` -> LEAL-EGBB (Alicante -> Birmingham), `routes/DL/DLH400.json` -> EDDF-KJFK. Felder: `callsign`, `number`, `airline_code`, `airport_codes` (ICAO, mit `-`), `_airport_codes_iata`, `_airports[]` (name, icao, iata, lat, lon, ...). Unbekannte Callsigns liefern 404 mit HTML-Body (EWG9UX, LOT1RF, CFG068 am Testtag).
-- Das ist dieselbe Datenbasis (VRS standing-data, CC0) wie der Offline-Snapshot; der Spiegel taugt als Online-Fallback oder als Quelle fuer Fixtures, ersetzt den Snapshot aber nicht (Lücken bei Charter-/Nicht-Linien-Callsigns sind zu erwarten).
-- Zusatz fuer diese Task oder einen eigenen Chore: leere/unerwartete Antworten der Routenquelle als `warn` loggen, damit ein toter Endpunkt nicht wochenlang unsichtbar bleibt.
+- adsbdb-Adapter ist nicht Teil dieser Task; `adsbdb` in `order` ist nur als Config-Wert vorgesehen (Online-Lookup, nie persistiert, ADR 0005/0014). Ist kein Adapter verdrahtet, wird der Eintrag mit `warn` ignoriert.
+- Verifizierte VRS-Fakten: 1576 Routen-Dateien (~19 MB), 659 Airport-Dateien (~2.5 MB), Repo taeglich aktualisiert, Lizenz CC0-1.0, GitHub-Tarball des ganzen Repos ~50 MB (daher besser nur `routes/` und `airports/`).
+- Befund Live-Test 2026-10-27 (Oberweyer, echter Betrieb): routeset antwortet fuer jeden Callsign mit 201 und leerem Body (DLH400, RYR6ZM); Request entspricht OpenAPI (`{"planes":[{"callsign","lat","lng"}]}`) und `api_routes.py`. Nicht erneut dagegen bauen.
+- Der deprecated `GET /api/0/route/{callsign}` leitet per 302 auf einen statischen VRS-Spiegel um: `https://vrs-standing-data.adsb.lol/routes/<erste zwei Zeichen>/<CALLSIGN>.json` (z. B. `RY/RYR6ZM.json` -> LEAL-EGBB, `DL/DLH400.json` -> EDDF-KJFK; Felder `callsign`, `number`, `airline_code`, `airport_codes`, `_airport_codes_iata`, `_airports[]`; unbekannt = 404 mit HTML). Gleiche Datenbasis; moeglicher Online-Fallback oder Fixture-Quelle, ersetzt den Snapshot nicht.
+- Luecken am Testtag: EWG9UX, LOT1RF, CFG068 fehlen; RYR6ZM, DLH400 vorhanden.

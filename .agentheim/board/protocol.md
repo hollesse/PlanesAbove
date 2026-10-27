@@ -5,6 +5,26 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 12:15 -- Modeling / Refined: airspace-m3w9c - VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** Live-Test belegt toten adsb.lol-routeset-Endpunkt (201, leerer Body). Builder-Entscheidungen: Offline-Snapshot der VRS standing-data (CC0, Layout verifiziert: routes/schema-01/<L>/<Airline>-all.csv bzw. -1..-9, airports/schema-01/<L>/<LL>.csv), routeset-Adapter entfernen, persistierter Cache abgespalten. 12 maschinell pruefbare Akzeptanzkriterien.
+**Split into:** airspace-p2v6d
+**ADRs written:** 0014
+
+---
+
+## 2026-10-27 12:15 -- Modeling / Captured: airspace-p2v6d - Persistierter Routen-Cache fuer Online-Quellen
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** Aus airspace-m3w9c abgespalten: persistierter SQLite-Routen-Cache nur fuer Online-Quellen (ADR 0007), nach ADR 0014 nicht mehr Teil des VRS-Snapshot-Tasks.
+
+---
+
 ## 2026-10-27 12:00 -- Capture / Captured: sighting-log-k4m7q - Beobachtungsstandort je Sichtung mitloggen
 
 **Type:** Capture

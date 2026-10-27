@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 3
+- **Backlog:** 4
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 2
@@ -32,6 +32,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **airspace-p2v6d** — Persistierter Routen-Cache fuer Online-Quellen (feature) — `backlog/airspace-p2v6d-persistierter-routen-cache-fuer-online-quellen.md`
 - **airspace-h9x4p** — Nähe nach Sichtbarkeit gewichten statt rein horizontaler Distanz (feature) — `backlog/airspace-h9x4p-naehe-nach-sichtbarkeit-gewichten-statt-rein-horizontaler-distanz.md`
 - **airspace-f7k2m** — Ultraleicht und unbekannte Typcodes werden als narrowbody gezeichnet (Ikarus C42 D-MMDP) (bug) — `backlog/airspace-f7k2m-ultraleicht-und-unbekannte-typcodes-werden-als-narrowbody-gezeichnet.md`
 - **airspace-m3w9c** — VRS standing-data (CC0) als bevorzugte RouteSource mit Offline-Snapshot (feature) — `backlog/airspace-m3w9c-vrs-standing-data-cc0-als-bevorzugte-routesource-mit-offline.md`
