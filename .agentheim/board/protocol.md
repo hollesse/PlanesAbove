@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 17:12 -- Batch started: [airspace-f4q9z]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-f4q9z - FlightAware AeroAPI als budgetierte Notfall-Routenquelle (Opt-in, letzte Stufe, hartes Monatslimit, Usage-Sync)
+**Parallel:** no (1 worker) — single ready task
+
+---
+
 ## 2026-10-27 17:10 -- Modeling / Promoted: airspace-f4q9z - FlightAware AeroAPI als budgetierte Notfall-Routenquelle (Opt-in, letzte Stufe, hartes Monatslimit, Usage-Sync)
 
 **Type:** Modeling / Promote

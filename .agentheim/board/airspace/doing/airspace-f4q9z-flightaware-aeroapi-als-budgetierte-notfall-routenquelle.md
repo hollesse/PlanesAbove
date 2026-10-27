@@ -1,7 +1,7 @@
 ---
 id: airspace-f4q9z
 title: FlightAware AeroAPI als budgetierte Notfall-Routenquelle (Opt-in, letzte Stufe, hartes Monatslimit, Usage-Sync)
-status: todo
+status: doing
 type: feature
 context: airspace
 created: 2026-10-27

@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 3
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 5
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **airspace-f4q9z** — FlightAware AeroAPI als budgetierte Notfall-Routenquelle (Opt-in, letzte Stufe, hartes Monatslimit, Usage-Sync) (feature) — `todo/airspace-f4q9z-flightaware-aeroapi-als-budgetierte-notfall-routenquelle.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **airspace-f4q9z** — FlightAware AeroAPI als budgetierte Notfall-Routenquelle (Opt-in, letzte Stufe, hartes Monatslimit, Usage-Sync) (feature) — `doing/airspace-f4q9z-flightaware-aeroapi-als-budgetierte-notfall-routenquelle.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
