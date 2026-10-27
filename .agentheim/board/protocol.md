@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 12:00 -- Capture / Captured: sighting-log-k4m7q - Beobachtungsstandort je Sichtung mitloggen
+
+**Type:** Capture
+**BC:** sighting-log
+**Filed to:** backlog
+**Summary:** Jede Sichtung haelt den Beobachtungsstandort (place, Koordinaten) fest, damit Statistiken nach Standortwechsel trennbar bleiben
+
+---
+
 ## 2026-10-27 11:56 -- Capture / Captured: sky-scene-g3r8w - Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel
 
 **Type:** Capture
