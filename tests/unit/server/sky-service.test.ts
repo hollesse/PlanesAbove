@@ -89,9 +89,14 @@ describe('SkyService Takt', () => {
     expect(sightings.list().find((s) => s.icao24 === 'a')).toMatchObject({ callsign: 'DLH400', airline: 'Lufthansa', typeCode: 'A20N', typklasse: 'narrowbody', liveryPresent: true });
   });
   it('reports unmapped type codes once', async () => {
-    const { svc, sightings } = rig([{ at: 0, planes: [P('a', 5, { typeCode: 'ZZZZ', callsign: 'QQQ1' })] }]);
+    const { svc, sightings } = rig([{ at: 0, planes: [P('a', 5, { typeCode: 'XXXX', callsign: 'QQQ1' })] }]);
     await svc.tick(); await svc.tick();
-    expect(sightings.unmapped()).toEqual([{ kind: 'airline', key: 'QQQ', count: 1 }, { kind: 'type', key: 'ZZZZ', count: 1 }]);
+    expect(sightings.unmapped()).toEqual([{ kind: 'airline', key: 'QQQ', count: 1 }, { kind: 'type', key: 'XXXX', count: 1 }]);
+  });
+  it('does not report the ZZZZ placeholder as an unmapped type', async () => {
+    const { svc, sightings } = rig([{ at: 0, planes: [P('a', 5, { typeCode: 'ZZZZ', callsign: 'DLH1' })] }]);
+    await svc.tick();
+    expect(sightings.unmapped().filter((u) => u.kind === 'type')).toEqual([]);
   });
   it('after the sky empties, shows "Zuletzt: ... vor N Min"', async () => {
     const { svc, clock } = rig([{ at: 0, planes: [P('a', 5, A320)] }, { at: 30, planes: [] }]);

@@ -15,7 +15,7 @@ core — die Auswahl-Regel und die Anreicherung (Route, Typklasse, Kategorie) be
 - **Takt** — Aktualisierung alle 30 Sekunden.
 - **Auswahl** — die bis zu zwei nächsten Flugzeuge im Umkreis zu einem Takt.
 - **Route** — Abflug → Ziel (Stadt + Land); kann **unbekannt** sein, das ist ein regulärer Zustand.
-- **Typklasse** — eine der zehn gezeichneten Silhouetten (Ids wie im Design-System, ADR 0009), abgeleitet aus dem ICAO-Typcode über die Tabelle `type-classes`; ohne Treffer per Emitter-Kategorie-Fallback; ohne jede Information `light-aircraft` mit Kategorie `unbekannt` (nicht mehr narrowbody). Siehe ADR 0010, 0015.
+- **Typklasse** — eine der zehn gezeichneten Silhouetten (Ids wie im Design-System, ADR 0009), abgeleitet aus dem ICAO-Typcode über die Tabelle `type-classes`; ohne Treffer per Emitter-Kategorie-Fallback; ohne jede Information `light-aircraft` mit Kategorie `unbekannt` (nicht mehr narrowbody). Der ICAO-Platzhalter `ZZZZ` gilt als „kein Typcode“: Emitter-Kategorie-Fallback, `unmapped=false`, keine Meldung in `unmapped_keys`. Siehe ADR 0010, 0015.
 - **Kategorie** — Kurz-/Mittel-/Langstrecke etc., für den Steckbrief; kuratierter Wert der Tabelle `type-classes` (nicht aus der Route berechnet), sonst *unbekannt*. Siehe ADR 0010.
 - **Flugphase** — Steigflug, Sinkflug, Horizontalflug.
 - **Flugquelle (FlightSource)** — Port, der pro Takt die Flugzeuge im Umkreis liefert. Adapter hinter einer Kette (`FlightSourceChain`, Config `sources.flight.order`, Default adsb.fi → adsb.lol): pro Takt wird die erste verfügbare Quelle gefragt, bei Fehler sofort die nächste; adsb.fi ist primär. OpenSky, airplanes.live (feeder-only) und Eigenempfänger sind bewusst nicht vorgesehen. Siehe ADR 0005, 0019.

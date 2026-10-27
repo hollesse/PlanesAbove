@@ -5,6 +5,41 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:33 -- Task verified and completed: airspace-n8c4t - Unmapped Keys aus dem Live-Betrieb kuratieren: 30 Airline-Präfixe und 13 Typcodes in die Tabellen aufnehmen, ZZZZ als "kein Typcode" behandeln
+
+**Type:** Work / Task completion
+**Task:** airspace-n8c4t - Unmapped Keys aus dem Live-Betrieb kuratieren: 30 Airline-Präfixe und 13 Typcodes in die Tabellen aufnehmen, ZZZZ als "kein Typcode" behandeln
+**Summary:** 26 Airline-Präfixe und 11 Typcodes aus dem Live-Betrieb kuratiert; ZZZZ gilt als kein Typcode (kein unmapped-Report); OCN, MGH, NGN, SRR, JUNR unbelegt weggelassen
+**Duration:** 9m45s
+**Verification:** PASS (iteration 2)
+**Files changed:** 5
+**Tests added:** 4
+**ADRs written:** none
+
+---
+
+## 2026-10-27 19:31 -- Verification failed: airspace-prwpv - Abgelehnte Routen je Takt neu prüfen; Korridor lockern
+
+**Type:** Work / Verification failure
+**Task:** airspace-prwpv - Abgelehnte Routen je Takt gegen die aktuelle Position neu prüfen statt 10 Minuten negativ zu cachen; Korridor auf 50 km + 8 % lockern
+**Iteration:** 1 of 3
+**Reasons:** Kriterium 4 / BC-README-Sync — Plausibilitaetspruefung-Bullet nennt noch 5 % ohne Deckel, README_DELTA leer; Playwright chromium in frischem Worktree ohne storybook-static (Umgebung, kein FAIL-Grund)
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
+## 2026-10-27 19:31 -- Verification failed: airspace-n8c4t - Unmapped Keys aus dem Live-Betrieb kuratieren
+
+**Type:** Work / Verification failure
+**Task:** airspace-n8c4t - Unmapped Keys aus dem Live-Betrieb kuratieren: 30 Airline-Präfixe und 13 Typcodes in die Tabellen aufnehmen, ZZZZ als "kein Typcode" behandeln
+**Iteration:** 1 of 3
+**Reasons:** BC README sync — ZZZZ-als-kein-Typcode-Regel fehlt im airspace README (README_DELTA leer)
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-27 19:29 -- Modeling / Captured: airspace-hw8f9 - Flugphasen-Prüfung nur unterhalb der Reiseflughöhe, ab 5 m/s und erst 400 km vom Flughafen; Turbulenz und Stufen-Sinkflug nicht als Anflug werten
 
 **Type:** Modeling / Capture

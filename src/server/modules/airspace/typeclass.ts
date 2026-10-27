@@ -40,7 +40,11 @@ const EMITTER_FALLBACK: Record<string, PlaneType> = { A1: 'light-aircraft', A2: 
 // ADR 0015: B0/B5 count as "no category"; B2/B3/B6/B7 and C* never reach here (excluded in selectNearest).
 const KATEGORIE_BY_CLASS: Partial<Record<PlaneType, string>> = { 'light-aircraft': 'Allgemeine Luftfahrt', glider: 'Segelflug', helicopter: 'Hubschrauber', 'business-jet': 'Geschäftsreise', 'regional-jet': 'Regional', turboprop: 'Regional' };
 
+const NO_TYPE_PLACEHOLDER = 'ZZZZ';
+
 export function resolveTypeClass(t: Tables, typeCode: string | undefined, emitterCategory: string | undefined): ResolvedTypeClass {
+  // ICAO placeholder "ZZZZ" means "no type"; treated like an absent type code.
+  if (typeCode === NO_TYPE_PLACEHOLDER) typeCode = undefined;
   const hit = typeCode ? t.typeClasses[typeCode] : undefined;
   if (hit) return { typklasse: hit.typklasse as PlaneType, kategorie: hit.kategorie, besonderheit: hit.besonderheit, typeName: hit.name, fallback: false, unmapped: false };
   const unmapped = Boolean(typeCode);

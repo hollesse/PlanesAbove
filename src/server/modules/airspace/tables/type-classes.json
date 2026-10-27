@@ -756,5 +756,63 @@
   "name": "Diamond DA62",
   "typklasse": "light-aircraft",
   "kategorie": "Allgemeine Luftfahrt"
+ },
+ "P208": {
+  "name": "Tecnam P2008",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "C550": {
+  "name": "Cessna Citation II",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "BE20": {
+  "name": "Beechcraft King Air 200",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "C150": {
+  "name": "Cessna 150",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "E35L": {
+  "name": "Embraer Legacy 600",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "G3": {
+  "name": "Gulfstream III",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "J328": {
+  "name": "Dornier 328JET",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "M20T": {
+  "name": "Mooney M20 Turbo",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "K35R": {
+  "name": "Boeing KC-135 Stratotanker",
+  "typklasse": "narrowbody",
+  "kategorie": "Langstrecke",
+  "besonderheit": "Militärischer Tanker"
+ },
+ "A124": {
+  "name": "Antonow An-124",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke",
+  "besonderheit": "Schwertransporter"
+ },
+ "T6": {
+  "name": "Beechcraft T-6 Texan II",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt",
+  "besonderheit": "Militärischer Trainer"
  }
 }

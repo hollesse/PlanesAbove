@@ -158,5 +158,109 @@
  "DHK": {
   "name": "DHL Air",
   "country": "GB"
+ },
+ "EXS": {
+  "name": "Jet2",
+  "country": "GB"
+ },
+ "KLC": {
+  "name": "KLM Cityhopper",
+  "country": "NL"
+ },
+ "LHX": {
+  "name": "Lufthansa City Airlines",
+  "country": "DE"
+ },
+ "TKJ": {
+  "name": "AJet",
+  "country": "TR"
+ },
+ "TOM": {
+  "name": "TUI Airways",
+  "country": "GB"
+ },
+ "AEE": {
+  "name": "Aegean Airlines",
+  "country": "GR"
+ },
+ "CAI": {
+  "name": "Corendon Airlines",
+  "country": "TR"
+ },
+ "CXI": {
+  "name": "Corendon Airlines Europe",
+  "country": "MT"
+ },
+ "NJE": {
+  "name": "NetJets Europe",
+  "country": "PT"
+ },
+ "VIR": {
+  "name": "Virgin Atlantic",
+  "country": "GB"
+ },
+ "BOX": {
+  "name": "AeroLogic",
+  "country": "DE"
+ },
+ "WMT": {
+  "name": "Wizz Air Malta",
+  "country": "MT"
+ },
+ "WUK": {
+  "name": "Wizz Air UK",
+  "country": "GB"
+ },
+ "JAF": {
+  "name": "TUI fly Belgium",
+  "country": "BE"
+ },
+ "CCA": {
+  "name": "Air China",
+  "country": "CN"
+ },
+ "CAO": {
+  "name": "Air China Cargo",
+  "country": "CN"
+ },
+ "DLA": {
+  "name": "Air Dolomiti",
+  "country": "IT"
+ },
+ "GFA": {
+  "name": "Gulf Air",
+  "country": "BH"
+ },
+ "HOP": {
+  "name": "HOP!",
+  "country": "FR"
+ },
+ "RJA": {
+  "name": "Royal Jordanian",
+  "country": "JO"
+ },
+ "SEH": {
+  "name": "Sky Express",
+  "country": "GR"
+ },
+ "THA": {
+  "name": "Thai Airways",
+  "country": "TH"
+ },
+ "ABY": {
+  "name": "Air Arabia",
+  "country": "AE"
+ },
+ "AIC": {
+  "name": "Air India",
+  "country": "IN"
+ },
+ "LBT": {
+  "name": "Nouvelair",
+  "country": "TN"
+ },
+ "MSC": {
+  "name": "Air Cairo",
+  "country": "EG"
  }
 }

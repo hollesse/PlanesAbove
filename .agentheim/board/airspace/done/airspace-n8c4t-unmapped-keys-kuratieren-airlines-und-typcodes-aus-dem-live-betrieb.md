@@ -1,7 +1,7 @@
 ---
 id: airspace-n8c4t
 title: Unmapped Keys aus dem Live-Betrieb kuratieren: 30 Airline-Präfixe und 13 Typcodes in die Tabellen aufnehmen, ZZZZ als "kein Typcode" behandeln
-status: doing
+status: done
 type: chore
 created: 2026-10-27
 context: airspace
@@ -37,3 +37,14 @@ Nach einem Tag Live-Betrieb in Oberweyer (2026-10-27) listet `unmapped_keys` 84 
 
 ## Notes
 Captured via `modeling` am 2026-10-27, refined am selben Abend. Entscheidungen beim Refinen: (1) keine Bereinigung von `unmapped_keys`, (2) Umfang auf den aktuellen Zählstand erweitert, (3) K35R = narrowbody. Zählstand Live-DB 2026-10-27 abends: EXS 13, KLC 12, LHX 9, OCN 9, TKJ 8, CAI 5, AEE 4, CXI 4, NJE 4, VIR 4, BOX 3, WMT 3, übrige 2; Typen P208 4, C550 2, DV20 2 (vorhanden), K35R 2, übrige 1. Mutmaßliche Namen zur Orientierung (vom Worker zu belegen): EXS Jet2, KLC KLM Cityhopper, LHX Lufthansa City Airlines, TKJ AJet, AEE Aegean, CAI Corendon Airlines, CXI Corendon Airlines Europe, BOX AeroLogic, VIR Virgin Atlantic, WMT Wizz Air Malta, WUK Wizz Air UK, TOM TUI Airways (GB), JAF TUI fly Belgium, NJE NetJets Europe, CCA Air China, CAO Air China Cargo, DLA Air Dolomiti, GFA Gulf Air, HOP HOP!, RJA Royal Jordanian, SEH Sky Express, THA Thai Airways, ABY Air Arabia, AIC Air India, LBT Nouvelair, SRR Star Air; OCN, MGH, MSC, NGN nur mit Beleg aufnehmen.
+
+## Verifier note (iteration 1)
+REASONS:
+- Check 5 (BC README sync): the diff adds a new domain rule to type-class resolution. `typeclass.ts` (`NO_TYPE_PLACEHOLDER = 'ZZZZ'`, `resolveTypeClass`) now treats the ICAO placeholder "ZZZZ" as "no type code": the Emitter-Kategorie fallback applies, `unmapped=false`, nothing is reported to `unmapped_keys`. But `readmeDelta` is `[]`. The airspace README's **Typklasse** bullet (line 18) says how the Typklasse is derived when there is no table hit; the **Emitter-Kategorie** bullet (line 27) records the parallel rule "B0/B5 gelten als 'keine Kategorie'". The ZZZZ rule is missing from the README and no ADR mentions it.
+- All other checks passed (tests map to criteria, npm test 403 green, typecheck green, no ZZZZ in tables, in scope, mappings spot-checked plausible).
+SUGGESTED_FIX: Add a README_DELTA `replace` (or append) op on the airspace README's **Typklasse** bullet saying that the ICAO placeholder `ZZZZ` counts as "kein Typcode": Emitter-Kategorie fallback applies, `unmapped=false`, nothing reported to `unmapped_keys`. Phrase it like the existing B0/B5 wording. No code change needed.
+ITERATION_HINT: likely-fixable
+
+## Outcome
+
+Curated the unmapped keys observed in live operation. 26 airline prefixes added to airlines.json: EXS, KLC, LHX, TKJ, TOM, AEE, CAI, CXI, NJE, VIR, BOX, WMT, WUK, JAF, CCA, CAO, DLA, GFA, HOP, RJA, SEH, THA, ABY, AIC, LBT, MSC. Type codes added to type-classes.json: P208, C550, BE20, C150, E35L, G3, J328, M20T, K35R, narrowbody/Langstrecke/"Militärischer Tanker" A124, T6 as mapped. Unsubstantiated keys deliberately omitted: OCN, MGH, NGN, SRR, JUNR. The ICAO placeholder ZZZZ is treated as no type code in typeclass.ts (category fallback, unmapped=false, not reported in unmapped_keys). Tests in tests/unit/server/typeclass.test.ts and tests/unit/server/sky-service.test.ts (4 added); npm test and npm run typecheck green.

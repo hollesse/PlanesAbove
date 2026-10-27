@@ -13,7 +13,7 @@ describe('resolveTypeClass (ADR 0010)', () => {
     expect(resolveTypeClass(T, 'EC45', 'A7').typklasse).toBe('helicopter');
   });
   it('falls back to the emitter category when the type is unknown, flagged as fallback without Besonderheit', () => {
-    const r = resolveTypeClass(T, 'ZZZZ', 'A5');
+    const r = resolveTypeClass(T, 'XXXX', 'A5');
     expect(r).toMatchObject({ typklasse: 'widebody', fallback: true, unmapped: true });
     expect(r.besonderheit).toBeUndefined();
     expect(resolveTypeClass(T, undefined, 'A1').typklasse).toBe('light-aircraft');
@@ -24,15 +24,15 @@ describe('resolveTypeClass (ADR 0010)', () => {
     expect(resolveTypeClass(T, undefined, 'A7').typklasse).toBe('helicopter');
   });
   it('maps B emitter categories in the fallback (ADR 0015): B1 glider, B4 light-aircraft', () => {
-    expect(resolveTypeClass(T, 'ZZZZ', 'B1')).toMatchObject({ typklasse: 'glider', fallback: true, unmapped: true });
-    expect(resolveTypeClass(T, 'ZZZZ', 'B4')).toMatchObject({ typklasse: 'light-aircraft', fallback: true, unmapped: true });
+    expect(resolveTypeClass(T, 'XXXX', 'B1')).toMatchObject({ typklasse: 'glider', fallback: true, unmapped: true });
+    expect(resolveTypeClass(T, 'XXXX', 'B4')).toMatchObject({ typklasse: 'light-aircraft', fallback: true, unmapped: true });
   });
   it('treats B0/B5 like "no category"', () => {
-    for (const c of ['B0', 'B5']) expect(resolveTypeClass(T, 'ZZZZ', c)).toEqual(resolveTypeClass(T, 'ZZZZ', undefined));
+    for (const c of ['B0', 'B5']) expect(resolveTypeClass(T, 'XXXX', c)).toEqual(resolveTypeClass(T, 'XXXX', undefined));
   });
   it('falls back to light-aircraft "unbekannt" when nothing is known (ADR 0015)', () => {
     expect(resolveTypeClass(T, undefined, undefined)).toMatchObject({ typklasse: 'light-aircraft', kategorie: 'unbekannt', fallback: true, unmapped: false });
-    expect(resolveTypeClass(T, 'ZZZZ', undefined)).toMatchObject({ typklasse: 'light-aircraft', kategorie: 'unbekannt', unmapped: true });
+    expect(resolveTypeClass(T, 'XXXX', undefined)).toMatchObject({ typklasse: 'light-aircraft', kategorie: 'unbekannt', unmapped: true });
   });
   it('contains the live-test additions with valid curated Kategorien', () => {
     const curated = ['Allgemeine Luftfahrt', 'Geschäftsreise', 'Hubschrauber', 'Kurzstrecke', 'Langstrecke', 'Mittelstrecke', 'Regional', 'Segelflug'];
@@ -84,5 +84,33 @@ describe('resolveLivery', () => {
   it('forces def for classes without liveries', () => {
     expect(resolveLivery(T, 'DLH', 'light-aircraft', true)).toEqual({ liveryId: 'def', present: false });
     expect(resolveLivery(T, 'DLH', 'glider', true)).toEqual({ liveryId: 'def', present: false });
+  });
+});
+
+describe('curation from live operation (airspace-n8c4t)', () => {
+  const AIRLINES: Record<string, string> = { EXS: 'Jet2', KLC: 'KLM Cityhopper', LHX: 'Lufthansa City Airlines', TKJ: 'AJet', TOM: 'TUI Airways', AEE: 'Aegean Airlines', CAI: 'Corendon Airlines', CXI: 'Corendon Airlines Europe', NJE: 'NetJets Europe', VIR: 'Virgin Atlantic', BOX: 'AeroLogic', WMT: 'Wizz Air Malta', WUK: 'Wizz Air UK', JAF: 'TUI fly Belgium', CCA: 'Air China', CAO: 'Air China Cargo', DLA: 'Air Dolomiti', GFA: 'Gulf Air', HOP: 'HOP!', RJA: 'Royal Jordanian', SEH: 'Sky Express', THA: 'Thai Airways', ABY: 'Air Arabia', AIC: 'Air India', LBT: 'Nouvelair', MSC: 'Air Cairo' };
+  it('has the curated airlines with name and two-letter country', () => {
+    for (const [prefix, name] of Object.entries(AIRLINES)) {
+      expect(T.airlines[prefix]?.name, prefix).toBe(name);
+      expect(T.airlines[prefix].country, prefix).toMatch(/^[A-Z]{2}$/);
+      expect(resolveAirline(T, `${prefix}123`)?.name).toBe(name);
+    }
+  });
+  it('has the curated type codes with valid Typklasse and Kategorie', () => {
+    const curated = ['Allgemeine Luftfahrt', 'Geschäftsreise', 'Hubschrauber', 'Kurzstrecke', 'Langstrecke', 'Mittelstrecke', 'Regional', 'Segelflug'];
+    const expected: Record<string, string> = { P208: 'light-aircraft', C550: 'business-jet', BE20: 'turboprop', C150: 'light-aircraft', E35L: 'business-jet', G3: 'business-jet', J328: 'regional-jet', M20T: 'light-aircraft', K35R: 'narrowbody', A124: 'widebody', T6: 'light-aircraft' };
+    for (const [code, klass] of Object.entries(expected)) {
+      const r = resolveTypeClass(T, code, undefined);
+      expect(r, code).toMatchObject({ typklasse: klass, fallback: false, unmapped: false });
+      expect(r.typeName, code).toBeTruthy();
+      expect(curated).toContain(r.kategorie);
+    }
+    expect(resolveTypeClass(T, 'K35R', undefined)).toMatchObject({ kategorie: 'Langstrecke', besonderheit: 'Militärischer Tanker' });
+  });
+  it('treats ZZZZ as "no type code" (ADR 0010 placeholder)', () => {
+    expect(resolveTypeClass(T, 'ZZZZ', 'A1')).toEqual(resolveTypeClass(T, undefined, 'A1'));
+    expect(resolveTypeClass(T, 'ZZZZ', 'A1')).toMatchObject({ typklasse: 'light-aircraft', unmapped: false });
+    expect(resolveTypeClass(T, 'ZZZZ', undefined)).toMatchObject({ typklasse: 'light-aircraft', kategorie: 'unbekannt', unmapped: false });
+    expect(T.typeClasses).not.toHaveProperty('ZZZZ');
   });
 });
