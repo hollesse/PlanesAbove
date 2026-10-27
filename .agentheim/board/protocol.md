@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:16 -- Capture / Captured: airspace-b7kx2 - Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen
+
+**Type:** Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** Eigene kuratierte Flughafenliste (ICAO → Stadt), damit Routen unabhängig vom Anbieter gleich aussehen
+
+---
+
 ## 2026-10-27 21:10 -- Batch started: [airspace-v4kqz]
 
 **Type:** Work / Batch start
