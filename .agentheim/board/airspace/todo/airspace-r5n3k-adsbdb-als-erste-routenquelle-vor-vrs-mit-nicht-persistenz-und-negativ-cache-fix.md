@@ -1,7 +1,7 @@
 ---
 id: airspace-r5n3k
 title: adsbdb als erste Routenquelle vor VRS (nie persistiert, 429-Backoff) und Negativ-Cache-Fix bei nicht verfuegbaren Quellen
-status: backlog
+status: todo
 type: feature
 context: airspace
 created: 2026-10-27

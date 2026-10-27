@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 13:34 -- Modeling / Promoted: airspace-r5n3k - adsbdb als erste Routenquelle vor VRS (nie persistiert, 429-Backoff) und Negativ-Cache-Fix bei nicht verfuegbaren Quellen
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 13:34 -- Modeling / Refined: airspace-r5n3k - adsbdb als erste Routenquelle vor VRS, Nicht-Persistenz und Negativ-Cache-Fix
 
 **Type:** Modeling / Refine

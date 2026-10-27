@@ -10,14 +10,15 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 3
-- **Todo:** 0
+- **Backlog:** 2
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 4
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **airspace-r5n3k** — adsbdb als erste Routenquelle vor VRS (nie persistiert, 429-Backoff) und Negativ-Cache-Fix bei nicht verfuegbaren Quellen (feature) — `todo/airspace-r5n3k-adsbdb-als-erste-routenquelle-vor-vrs-mit-nicht-persistenz-und-negativ-cache-fix.md`
 <!-- todo-list:end -->
 
 ### Doing
@@ -34,7 +35,6 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
-- **airspace-r5n3k** — adsbdb als erste Routenquelle vor VRS (nie persistiert, 429-Backoff) und Negativ-Cache-Fix bei nicht verfuegbaren Quellen (feature) — `backlog/airspace-r5n3k-adsbdb-als-erste-routenquelle-vor-vrs-mit-nicht-persistenz-und-negativ-cache-fix.md`
 - **airspace-p2v6d** — Persistierter Routen-Cache fuer Online-Quellen (feature) — `backlog/airspace-p2v6d-persistierter-routen-cache-fuer-online-quellen.md`
 - **airspace-h9x4p** — Nähe nach Sichtbarkeit gewichten statt rein horizontaler Distanz (feature) — `backlog/airspace-h9x4p-naehe-nach-sichtbarkeit-gewichten-statt-rein-horizontaler-distanz.md`
 <!-- backlog-list:end -->
