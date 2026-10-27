@@ -10,14 +10,15 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 1
-- **Todo:** 0
+- **Backlog:** 0
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 7
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **design-system-kcpnw** — Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch (refactor) — `todo/design-system-kcpnw-uebergangs-player-datengetrieben-echte-flugzeuge-statt-beispieldaten.md`
 - **design-system-001-styleguide** — Storybook-Instanz nach Atomic Design mit allen vorhandenen Assets aufbauen und vom Betreiber abnehmen lassen (feature) — depends_on: [infrastructure-pn3w4] — `todo/design-system-001-styleguide.md`
 <!-- todo-list:end -->
 
@@ -38,7 +39,6 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
-- **design-system-kcpnw** — Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch (refactor) — `backlog/design-system-kcpnw-uebergangs-player-datengetrieben-echte-flugzeuge-statt-beispieldaten.md`
 <!-- backlog-list:end -->
 
 ## Pointers

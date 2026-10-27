@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:36 -- Modeling / Promoted: design-system-kcpnw - Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 19:36 -- Modeling / Refined: sky-scene-bvnnx - Animationen für den Wechsel der Flugzeuge wie in Design-Prototyp und Storybook umsetzen
 
 **Type:** Modeling / Refine
