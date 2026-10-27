@@ -1,7 +1,7 @@
 ---
 id: airspace-hw8f9
 title: Flugphasen-Prüfung nur unterhalb der Reiseflughöhe, ab 5 m/s und erst 400 km vom Flughafen; Steigprofil nahe dem Abflughafen lockern (Abflugrouten sind länger als die Luftlinie)
-status: doing
+status: done
 type: bug
 context: airspace
 created: 2026-10-27
@@ -36,3 +36,7 @@ Alle drei konfigurierbar unter `sources.route.plausibility`, per zod validiert, 
 
 ## Notes
 Captured via `modeling` on 2026-10-27 direkt nach todo (Entscheidung des Betreibers liegt vor). Getrennt von prwpv angelegt, weil prwpv bereits in Arbeit war.
+
+## Outcome
+
+Phase check: climb/descent counts only when altitude < phaseMaxAltitudeM (8000), |rate| > phaseMinRateMs (5) and distance > maxClimbDistanceKm (400); climb profile 150 m/km + profileSlackM 1500 (descent 80 unchanged). Both new keys zod-validated under sources.route.plausibility and documented in config.example.yaml, README.md and the BC README delta. Key files: src/server/modules/airspace/route-service.ts, src/server/config.ts, tests/unit/server/route-plausibility.test.ts. Measured: LZB407 (FL314, -11.7 m/s) plausible at the logged position and at 280 km before BRU; KLC24J 58 km out at 8500 m plausible (envelope 10 200 m); FL350 20 km out of FRA and EWG9YV (envelope 7980 m) stay rejected; EWG16Y/DLH7PP rejected, LHX1979/AUA166D/DLH400/CTN4456 plausible. Note: the logged position 50.53/7.75 is only 234 km from BRU by great circle, so the test also uses a point 280 km out on the same line. npm test 420 passed, typecheck clean, Playwright chromium 11 passed.

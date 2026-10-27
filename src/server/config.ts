@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import { FLIGHT_SOURCE_NAMES } from './modules/airspace/flight-source-names';
 const FLIGHTAWARE_DEFAULTS = { timeoutMs: 8000, monthlyBudgetUsd: 4.5, monthlyRequestCap: 900, usageSyncMinutes: 30, usageLagMinutes: 15, billingPeriodStartDay: 1 };
-const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 250, climbMetersPerKm: 120, descentMetersPerKm: 80, profileSlackM: 600 };
+const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5 };
 const ROUTE_DEFAULTS = { enabled: true, order: ['hexdb' as const, 'adsbdb' as const, 'vrs' as const], hexdb: { timeoutMs: 5000, backoffMinutes: 5 }, adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS, plausibility: PLAUSIBILITY_DEFAULTS };
 
 const schema = z.object({
@@ -67,10 +67,12 @@ const schema = z.object({
         destinationZoneKm: z.number().positive().default(80),
         minHeadingCheckAltitudeM: z.number().positive().default(3000),
         maxHeadingDeviationDeg: z.number().positive().max(180).default(65),
-        maxClimbDistanceKm: z.number().positive().default(250),
-        climbMetersPerKm: z.number().positive().default(120),
+        maxClimbDistanceKm: z.number().positive().default(400),
+        climbMetersPerKm: z.number().positive().default(150),
         descentMetersPerKm: z.number().positive().default(80),
-        profileSlackM: z.number().positive().default(600),
+        profileSlackM: z.number().positive().default(1500),
+        phaseMaxAltitudeM: z.number().positive().default(8000),
+        phaseMinRateMs: z.number().positive().default(5),
       }).default(PLAUSIBILITY_DEFAULTS),
       /** FlightAware AeroAPI: paid, opt-in last resort with a hard budget (ADR 0018). Only active when listed in `order` and FLIGHTAWARE_API_KEY is set in the environment (never here). */
       flightaware: z.object({

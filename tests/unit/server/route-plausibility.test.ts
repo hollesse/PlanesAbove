@@ -84,12 +84,29 @@ describe('protected zones around the airports (heading)', () => {
     expect(isPlausibleRoute(r, at(300), { altitudeM: 10000 })).toBe(true);
     expect(isPlausibleRoute(r, at(300), { trackDeg: 0, altitudeM: 10000 })).toBe(true);
   });
-  it('climb far from the origin is rejected, descent far from the destination likewise', () => {
-    expect(isPlausibleRoute(r, at(300), { trackDeg: 0, altitudeM: 5000, verticalRateMs: 12 })).toBe(false);
-    expect(isPlausibleRoute(r, at(200), { trackDeg: 0, altitudeM: 11000, verticalRateMs: 12 })).toBe(true);
-    expect(isPlausibleRoute(r, at(300, false), { trackDeg: 0, altitudeM: 5000, verticalRateMs: -12 })).toBe(false);
-    expect(isPlausibleRoute(r, at(200, false), { trackDeg: 0, altitudeM: 5000, verticalRateMs: -12 })).toBe(true);
+  it('climb far from the origin is rejected only below 8000 m, above 5 m/s and beyond 400 km; descent mirrors it', () => {
+    // all three conditions met -> rejected
+    expect(isPlausibleRoute(r, at(450), { trackDeg: 0, altitudeM: 4000, verticalRateMs: 11.7 })).toBe(false);
+    expect(isPlausibleRoute(r, at(450, false), { trackDeg: 0, altitudeM: 4000, verticalRateMs: -11.7 })).toBe(false);
+    // one condition missed each -> plausible
+    expect(isPlausibleRoute(r, at(450), { trackDeg: 0, altitudeM: 4000, verticalRateMs: 2 })).toBe(true); // below phaseMinRateMs
+    expect(isPlausibleRoute(r, at(450, false), { trackDeg: 0, altitudeM: 4000, verticalRateMs: -2 })).toBe(true);
+    expect(isPlausibleRoute(r, at(450), { trackDeg: 0, altitudeM: 9000, verticalRateMs: 11.7 })).toBe(true); // above phaseMaxAltitudeM
+    expect(isPlausibleRoute(r, at(450, false), { trackDeg: 0, altitudeM: 9000, verticalRateMs: -11.7 })).toBe(true);
+    expect(isPlausibleRoute(r, at(300), { trackDeg: 0, altitudeM: 4000, verticalRateMs: 11.7 })).toBe(true); // under 400 km
+    expect(isPlausibleRoute(r, at(300, false), { trackDeg: 0, altitudeM: 4000, verticalRateMs: -11.7 })).toBe(true);
     expect(isPlausibleRoute(r, at(300), { trackDeg: 0, altitudeM: 11000, verticalRateMs: 1 })).toBe(true);
+  });
+  it('LZB407 Sofia-Bruessel: descending 11.7 m/s in FL314 280 km before Brussels is plausible (cruise-level step descent)', () => {
+    const SOF = ap('Sofia', 42.6967, 23.4114), BRU = ap('Bruessel', 50.9014, 4.4844);
+    expect(isPlausibleRoute(route(SOF, BRU), { lat: 50.53, lon: 7.75 }, { trackDeg: 278, altitudeM: 9578, verticalRateMs: -11.7 })).toBe(true);
+    const at280 = destinationPoint(BRU as LatLon, 280, bearingDeg(BRU as LatLon, { lat: 50.53, lon: 7.75 })); // the 280 km of the live log, same line
+    expect(isPlausibleRoute(route(SOF, BRU), at280, { trackDeg: 278, altitudeM: 9578, verticalRateMs: -11.7 })).toBe(true);
+  });
+  it('KLC24J Frankfurt-Amsterdam: 58 km out at 8500 m climbing is plausible with the wider climb profile; FL350 20 km out stays rejected', () => {
+    const AMS = ap('Amsterdam', 52.3086, 4.7639);
+    expect(isPlausibleRoute(route(FRA, AMS), { lat: 50.45, lon: 8.09 }, { trackDeg: 330, altitudeM: 8500, verticalRateMs: 8 })).toBe(true);
+    expect(isPlausibleRoute(route(FRA, AMS), destinationPoint(FRA as LatLon, 20, 0), { trackDeg: 330, altitudeM: ft(35000), verticalRateMs: 0 })).toBe(false);
   });
   it('altitude profile (also inside the zones, also without track)', () => {
     expect(isPlausibleRoute(r, at(30), { altitudeM: 9000 })).toBe(false);
@@ -113,7 +130,7 @@ describe('config', () => {
   it('has the documented defaults and rejects non-positive/out-of-range values', () => {
     const yaml = (extra = ''): string => `location: { lat: 50, lon: 8 }\nsources:\n  route:\n    plausibility:\n${extra || '      corridorBaseKm: 50\n'}`;
     expect(parseConfig('location: { lat: 50, lon: 8 }').sources.route.plausibility).toEqual(DEFAULT_PLAUSIBILITY);
-    expect(DEFAULT_PLAUSIBILITY).toMatchObject({ corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 250, climbMetersPerKm: 120, descentMetersPerKm: 80, profileSlackM: 600 });
+    expect(DEFAULT_PLAUSIBILITY).toMatchObject({ corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5 });
     expect(() => parseConfig(yaml('      corridorBaseKm: 0\n'))).toThrow();
     expect(() => parseConfig(yaml('      maxHeadingDeviationDeg: 181\n'))).toThrow();
     expect(parseConfig(yaml('      maxHeadingDeviationDeg: 90\n')).sources.route.plausibility.maxHeadingDeviationDeg).toBe(90);

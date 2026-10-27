@@ -11,14 +11,13 @@ export const formatRoute = (r: Route): string => (r.legs && r.legs.length > 2 ? 
 /** Thresholds of the plausibility check (config `sources.route.plausibility`, airspace-p8w2k). */
 export interface PlausibilityConfig {
   corridorBaseKm: number; corridorPercent: number; corridorMaxKm: number; originZoneKm: number; destinationZoneKm: number; minHeadingCheckAltitudeM: number;
-  maxHeadingDeviationDeg: number; maxClimbDistanceKm: number; climbMetersPerKm: number; descentMetersPerKm: number; profileSlackM: number;
+  maxHeadingDeviationDeg: number; maxClimbDistanceKm: number; climbMetersPerKm: number; descentMetersPerKm: number; profileSlackM: number; phaseMaxAltitudeM: number; phaseMinRateMs: number;
 }
-export const DEFAULT_PLAUSIBILITY: PlausibilityConfig = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 250, climbMetersPerKm: 120, descentMetersPerKm: 80, profileSlackM: 600 };
+export const DEFAULT_PLAUSIBILITY: PlausibilityConfig = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5 };
 /** Own ADS-B observation of the plane; every field may be missing (e.g. MLAT has no track). */
 export interface Observation { trackDeg?: number; verticalRateMs?: number; altitudeM?: number }
 
 const CRUISE_CEILING_M = 12500; // above this the altitude envelope no longer constrains anything
-const PHASE_RATE_MS = 2.5; // ~500 ft/min
 
 type Pt = { lat: number; lon: number };
 
@@ -33,7 +32,8 @@ function legPlausible(a: Pt, b: Pt, position: LatLon, obs: Observation, c: Plaus
     if ((up < CRUISE_CEILING_M && alt > up) || (down < CRUISE_CEILING_M && alt > down)) return false;
   }
   const vr = obs.verticalRateMs;
-  if (vr !== undefined && ((vr > PHASE_RATE_MS && dOrigin > c.maxClimbDistanceKm) || (vr < -PHASE_RATE_MS && dDest > c.maxClimbDistanceKm))) return false;
+  // A climb/descent only counts below phaseMaxAltitudeM (above it vertical rates are cruise noise / step descents), above phaseMinRateMs and beyond maxClimbDistanceKm of the airport.
+  if (vr !== undefined && alt !== undefined && alt < c.phaseMaxAltitudeM && ((vr > c.phaseMinRateMs && dOrigin > c.maxClimbDistanceKm) || (vr < -c.phaseMinRateMs && dDest > c.maxClimbDistanceKm))) return false;
   if (obs.trackDeg !== undefined && alt !== undefined && alt > c.minHeadingCheckAltitudeM && dOrigin > c.originZoneKm && dDest > c.destinationZoneKm
     && angleDiffDeg(bearingDeg(position, b), obs.trackDeg) > c.maxHeadingDeviationDeg) return false;
   return true;

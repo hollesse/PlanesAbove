@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:40 -- Task verified and completed: airspace-hw8f9 - Flugphasen-Prüfung nur unterhalb der Reiseflughöhe, ab 5 m/s und erst 400 km vom Flughafen; Steigprofil nahe dem Abflughafen lockern (Abflugrouten sind länger als die Luftlinie)
+
+**Type:** Work / Task completion
+**Task:** airspace-hw8f9 - Flugphasen-Prüfung nur unterhalb der Reiseflughöhe, ab 5 m/s und erst 400 km vom Flughafen; Steigprofil nahe dem Abflughafen lockern (Abflugrouten sind länger als die Luftlinie)
+**Summary:** Flugphasen-Prüfung nur unter 8000 m, ab 5 m/s und erst 400 km vom Flughafen; Steigprofil 150 m/km + 1500 m Slack (LZB407 und KLC24J plausibel, EWG9YV weiter abgelehnt)
+**Duration:** 5m40s
+**Verification:** PASS (iteration 1)
+**Files changed:** 5
+**Tests added:** 3
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 19:40 -- Capture / Captured: design-system-t6wz4 - Flugzeuge je Airline in eigener Lackierung zeichnen, fehlende Airline-Designs in der Statistik ausweisen
 
 **Type:** Capture

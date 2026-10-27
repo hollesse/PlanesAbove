@@ -65,10 +65,12 @@ sources:
       destinationZoneKm: 80    # ... and farther than this from the destination ...
       minHeadingCheckAltitudeM: 3000  # ... and above this altitude
       maxHeadingDeviationDeg: 65      # max angle between track and bearing to the next waypoint (0..180)
-      maxClimbDistanceKm: 250  # climbing farther than this from the origin (descending: from the destination) is implausible
-      climbMetersPerKm: 120    # altitude envelope above the airport: m per km distance (+ profileSlackM)
-      descentMetersPerKm: 80
-      profileSlackM: 600
+      maxClimbDistanceKm: 400  # climbing farther than this from the origin (descending: from the destination) is implausible ...
+      phaseMaxAltitudeM: 8000  # ... but only below this altitude (above it vertical rates are cruise noise / step descents) ...
+      phaseMinRateMs: 5        # ... and only above this vertical rate in m/s (turbulence of +-2.5 m/s does not count)
+      climbMetersPerKm: 150    # altitude envelope above the origin: m per km distance (+ profileSlackM); departure routes are longer than the straight line
+      descentMetersPerKm: 80   # envelope before the destination
+      profileSlackM: 1500
     compareAll: false          # true = ask every source and record conflicts (differing plausible routes) for stats:routes; costs extra requests
 
 # German speech (ADR 0012). piper = the `tts` sidecar container; fake = silent clip (mock/testing only).
