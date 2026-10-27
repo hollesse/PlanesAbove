@@ -1,0 +1,162 @@
+{
+ "DLH": {
+  "name": "Lufthansa",
+  "country": "DE"
+ },
+ "EWG": {
+  "name": "Eurowings",
+  "country": "DE"
+ },
+ "CFG": {
+  "name": "Condor",
+  "country": "DE"
+ },
+ "TUI": {
+  "name": "TUI fly",
+  "country": "DE"
+ },
+ "RYR": {
+  "name": "Ryanair",
+  "country": "IE"
+ },
+ "EZY": {
+  "name": "easyJet",
+  "country": "GB"
+ },
+ "EJU": {
+  "name": "easyJet Europe",
+  "country": "AT"
+ },
+ "BAW": {
+  "name": "British Airways",
+  "country": "GB"
+ },
+ "AFR": {
+  "name": "Air France",
+  "country": "FR"
+ },
+ "KLM": {
+  "name": "KLM",
+  "country": "NL"
+ },
+ "SWR": {
+  "name": "Swiss",
+  "country": "CH"
+ },
+ "AUA": {
+  "name": "Austrian",
+  "country": "AT"
+ },
+ "SAS": {
+  "name": "SAS",
+  "country": "SE"
+ },
+ "IBE": {
+  "name": "Iberia",
+  "country": "ES"
+ },
+ "VLG": {
+  "name": "Vueling",
+  "country": "ES"
+ },
+ "WZZ": {
+  "name": "Wizz Air",
+  "country": "HU"
+ },
+ "THY": {
+  "name": "Turkish Airlines",
+  "country": "TR"
+ },
+ "PGT": {
+  "name": "Pegasus",
+  "country": "TR"
+ },
+ "NOZ": {
+  "name": "Norwegian",
+  "country": "NO"
+ },
+ "TAP": {
+  "name": "TAP Air Portugal",
+  "country": "PT"
+ },
+ "LOT": {
+  "name": "LOT",
+  "country": "PL"
+ },
+ "EIN": {
+  "name": "Aer Lingus",
+  "country": "IE"
+ },
+ "TRA": {
+  "name": "Transavia",
+  "country": "NL"
+ },
+ "BEL": {
+  "name": "Brussels Airlines",
+  "country": "BE"
+ },
+ "UAE": {
+  "name": "Emirates",
+  "country": "AE"
+ },
+ "QTR": {
+  "name": "Qatar Airways",
+  "country": "QA"
+ },
+ "AAL": {
+  "name": "American Airlines",
+  "country": "US"
+ },
+ "UAL": {
+  "name": "United",
+  "country": "US"
+ },
+ "DAL": {
+  "name": "Delta",
+  "country": "US"
+ },
+ "FIN": {
+  "name": "Finnair",
+  "country": "FI"
+ },
+ "ICE": {
+  "name": "Icelandair",
+  "country": "IS"
+ },
+ "ETD": {
+  "name": "Etihad",
+  "country": "AE"
+ },
+ "SIA": {
+  "name": "Singapore Airlines",
+  "country": "SG"
+ },
+ "CPA": {
+  "name": "Cathay Pacific",
+  "country": "HK"
+ },
+ "ELY": {
+  "name": "El Al",
+  "country": "IL"
+ },
+ "SXS": {
+  "name": "SunExpress",
+  "country": "TR"
+ },
+ "CLX": {
+  "name": "Cargolux",
+  "country": "LU"
+ },
+ "GEC": {
+  "name": "Lufthansa Cargo",
+  "country": "DE"
+ },
+ "BCS": {
+  "name": "European Air Transport",
+  "country": "DE"
+ },
+ "DHK": {
+  "name": "DHL Air",
+  "country": "GB"
+ }
+}

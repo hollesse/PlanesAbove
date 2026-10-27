@@ -11,6 +11,7 @@ supporting — in v1 nur Erfassung, Auswertung in v2.
 
 ## Ubiquitous language
 - **Sichtung** — ein Flugzeug war (einmal je Flug) im Umkreis: Zeitpunkt, Airline, Flugzeugtyp, Typklasse, ob Lackierung vorhanden.
+- **Besuch** — ein Aufenthalt eines Flugzeugs (icao24) im Umkreis; nach einer Lücke länger als `visitGap` beginnt ein neuer Besuch. Pro Besuch genau eine Sichtungszeile mit Zeit, Airline/Callsign, Typ, Typklasse, Lackierung ja/nein und Auswahl-Slot (1/2 oder leer) (infrastructure-001, ADR 0007).
 
 ## Aggregates
 _Noch nicht modelliert — entsteht in `modeling` / bei der Arbeit an Tasks._

@@ -1,0 +1,675 @@
+{
+ "A318": {
+  "name": "Airbus A318",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "A319": {
+  "name": "Airbus A319",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "A320": {
+  "name": "Airbus A320",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "A20N": {
+  "name": "Airbus A320neo",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "A321": {
+  "name": "Airbus A321",
+  "typklasse": "narrowbody",
+  "kategorie": "Mittelstrecke"
+ },
+ "A21N": {
+  "name": "Airbus A321neo",
+  "typklasse": "narrowbody",
+  "kategorie": "Mittelstrecke"
+ },
+ "B731": {
+  "name": "Boeing 737",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "B732": {
+  "name": "Boeing 737",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "B733": {
+  "name": "Boeing 737",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "B734": {
+  "name": "Boeing 737",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "B735": {
+  "name": "Boeing 737",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "B736": {
+  "name": "Boeing 737",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "B737": {
+  "name": "Boeing 737-700",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "B738": {
+  "name": "Boeing 737-800",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "B739": {
+  "name": "Boeing 737-900",
+  "typklasse": "narrowbody",
+  "kategorie": "Mittelstrecke"
+ },
+ "B38M": {
+  "name": "Boeing 737 MAX 8",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "B39M": {
+  "name": "Boeing 737 MAX 9",
+  "typklasse": "narrowbody",
+  "kategorie": "Mittelstrecke"
+ },
+ "B752": {
+  "name": "Boeing 757",
+  "typklasse": "narrowbody",
+  "kategorie": "Mittelstrecke"
+ },
+ "B753": {
+  "name": "Boeing 757",
+  "typklasse": "narrowbody",
+  "kategorie": "Mittelstrecke"
+ },
+ "A220": {
+  "name": "Airbus A220",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "BCS1": {
+  "name": "Airbus A220",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "BCS3": {
+  "name": "Airbus A220",
+  "typklasse": "narrowbody",
+  "kategorie": "Kurzstrecke"
+ },
+ "A332": {
+  "name": "Airbus A330-200",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "A333": {
+  "name": "Airbus A330-300",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "A339": {
+  "name": "Airbus A330-900",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "A359": {
+  "name": "Airbus A350-900",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "A35K": {
+  "name": "Airbus A350-1000",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "A342": {
+  "name": "Airbus A340",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "A343": {
+  "name": "Airbus A340",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "A345": {
+  "name": "Airbus A340",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "A346": {
+  "name": "Airbus A340",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "B762": {
+  "name": "Boeing 767",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "B763": {
+  "name": "Boeing 767",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "B764": {
+  "name": "Boeing 767",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "B772": {
+  "name": "Boeing 777-200",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "B77L": {
+  "name": "Boeing 777-200",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "B77W": {
+  "name": "Boeing 777-300ER",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "B788": {
+  "name": "Boeing 787-8",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "B789": {
+  "name": "Boeing 787-9",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "B78X": {
+  "name": "Boeing 787-10",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke"
+ },
+ "B744": {
+  "name": "Boeing 747",
+  "typklasse": "jumbo-hump",
+  "kategorie": "Langstrecke",
+  "besonderheit": "Buckel"
+ },
+ "B748": {
+  "name": "Boeing 747",
+  "typklasse": "jumbo-hump",
+  "kategorie": "Langstrecke",
+  "besonderheit": "Buckel"
+ },
+ "A388": {
+  "name": "Airbus A380",
+  "typklasse": "double-decker",
+  "kategorie": "Langstrecke",
+  "besonderheit": "Doppelstock"
+ },
+ "E170": {
+  "name": "Embraer E-Jet",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "E75S": {
+  "name": "Embraer E-Jet",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "E75L": {
+  "name": "Embraer E-Jet",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "E190": {
+  "name": "Embraer E-Jet",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "E195": {
+  "name": "Embraer E-Jet",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "E290": {
+  "name": "Embraer E-Jet",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "E295": {
+  "name": "Embraer E-Jet",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "E135": {
+  "name": "Embraer ERJ",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "E145": {
+  "name": "Embraer ERJ",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "CRJ2": {
+  "name": "Bombardier CRJ",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "CRJ7": {
+  "name": "Bombardier CRJ",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "CRJ9": {
+  "name": "Bombardier CRJ",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "CRJX": {
+  "name": "Bombardier CRJ",
+  "typklasse": "regional-jet",
+  "kategorie": "Regional"
+ },
+ "AT72": {
+  "name": "ATR 72",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "AT75": {
+  "name": "ATR 72",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "AT76": {
+  "name": "ATR 72",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "AT45": {
+  "name": "ATR 72",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "AT43": {
+  "name": "ATR 72",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "DH8D": {
+  "name": "Dash 8",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "DH8C": {
+  "name": "Dash 8",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "DH8B": {
+  "name": "Dash 8",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "DH8A": {
+  "name": "Dash 8",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "SF34": {
+  "name": "Turboprop",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "JS41": {
+  "name": "Turboprop",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "B190": {
+  "name": "Turboprop",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "C25A": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "C25B": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "C25C": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "C510": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "C525": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "C56X": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "C680": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "C68A": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "C700": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "C750": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "CL30": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "CL35": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "CL60": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "GLF4": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "GLF5": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "GLF6": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "GLEX": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "FA7X": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "FA8X": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "F900": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "F2TH": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "E50P": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "E55P": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "LJ45": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "LJ60": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "PC24": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "H25B": {
+  "name": "Business-Jet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "C172": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "C152": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "C182": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "C206": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "PA28": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "PA34": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "PA46": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "SR20": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "SR22": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "DA40": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "DA42": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "DR40": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "BE36": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "AA5": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "P28A": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "TB20": {
+  "name": "Kleinflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "GLID": {
+  "name": "Segelflugzeug",
+  "typklasse": "glider",
+  "kategorie": "Segelflug"
+ },
+ "ASK2": {
+  "name": "Segelflugzeug",
+  "typklasse": "glider",
+  "kategorie": "Segelflug"
+ },
+ "DG1T": {
+  "name": "Segelflugzeug",
+  "typklasse": "glider",
+  "kategorie": "Segelflug"
+ },
+ "EC45": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "EC35": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "EC30": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "EC20": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "H135": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "H145": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "H160": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "AS50": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "AS55": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "AS65": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "B06": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "B407": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "B412": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "R22": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "R44": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "R66": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "A139": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "S76": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "BK17": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "MD52": {
+  "name": "Hubschrauber",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ }
+}

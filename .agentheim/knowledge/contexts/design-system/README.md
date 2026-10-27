@@ -16,17 +16,28 @@ generic: frontend infrastructure with its own UX vocabulary and review process.
 - **Atom**: the smallest building block (token, font, colour, sky, type-class silhouette, logo, plaque, text style).
 - **Molecule**: a combination of atoms (painted plane = type class + livery + logo; header line; info row).
 - **Organism**: a self-contained UI section (info bar in all of its states, scene layer with 0–2 planes).
-- **Template**: a full screen layout without real data (empty, one plane, two planes at 5:3).
+- **Template**: a full screen layout without real data (empty, one plane, two planes). Default format is 4:3 (the target iPads); 5:3 (the Claude-Design drafts) is selectable via the `aspect` control or the "Entwurf 5:3" viewport.
 - **Page**: a template filled with example data; transitions as playable stories.
 - **Token**: a named design value (colour, font, spacing).
 - **Plakette** (plaque): the round number 1 or 2 that links a plane to its info row.
 - **Choreografie** (choreography): timing and order of the transition animations (e.g. 5 s).
 - **Abnahme** (approval): the operator's sign-off of a component in Storybook. Only approved components go into the app.
+- **Typklasse** (type class): one of the 10 plane silhouettes (narrowbody, widebody, jumbo-hump, double-decker, regional-jet, turboprop, business-jet, light-aircraft, glider, helicopter). Light Aircraft and Glider have no airline liveries, only the default.
+- **Himmel** (sky): one of 28 sky illustrations, Tageszeit (dawn, day, dusk, night) x Wetterlage (clear, light, overcast, fog, rain, snow, storm).
+- **Himmel-Tinte** (sky ink): colour of text laid over a sky, light (#F6EEDC) or dark (#1F2A33). Rule: light on dusk, night, rain and storm; dark otherwise.
+- **Lackierung** (livery): a named set of `--skin-*` CSS custom properties applied to a Typklasse (catalog of 42 incl. the default). Unknown livery id falls back to the Standard-Lackierung.
+- **Logo-Ankerpunkt** (logo anchor): the `data-anchor` a logo asset declares (logo-tail-center, -mid, -base, -lead, -fit, logo-fuselage-fwd; none = logo-tail) which selects the empty group of the plane silhouette the logo is placed into.
+- **Info-Leiste** (info bar): organism at the bottom of a screen in four states: one plane with route known, one plane with route unknown, two planes (two rows with Plaketten), slim "Zuletzt" bar.
+- **Übergang** (transition): a declarative spec of stacked layers with one-shot 5 s CSS animations (22 in total: plane comes/goes/switches, weather changes, daytime changes), played from a Start button.
+- **Schein (Himmel-Tinte-Glow, Variante E)** — dense, dark-ish halo behind the Kopfzeile (text lying directly on the sky), in the counter colour of its Himmel-Tinte, plus the Kopfzeile in IBM Plex Mono 500. Three stacked offset-free cqw text-shadows (Safari 16 safe: only `text-shadow`/`font-weight`): radii `--pa-sky-glow-blur-tight/-mid/-wide` = 0.3/1/2.4cqw; light ink gets black at 90/90/70 % (`--pa-sky-glow-on-light-ink-tight/-mid/-wide`), dark ink white at 80/80/60 % (`--pa-sky-glow-on-dark-ink-tight/-mid/-wide`). Classes `pa-glow-on-light-ink` / `pa-glow-on-dark-ink`. Shown in the Atoms/Tokens story "Schein". Text on paper (Info-Leiste, Plaketten, Zuletzt-Leiste) has no Schein and keeps its weight.
+- **Kopfzeile-Zustand (live / veraltet)** — die Kopfzeile (Molekül) zeigt live „Live · HH:MM“, im veralteten Zustand (ADR 0008: letzte gute Szene bleibt) „Letzter Stand · HH:MM“ mit der Uhrzeit des letzten guten Stands, gleiche Position, Tinte und Schein. Eigenschaft `stale?: { since }` an Kopfzeile und Screen-Vorlage. Ersetzt den früheren, vom Betreiber abgelehnten Baustein „Stale-Hinweis“ (entfernt). Abnahme durch den Betreiber offen (design-system-r5d7v).
 
 ## Rules
 - **Storybook first:** a UI element the app needs that does not exist yet is first built as a story here, approved, and only then used in the app.
 - Components are framework-free modules. The app imports exactly the modules Storybook renders; it never makes copies.
 - Components must run on the old iPad (JS target from the runtime decision).
+- Livery variables are named exactly as the plane SVG files use them (`--skin-aft-sweep-N`, `--skin-fin-*`, ...); the draft name `--skin-tailband` does not exist and is not used.
+- Components live in `src/client/ui/<level>/` (one folder per Atomic Design level); stories in `src/client/ui/stories/` carry the level as title prefix; SVG assets are generated into string modules by `npm run assets`.
 
 ## Aggregates
 _Not applicable: component catalogue, no domain model._

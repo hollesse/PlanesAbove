@@ -10,6 +10,7 @@ Catalog of ADRs, research, and concept synthesis pages scoped to this bounded co
 ## ADRs scoped to this BC
 
 <!-- adr-local:start -->
+- **0009** — Design-system layout, livery variable standard, 4:3 default and asset pipeline — 2026-10-26 — `../../decisions/0009-design-system-layout-livery-variant-and-asset-pipeline.md`
 <!-- adr-local:end -->
 
 ## Research touching this BC

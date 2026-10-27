@@ -1,0 +1,37 @@
+/* Keyframes of the Screens drafts (5 s transitions). One animation per moving part; see transitions/catalog.ts. */
+@keyframes pa-wx{0%,15%{opacity:0}85%,100%{opacity:1}}
+@keyframes pa-wx-out{0%,15%{opacity:1}85%,100%{opacity:0}}
+@keyframes pa-plane-in{0%,27%{transform:translateX(-135%)}89%,100%{transform:translateX(0)}}
+@keyframes pa-small-bar{0%,11%{transform:translateY(0)}25%,100%{transform:translateY(105%)}}
+@keyframes pa2-bar1{0%,8%{transform:translateY(0)}19%,100%{transform:translateY(105%)}}
+@keyframes pa2-plane1{0%,22%{transform:translate(0,0) scale(1)}48%,100%{transform:translate(-12.5%,-1.8%) scale(.694)}}
+@keyframes pa2-plane2{0%,47.9%{transform:translateX(-420%);opacity:0}48%{transform:translateX(-420%);opacity:1}83%,100%{transform:translateX(0);opacity:1}}
+@keyframes pa2-badge{0%,83%{opacity:0;transform:scale(.4)}93%,100%{opacity:1;transform:scale(1)}}
+@keyframes pa2-bar2{0%,83%{transform:translateY(105%)}99%,100%{transform:translateY(0)}}
+@keyframes pa3-bar-a{0%,8%{transform:translateY(0)}19%,100%{transform:translateY(105%)}}
+@keyframes pa3-plane-a{0%,21%{transform:translateX(0);opacity:1}58%{transform:translateX(170%);opacity:1}58.1%,100%{transform:translateX(170%);opacity:0}}
+@keyframes pa3-plane-b{0%,46%{transform:translateX(-170%)}83%,100%{transform:translateX(0)}}
+@keyframes pa3-bar-b{0%,80%{transform:translateY(105%)}96%,100%{transform:translateY(0)}}
+@keyframes pa4-bar{0%{transform:translateY(0)}22%,100%{transform:translateY(105%)}}
+@keyframes pa4-plane{0%,14%{transform:translateX(0)}62%,100%{transform:translateX(170%)}}
+@keyframes pa4-small{0%,66%{transform:translateY(105%)}88%,100%{transform:translateY(0)}}
+@keyframes pa5-bar2{0%{transform:translateY(0)}16%,100%{transform:translateY(105%)}}
+@keyframes pa5-badge{0%{opacity:1;transform:scale(1)}12%,100%{opacity:0;transform:scale(.4)}}
+@keyframes pa5-p2{0%,14%{transform:translateX(0)}46%,100%{transform:translateX(140%)}}
+@keyframes pa5-p1{0%,44%{transform:translate(0,0) scale(1)}72%,100%{transform:translate(18%,2.6%) scale(1.44)}}
+@keyframes pa5-bar1{0%,76%{transform:translateY(105%)}96%,100%{transform:translateY(0)}}
+@keyframes pa6-p1{0%,14%{transform:translateX(0)}50%,100%{transform:translateX(200%)}}
+@keyframes pa6-p2{0%,46%{transform:translate(0,0) scale(1)}76%,100%{transform:translate(-139%,-88.8%) scale(2.18)}}
+@keyframes pa7-badge{0%{opacity:1;transform:scale(1)}10%,74%{opacity:0;transform:scale(.4)}84%,100%{opacity:1;transform:scale(1)}}
+@keyframes pa7-rowout{0%{transform:translateY(0)}16%,100%{transform:translateY(110%)}}
+@keyframes pa7-rowin{0%,76%{transform:translateY(110%)}94%,100%{transform:translateY(0)}}
+@keyframes pa7-pout{0%,8%{transform:translateX(0)}40%,100%{transform:translateX(200%)}}
+@keyframes pa7-pin{0%,34.9%{transform:translateX(-130%);opacity:0}35%{transform:translateX(-130%);opacity:1}70%,100%{transform:translateX(0);opacity:1}}
+@keyframes pa8-pout{0%,8%{transform:translateX(0)}40%,100%{transform:translateX(140%)}}
+@keyframes pa8-pin{0%,34.9%{transform:translateX(-300%);opacity:0}35%{transform:translateX(-300%);opacity:1}70%,100%{transform:translateX(0);opacity:1}}
+@keyframes pa11-small{0%,8%{transform:translateY(0)}20%,100%{transform:translateY(105%)}}
+@keyframes pa11-p1in{0%,19.9%{transform:translateX(-130%);opacity:0}20%{transform:translateX(-130%);opacity:1}55%,100%{transform:translateX(0);opacity:1}}
+@keyframes pa11-p2in{0%,34.9%{transform:translateX(-300%);opacity:0}35%{transform:translateX(-300%);opacity:1}72%,100%{transform:translateX(0);opacity:1}}
+@keyframes pa11-badge{0%,72%{opacity:0;transform:scale(.4)}82%,100%{opacity:1;transform:scale(1)}}
+@keyframes pa11-bar{0%,74%{transform:translateY(105%)}94%,100%{transform:translateY(0)}}
+@keyframes pa-big-bar{0%,77%{transform:translateY(105%)}100%{transform:translateY(0)}}

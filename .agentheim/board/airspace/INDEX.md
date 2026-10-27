@@ -10,16 +10,14 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 0
-- **Todo:** 2
+- **Backlog:** 1
+- **Todo:** 0
 - **Doing:** 0
-- **Done:** 0
+- **Done:** 2
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **airspace-h76v2** — Decide Typklasse, Kategorie and airline derivation from static curated tables (decision) — `todo/airspace-h76v2-type-class-and-airline-tables.md`
-- **airspace-jy8hz** — Decide free ADS-B position and route sources behind a replaceable port (adsb.lol / airplanes.live / adsbdb) (decision) — `todo/airspace-jy8hz-flight-and-route-sources.md`
 <!-- todo-list:end -->
 
 ### Doing
@@ -28,10 +26,13 @@ Catalog of this bounded context's tasks by status.
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **airspace-h76v2** — Decide Typklasse, Kategorie and airline derivation from static curated tables (decision) — `done/airspace-h76v2-type-class-and-airline-tables.md`
+- **airspace-jy8hz** — Decide free ADS-B position and route sources behind a replaceable port (adsb.lol / airplanes.live / adsbdb) (decision) — `done/airspace-jy8hz-flight-and-route-sources.md`
 <!-- done-list:end -->
 
 ### Backlog
 <!-- backlog-list:start -->
+- **airspace-m3w9c** — VRS standing-data (CC0) als bevorzugte RouteSource mit Offline-Snapshot (feature) — `backlog/airspace-m3w9c-vrs-standing-data-cc0-als-bevorzugte-routesource-mit-offline.md`
 <!-- backlog-list:end -->
 
 ## Pointers

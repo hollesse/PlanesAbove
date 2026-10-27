@@ -10,15 +10,14 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 0
-- **Todo:** 1
+- **Backlog:** 1
+- **Todo:** 0
 - **Doing:** 0
-- **Done:** 0
+- **Done:** 2
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **sky-scene-xczgm** — Decide German speech output: behind a swappable synthesizer port (Piper default, ElevenLabs etc. pluggable), played as audio on the iPad (decision) — `todo/sky-scene-xczgm-german-speech-output.md`
 <!-- todo-list:end -->
 
 ### Doing
@@ -27,6 +26,8 @@ Catalog of this bounded context's tasks by status.
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **sky-scene-w9n4f** — Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist (feature) — `done/sky-scene-w9n4f-szene-gilt-erst-als-veraltet-wenn-der-letzte-erfolgreiche-ab.md`
+- **sky-scene-xczgm** — Decide German speech output behind a swappable synthesizer port (Piper default, ElevenLabs etc. pluggable), played as audio on the iPad (decision) — `done/sky-scene-xczgm-german-speech-output.md`
 <!-- done-list:end -->
 
 Current-month entries stay live in full — the nominal ~30-entry figure
@@ -43,6 +44,7 @@ prior-art matcher additionally checks `done-archive/` when present.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **sky-scene-t6h2p** — ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback (feature) — `backlog/sky-scene-t6h2p-elevenlabs-adapter-opt-in-mit-zeichenbudget-und-piper-fallba.md`
 <!-- backlog-list:end -->
 
 ## Pointers

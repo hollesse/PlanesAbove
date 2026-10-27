@@ -1,0 +1,10 @@
+node_modules/
+storybook-static/
+src/client/ui/assets/generated/
+test-results/
+playwright-report/
+*.log
+.worktrees/
+.agentheim/salvage/
+.agentheim/state/
+dist/

@@ -11,14 +11,13 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
+- **Todo:** 0
 - **Doing:** 0
-- **Done:** 0
+- **Done:** 1
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **weather-yttgx** — Decide weather and sun position: Open-Meteo for Wetterlage, locally computed sun for Tageszeit (decision) — `todo/weather-yttgx-weather-and-sun-source.md`
 <!-- todo-list:end -->
 
 ### Doing
@@ -27,6 +26,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **weather-yttgx** — Decide weather and sun position: Open-Meteo for Wetterlage, locally computed sun for Tageszeit (decision) — `done/weather-yttgx-weather-and-sun-source.md`
 <!-- done-list:end -->
 
 Current-month entries stay live in full — the nominal ~30-entry figure

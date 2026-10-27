@@ -5,6 +5,487 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 07:41 -- Task verified and completed: sky-scene-w9n4f - Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist
+
+**Type:** Work / Task completion
+**Task:** sky-scene-w9n4f - Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist
+**Summary:** scene becomes stale only after 3 Takte without a successful fetch, one shared threshold with /healthz
+**Duration:** ~15m
+**Verification:** PASS (iteration 2)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 12
+**Tests added:** 7
+**ADRs written:** none
+
+---
+
+## 2026-10-27 07:37 -- Verification failed: sky-scene-w9n4f - Stale-Schwelle 3 Takte
+
+**Type:** Work / Verification failure
+**Task:** sky-scene-w9n4f - Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist
+**Iteration:** 1 of 3
+**Reasons:** /healthz half of the shared-threshold criterion untested; health.ts keeps a second default fallback
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
+## 2026-10-27 07:31 -- Batch started: [sky-scene-w9n4f]
+
+**Type:** Work / Batch start
+**Tasks:** sky-scene-w9n4f - Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist
+**Parallel:** no (1 worker) — operator-approved stale threshold change
+
+---
+
+## 2026-10-27 07:31 -- Modeling / Promoted: sky-scene-w9n4f - Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist
+
+**Type:** Modeling / Promote
+**BC:** sky-scene
+**From → To:** backlog → todo
+
+---
+
+## 2026-10-27 07:19 -- Task verified and completed: design-system-r5d7v - Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“)
+
+**Type:** Work / Task completion
+**Task:** design-system-r5d7v - Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“)
+**Summary:** stale state shown in the header as Letzter Stand with the last good time, separate stale notice removed
+**Duration:** ~6m
+**Verification:** PASS (iteration 1)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 14
+**Tests added:** 1
+**ADRs written:** none
+
+---
+
+## 2026-10-27 07:14 -- Batch started: [design-system-r5d7v]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-r5d7v - Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“)
+**Parallel:** no (1 worker) — operator rejected the separate stale notice
+
+---
+
+## 2026-10-27 07:14 -- Modeling / Promoted: design-system-r5d7v - Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“)
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
+## 2026-10-27 01:09 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** ~2h (continued session after the 2026-10-26 23:08 session end)
+**Completed:** 6 (first-try PASS: 2 — design-system-k7h2q, design-system-v8q3n; skipped: 0; re-dispatched: 4 — design-system-c4v3r (3), design-system-g7w4m (2), design-system-q7m3k (2), infrastructure-001 (2))
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 1 (design-system-c4v3r iteration 3: malformed RESULT rewritten by the same worker)
+**Lost-result escalations:** 0
+**Dispatches:** design-system-c4v3r: 3, design-system-k7h2q: 1, design-system-g7w4m: 2, design-system-v8q3n: 1, design-system-q7m3k: 2, infrastructure-001: 2
+**Commits:** ~45
+**Vision-conformance:** none — batch aligns with vision (design-system legibility/asset fixes driven by the operator's review; walking skeleton serves 'Schnell sichtbar')
+**Batch mix:** 67% product-facing / 33% harness / 0% bookkeeping (6 tasks)
+**Gate:** Operator signed off the design system (design-system-001).
+**Carry-over:** none — working tree clean (salvage patch .agentheim/salvage/design-system-001-merge-conflict.patch kept, gitignored)
+**Next:** operator device acceptance infrastructure-d3v7k; approve Stale-Hinweis (design-system-r5d7v); backlog follow-ups infrastructure-b4k8n, infrastructure-q2w8h, airspace-m3w9c, sky-scene-t6h2p.
+
+---
+
+## 2026-10-27 01:08 -- Task verified and completed: infrastructure-001 - Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert
+
+**Type:** Work / Task completion
+**Task:** infrastructure-001 - Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert
+**Summary:** walking skeleton built end to end in mock mode and E2E, device acceptance split out
+**Duration:** ~25m
+**Verification:** PASS (iteration 2)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 82
+**Tests added:** 142
+**ADRs written:** 0013
+
+---
+
+## 2026-10-27 01:03 -- Verification failed: infrastructure-001 - Walking skeleton
+
+**Type:** Work / Verification failure
+**Task:** infrastructure-001 - Walking skeleton
+**Iteration:** 1 of 3
+**Reasons:** README_DELTA duplicates the Mock-Modus term (must be replace); three unrecorded ADR departures (sightings Auswahl-slot column, route cache in memory, storybook compose profile)
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
+## 2026-10-27 00:41 -- Batch started: [infrastructure-001]
+
+**Type:** Work / Batch start
+**Tasks:** infrastructure-001 - Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert
+**Parallel:** no (1 worker) — the last ready task; device acceptance split out into infrastructure-d3v7k
+
+---
+
+## 2026-10-27 00:39 -- Design-System abgenommen
+
+**Type:** Work / Gate
+**Task:** design-system-001 - Storybook-Instanz nach Atomic Design (inkl. Folgearbeiten design-system-c4v3r, design-system-k7h2q, design-system-g7w4m, design-system-v8q3n, design-system-q7m3k)
+**Gate:** Der Betreiber hat das Design-System in Storybook durchgesehen und freigegeben (ADR 0002). Die [human-eye]-Kriterien der Design-System-Tasks gelten damit als erfüllt.
+**Offen:** Playwright-Lauf unter WebKit auf dem Rechner des Betreibers (in der Cloud-Umgebung nur Chromium).
+**Next:** infrastructure-001-walking-skeleton darf starten.
+
+---
+
+## 2026-10-27 00:32 -- Task verified and completed: design-system-q7m3k - Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern
+
+**Type:** Work / Task completion
+**Task:** design-system-q7m3k - Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern
+**Summary:** add missing logo PNGs from Claude Design, fix logo clipping, guard against missing logo files
+**Duration:** ~12m
+**Verification:** PASS (iteration 2)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 27
+**Tests added:** 4
+**ADRs written:** none
+
+---
+
+## 2026-10-27 00:29 -- Verification failed: design-system-q7m3k - Fehlende Logo-PNGs, Logo-Beschnitt
+
+**Type:** Work / Verification failure
+**Task:** design-system-q7m3k - Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern
+**Iteration:** 1 of 3
+**Reasons:** no test for logo clipping on painted planes; logo-tail-lead fin clip (easyjet, pegasus) unsettled
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
+## 2026-10-27 00:23 -- Batch started: [design-system-q7m3k]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-q7m3k - Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern
+**Parallel:** no (1 worker) — builder review found missing and clipped logos; PNGs fetched from Claude Design
+
+---
+
+## 2026-10-27 00:23 -- Modeling / Promoted: design-system-q7m3k - Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
+## 2026-10-27 00:18 -- Task verified and completed: design-system-v8q3n - Schein hinter der Kopfzeile verstärken (Variante E) und Kopfzeile in Plex Mono 500
+
+**Type:** Work / Task completion
+**Task:** design-system-v8q3n - Schein hinter der Kopfzeile verstärken (Variante E) und Kopfzeile in Plex Mono 500
+**Summary:** stronger three-layer header glow (variant E) and header in Plex Mono 500
+**Duration:** ~5m
+**Verification:** PASS (iteration 1)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 6
+**Tests added:** 1
+**ADRs written:** none
+
+---
+
+## 2026-10-27 00:14 -- Batch started: [design-system-v8q3n]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-v8q3n - Schein hinter der Kopfzeile verstärken (Variante E) und Kopfzeile in Plex Mono 500
+**Parallel:** no (1 worker) — builder chose variant E after side-by-side comparison
+
+---
+
+## 2026-10-27 00:14 -- Modeling / Promoted: design-system-v8q3n - Schein hinter der Kopfzeile verstärken (Variante E) und Kopfzeile in Plex Mono 500
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
+## 2026-10-27 00:02 -- Task verified and completed: design-system-g7w4m - Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel (helle Schrift mit schwarzem Schein ca. 40 %)
+
+**Type:** Work / Task completion
+**Task:** design-system-g7w4m - Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel (helle Schrift mit schwarzem Schein ca. 40 %)
+**Summary:** wide soft glow replaces the thin outline behind text on the sky
+**Duration:** ~12m
+**Verification:** PASS (iteration 2)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 8
+**Tests added:** 2
+**ADRs written:** none
+
+---
+
+## 2026-10-26 23:58 -- Verification failed: design-system-g7w4m - Breiter weicher Schein statt dünner Kontur
+
+**Type:** Work / Verification failure
+**Task:** design-system-g7w4m - Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel
+**Iteration:** 1 of 3
+**Reasons:** glow blur token not shown in Token story, no test for it; TESTS_ADDED miscounted
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
+## 2026-10-26 23:53 -- Batch started: [design-system-g7w4m]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-g7w4m - Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel (helle Schrift mit schwarzem Schein ca. 40 %)
+**Parallel:** no (1 worker) — builder rejected the thin outline; wants a wide soft glow
+
+---
+
+## 2026-10-26 23:53 -- Modeling / Promoted: design-system-g7w4m - Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel (helle Schrift mit schwarzem Schein ca. 40 %)
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
+## 2026-10-26 23:48 -- Task verified and completed: design-system-k7h2q - Text direkt auf dem Himmel bekommt eine Kontur in der Gegenfarbe (dunkle Schrift hell umrandet, helle Schrift dunkel umrandet)
+
+**Type:** Work / Task completion
+**Task:** design-system-k7h2q - Text direkt auf dem Himmel bekommt eine Kontur in der Gegenfarbe (dunkle Schrift hell umrandet, helle Schrift dunkel umrandet)
+**Summary:** text on the sky gets an outline in the counter colour of its ink
+**Duration:** ~5m
+**Verification:** PASS (iteration 1)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 7
+**Tests added:** 3
+**ADRs written:** none
+
+---
+
+## 2026-10-26 23:43 -- Batch started: [design-system-k7h2q]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-k7h2q - Text direkt auf dem Himmel bekommt eine Kontur in der Gegenfarbe (dunkle Schrift hell umrandet, helle Schrift dunkel umrandet)
+**Parallel:** no (1 worker) — builder-requested legibility fix after Storybook review
+
+---
+
+## 2026-10-26 23:43 -- Modeling / Promoted: design-system-k7h2q - Text direkt auf dem Himmel bekommt eine Kontur in der Gegenfarbe (dunkle Schrift hell umrandet, helle Schrift dunkel umrandet)
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
+## 2026-10-26 23:38 -- Task verified and completed: design-system-c4v3r - Himmel füllt den Bildschirm im 4:3-Format lückenlos (Cover-Beschnitt statt weißer Streifen unten)
+
+**Type:** Work / Task completion
+**Task:** design-system-c4v3r - Himmel füllt den Bildschirm im 4:3-Format lückenlos (Cover-Beschnitt statt weißer Streifen unten)
+**Summary:** sky fills the 4:3 and 5:3 stage as cover crop instead of leaving a paper strip
+**Duration:** ~15m
+**Verification:** PASS (iteration 3)
+**Result source:** re-dispatch · layout both+sentinel · sidecar present (iteration 3 RESULT was malformed once and rewritten by the same worker without code changes)
+**Files changed:** 7
+**Tests added:** 4
+**ADRs written:** none
+
+---
+
+## 2026-10-26 23:33 -- Verification failed: design-system-c4v3r - Himmel füllt den Bildschirm im 4:3-Format lückenlos
+
+**Type:** Work / Verification failure
+**Task:** design-system-c4v3r - Himmel füllt den Bildschirm im 4:3-Format lückenlos (Cover-Beschnitt statt weißer Streifen unten)
+**Iteration:** 2 of 3
+**Reasons:** empty/two at 5:3 still unmeasured, e2e cover test skips non-cover skies and cannot fail
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
+## 2026-10-26 23:31 -- Verification failed: design-system-c4v3r - Himmel füllt den Bildschirm im 4:3-Format lückenlos
+
+**Type:** Work / Verification failure
+**Task:** design-system-c4v3r - Himmel füllt den Bildschirm im 4:3-Format lückenlos (Cover-Beschnitt statt weißer Streifen unten)
+**Iteration:** 1 of 3
+**Reasons:** transition-story criterion untested, 5:3 empty/two states untested, TESTS_ADDED miscounted
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
+## 2026-10-26 23:27 -- Batch started: [design-system-c4v3r]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-c4v3r - Himmel füllt den Bildschirm im 4:3-Format lückenlos (Cover-Beschnitt statt weißer Streifen unten)
+**Parallel:** no (1 worker) — builder-requested fix after Storybook review: sky must fill the 4:3 stage
+
+---
+
+## 2026-10-26 23:27 -- Modeling / Promoted: design-system-c4v3r - Himmel füllt den Bildschirm im 4:3-Format lückenlos (Cover-Beschnitt statt weißer Streifen unten)
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
+## 2026-10-26 23:08 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** ~35m
+**Completed:** 9 (first-try PASS: 1, re-dispatched: 0, skipped: 8)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** infrastructure-pn3w4: 1, airspace-jy8hz: 1, weather-yttgx: 1, design-system-001: 2 (1 + merge-conflict resolve dispatch, .gitignore add/add), infrastructure-y8epz: 1, infrastructure-w7qbc: 1, infrastructure-p6s30: 1, airspace-h76v2: 1, sky-scene-xczgm: 1
+**Commits:** 16
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (9 tasks)
+**Carry-over:** none — working tree clean (salvage patch .agentheim/salvage/design-system-001-merge-conflict.patch kept, gitignored)
+**Next:** builder reviews and approves the Storybook design system (design-system-001 [human-eye] gate, plus a WebKit e2e run) before infrastructure-001-walking-skeleton is dispatched.
+
+---
+
+## 2026-10-26 23:04 -- Task completed (verification skipped): sky-scene-xczgm - Decide German speech output behind a swappable synthesizer port (Piper default, ElevenLabs etc. pluggable), played as audio on the iPad
+
+**Type:** Work / Task completion
+**Task:** sky-scene-xczgm - Decide German speech output behind a swappable synthesizer port (Piper default, ElevenLabs etc. pluggable), played as audio on the iPad
+**Summary:** decide German speech output behind a swappable SpeechSynthesizer port
+**Duration:** ~1m
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
+## 2026-10-26 23:04 -- Task completed (verification skipped): infrastructure-p6s30 - Decide observability: health endpoint, dead-man's-switch heartbeat and structured logs
+
+**Type:** Work / Task completion
+**Task:** infrastructure-p6s30 - Decide observability: health endpoint, dead-man's-switch heartbeat and structured logs
+**Summary:** decide health endpoint, dead-man heartbeat and structured logs
+**Duration:** ~1m
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
+## 2026-10-26 23:03 -- Task completed (verification skipped): airspace-h76v2 - Decide Typklasse, Kategorie and airline derivation from static curated tables
+
+**Type:** Work / Task completion
+**Task:** airspace-h76v2 - Decide Typklasse, Kategorie and airline derivation from static curated tables
+**Summary:** decide Typklasse, Kategorie and airline derivation from static curated tables
+**Duration:** ~1m
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
+## 2026-10-26 23:02 -- Batch started: [infrastructure-p6s30, airspace-h76v2, sky-scene-xczgm]
+
+**Type:** Work / Batch start
+**Tasks:** infrastructure-p6s30 - Decide observability: health endpoint, dead-man's-switch heartbeat and structured logs, airspace-h76v2 - Decide Typklasse, Kategorie and airline derivation from static curated tables, sky-scene-xczgm - Decide German speech output behind a swappable synthesizer port (Piper default, ElevenLabs etc. pluggable), played as audio on the iPad
+**Parallel:** yes (3 workers, cap 3) — the last 3 ready decisions; infrastructure-001-walking-skeleton stays blocked on these.
+
+---
+
+## 2026-10-26 23:01 -- Task verified and completed: design-system-001 - Storybook-Instanz nach Atomic Design mit allen vorhandenen Assets aufbauen und vom Betreiber abnehmen lassen
+
+**Type:** Work / Task completion
+**Task:** design-system-001 - Storybook-Instanz nach Atomic Design mit allen vorhandenen Assets aufbauen und vom Betreiber abnehmen lassen
+**Summary:** Storybook design system (Atomic Design) with all draft assets, local fonts, 4:3 templates
+**Duration:** ~17m
+**Verification:** PASS (iteration 1)
+**Result source:** sidecar · layout both+sentinel · sidecar present (resolve dispatch after .gitignore merge-back conflict, re-verified PASS)
+**Files changed:** 119
+**Tests added:** 44
+**ADRs written:** 0009
+
+---
+
+## 2026-10-26 22:46 -- Task completed (verification skipped): infrastructure-w7qbc - Decide deployment topology and kiosk operation: Docker Compose app on ZimaOS, self-recovering iPad client via Guided Access
+
+**Type:** Work / Task completion
+**Task:** infrastructure-w7qbc - Decide deployment topology and kiosk operation: Docker Compose app on ZimaOS, self-recovering iPad client via Guided Access
+**Summary:** decide Docker Compose app on ZimaOS and self-recovering iPad kiosk client
+**Duration:** ~1m
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
+## 2026-10-26 22:45 -- Task completed (verification skipped): infrastructure-y8epz - Decide persistence and configuration: SQLite single file plus validated config file
+
+**Type:** Work / Task completion
+**Task:** infrastructure-y8epz - Decide persistence and configuration: SQLite single file plus validated config file
+**Summary:** decide SQLite single-file storage and validated YAML configuration
+**Duration:** ~1m
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
+## 2026-10-26 22:44 -- Batch started: [design-system-001, infrastructure-y8epz, infrastructure-w7qbc]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-001 - Storybook-Instanz nach Atomic Design mit allen vorhandenen Assets aufbauen und vom Betreiber abnehmen lassen, infrastructure-y8epz - Decide persistence and configuration: SQLite single file plus validated config file, infrastructure-w7qbc - Decide deployment topology and kiosk operation: Docker Compose app on ZimaOS, self-recovering iPad client via Guided Access
+**Parallel:** yes (3 workers, cap 3) — 6 ready; held to next wave: infrastructure-p6s30, airspace-h76v2, sky-scene-xczgm. design-system-001 dispatched early because it is the longest task and gates the walking skeleton.
+
+---
+
+## 2026-10-26 22:43 -- Task completed (verification skipped): weather-yttgx - Decide weather and sun position: Open-Meteo for Wetterlage, locally computed sun for Tageszeit
+
+**Type:** Work / Task completion
+**Task:** weather-yttgx - Decide weather and sun position: Open-Meteo for Wetterlage, locally computed sun for Tageszeit
+**Summary:** decide Open-Meteo for Wetterlage and locally computed sun position for Tageszeit
+**Duration:** ~45s
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
+## 2026-10-26 22:43 -- Task completed (verification skipped): airspace-jy8hz - Decide free ADS-B position and route sources behind a replaceable port (adsb.lol / airplanes.live / adsbdb)
+
+**Type:** Work / Task completion
+**Task:** airspace-jy8hz - Decide free ADS-B position and route sources behind a replaceable port (adsb.lol / airplanes.live / adsbdb)
+**Summary:** decide free ADS-B position and route sources behind replaceable ports
+**Duration:** ~45s
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
+## 2026-10-26 22:43 -- Task completed (verification skipped): infrastructure-pn3w4 - Decide runtime split and stack: home-server service computes state, tablet is a thin vanilla-JS client
+
+**Type:** Work / Task completion
+**Task:** infrastructure-pn3w4 - Decide runtime split and stack: home-server service computes state, tablet is a thin vanilla-JS client
+**Summary:** decide runtime split and stack (home-server service, thin vanilla-JS iPad client)
+**Duration:** ~45s
+**Verification:** SKIPPED — decision-only task
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 0
+
+---
+
+## 2026-10-26 22:40 -- Batch started: [infrastructure-pn3w4, airspace-jy8hz, weather-yttgx]
+
+**Type:** Work / Batch start
+**Tasks:** infrastructure-pn3w4 - Decide runtime split and stack: home-server service computes state, tablet is a thin vanilla-JS client, airspace-jy8hz - Decide free ADS-B position and route sources behind a replaceable port (adsb.lol / airplanes.live / adsbdb), weather-yttgx - Decide weather and sun position: Open-Meteo for Wetterlage, locally computed sun for Tageszeit
+**Parallel:** yes (3 workers, cap 3) — 7 decision tasks ready; held to next wave: infrastructure-y8epz, infrastructure-w7qbc, infrastructure-p6s30, airspace-h76v2, sky-scene-xczgm. pn3w4 first because it unblocks design-system-001 and the other infra decisions build on its stack choice.
+
+---
+
 ## 2026-10-26 22:38 -- Brainstorm: PlanesAbove — Qualitätsregel TDD + E2E
 
 **Type:** Brainstorm

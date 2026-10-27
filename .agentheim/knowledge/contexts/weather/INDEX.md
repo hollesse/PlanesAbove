@@ -10,6 +10,7 @@ Catalog of ADRs, research, and concept synthesis pages scoped to this bounded co
 ## ADRs scoped to this BC
 
 <!-- adr-local:start -->
+- **0006** — Open-Meteo for Wetterlage, locally computed sun position for Tageszeit — 2026-10-26 — `../../decisions/0006-open-meteo-weather-and-local-sun-position.md`
 <!-- adr-local:end -->
 
 ## Research touching this BC

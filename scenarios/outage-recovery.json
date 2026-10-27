@@ -1,0 +1,11 @@
+{
+  "name": "outage-recovery", "startTime": "2026-10-27T10:00:00Z",
+  "steps": [
+    { "at": 0, "planes": [ { "icao24": "aaaaaa", "callsign": "DLH400", "typeCode": "A20N", "distanceKm": 5, "bearingDeg": 90, "altitudeFt": 36000, "speedKt": 470 } ] },
+    { "at": 30, "failure": "http-429" },
+    { "at": 60, "failure": null, "planes": [ { "icao24": "bbbbbb", "callsign": "RYR1724", "typeCode": "B738", "distanceKm": 4, "bearingDeg": 180, "altitudeFt": 31000, "speedKt": 440 } ] }
+    ,
+    { "at": 90, "failure": "http-429" },
+    { "at": 210, "failure": null, "planes": [ { "icao24": "cccccc", "callsign": "BAW904", "typeCode": "A320", "distanceKm": 6, "bearingDeg": 270, "altitudeFt": 28000, "speedKt": 430 } ] }
+  ]
+}

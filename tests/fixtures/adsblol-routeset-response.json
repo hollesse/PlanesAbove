@@ -1,0 +1,8 @@
+[
+ {"callsign":"DLH400","airport_codes":"EDDF-KJFK","_airport_codes_iata":"FRA-JFK","plausible":true,
+  "_airports":[
+   {"icao":"EDDF","iata":"FRA","name":"Frankfurt Airport","location":"Frankfurt","lat":50.0333,"lon":8.5706},
+   {"icao":"KJFK","iata":"JFK","name":"John F Kennedy International Airport","location":"New York","lat":40.6398,"lon":-73.7789}]},
+ {"callsign":"XYZ999","airport_codes":"unknown","plausible":false,"_airports":[]},
+ {"callsign":"BAD1","plausible":true}
+]

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-310 -300 1620 740" data-type="helicopter">
+  <path class="paint-rotor" fill="var(--skin-rotor, #3A3F44)" stroke="#1F2A33" stroke-width="10" stroke-linejoin="round" d="M674 160 L676 100 L688 100 L690 160 Z"></path>
+  <g class="rotor"><path d="M330 98 L682 90 L980 82" stroke="#2A323B" stroke-width="14" stroke-linecap="round" fill="none"></path><path d="M420 146 L682 90 L944 34" stroke="#2A323B" stroke-width="14" stroke-linecap="round" fill="none"></path><rect x="666" y="80" width="32" height="22" rx="5" fill="#8E96A0" stroke="#1F2A33" stroke-width="8"></rect></g>
+  <path class="paint-tail" fill="var(--skin-tail, #F4F4F2)" stroke="#1F2A33" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" d="M112 202 L96 110 Q98 94 114 96 L166 196 Z"></path>
+  <path class="paint-tail" fill="var(--skin-tail, #F4F4F2)" stroke="#1F2A33" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" d="M112 222 L96 314 Q98 330 114 328 L166 228 Z"></path>
+  <path class="paint-fuselage" fill="var(--skin-fuselage, #F4F4F2)" stroke="#1F2A33" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" d="M560 182 L240 196 L116 202 Q98 208 100 220 Q104 230 120 230 L240 224 L560 218 Z"></path>
+  <path class="paint-cheatline" fill="var(--skin-cheatline, transparent)" stroke="none" d="M116 206 L560 198 L560 206 L118 212 Z"></path>
+  <defs><clipPath id="heli-boom-clip"><path d="M560 182 L240 196 L116 202 Q98 208 100 220 Q104 230 120 230 L240 224 L560 218 Z"></path></clipPath></defs>
+  <path class="paint-belly" clip-path="url(#heli-boom-clip)" fill="var(--skin-belly, #D9DBD8)" stroke="none" d="M90 218 L560 206 L560 240 L90 240 Z"></path>
+  <path fill="none" stroke="#1F2A33" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" d="M560 182 L240 196 L116 202 Q98 208 100 220 Q104 230 120 230 L240 224 L560 218 Z"></path>
+  <circle fill="#9AA3AD" opacity="0.3" cx="124" cy="134" r="58"></circle>
+  <path d="M124 134 L150 82 M124 134 L98 186" stroke="#2A323B" stroke-width="11" stroke-linecap="round"></path>
+  <circle class="paint-rotor" fill="var(--skin-rotor, #3A3F44)" stroke="#1F2A33" stroke-width="8" cx="124" cy="134" r="10"></circle>
+  <path class="paint-fuselage" fill="var(--skin-fuselage, #F4F4F2)" stroke="#1F2A33" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" d="M540 166 Q544 150 572 148 L756 148 Q786 152 804 180 L580 184 Q546 184 540 166 Z"></path>
+  <defs><clipPath id="heli-body-clip"><path d="M520 232 Q496 180 580 176 L740 172 Q830 172 882 220 Q906 244 892 268 Q880 286 850 288 L610 290 Q560 290 540 274 Q522 258 520 232 Z"></path></clipPath></defs>
+  <path class="paint-fuselage" fill="var(--skin-fuselage, #F4F4F2)" stroke="#1F2A33" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" d="M520 232 Q496 180 580 176 L740 172 Q830 172 882 220 Q906 244 892 268 Q880 286 850 288 L610 290 Q560 290 540 274 Q522 258 520 232 Z"></path>
+  <path clip-path="url(#heli-body-clip)" class="paint-belly" fill="var(--skin-belly, #D9DBD8)" stroke="none" d="M526 260 Q544 292 610 292 L850 290 Q885 286 897 264 Z"></path>
+  <path fill="none" stroke="#1F2A33" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" d="M520 232 Q496 180 580 176 L740 172 Q830 172 882 220 Q906 244 892 268 Q880 286 850 288 L610 290 Q560 290 540 274 Q522 258 520 232 Z"></path>
+  <path class="paint-window-line" fill="var(--skin-window-line, #3A3F44)" stroke="none" d="M776 184 Q846 192 874 232 L866 247 L776 247 Z M688 186 L764 184 L764 247 L688 247 Z M616 189 L672 188 L672 247 L616 247 Z"></path>
+  <path class="gear" fill="none" stroke="#1F2A33" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" d="M630 290 L616 332 M800 290 L812 332 M560 334 L856 334 Q884 334 896 316 M560 334 Q548 334 546 326"></path>
+  <g class="logo-tail" transform="translate(90 150) scale(0.12)"></g>
+  <g class="logo-fuselage" transform="translate(600 198) scale(0.1)"></g>
+  </svg>
