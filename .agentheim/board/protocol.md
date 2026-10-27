@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:35 -- Task verified and completed: airspace-prwpv - Abgelehnte Routen je Takt gegen die aktuelle Position neu prüfen statt 10 Minuten negativ zu cachen; Korridor auf 50 km + 8 % lockern
+
+**Type:** Work / Task completion
+**Task:** airspace-prwpv - Abgelehnte Routen je Takt gegen die aktuelle Position neu prüfen statt 10 Minuten negativ zu cachen; Korridor auf 50 km + 8 % lockern
+**Summary:** Abgelehnte Routen werden gemerkt und je Takt gegen die aktuelle Position neu bewertet (ohne erneute Quellabfrage); Negativ-Cache nur bei all-unknown; Korridor 50 km + 8 % mit Deckel 150 km
+**Duration:** 11m30s
+**Verification:** PASS (iteration 2)
+**Files changed:** 5
+**Tests added:** 7
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 19:34 -- Task verified and completed: sighting-log-k4m7q - Beobachtungsstandort je Sichtung mitloggen (Tabelle observation_points, Standortwechsel beendet den Besuch, Statistik je Standort)
 
 **Type:** Work / Task completion

@@ -10,10 +10,10 @@ export const formatRoute = (r: Route): string => (r.legs && r.legs.length > 2 ? 
 
 /** Thresholds of the plausibility check (config `sources.route.plausibility`, airspace-p8w2k). */
 export interface PlausibilityConfig {
-  corridorBaseKm: number; corridorPercent: number; originZoneKm: number; destinationZoneKm: number; minHeadingCheckAltitudeM: number;
+  corridorBaseKm: number; corridorPercent: number; corridorMaxKm: number; originZoneKm: number; destinationZoneKm: number; minHeadingCheckAltitudeM: number;
   maxHeadingDeviationDeg: number; maxClimbDistanceKm: number; climbMetersPerKm: number; descentMetersPerKm: number; profileSlackM: number;
 }
-export const DEFAULT_PLAUSIBILITY: PlausibilityConfig = { corridorBaseKm: 50, corridorPercent: 5, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 250, climbMetersPerKm: 120, descentMetersPerKm: 80, profileSlackM: 600 };
+export const DEFAULT_PLAUSIBILITY: PlausibilityConfig = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 250, climbMetersPerKm: 120, descentMetersPerKm: 80, profileSlackM: 600 };
 /** Own ADS-B observation of the plane; every field may be missing (e.g. MLAT has no track). */
 export interface Observation { trackDeg?: number; verticalRateMs?: number; altitudeM?: number }
 
@@ -25,7 +25,7 @@ type Pt = { lat: number; lon: number };
 /** One leg a -> b passes every check: corridor (cross-track), altitude profile, flight phase, heading (the last two only far from the airports). */
 function legPlausible(a: Pt, b: Pt, position: LatLon, obs: Observation, c: PlausibilityConfig): boolean {
   const len = distanceKm(a, b);
-  if (crossTrackKm(a, b, position) > c.corridorBaseKm + (c.corridorPercent / 100) * len) return false;
+  if (crossTrackKm(a, b, position) > Math.min(c.corridorBaseKm + (c.corridorPercent / 100) * len, c.corridorMaxKm)) return false;
   const dOrigin = distanceKm(a, position), dDest = distanceKm(position, b);
   const alt = obs.altitudeM;
   if (alt !== undefined) {
@@ -57,7 +57,8 @@ export interface RouteAttempt { source: string; outcome: LookupOutcome }
 export interface RouteLookup { info: RouteInfo | null; attempts: RouteAttempt[]; conflict: boolean; chosen: string | null; fresh: boolean }
 
 export class RouteService {
-  private cache = new Map<string, { until: number; info: RouteInfo | null }>();
+  /** `rejected`: routes a source delivered that failed plausibility at the time; re-judged each tick against the current position, never re-asked (airspace-prwpv). */
+  private cache = new Map<string, { until: number; info: RouteInfo | null; rejected?: { route: Route; source: string; origin: RouteOrigin }[] }>();
   private readonly sources: RouteSource[];
   constructor(source: RouteSource | RouteSource[], private readonly clock: Clock, private readonly o: { ttlMs: number; negativeTtlMs: number; log?: Logger; /** Ask every source and flag a conflict when two plausible routes differ; the first in order is still chosen. Default false: stop at the first plausible hit. */ compareAll?: boolean; /** Plausibility thresholds; defaults to DEFAULT_PLAUSIBILITY. */ plausibility?: PlausibilityConfig }) {
     const all = Array.isArray(source) ? source : [source];
@@ -79,22 +80,36 @@ export class RouteService {
     if (!callsign) return null;
     const now = this.clock.now();
     const hit = this.cache.get(callsign);
-    if (hit && hit.until > now) return { info: hit.info, attempts: [], conflict: false, chosen: hit.info?.source ?? null, fresh: false };
+    if (hit && hit.until > now) {
+      if (!hit.info && hit.rejected?.length) {
+        const obs = { trackDeg: ctx?.trackDeg, verticalRateMs: ctx?.verticalRateMs, altitudeM: ctx?.altitudeM };
+        const ok = hit.rejected.find((x) => isPlausibleRoute(x.route, position, obs, this.o.plausibility));
+        if (ok) { // became plausible with the plane's new position: show it, no source is asked again
+          const info: RouteInfo = { text: formatRoute(ok.route), source: ok.origin };
+          this.cache.set(callsign, { until: hit.until, info });
+          this.o.log?.info('route lookup', { callsign, source: info.source });
+          return { info, attempts: [{ source: ok.source, outcome: 'hit' }], conflict: false, chosen: ok.source, fresh: true };
+        }
+      }
+      return { info: hit.info, attempts: [], conflict: false, chosen: hit.info?.source ?? null, fresh: false };
+    }
     let info: RouteInfo | null = null;
     let chosen: string | null = null;
     const attempts: RouteAttempt[] = [];
     const texts = new Set<string>();
     let unavailable = false;
+    const rejected: { route: Route; source: string; origin: RouteOrigin }[] = [];
+    const originOf = (r: Route, src: RouteSource): RouteOrigin => r.source ?? (src.name === 'hexdb' ? 'hexdb' : src.name === 'adsbdb' ? 'adsbdb' : src.name === 'flightaware' ? 'flightaware' : 'vrs');
     for (const src of this.sources) {
       if (src.lastResort && info) continue; // never pay when a free source already answered (also with compareAll)
       if (src.eligible && !src.eligible(ctx)) continue; // filtered/budget-stopped/disabled: not asked, nothing recorded
       try {
         const r = await src.lookup(callsign, position, ctx);
         if (!r) { attempts.push({ source: src.name, outcome: 'unknown' }); continue; }
-        if (!isPlausibleRoute(r, position, { trackDeg: ctx?.trackDeg, verticalRateMs: ctx?.verticalRateMs, altitudeM: ctx?.altitudeM }, this.o.plausibility)) { attempts.push({ source: src.name, outcome: 'rejected' }); continue; }
+        if (!isPlausibleRoute(r, position, { trackDeg: ctx?.trackDeg, verticalRateMs: ctx?.verticalRateMs, altitudeM: ctx?.altitudeM }, this.o.plausibility)) { attempts.push({ source: src.name, outcome: 'rejected' }); rejected.push({ route: r, source: src.name, origin: originOf(r, src) }); continue; }
         attempts.push({ source: src.name, outcome: 'hit' });
         texts.add(formatRoute(r));
-        if (!info) { info = { text: formatRoute(r), source: r.source ?? (src.name === 'hexdb' ? 'hexdb' : src.name === 'adsbdb' ? 'adsbdb' : src.name === 'flightaware' ? 'flightaware' : 'vrs') }; chosen = src.name; }
+        if (!info) { info = { text: formatRoute(r), source: originOf(r, src) }; chosen = src.name; }
         if (!this.o.compareAll) break;
       } catch {
         attempts.push({ source: src.name, outcome: 'unavailable' });
@@ -103,7 +118,8 @@ export class RouteService {
     }
     const conflict = texts.size > 1;
     if (!info && unavailable) return { info: null, attempts, conflict: false, chosen: null, fresh: true };
-    this.cache.set(callsign, { until: now + (info ? this.o.ttlMs : this.o.negativeTtlMs), info });
+    // only a genuine "no source knows it" is cached short; a rejected route is remembered for the positive TTL and re-judged per tick
+    this.cache.set(callsign, { until: now + (info || rejected.length ? this.o.ttlMs : this.o.negativeTtlMs), info, rejected: info ? undefined : rejected });
     this.o.log?.info('route lookup', { callsign, source: info?.source ?? 'none' });
     return { info, attempts, conflict, chosen, fresh: true };
   }

@@ -1,7 +1,7 @@
 ---
 id: airspace-prwpv
 title: Abgelehnte Routen je Takt gegen die aktuelle Position neu prüfen statt 10 Minuten negativ zu cachen; Korridor auf 50 km + 8 % lockern
-status: doing
+status: done
 type: bug
 context: airspace
 created: 2026-10-27
@@ -34,3 +34,18 @@ Live-Test 2026-10-27 19:16 Uhr (Oberweyer): CTN4456 (Croatia Airlines, Zagreb �
 
 ## Notes
 Captured via `modeling` on 2026-10-27 after the CTN4456 live finding; direkt nach todo, da Entscheidungen des Betreibers vorliegen (abgelehnte Routen je Takt neu prüfen, Korridor lockern). Der Worker entscheidet zwischen „8 % ohne Deckel“ und „8 % mit Deckel 150 km“ anhand der Tests oben und hält das Ergebnis im Outcome fest; wenn EWG16Y mit 8 % ohne Deckel plausibel würde, ist der Deckel Pflicht. FlightAware (lastResort) darf durch die Umbewertung nie zusätzlich gefragt werden.
+
+## Verifier note (iteration 1)
+REASONS:
+- Check 1 (acceptance criteria): criterion 4 requires the defaults (`corridorPercent`, `corridorMaxKm`) documented in the BC README too; `readmeDelta` is `[]`.
+- Check 5 (BC README sync): the BC README bullet `**Plausibilitaetspruefung (Route)**` (line 36) still reads "corridorBaseKm 50 + corridorPercent 5 % of leg length"; stale after this change (8 % with `corridorMaxKm` 150 cap). It also does not mention that a rejected route is remembered and re-judged every tick.
+- Everything else holds: npm test 406 passed, typecheck clean; criteria 1-3 and the corridor cases (incl. the "cap is required" test) are covered; recordLookup is called when fresh && attempts.length, so re-evaluation writes a route_lookups record; no scope creep.
+- Playwright (note only): `npm run e2e:chromium` has no `pretest` build hook; `storybook-static/` is missing in a fresh worktree, hence the webServer timeout. Run `npm run build-storybook` (or `npm run e2e -- --project=chromium`) first.
+SUGGESTED_FIX: Return a non-empty README_DELTA with a `replace` op on the airspace BC README bullet `**Plausibilitaetspruefung (Route)**`: "corridorBaseKm 50 + corridorPercent 8 % of leg length, capped at corridorMaxKm 150"; add that a rejected route is remembered for cacheTtlHours and re-judged against the current position each tick without asking the source again, and that a later plausible re-evaluation counts as a `hit` (chosen) in route_lookups. If possible run Playwright chromium after `npm run build-storybook` and record the result in the Outcome.
+ITERATION_HINT: likely-fixable
+
+## Outcome
+
+Rejected routes (a source delivered a route, but it failed plausibility at the current position) are now remembered in memory for cacheTtlHours and re-judged each tick against the current position without asking the source again; once plausible they are shown and counted as a `hit` (chosen) in `route_lookups`. The negative cache (negativeTtlMinutes) applies only when every source answered unknown. The corridor is widened to 50 km + 8 % of leg length (`sources.route.plausibility.corridorPercent`) with a mandatory cap `corridorMaxKm` 150 km. Measured: EWG16Y at 212 km cross-track would pass uncapped (~282 km limit) but is rejected with the cap; CTN4456 ~100 km cross-track, limit 132 km, plausible; DLH7PP still rejected; LHX1979, AUA166D, DLH400 still plausible. 7 tests in tests/unit/server/route-plausibility.test.ts. Key files: src/server/modules/airspace/route-service.ts, src/server/config.ts, config.example.yaml, README.md.
+
+Verification: npm test 406/406 green, npm run typecheck green, build-storybook succeeded. `npm run e2e:chromium`: 5 passed, 6 failed in tests/e2e/skeleton.spec.ts, all with "Cannot find module dist/server/server.mjs" (no server build in the worktree: environment, not related to this change).

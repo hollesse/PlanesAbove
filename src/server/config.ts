@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import { FLIGHT_SOURCE_NAMES } from './modules/airspace/flight-source-names';
 const FLIGHTAWARE_DEFAULTS = { timeoutMs: 8000, monthlyBudgetUsd: 4.5, monthlyRequestCap: 900, usageSyncMinutes: 30, usageLagMinutes: 15, billingPeriodStartDay: 1 };
-const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 5, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 250, climbMetersPerKm: 120, descentMetersPerKm: 80, profileSlackM: 600 };
+const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 250, climbMetersPerKm: 120, descentMetersPerKm: 80, profileSlackM: 600 };
 const ROUTE_DEFAULTS = { enabled: true, order: ['hexdb' as const, 'adsbdb' as const, 'vrs' as const], hexdb: { timeoutMs: 5000, backoffMinutes: 5 }, adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS, plausibility: PLAUSIBILITY_DEFAULTS };
 
 const schema = z.object({
@@ -61,7 +61,8 @@ const schema = z.object({
       /** Plausibility of a source's route against own observation (airspace-p8w2k, ADR 0005 #3). */
       plausibility: z.object({
         corridorBaseKm: z.number().positive().default(50),
-        corridorPercent: z.number().positive().default(5),
+        corridorPercent: z.number().positive().default(8),
+        corridorMaxKm: z.number().positive().default(150),
         originZoneKm: z.number().positive().default(60),
         destinationZoneKm: z.number().positive().default(80),
         minHeadingCheckAltitudeM: z.number().positive().default(3000),

@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { isPlausibleRoute, DEFAULT_PLAUSIBILITY, RouteService } from '../../../src/server/modules/airspace/route-service';
 import { destinationPoint, bearingDeg, crossTrackKm } from '../../../src/server/modules/airspace/geo';
 import type { Airport, LatLon, Route, RouteSource } from '../../../src/server/modules/airspace/model';
+import { FakeClock } from '../../../src/server/clock';
 import { parseConfig } from '../../../src/server/config';
 
 // Airport coordinates (VRS standing data / OurAirports), measured 2026-10-27.
@@ -40,14 +41,31 @@ describe('isPlausibleRoute: live regressions 2026-10-27', () => {
   });
 });
 
+describe('corridor 8 % capped at 150 km (airspace-prwpv)', () => {
+  const ZAG = ap('Zagreb', 45.7429, 16.0688), BRU = ap('Bruessel', 50.9014, 4.4844), GDN = ap('Danzig', 54.3776, 18.4662);
+  const CTN: LatLon = { lat: 50.48, lon: 8.24 };
+  it('CTN4456 Zagreb-Bruessel (cross-track ~100 km on a 1029 km leg) is plausible, EWG16Y and DLH7PP stay rejected', () => {
+    expect(crossTrackKm(ZAG as LatLon, BRU as LatLon, CTN)).toBeGreaterThan(95);
+    expect(isPlausibleRoute(route(ZAG, BRU), CTN, { trackDeg: 279, altitudeM: ft(32000), verticalRateMs: 0 })).toBe(true);
+    expect(isPlausibleRoute(route(STR, LCA), OBERWEYER, { trackDeg: 113, altitudeM: ft(26225), verticalRateMs: 12.6 })).toBe(false);
+    expect(isPlausibleRoute(route(MUC, GDN), OBERWEYER, { trackDeg: 113, altitudeM: ft(26225), verticalRateMs: 12.6 })).toBe(false);
+    expect(isPlausibleRoute(route(MUC, GDN), OBERWEYER)).toBe(false);
+  });
+  it('the cap is required: without it EWG16Y passes the corridor with 8 %', () => {
+    const uncapped = { ...DEFAULT_PLAUSIBILITY, corridorMaxKm: 10000 };
+    expect(isPlausibleRoute(route(STR, LCA), OBERWEYER, undefined, uncapped)).toBe(true);
+    expect(isPlausibleRoute(route(STR, LCA), OBERWEYER, undefined, DEFAULT_PLAUSIBILITY)).toBe(false);
+  });
+});
+
 describe('cross-track corridor', () => {
   it('measures distance to the segment', () => { expect(crossTrackKm(DUS as LatLon, MUC as LatLon, OBERWEYER)).toBeLessThan(15); expect(crossTrackKm(STR as LatLon, LCA as LatLon, OBERWEYER)).toBeGreaterThan(176); });
   it('allows corridorBaseKm + corridorPercent of the leg length', () => {
     const a = { lat: 50, lon: 8 } as Airport, b = destinationPoint(a as LatLon, 1000, 90);
     const B = { ...b, name: 'B', city: 'B' } as Airport; const r = route({ ...a, name: 'A', city: 'A' }, B);
-    const mid = destinationPoint(destinationPoint(a as LatLon, 500, 90), 95, 0); // ~95 km abeam, allowed = 50 + 50 = 100
+    const mid = destinationPoint(destinationPoint(a as LatLon, 500, 90), 95, 0); // ~95 km abeam, allowed = 50 + 80 = 130
     expect(isPlausibleRoute(r, mid)).toBe(true);
-    expect(isPlausibleRoute(r, destinationPoint(destinationPoint(a as LatLon, 500, 90), 110, 0))).toBe(false);
+    expect(isPlausibleRoute(r, destinationPoint(destinationPoint(a as LatLon, 500, 90), 140, 0))).toBe(false);
   });
 });
 
@@ -95,7 +113,7 @@ describe('config', () => {
   it('has the documented defaults and rejects non-positive/out-of-range values', () => {
     const yaml = (extra = ''): string => `location: { lat: 50, lon: 8 }\nsources:\n  route:\n    plausibility:\n${extra || '      corridorBaseKm: 50\n'}`;
     expect(parseConfig('location: { lat: 50, lon: 8 }').sources.route.plausibility).toEqual(DEFAULT_PLAUSIBILITY);
-    expect(DEFAULT_PLAUSIBILITY).toMatchObject({ corridorBaseKm: 50, corridorPercent: 5, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 250, climbMetersPerKm: 120, descentMetersPerKm: 80, profileSlackM: 600 });
+    expect(DEFAULT_PLAUSIBILITY).toMatchObject({ corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 250, climbMetersPerKm: 120, descentMetersPerKm: 80, profileSlackM: 600 });
     expect(() => parseConfig(yaml('      corridorBaseKm: 0\n'))).toThrow();
     expect(() => parseConfig(yaml('      maxHeadingDeviationDeg: 181\n'))).toThrow();
     expect(parseConfig(yaml('      maxHeadingDeviationDeg: 90\n')).sources.route.plausibility.maxHeadingDeviationDeg).toBe(90);
@@ -109,5 +127,59 @@ describe('RouteService passes the observation on and records the rejection', () 
     const l = await svc.lookupFor('EWG9YV', OBERWEYER, { typklasse: 'x', airlineKnown: true, trackDeg: 140, altitudeM: 5000, verticalRateMs: 0 });
     expect(l?.info).toBeNull();
     expect(l?.attempts).toEqual([{ source: 'fake', outcome: 'rejected' }]);
+  });
+});
+
+describe('rejected routes are remembered and re-judged per tick (airspace-prwpv)', () => {
+  const ZAG = ap('Zagreb', 45.7429, 16.0688), BRU = ap('Bruessel', 50.9014, 4.4844);
+  const ZB = route(ZAG, BRU);
+  const NEAR: LatLon = { lat: 50.48, lon: 8.24 };
+  const FARP: LatLon = destinationPoint(NEAR, 60, 0); // clearly outside the corridor
+  const mk = (r: Route | null, ttl = 6 * 3_600_000) => {
+    const clock = new FakeClock(0); const src = { name: 'hexdb', calls: 0, async lookup() { src.calls++; return r; } };
+    return { clock, src, svc: new RouteService(src as RouteSource, clock, { ttlMs: ttl, negativeTtlMs: 600_000 }) };
+  };
+  it('tick 1 rejected, tick 2 in the corridor: shown as hit without asking the source again', async () => {
+    const { clock, src, svc } = mk(ZB);
+    const l1 = await svc.lookupFor('CTN4456', FARP);
+    expect(l1).toMatchObject({ info: null, fresh: true, attempts: [{ source: 'hexdb', outcome: 'rejected' }] });
+    await clock.advance(30_000);
+    const l2 = await svc.lookupFor('CTN4456', NEAR);
+    expect(l2).toMatchObject({ info: { text: 'Zagreb → Bruessel', source: 'hexdb' }, fresh: true, chosen: 'hexdb', attempts: [{ source: 'hexdb', outcome: 'hit' }] });
+    expect(src.calls).toBe(1);
+    expect((await svc.lookupFor('CTN4456', NEAR))?.fresh).toBe(false);
+  });
+  it('still implausible later: no record, source not asked; no negative-cache expiry for it', async () => {
+    const { clock, src, svc } = mk(ZB);
+    await svc.lookupFor('C', FARP);
+    expect(await svc.lookupFor('C', FARP)).toMatchObject({ info: null, fresh: false, attempts: [] });
+    await clock.advance(11 * 60_000);
+    expect(await svc.lookupFor('C', FARP)).toMatchObject({ fresh: false });
+    expect(src.calls).toBe(1);
+  });
+  it('all sources unknown: negative cache for negativeTtlMinutes only', async () => {
+    const { clock, src, svc } = mk(null);
+    await svc.lookupFor('U', NEAR); await svc.lookupFor('U', NEAR);
+    expect(src.calls).toBe(1);
+    await clock.advance(11 * 60_000);
+    await svc.lookupFor('U', NEAR);
+    expect(src.calls).toBe(2);
+  });
+  it('one source rejected, the rest unknown: no negative cache expiry, no new network call within the TTL', async () => {
+    const clock = new FakeClock(0);
+    const rej = { name: 'hexdb', calls: 0, async lookup() { rej.calls++; return ZB; } }, unk = { name: 'adsbdb', calls: 0, async lookup() { unk.calls++; return null; } };
+    const svc = new RouteService([rej, unk] as RouteSource[], clock, { ttlMs: 6 * 3_600_000, negativeTtlMs: 600_000 });
+    await svc.lookupFor('R', FARP);
+    await clock.advance(11 * 60_000);
+    await svc.lookupFor('R', FARP);
+    expect([rej.calls, unk.calls]).toEqual([1, 1]);
+    expect((await svc.lookupFor('R', NEAR))?.info?.text).toBe('Zagreb → Bruessel');
+  });
+  it('the remembered rejected route expires after cacheTtlHours and the source is asked again', async () => {
+    const { clock, src, svc } = mk(ZB);
+    await svc.lookupFor('E', FARP);
+    await clock.advance(6 * 3_600_000 + 1);
+    await svc.lookupFor('E', FARP);
+    expect(src.calls).toBe(2);
   });
 });

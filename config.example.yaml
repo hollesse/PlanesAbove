@@ -59,7 +59,8 @@ sources:
       billingPeriodStartDay: 1 # 1..28 (UTC); check against the AeroAPI portal
     plausibility:              # own-observation check of every source's route (a failing route is never stated; counted as `rejected`)
       corridorBaseKm: 50       # allowed cross-track distance to the leg: base + percent of the leg length
-      corridorPercent: 5
+      corridorPercent: 8       # (CTN4456: real airways run 100 km+ off the great circle on long legs)
+      corridorMaxKm: 150       # cap of the corridor, keeps far-off routes (e.g. 212 km off) rejected on very long legs
       originZoneKm: 60         # heading is only checked farther than this from the origin ...
       destinationZoneKm: 80    # ... and farther than this from the destination ...
       minHeadingCheckAltitudeM: 3000  # ... and above this altitude
