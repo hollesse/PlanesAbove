@@ -1,7 +1,7 @@
 ---
 id: airspace-k2d7f
 title: adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker
-status: backlog
+status: todo
 type: feature
 context: airspace
 created: 2026-10-27
