@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 11:56 -- Capture / Captured: airspace-f7k2m - Ultraleicht und unbekannte Typcodes werden als narrowbody gezeichnet (Ikarus C42 D-MMDP)
+
+**Type:** Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** Ikarus C42 D-MMDP (B4, Typcode C42) wird mangels Tabelleneintrag und B-Kategorie-Fallback als narrowbody gezeichnet
+
+---
+
 ## 2026-10-27 07:41 -- Task verified and completed: sky-scene-w9n4f - Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist
 
 **Type:** Work / Task completion
