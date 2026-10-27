@@ -11,19 +11,19 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 3
-- **Todo:** 2
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 2
 - **Done:** 9
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **airspace-p8w2k** — Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand (feature) — `todo/airspace-p8w2k-plausibilitaet-schaerfen-kurs-flugphase-querabstand.md`
-- **airspace-c5t9m** — airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben) (chore) — `todo/airspace-c5t9m-airplanes-live-adapter-entfernen.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **airspace-p8w2k** — Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand (feature) — `doing/airspace-p8w2k-plausibilitaet-schaerfen-kurs-flugphase-querabstand.md`
+- **airspace-c5t9m** — airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben) (chore) — `doing/airspace-c5t9m-airplanes-live-adapter-entfernen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

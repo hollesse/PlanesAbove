@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:47 -- Batch started: [airspace-c5t9m, airspace-p8w2k]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-c5t9m - airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben), airspace-p8w2k - Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand
+**Parallel:** yes (2 workers) — merge order c5t9m then p8w2k; disjoint files (chain/app.ts vs route-service/plausibility)
+
+---
+
 ## 2026-10-27 18:47 -- Modeling / Promoted: airspace-p8w2k - Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand
 
 **Type:** Modeling / Promote

@@ -1,7 +1,7 @@
 ---
 id: airspace-c5t9m
 title: airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben)
-status: todo
+status: doing
 type: chore
 context: airspace
 created: 2026-10-27
