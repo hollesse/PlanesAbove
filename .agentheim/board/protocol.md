@@ -5,6 +5,23 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:05 -- Modeling / Promoted: airspace-v4kqz - Gesperrte Lufträume in der Plausibilitätsprüfung: schneidet der Großkreis einen gesperrten Luftraum, entfällt die Korridorprüfung und die erlaubte Kursabweichung steigt (Befund KAL908 London–Seoul)
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
+## 2026-10-27 21:05 -- Modeling / Captured: airspace-v4kqz - Gesperrte Lufträume in der Plausibilitätsprüfung: schneidet der Großkreis einen gesperrten Luftraum, entfällt die Korridorprüfung und die erlaubte Kursabweichung steigt (Befund KAL908 London–Seoul)
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** Gesperrte Luftraeume als grobe Polygone in der Plausibilitaetspruefung: Korridor aus und Kursabweichung 90 Grad bei umgeleiteten Routen (Befund KAL908 London-Seoul)
+
+---
+
 ## 2026-10-27 19:55 -- Work session ended
 
 **Type:** Work / Session end
