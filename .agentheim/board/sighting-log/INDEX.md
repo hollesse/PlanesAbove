@@ -10,14 +10,15 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 2
-- **Todo:** 0
+- **Backlog:** 1
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 0
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **sighting-log-m7p2v** — Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte (nur Befunde, nie Routentext) (feature) — `todo/sighting-log-m7p2v-routen-statistik-je-quelle-und-liste-der-unbekannten.md`
 <!-- todo-list:end -->
 
 ### Doing
@@ -42,7 +43,6 @@ prior-art matcher additionally checks `done-archive/` when present.
 
 ### Backlog
 <!-- backlog-list:start -->
-- **sighting-log-m7p2v** — Routen-Statistik: je Tag und Quelle zählen, Liste der Flüge mit Route unbekannt, Konflikte zwischen Quellen (feature) — `backlog/sighting-log-m7p2v-routen-statistik-je-quelle-und-liste-der-unbekannten.md`
 - **sighting-log-k4m7q** — Beobachtungsstandort je Sichtung mitloggen (feature) — `backlog/sighting-log-k4m7q-beobachtungsstandort-je-sichtung-mitloggen.md`
 <!-- backlog-list:end -->
 

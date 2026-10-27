@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 14:45 -- Modeling / Promoted: sighting-log-m7p2v - Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte (nur Befunde, nie Routentext)
+
+**Type:** Modeling / Promote
+**BC:** sighting-log
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 14:45 -- Modeling / Refined: sighting-log-m7p2v - Routen-Statistik je Quelle, Liste der Unbekannten, Konflikte
 
 **Type:** Modeling / Refine

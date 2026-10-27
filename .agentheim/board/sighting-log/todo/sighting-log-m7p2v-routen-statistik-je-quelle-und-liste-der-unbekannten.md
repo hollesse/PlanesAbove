@@ -1,7 +1,7 @@
 ---
 id: sighting-log-m7p2v
 title: Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte (nur Befunde, nie Routentext)
-status: backlog
+status: todo
 type: feature
 context: sighting-log
 created: 2026-10-27
