@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:06 -- Modeling / Promoted: sighting-log-k4m7q - Beobachtungsstandort je Sichtung mitloggen (Tabelle observation_points, Standortwechsel beendet den Besuch, Statistik je Standort)
+
+**Type:** Modeling / Promote
+**BC:** sighting-log
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 19:05 -- Modeling / Refined: sighting-log-k4m7q - Beobachtungsstandort je Sichtung mitloggen
 
 **Type:** Modeling / Refine
