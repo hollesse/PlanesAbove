@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 00:14 -- Modeling / Promoted: design-system-v8q3n - Schein hinter der Kopfzeile verstärken (Variante E) und Kopfzeile in Plex Mono 500
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 00:02 -- Task verified and completed: design-system-g7w4m - Breiter weicher Schein statt dünner Kontur hinter Text auf dem Himmel (helle Schrift mit schwarzem Schein ca. 40 %)
 
 **Type:** Work / Task completion
