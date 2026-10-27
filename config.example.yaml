@@ -34,7 +34,9 @@ sources:
     timeoutMs: 8000
   route:
     enabled: true
-    timeoutMs: 5000
+    order: [vrs]               # vrs = offline VRS standing-data snapshot (CC0); adsbdb is optional/online, not wired yet
+    snapshotRefreshHours: 24   # how often the snapshot (routes + airports, ~22 MB) is re-downloaded into dataDir
+    timeoutMs: 300000          # snapshot download timeout
     cacheTtlHours: 6
     negativeTtlMinutes: 10
 

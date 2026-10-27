@@ -3,6 +3,8 @@ import fs from 'node:fs';
 import YAML from 'yaml';
 import { z } from 'zod';
 
+const ROUTE_DEFAULTS = { enabled: true, order: ['vrs' as const], timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10 };
+
 const schema = z.object({
   mode: z.enum(['live', 'mock']).default('live'),
   scenario: z.string().optional(),
@@ -26,11 +28,16 @@ const schema = z.object({
     flight: z.object({ timeoutMs: z.number().int().positive().default(8000) }).default({ timeoutMs: 8000 }),
     route: z.object({
       enabled: z.boolean().default(true),
-      timeoutMs: z.number().int().positive().default(5000),
+      /** Source order; only the offline VRS standing-data snapshot (default) and the optional online adsbdb lookup (ADR 0014). */
+      order: z.array(z.enum(['vrs', 'adsbdb'])).min(1).default(['vrs']),
+      /** Timeout for the snapshot download. */
+      timeoutMs: z.number().int().positive().default(300000),
+      /** How often the VRS snapshot is re-downloaded. */
+      snapshotRefreshHours: z.number().positive().default(24),
       cacheTtlHours: z.number().positive().default(6),
       negativeTtlMinutes: z.number().positive().default(10),
-    }).default({ enabled: true, timeoutMs: 5000, cacheTtlHours: 6, negativeTtlMinutes: 10 }),
-  }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 8000 }, route: { enabled: true, timeoutMs: 5000, cacheTtlHours: 6, negativeTtlMinutes: 10 } }),
+    }).default(ROUTE_DEFAULTS),
+  }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 8000 }, route: ROUTE_DEFAULTS }),
   speech: z.object({
     adapter: z.enum(['piper', 'fake']).default('piper'),
     voice: z.string().default('de_DE-thorsten'),

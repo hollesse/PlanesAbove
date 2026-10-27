@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 12:37 -- Task verified and completed: airspace-m3w9c - VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen
+
+**Type:** Work / Task completion
+**Task:** airspace-m3w9c - VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen
+**Summary:** VRS standing-data (CC0) Offline-Snapshot ist die einzige Standard-RouteSource (atomarer Tausch, Index im Speicher, Clock-Refresh, mehrlegige Routen); toter adsb.lol-routeset-Adapter entfernt
+**Duration:** 38m
+**Verification:** PASS (iteration 2)
+**Files changed:** 16
+**Tests added:** 17
+**ADRs written:** none
+
+---
+
+## 2026-10-27 12:34 -- Verification failed: airspace-m3w9c - VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen
+
+**Type:** Work / Verification failure
+**Task:** airspace-m3w9c - VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen
+**Iteration:** 1 of 3
+**Reasons:** FakeClock refresh test cannot fail (direct refresh() call masks the scheduler), BC README RouteSource bullet still names routeset (missing replace op), stray parenthesis in root README
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-27 12:30 -- Task verified and completed: airspace-f7k2m - Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergänzen (Ikarus C42 D-MMDP)
 
 **Type:** Work / Task completion

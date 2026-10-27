@@ -25,7 +25,7 @@ export interface Flugzeug {
 export interface Airport { name: string; city: string; lat?: number; lon?: number }
 
 /** A known route; "Route unbekannt" is represented by `null` at the port. */
-export interface Route { from: Airport; to: Airport; /** adsb.lol's own flag - a weak heuristic only (ADR 0005). */ vendorPlausible?: boolean }
+export interface Route { from: Airport; to: Airport; /** All airports in order for multi-leg routes (first = from, last = to). */ legs?: Airport[]; /** A source's own plausibility flag - a weak heuristic, used only when airports lack coordinates (ADR 0005). */ vendorPlausible?: boolean }
 
 export type SourceErrorClass = 'timeout' | 'network' | 'http-403' | 'http-429' | 'http-4xx' | 'http-5xx' | 'parse';
 

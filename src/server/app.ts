@@ -9,8 +9,8 @@ import { evaluateHealth } from './health';
 import { createLogger, type Logger } from './logger';
 import { loadScenario, ScenarioDriver, ScenarioFlightSource, ScenarioRouteSource } from './mock/scenario';
 import { AdsbLolFlightSource } from './modules/airspace/adapters/adsb-lol';
-import { AdsbLolRouteSource } from './modules/airspace/adapters/adsb-lol-routeset';
 import type { Fetch } from './modules/airspace/adapters/http';
+import { VrsRouteSource } from './modules/airspace/adapters/vrs-route-source';
 import type { FlightSource, RouteSource } from './modules/airspace/model';
 import { RouteService } from './modules/airspace/route-service';
 import { defaultTables } from './modules/airspace/typeclass';
@@ -65,6 +65,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   const ua = config.sources.userAgent;
   let flight: FlightSource;
   let routeSource: RouteSource;
+  let stopSnapshot: (() => void) | undefined;
   let speech: SpeechSynthesizer;
   if (driver) {
     flight = new ScenarioFlightSource(driver);
@@ -72,7 +73,10 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     speech = new FakeSpeechSynthesizer(() => (driver as ScenarioDriver).current().tts);
   } else {
     flight = new AdsbLolFlightSource({ fetch: fetchFn, userAgent: ua, timeoutMs: config.sources.flight.timeoutMs });
-    routeSource = new AdsbLolRouteSource({ fetch: fetchFn, userAgent: ua, timeoutMs: config.sources.route.timeoutMs });
+    for (const name of config.sources.route.order) if (name !== 'vrs') log.warn('route source not wired, ignored', { source: name });
+    const vrs = new VrsRouteSource({ fetch: fetchFn, dataDir: config.dataDir, userAgent: ua, timeoutMs: config.sources.route.timeoutMs, clock: scheduler, log, refreshMs: config.sources.route.snapshotRefreshHours * 3_600_000 });
+    routeSource = vrs;
+    if (config.sources.route.enabled && config.sources.route.order.includes('vrs')) stopSnapshot = vrs.start();
     speech = config.speech.adapter === 'piper' ? new PiperSpeechSynthesizer({ fetch: fetchFn, endpoint: config.speech.endpoint, timeoutMs: config.speech.timeoutMs }) : new FakeSpeechSynthesizer();
   }
   const noRoutes: RouteSource = { name: 'none', lookup: async () => null };
@@ -137,6 +141,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     port,
     async stop() {
       cancel();
+      stopSnapshot?.();
       await new Promise<void>((r) => server.close(() => r()));
       try { db.pragma('wal_checkpoint(TRUNCATE)'); } catch { /* best effort */ }
       db.close();

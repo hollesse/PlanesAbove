@@ -1,7 +1,7 @@
 ---
 id: airspace-m3w9c
 title: VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen
-status: doing
+status: done
 type: feature
 context: airspace
 created: 2026-10-27
@@ -47,3 +47,18 @@ Der Live-Test vom 2026-10-27 (176 Sichtungen, 0 mit Route) zeigte: `POST adsb.lo
 - Befund Live-Test 2026-10-27 (Oberweyer, echter Betrieb): routeset antwortet fuer jeden Callsign mit 201 und leerem Body (DLH400, RYR6ZM); Request entspricht OpenAPI (`{"planes":[{"callsign","lat","lng"}]}`) und `api_routes.py`. Nicht erneut dagegen bauen.
 - Der deprecated `GET /api/0/route/{callsign}` leitet per 302 auf einen statischen VRS-Spiegel um: `https://vrs-standing-data.adsb.lol/routes/<erste zwei Zeichen>/<CALLSIGN>.json` (z. B. `RY/RYR6ZM.json` -> LEAL-EGBB, `DL/DLH400.json` -> EDDF-KJFK; Felder `callsign`, `number`, `airline_code`, `airport_codes`, `_airport_codes_iata`, `_airports[]`; unbekannt = 404 mit HTML). Gleiche Datenbasis; moeglicher Online-Fallback oder Fixture-Quelle, ersetzt den Snapshot nicht.
 - Luecken am Testtag: EWG9UX, LOT1RF, CFG068 fehlen; RYR6ZM, DLH400 vorhanden.
+
+## Verifier note (iteration 1)
+**REASONS:**
+- Criterion 2 ("Test, dass ein Refresh nach Ablauf (FakeClock) angestossen wird") has no test that can fail: `tests/unit/server/vrs-route-source.test.ts` 'triggers a refresh after the configured interval (FakeClock)' calls `await clock.advance(2 * 3_600_000)` and then `await src.refresh()` directly before asserting `calls >= 1`, so the assertion passes whether the scheduler fired or not. Mutation check: replacing `return this.o.clock.every(this.o.refreshMs, () => { void this.refresh(); });` with `return () => {};` in `vrs-route-source.ts` left all 13 tests green.
+- Secondary: the BC README's `Routenquelle (RouteSource)` bullet still lists "adsb.lol routeset" as an adapter; readmeDelta has only two `append` ops and no `replace` op removing routeset from that bullet.
+- Minor: root README.md has a stray unclosed opening parenthesis in the new fixture sentence ("Details in `vrs/README.txt`; (`adsblol-point-frankfurt.json` ...").
+- Passed: `npm test` exit 0 (210 tests), `tsc` clean, `grep -ri routeset src tests` empty, atomic swap / offline start / no-snapshot warn / failed-refresh keeps index / config rejects `adsblol` all have real offline tests.
+
+**SUGGESTED_FIX:** Rewrite the FakeClock refresh test: drop the direct `src.refresh()` call and assert `calls` goes 0 -> 1 using only `clock.advance` past `refreshMs` (await a microtask flush or the `refreshing` promise if needed) so the test fails when `clock.every` is not wired. Add a `replace` op to README_DELTA for the **Routenquelle (RouteSource)** bullet that removes "adsb.lol routeset". Fix the stray parenthesis in README.md.
+
+**ITERATION_HINT:** likely-fixable
+
+## Outcome
+
+VRS standing-data (CC0) ist als einzige Standard-RouteSource umgesetzt: Offline-Snapshot (routes/airports) wird atomar getauscht und im Speicher indexiert (VrsRouteSource in src/server/modules/airspace/adapters/vrs-route-source.ts), periodisch ueber die Clock aktualisiert; mehrlegige Routen werden unterstuetzt; der adsb.lol-routeset-Adapter ist entfernt. Tests in tests/unit/server/vrs-route-source.test.ts (Refresh-Test in Iteration 2 so umgebaut, dass nur clock.advance den Refresh ausloest), Fixtures in tests/fixtures/vrs/, Root-README aktualisiert.

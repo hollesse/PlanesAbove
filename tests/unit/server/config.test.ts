@@ -34,3 +34,16 @@ describe('parseConfig (ADR 0007)', () => {
     expect(() => parseConfig('location: [unclosed')).toThrow(ConfigError);
   });
 });
+
+describe('sources.route (ADR 0014)', () => {
+  it('defaults to order [vrs] with a 24h snapshot refresh', () => {
+    expect(parseConfig(MIN).sources.route).toMatchObject({ order: ['vrs'], snapshotRefreshHours: 24 });
+  });
+  it('accepts vrs and adsbdb, rejects anything else (e.g. adsblol)', () => {
+    expect(parseConfig(MIN + 'sources: { route: { order: [vrs, adsbdb] } }\n').sources.route.order).toEqual(['vrs', 'adsbdb']);
+    expect(() => parseConfig(MIN + 'sources: { route: { order: [adsblol] } }\n')).toThrow(/sources\.route\.order/);
+  });
+  it('requires a positive refresh interval', () => {
+    expect(() => parseConfig(MIN + 'sources: { route: { snapshotRefreshHours: 0 } }\n')).toThrow(/snapshotRefreshHours/);
+  });
+});

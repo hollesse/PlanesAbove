@@ -53,7 +53,9 @@ npm run e2e:chromium       # nur Chromium (WebKit laeuft in Containern ohne Syst
 
 `mode: mock` + `scenario: scenarios/<name>.json` ersetzt Flug-, Routen- und TTS-Adapter durch Fakes (ADR 0004). Die Zeit steht still, bis `POST /mock/advance {"seconds":30}` sie vorrueckt (ein 30-s-Takt laeuft in Millisekunden); `GET /mock/sightings` listet die Sichtungen. Szenarien: `empty-sky`, `one-plane`, `two-planes`, `switch-during-narration`, `outage-recovery`. Ein Szenario ist eine zeitgeordnete Liste von Schritten (`at` in Sekunden) mit `planes` (Abstand/Peilung statt Koordinaten), `failure` (`http-403|http-429|http-5xx|timeout|network|parse|null`), `routes` und `tts` (`durationMs`, `failure`).
 
-Contract-Fixtures liegen in `tests/fixtures/` (`adsblol-point-frankfurt.json` ist eine echte Antwort vom 2026-10-27; die uebrigen sind konstruiert, siehe Kommentare in den Tests).
+**Routenquelle.** Routen kommen aus dem offline Snapshot der [VRS standing-data](https://github.com/vradarserver/standing-data) (Lizenz CC0-1.0, taeglich aktualisiert): Der Dienst laedt `routes/` und `airports/` (~22 MB) nach `<dataDir>/vrs-standing-data/`, tauscht sie atomar aus und erneuert sie alle `sources.route.snapshotRefreshHours` (Default 24). Abfragen laufen gegen einen Index im Speicher, ohne Netz. Luecken (z. B. EWG9UX) bleiben `Route unbekannt`; ohne Snapshot und ohne Netz startet der Dienst trotzdem und loggt `warn`. `sources.route.order` erlaubt nur `vrs` (Default) und optional `adsbdb` (Online-Lookup, noch nicht verdrahtet; wird mit `warn` ignoriert).
+
+Contract-Fixtures liegen in `tests/fixtures/` (`vrs/` ist eine aufgezeichnete Teilmenge der VRS standing-data vom 2026-10-27, Details in `vrs/README.txt`; `adsblol-point-frankfurt.json` ist eine echte Antwort vom 2026-10-27; die uebrigen sind konstruiert, siehe Kommentare in den Tests).
 
 ## Betrieb auf dem Heimserver (ZimaOS) und iPad-Pruefung
 
