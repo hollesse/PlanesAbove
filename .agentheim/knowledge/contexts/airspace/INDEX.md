@@ -10,6 +10,7 @@ Catalog of ADRs, research, and concept synthesis pages scoped to this bounded co
 ## ADRs scoped to this BC
 
 <!-- adr-local:start -->
+- **0015** — Unknown aircraft fall back to light-aircraft; B categories mapped or excluded — 2026-10-27 — `../../decisions/0015-unknown-aircraft-fall-back-to-light-aircraft-b-categories-mapped-or-excluded.md`
 - **0014** — VRS standing-data snapshot is the sole default route source; adsb.lol routeset removed — 2026-10-27 — `../../decisions/0014-vrs-snapshot-sole-default-route-source-routeset-removed.md`
 - **0010** — Typklasse, Kategorie and airline derived from static curated tables — 2026-10-26 — `../../decisions/0010-typklasse-kategorie-airline-from-static-curated-tables.md`
 - **0005** — Free ADS-B position and route sources behind replaceable ports — 2026-10-26 — `../../decisions/0005-free-flight-and-route-sources-behind-ports.md`

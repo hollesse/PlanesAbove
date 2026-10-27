@@ -5,6 +5,16 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 12:24 -- Modeling / Refined: airspace-f7k2m - Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergaenzen
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** Builder-Entscheidungen: Endfallback light-aircraft statt narrowbody, B1 -> glider, B4 -> light-aircraft, B2/B3/B6/B7/C* aus der Auswahl ausgeschlossen, 13 heute gesehene Typcodes plus CTSW/EV97/AAT3/DA62 kuratieren. 12 maschinell pruefbare Kriterien inkl. Regressionstest fuer D-MMDP.
+**ADRs written:** 0015
+
+---
+
 ## 2026-10-27 12:16 -- Modeling / Promoted: airspace-m3w9c - VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen
 
 **Type:** Modeling / Promote
