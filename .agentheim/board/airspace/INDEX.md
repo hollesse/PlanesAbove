@@ -11,19 +11,19 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 2
-- **Todo:** 2
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 2
 - **Done:** 2
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **airspace-f7k2m** — Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergänzen (Ikarus C42 D-MMDP) (bug) — `todo/airspace-f7k2m-ultraleicht-und-unbekannte-typcodes-werden-als-narrowbody-gezeichnet.md`
-- **airspace-m3w9c** — VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen (feature) — `todo/airspace-m3w9c-vrs-standing-data-cc0-als-bevorzugte-routesource-mit-offline.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **airspace-f7k2m** — Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergänzen (Ikarus C42 D-MMDP) (bug) — `doing/airspace-f7k2m-ultraleicht-und-unbekannte-typcodes-werden-als-narrowbody-gezeichnet.md`
+- **airspace-m3w9c** — VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen (feature) — `doing/airspace-m3w9c-vrs-standing-data-cc0-als-bevorzugte-routesource-mit-offline.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

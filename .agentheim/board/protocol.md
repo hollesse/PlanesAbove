@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 12:26 -- Batch started: [airspace-m3w9c, airspace-f7k2m]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-m3w9c - VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen, airspace-f7k2m - Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergänzen (Ikarus C42 D-MMDP)
+**Parallel:** yes (2 workers) — merge order m3w9c then f7k2m (both touch tests/ and README.md; otherwise disjoint source files)
+
+---
+
 ## 2026-10-27 12:24 -- Modeling / Promoted: airspace-f7k2m - Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergänzen (Ikarus C42 D-MMDP)
 
 **Type:** Modeling / Promote
