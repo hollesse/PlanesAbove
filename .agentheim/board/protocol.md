@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 17:21 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 25m
+**Completed:** 1 (first-try PASS: 1, re-dispatched: 0, skipped: 0)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 1
+**Lost-result escalations:** 0
+**Dispatches:** airspace-f4q9z: 1
+**Commits:** 2
+**Vision-conformance:** airspace-f4q9z: diverges from non-goal/constraint "nur kostenlose, vertragsfreie Quellen" (ADR 0001) — deliberate, builder-decided, budgeted exception recorded in ADR 0018; opt-in only
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (1 task)
+**Carry-over:** left behind (user WIP, 2 files: config.yaml, data/)
+
+---
+
 ## 2026-10-27 17:21 -- Task verified and completed: airspace-f4q9z - FlightAware AeroAPI als budgetierte Notfall-Routenquelle (Opt-in, letzte Stufe, hartes Monatslimit, Usage-Sync)
 
 **Type:** Work / Task completion
