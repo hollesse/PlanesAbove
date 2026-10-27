@@ -37,7 +37,7 @@ tests/unit  tests/e2e     Vitest bzw. Playwright
 
 ## Dienst und Client (Walking Skeleton)
 
-Ein Node/TypeScript-Dienst (`src/server/`, ein Modul je Bounded Context unter `modules/`) holt alle 30 s die Flugzeuge von adsb.lol, waehlt die zwei naechsten (mit Slot-Haltezeit: ein Flugzeug behaelt seinen Platz mindestens `scene.slotHoldTakte` Takte, Default 3 = 90 s, ausser es verlaesst den Umkreis; ADR 0017), schreibt Sichtungen nach SQLite und liefert `GET /api/state`, `GET /healthz`, `GET /audio/<key>.wav` sowie den Client. Der Client (`src/client/app/`, framework-frei, esbuild ES2020/Safari 16) setzt die Szene ausschliesslich aus den abgenommenen Komponenten in `src/client/ui/` zusammen.
+Ein Node/TypeScript-Dienst (`src/server/`, ein Modul je Bounded Context unter `modules/`) holt alle 30 s die Flugzeuge von [adsb.fi](https://adsb.fi) (Failover auf airplanes.live und [adsb.lol](https://adsb.lol), siehe ADR 0019), waehlt die zwei naechsten (mit Slot-Haltezeit: ein Flugzeug behaelt seinen Platz mindestens `scene.slotHoldTakte` Takte, Default 3 = 90 s, ausser es verlaesst den Umkreis; ADR 0017), schreibt Sichtungen nach SQLite und liefert `GET /api/state`, `GET /healthz`, `GET /audio/<key>.wav` sowie den Client. Der Client (`src/client/app/`, framework-frei, esbuild ES2020/Safari 16) setzt die Szene ausschliesslich aus den abgenommenen Komponenten in `src/client/ui/` zusammen.
 
 ```
 npm run build              # dist/client (Kiosk-Client) + dist/server/server.mjs
@@ -65,7 +65,9 @@ npm run stats:routes -- --db data/planesabove.db --days 7 [--json]   # Routen-St
 - **Lizenz:** Laut Personal-Lizenz duerfen die Ergebnisse "for personal or academic purposes" gespeichert werden: FlightAware-Routen stehen mit Text und `route_source = 'flightaware'` in `sightings.route` (anders als adsbdb). Die Befunde je Quelle stehen wie ueblich in `route_lookups`.
 - **Betreiber-Regel:** Der API-Key wird **nie ohne Freigabe** aus einer Claude-Session (oder einem anderen Agenten) benutzt; vor jedem Live-Aufruf wird die Anzahl der Requests genannt und freigegeben. Tests laufen vollstaendig offline gegen aufgezeichnete Fixtures (`tests/fixtures/flightaware/`).
 
-Contract-Fixtures liegen in `tests/fixtures/` (`vrs/` ist eine aufgezeichnete Teilmenge der VRS standing-data vom 2026-10-27, Details in `vrs/README.txt`; `adsblol-point-frankfurt.json` ist eine echte Antwort vom 2026-10-27; die uebrigen sind konstruiert, siehe Kommentare in den Tests).
+**Flugquelle und Attribution.** Positionen kommen keyless von [adsb.fi](https://adsb.fi) (open data, `GET opendata.adsb.fi/api/v3/lat/{lat}/lon/{lon}/dist/{nm}`; nur persoenliche, nicht-kommerzielle Nutzung, 1 Request/s), bei Ausfall von den naechsten Quellen aus `sources.flight.order` (Default `[adsb-fi, airplanes-live, adsb-lol]`; Namen ohne Adapter werden beim Start mit Warnung uebersprungen). Pro Takt wird die erste verfuegbare Quelle gefragt, bei Fehler sofort die naechste. Backoff je Quelle: bei 429 Pause bis `Retry-After` bzw. `x-ratelimit-reset`; bei adsb.fi jede 4xx-Antwort mindestens 60 s (4xx zaehlen dort zur IP-Sperre); sonst Circuit Breaker (3 Fehler in Folge: 30 s, verdoppelnd bis 5 min, mit Jitter). `/healthz` zeigt `flight.active` und den Zustand je Quelle. Attribution: Data: [adsb.fi](https://adsb.fi) (Failover: [adsb.lol](https://adsb.lol), ODbL 1.0).
+
+Contract-Fixtures liegen in `tests/fixtures/` (`vrs/` ist eine aufgezeichnete Teilmenge der VRS standing-data vom 2026-10-27, Details in `vrs/README.txt`; `adsblol-point-frankfurt.json` ist eine echte Antwort vom 2026-10-27; `adsbfi-v3-point-oberweyer.json` ist eine echte adsb.fi-v3-Antwort vom 2026-10-27 (`/api/v3/lat/50.45/lon/8.09/dist/17`, keyless, 3 Flugzeuge); die uebrigen sind konstruiert, siehe Kommentare in den Tests).
 
 ## Routen-Statistik
 

@@ -9,6 +9,8 @@ import { evaluateHealth } from './health';
 import { createLogger, type Logger } from './logger';
 import { loadScenario, ScenarioDriver, ScenarioFlightSource, ScenarioRouteSource } from './mock/scenario';
 import { AdsbLolFlightSource } from './modules/airspace/adapters/adsb-lol';
+import { AdsbFiFlightSource } from './modules/airspace/adapters/adsb-fi';
+import { buildFlightSourceChain, type FlightSourceChain } from './modules/airspace/flight-source-chain';
 import type { Fetch } from './modules/airspace/adapters/http';
 import { AdsbdbRouteSource } from './modules/airspace/adapters/adsbdb-route-source';
 import { FlightAwareRouteSource } from './modules/airspace/adapters/flightaware-route-source';
@@ -69,6 +71,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   const fetchFn: Fetch = o.fetch ?? ((url, init) => fetch(url, init));
   const ua = config.sources.userAgent;
   let flight: FlightSource;
+  let flightChain: FlightSourceChain | undefined;
   let routeSources: RouteSource[];
   let stopSnapshot: (() => void) | undefined;
   let flightaware: FlightAwareRouteSource | undefined;
@@ -78,7 +81,10 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     routeSources = [new ScenarioRouteSource(driver)];
     speech = new FakeSpeechSynthesizer(() => (driver as ScenarioDriver).current().tts);
   } else {
-    flight = new AdsbLolFlightSource({ fetch: fetchFn, userAgent: ua, timeoutMs: config.sources.flight.timeoutMs });
+    const fo = { fetch: fetchFn, userAgent: ua, timeoutMs: config.sources.flight.timeoutMs };
+    // airplanes-live (airspace-v6m3h) registers here once its adapter exists.
+    flightChain = buildFlightSourceChain(config.sources.flight.order, { 'adsb-fi': new AdsbFiFlightSource(fo), 'adsb-lol': new AdsbLolFlightSource(fo) }, { clock, log });
+    flight = flightChain;
     routeSources = [];
     for (const name of config.sources.route.order) {
       if (name === 'flightaware') {
@@ -125,7 +131,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     try {
       if (req.method === 'GET' && url.pathname === '/api/state') { lastClientPollAt = clock.now(); return json(res, 200, sky.state()); }
       if (req.method === 'GET' && url.pathname === '/healthz') {
-        const report = evaluateHealth({ now: clock.now(), bootAt, pollIntervalMs: pollMs, flight: sky.health, dbWritable: dbWritable(), lastClientPollAt, clientSilenceMs: config.health.clientSilenceMinutes * 60_000, flightMaxAgeMs: flightMaxAgeMs(config) });
+        const report = evaluateHealth({ now: clock.now(), bootAt, pollIntervalMs: pollMs, flight: sky.health, dbWritable: dbWritable(), lastClientPollAt, clientSilenceMs: config.health.clientSilenceMinutes * 60_000, flightMaxAgeMs: flightMaxAgeMs(config), flightChain: flightChain?.status() });
         return json(res, report.status === 'failing' ? 503 : 200, { ...report, buildId, uptimeSeconds: Math.round((clock.now() - bootAt) / 1000) });
       }
       const audioMatch = /^\/audio\/([0-9a-f]+)\.wav$/.exec(url.pathname);

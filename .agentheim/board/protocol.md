@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:19 -- Task verified and completed: airspace-k2d7f - adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker
+
+**Type:** Work / Task completion
+**Task:** airspace-k2d7f - adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker
+**Summary:** adsb.fi als primaere Flugquelle; FlightSourceChain mit Failover im selben Takt, Backoff nach Retry-After/x-ratelimit-reset, Circuit Breaker, Quellenzustand in /healthz
+**Duration:** 13m
+**Verification:** PASS (iteration 1)
+**Files changed:** 15
+**Tests added:** 30
+**ADRs written:** 0019
+
+---
+
 ## 2026-10-27 18:10 -- Batch started: [airspace-k2d7f]
 
 **Type:** Work / Batch start

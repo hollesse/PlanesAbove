@@ -9,12 +9,14 @@ export interface HealthInput {
   clientSilenceMs: number;
   /** Flight-source freshness threshold; computed once by `flightMaxAgeMs(config)` (src/server/config.ts). */
   flightMaxAgeMs: number;
+  /** Per-source state of the FlightSourceChain (absent in mock mode). */
+  flightChain?: { active: string | null; sources: { name: string; state: 'ok' | 'backoff' | 'blocked'; until: number | null; consecutiveFailures: number; lastErrorClass: string | null }[] };
 }
 
 export interface HealthReport {
   status: 'ok' | 'degraded' | 'failing';
   reasons: string[];
-  flight: { lastSuccessAt: number | null; ageSeconds: number | null; consecutiveFailures: number; lastErrorClass: string | null };
+  flight: { lastSuccessAt: number | null; ageSeconds: number | null; consecutiveFailures: number; lastErrorClass: string | null; active?: string | null; sources?: NonNullable<HealthInput['flightChain']>['sources'] };
   client: { lastPollAt: number | null; ageSeconds: number | null };
   db: { writable: boolean };
 }
@@ -34,7 +36,7 @@ export function evaluateHealth(i: HealthInput): HealthReport {
   return {
     status: failing.length ? 'failing' : degraded.length ? 'degraded' : 'ok',
     reasons: [...failing, ...degraded],
-    flight: { lastSuccessAt: i.flight.lastSuccessAt, ageSeconds: secs(flightAge), consecutiveFailures: i.flight.consecutiveFailures, lastErrorClass: i.flight.lastErrorClass },
+    flight: { lastSuccessAt: i.flight.lastSuccessAt, ageSeconds: secs(flightAge), consecutiveFailures: i.flight.consecutiveFailures, lastErrorClass: i.flight.lastErrorClass, ...(i.flightChain ? { active: i.flightChain.active, sources: i.flightChain.sources } : {}) },
     client: { lastPollAt: i.lastClientPollAt, ageSeconds: i.lastClientPollAt === null ? null : secs(i.now - i.lastClientPollAt) },
     db: { writable: i.dbWritable },
   };

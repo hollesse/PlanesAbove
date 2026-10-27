@@ -38,9 +38,14 @@ export class AdsbLolFlightSource implements FlightSource {
     const base = this.o.baseUrl ?? 'https://api.adsb.lol';
     const url = `${base}/v2/point/${center.lat}/${center.lon}/${kmToNm(radiusKm)}`;
     const res = await guardedFetch(this.o.fetch, url, { headers: { 'user-agent': this.o.userAgent, accept: 'application/json' } }, this.o.timeoutMs);
-    let body: { ac?: unknown };
-    try { body = JSON.parse(await res.text()); } catch { throw new SourceError('parse', 'response is not JSON'); }
-    if (!body || !Array.isArray(body.ac)) throw new SourceError('parse', 'response has no "ac" array');
-    return (body.ac as Ac[]).map(normaliseAircraft).filter((x): x is Flugzeug => x !== undefined);
+    return parseReadsb(await res.text());
   }
+}
+
+/** The readsb `{ac: [...]}` body shared by adsb.lol, adsb.fi and airplanes.live. */
+export function parseReadsb(text: string): Flugzeug[] {
+  let body: { ac?: unknown };
+  try { body = JSON.parse(text); } catch { throw new SourceError('parse', 'response is not JSON'); }
+  if (!body || !Array.isArray(body.ac)) throw new SourceError('parse', 'response has no "ac" array');
+  return (body.ac as Ac[]).map(normaliseAircraft).filter((x): x is Flugzeug => x !== undefined);
 }

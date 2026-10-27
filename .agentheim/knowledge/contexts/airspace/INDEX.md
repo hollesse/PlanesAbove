@@ -10,6 +10,7 @@ Catalog of ADRs, research, and concept synthesis pages scoped to this bounded co
 ## ADRs scoped to this BC
 
 <!-- adr-local:start -->
+- **0019** — Flight source chain: adsb.fi primary, failover to airplanes.live and adsb.lol in the same Takt, per-source backoff after Retry-After/x-ratelimit-reset and circuit breaker (adsb.lol keyless limit 500/day measured) — 2026-10-27 — `../../decisions/0019-flight-source-chain-adsb-fi-primary-with-failover-and-backoff.md`
 - **0018** — FlightAware AeroAPI as a budgeted, opt-in, last-resort route source (explicit exception to ADR 0001; own call log + usage sync; key via env) — 2026-10-27 — `../../decisions/0018-flightaware-aeroapi-budgeted-last-resort-route-source.md`
 - **0016** — adsbdb live lookup first, VRS snapshot as fallback, adsbdb results never persisted — 2026-10-27 — `../../decisions/0016-adsbdb-live-lookup-first-vrs-snapshot-fallback-never-persisted.md`
 - **0015** — Unknown aircraft fall back to light-aircraft; B categories mapped or excluded — 2026-10-27 — `../../decisions/0015-unknown-aircraft-fall-back-to-light-aircraft-b-categories-mapped-or-excluded.md`

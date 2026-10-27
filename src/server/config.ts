@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import YAML from 'yaml';
 import { z } from 'zod';
 
+import { FLIGHT_SOURCE_NAMES } from './modules/airspace/flight-source-names';
 const FLIGHTAWARE_DEFAULTS = { timeoutMs: 8000, monthlyBudgetUsd: 4.5, monthlyRequestCap: 900, usageSyncMinutes: 30, usageLagMinutes: 15, billingPeriodStartDay: 1 };
 const ROUTE_DEFAULTS = { enabled: true, order: ['adsbdb' as const, 'vrs' as const], adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS };
 
@@ -26,7 +27,12 @@ const schema = z.object({
   liveries: z.object({ enabled: z.boolean().default(false) }).default({ enabled: false }),
   sources: z.object({
     userAgent: z.string().default('PlanesAbove/0.1 (self-hosted, single household)'),
-    flight: z.object({ timeoutMs: z.number().int().positive().default(8000) }).default({ timeoutMs: 8000 }),
+    flight: z.object({
+      /** Per-source request timeout; the chain then moves on to the next source in the same Takt (ADR 0019). */
+      timeoutMs: z.number().int().positive().default(5000),
+      /** Failover order; names without an adapter yet are skipped with a warning at start. */
+      order: z.array(z.enum(FLIGHT_SOURCE_NAMES)).min(1).default([...FLIGHT_SOURCE_NAMES]),
+    }).default({ timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES] }),
     route: z.object({
       enabled: z.boolean().default(true),
       /** Source order: adsbdb live lookup first, offline VRS snapshot as fallback (ADR 0016). */
@@ -57,7 +63,7 @@ const schema = z.object({
         billingPeriodStartDay: z.number().int().min(1).max(28).default(1),
       }).default(FLIGHTAWARE_DEFAULTS),
     }).default(ROUTE_DEFAULTS),
-  }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 8000 }, route: ROUTE_DEFAULTS }),
+  }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES] }, route: ROUTE_DEFAULTS }),
   speech: z.object({
     adapter: z.enum(['piper', 'fake']).default('piper'),
     voice: z.string().default('de_DE-thorsten'),

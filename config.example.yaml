@@ -1,7 +1,7 @@
 # PlanesAbove configuration (ADR 0007). Copy to config.yaml (not committed), edit, restart the container.
 # Secrets (API keys, HEARTBEAT_URL) are NEVER put here - only in environment variables.
 
-# live = real adsb.lol data; mock = scenario file (see scenarios/), used by the E2E tests.
+# live = real flight data (adsb.fi, failover per sources.flight.order); mock = scenario file (see scenarios/), used by the E2E tests.
 mode: live
 # scenario: scenarios/one-plane.json     # required when mode is mock
 
@@ -33,7 +33,8 @@ liveries:
 sources:
   userAgent: "PlanesAbove/0.1 (self-hosted, single household)"
   flight:
-    timeoutMs: 8000
+    timeoutMs: 5000            # per-source request timeout; on failure the next source is asked in the same Takt
+    order: [adsb-fi, airplanes-live, adsb-lol]   # failover order (ADR 0019); names without an adapter yet are skipped with a warning
   route:
     enabled: true
     order: [adsbdb, vrs]       # adsbdb = live lookup first (never persisted), vrs = offline VRS standing-data snapshot (CC0) as fallback

@@ -1,7 +1,7 @@
 ---
 id: airspace-k2d7f
 title: adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker
-status: doing
+status: done
 type: feature
 context: airspace
 created: 2026-10-27
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: [airspace-v6m3h, airspace-b9r4w]
 tags: [flightsource, adsb-fi, resilience, live-test]
-related_adrs: [0001, 0005, 0011]
+related_adrs: [0001, 0005, 0011, 0019]
 related_research: [flight-position-source-alternatives-2026-10-27]
 prior_art: [infrastructure-001-walking-skeleton, airspace-r5n3k]
 ---
@@ -40,3 +40,7 @@ Am 2026-10-27 lief adsb.lol gegen sein keyless Tageslimit (gemessen: `x-ratelimi
 - Betreiber-Entscheidung 2026-10-27: Reihenfolge adsb.fi → airplanes.live → adsb.lol; OpenSky und eigener Empfänger nicht. airplanes.live-Adapter: airspace-v6m3h; adsb.lol-Tagesbudget: airspace-b9r4w.
 - Gemessen 2026-10-27 16:5x UTC: `GET opendata.adsb.fi/api/v3/lat/50.45/lon/8.09/dist/17` → HTTP 200, `{ac,msg,now,total,ctime,ptime}`, 3 Flugzeuge, Felder wie readsb inkl. `dst`, `dir`, `seen_pos`. Kein Ratelimit-Header gesehen.
 - adsb.fi README (github.com/adsbfi/opendata): 1 req/s öffentlich, "personal, non-commercial use only", "You must cite adsb.fi and include a link to our home page", 4xx zählen zur IP-Restriktion.
+
+## Outcome
+
+adsb.fi is now the primary flight source. New `FlightSourceChain` (`src/server/modules/airspace/flight-source-chain.ts`) wraps the adapters registered under their config names (`flight-source-names.ts`; config `sources.flight.order`, default `[adsb-fi, airplanes-live, adsb-lol]`, unknown names rejected, names without adapter skipped with a warning). Per Takt the first unblocked source is asked, failures fall through to the next in the same Takt; all failing = Takt failed, stale rule unchanged. Backoff per source: 429 blocks for `Retry-After` / `x-ratelimit-reset` seconds (parsed in `adapters/http.ts` `retryAfterMs`, carried as `SourceError.retryAfterMs`), otherwise a breaker (3 failures: 30 s, doubling to 300 s, jitter). `AdsbFiFlightSource` (`adapters/adsb-fi.ts`) uses the v3 path, shared `parseReadsb` from `adsb-lol.ts`, and pauses at least 60 s after any 400/401/403/404/429. `/healthz` gains `flight.active` and `flight.sources[]`. Mock mode bypasses the chain. Per-source timeout default 8 s -> 5 s. README and `config.example.yaml` carry the adsb.fi attribution link; a test pins the README text (the client has no attribution line). Real adsb.fi fixture `tests/fixtures/adsbfi-v3-point-oberweyer.json` (recorded 2026-10-27). ADR 0019 (provisional filename `0019-flight-source-chain-adsb-fi-primary-with-failover-and-backoff.md`). `blockFor()` on the chain is the hook for the adsb.lol daily budget (airspace-b9r4w); airplanes-live (airspace-v6m3h) registers one adapter in `app.ts`. Tests: `tests/unit/server/{adsb-fi.contract,flight-source-chain,flight-chain-wiring}.test.ts`; `npm test` 352 green, typecheck green, `npm run e2e:chromium` 11 green (after build-storybook + build, which that script does not run itself).

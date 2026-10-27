@@ -35,7 +35,8 @@ export interface Route { from: Airport; to: Airport; /** All airports in order f
 export type SourceErrorClass = 'timeout' | 'network' | 'http-403' | 'http-429' | 'http-4xx' | 'http-5xx' | 'parse' | 'unavailable';
 
 export class SourceError extends Error {
-  constructor(public readonly errorClass: SourceErrorClass, message?: string) { super(message ?? errorClass); }
+  /** `retryAfterMs`: the source asked (or is known to need) a pause of at least this long; the FlightSourceChain blocks the source for it (ADR 0019). */
+  constructor(public readonly errorClass: SourceErrorClass, message?: string, public readonly retryAfterMs?: number) { super(message ?? errorClass); }
 }
 
 export interface FlightSource {
