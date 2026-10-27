@@ -1,7 +1,7 @@
 ---
 id: airspace-p8w2k
 title: Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand
-status: backlog
+status: todo
 type: feature
 context: airspace
 created: 2026-10-27

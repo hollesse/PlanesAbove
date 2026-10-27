@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:47 -- Modeling / Promoted: airspace-p8w2k - Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 18:47 -- Modeling / Promoted: airspace-c5t9m - airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben)
 
 **Type:** Modeling / Promote
