@@ -5,6 +5,16 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 15:34 -- Research: Routenabdeckung steigern — Quellen, Heuristiken, Lizenzen
+
+**Type:** Research
+**Requested by:** user
+**Report:** knowledge/research/route-coverage-sources-2026-10-27.md
+**Review:** PASS (iteration 1)
+**Summary:** Keine kostenlose Quelle und kein eigener Empfaenger kennt den tatsaechlich geflogenen Flug (ADS-B traegt kein Ziel). hexdb.io bringt ~8 Punkte, wie adsbdb nur im Speicher. FlightAware AeroAPI Personal ist die einzige realistische Last-Resort-Option ($5/Monat frei, $0.005/Abfrage, Speichern fuer private Zwecke erlaubt, ohne Ziel bei Fluegen ohne Flugplan); FR24 ohne Free-Tier. Konflikte zwischen Quellen per eigener Beobachtung (Kurs, Flugphase) schiedsen.
+
+---
+
 ## 2026-10-27 15:32 -- Modeling / Captured: airspace-n8c4t - Unmapped Keys aus dem Live-Betrieb kuratieren: 26 Airline-Präfixe und 10 Typcodes in die Tabellen aufnehmen
 
 **Type:** Modeling / Capture

@@ -20,6 +20,7 @@ Catalog of ADRs, research, and concept synthesis pages scoped to this bounded co
 ## Research touching this BC
 
 <!-- research-local:start -->
+- **route-coverage-sources-2026-10-27** — Routenabdeckung steigern: keine freie Quelle kennt den getrackten Flug; hexdb +8 Punkte; FlightAware AeroAPI Personal als Last Resort ($5/Monat frei); Heuristiken als Konflikt-Schiedsrichter — `../../research/route-coverage-sources-2026-10-27.md`
 <!-- research-local:end -->
 
 ## Concepts (opt-in synthesis pages)
