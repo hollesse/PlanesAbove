@@ -1,7 +1,7 @@
 ---
 id: sky-scene-w9n4f
 title: Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist
-status: doing
+status: done
 type: feature
 context: sky-scene
 created: 2026-10-27
@@ -41,3 +41,7 @@ Heute markiert der Dienst die Szene schon nach **einem** fehlgeschlagenen Abruf 
 - Otherwise correct: scene unit test (short outage live, exactly 90 s live, 120 s stale with last-success clock, recovery); E2E timeline consistent. The "no success since boot" case is coded via `bootAt` but untested.
 **SUGGESTED_FIX:** Make `HealthInput.flightMaxAgeMs` required and remove the `?? 3 * i.pollIntervalMs` fallback in health.ts so `flightMaxAgeMs(config)` is the only computation. Add a unit/integration test that runs the service/app with `health.flightMaxAgeSeconds: N` (and one with the default) and asserts that at N+1 s without success the scene is `stale: true` AND `/healthz` is `degraded` at the same moment, and neither at N s. Optionally cover the no-success-since-boot case.
 **ITERATION_HINT:** likely-fixable
+
+## Outcome
+
+Serverseitiger stale-Zustand ist jetzt berechnet: `SkyService.state()` setzt `stale`, wenn `now - (lastSuccessAt ?? bootAt) > flightMaxAgeMs(config)`; der catch-Zweig setzt kein stale mehr. `flightMaxAgeMs(config)` (src/server/config.ts) ist die einzige Stelle, an der die Schwelle berechnet wird (`health.flightMaxAgeSeconds` oder 3 x `pollIntervalSeconds`); `HealthInput.flightMaxAgeMs` in src/server/health.ts ist jetzt Pflicht, der zweite Default ist entfernt. Tests: Unit sky-service (Aussetzer < 90 s live, genau 90 s live, 120 s stale mit Uhrzeit des letzten Erfolgs, Erholung; custom/default Schwelle), config (Default/Override), neuer Verdrahtungstest tests/unit/server/staleness-wiring.test.ts (startService im Mock-Modus: bei N s Szene live und /healthz nicht degraded, bei N+1 s beides gleichzeitig umgeschaltet; fuer gesetztes flightMaxAgeSeconds, Default und "kein Erfolg seit Boot"; schlaegt fehl, wenn die app.ts-Verdrahtung zurueckgedreht wird), E2E "Ausfall der Quelle" (kurzer Ausfall live, > 90 s "Letzter Stand", Erholung; Szenario outage-recovery.json erweitert). config.example.yaml und README dokumentieren beide Regeln. Vitest 196 gruen, Typecheck, Build, Playwright Chromium 10 gruen.

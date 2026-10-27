@@ -1,6 +1,6 @@
 // The Takt: poll the flight source, select, enrich, log sightings, and hold the current scene state (ADR 0004/0005).
 import type { Clock } from '../../clock';
-import type { Config } from '../../config';
+import { flightMaxAgeMs, type Config } from '../../config';
 import type { Logger } from '../../logger';
 import type { SceneState, ScenePlane } from '../../../shared/state';
 import type { FlightPhase } from '../airspace/model';
@@ -18,15 +18,15 @@ const climbOrDescent = (rateMs: number | undefined): FlightPhase => (rateMs === 
 
 export class SkyService {
   private planes: ScenePlane[] = [];
-  private stale = false;
+  private readonly bootAt: number;
   readonly health: FlightHealth = { lastSuccessAt: null, lastTickAt: null, consecutiveFailures: 0, lastErrorClass: null };
 
   constructor(private readonly d: {
     config: Config; clock: Clock; log: Logger; flight: FlightSource; routes: RouteService; tables: Tables;
     sightings: SightingRepository; audio: AudioService; buildId: string; timeZone?: string;
-  }) {}
+  }) { this.bootAt = d.clock.now(); }
 
-  /** One 30 s Takt. Never throws: a failed source keeps the last good scene and marks it stale. */
+  /** One 30 s Takt. Never throws: a failed source keeps the last good scene; it only counts as stale once the last success is older than flightMaxAge. */
   async tick(): Promise<void> {
     const { config, clock, log, flight } = this.d;
     const now = clock.now();
@@ -39,14 +39,12 @@ export class SkyService {
       if (this.health.consecutiveFailures === 0) log.warn('flight source failed', { source: flight.name, errorClass: cls });
       this.health.consecutiveFailures++;
       this.health.lastErrorClass = cls;
-      this.stale = true;
       return;
     }
     if (this.health.consecutiveFailures > 0) log.info('flight source recovered', { source: flight.name, failures: this.health.consecutiveFailures });
     this.health.consecutiveFailures = 0;
     this.health.lastErrorClass = null;
     this.health.lastSuccessAt = now;
-    this.stale = false;
 
     const inRadius = selectNearest(aircraft, config.location, config.radiusKm, Number.MAX_SAFE_INTEGER);
     const chosen = inRadius.slice(0, 2);
@@ -115,7 +113,7 @@ export class SkyService {
     return {
       buildId: this.d.buildId,
       serverTime: now,
-      stale: this.stale,
+      stale: now - (this.health.lastSuccessAt ?? this.bootAt) > flightMaxAgeMs(config),
       lastSuccessAt: this.health.lastSuccessAt,
       place: config.place,
       clock: clockLabel,

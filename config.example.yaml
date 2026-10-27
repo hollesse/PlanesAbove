@@ -49,7 +49,7 @@ speech:
 # Settings handed to the iPad client with every state.
 client:
   pollIntervalSeconds: 10
-  staleAfterMinutes: 5
+  staleAfterMinutes: 5     # client rule: no successful poll of the service for this long -> "Letzter Stand"
   reloadAt: "04:00"        # nightly reload, local time
   speechWatchdogSeconds: 60
 
@@ -57,4 +57,7 @@ sightings:
   visitGapMinutes: 30      # a flight absent longer than this starts a new sighting
 
 health:
+  # Flight source freshness, one threshold for both: the scene shows "Letzter Stand" and /healthz reports
+  # `degraded` once the last successful fetch is older than this. Default: 3 x pollIntervalSeconds (90 s).
+  # flightMaxAgeSeconds: 90
   clientSilenceMinutes: 10

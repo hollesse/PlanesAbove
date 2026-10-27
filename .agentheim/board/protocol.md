@@ -5,6 +5,20 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 07:41 -- Task verified and completed: sky-scene-w9n4f - Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist
+
+**Type:** Work / Task completion
+**Task:** sky-scene-w9n4f - Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist
+**Summary:** scene becomes stale only after 3 Takte without a successful fetch, one shared threshold with /healthz
+**Duration:** ~15m
+**Verification:** PASS (iteration 2)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 12
+**Tests added:** 7
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 07:37 -- Verification failed: sky-scene-w9n4f - Stale-Schwelle 3 Takte
 
 **Type:** Work / Verification failure

@@ -22,6 +22,7 @@ core — hier entsteht das Erlebnis, um das es geht.
 - **Narrator** — clientseitiger Abspieler für das Vorlesen: spielt per `<audio>` eine Audio-URL des Servers nach Tippen und meldet das Ende (`ended`) an die Vorlese-Sperre; `speechSynthesis` ist nur ein optionaler Notfall-Adapter (ADR 0012).
 - **Sprachcache** — Audio-Cache des Servers, Schlüssel (Adapter, Stimme, Text); Wechsel des Adapters spielt nie veraltetes Audio ab.
 - **Narrator** / **Vorlese-Sperre (Umsetzung)** — der Client spielt die Audio-URL nach Tippen per `<audio>`; die Sperre beginnt beim Abspielen, endet bei `ended` oder per Watchdog (auch bei `error`/`stalled`), eine neuere Auswahl wird bis dahin gepuffert (infrastructure-001, ADR 0012).
+- **Veraltete Szene (stale)** — serverseitig berechnet, nicht pro Fehlschlag gesetzt: die Szene gilt als veraltet (Kopfzeile "Letzter Stand"), wenn der letzte erfolgreiche Abruf der Flugquelle aelter ist als flightMaxAge (`health.flightMaxAgeSeconds`, Default 3 Takte = 90 s; dieselbe Schwelle wie /healthz-degraded). Die Clientregel (`client.staleAfterMinutes`, 5 min) bleibt separat.
 
 ## Aggregates
 _Noch nicht modelliert — entsteht in `modeling` / bei der Arbeit an Tasks._

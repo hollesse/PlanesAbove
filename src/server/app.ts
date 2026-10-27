@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
 import { FakeClock, SystemClock, type Scheduler } from './clock';
-import type { Config } from './config';
+import { flightMaxAgeMs, type Config } from './config';
 import { openDatabase } from './db';
 import { evaluateHealth } from './health';
 import { createLogger, type Logger } from './logger';
@@ -100,7 +100,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     try {
       if (req.method === 'GET' && url.pathname === '/api/state') { lastClientPollAt = clock.now(); return json(res, 200, sky.state()); }
       if (req.method === 'GET' && url.pathname === '/healthz') {
-        const report = evaluateHealth({ now: clock.now(), bootAt, pollIntervalMs: pollMs, flight: sky.health, dbWritable: dbWritable(), lastClientPollAt, clientSilenceMs: config.health.clientSilenceMinutes * 60_000, flightMaxAgeMs: config.health.flightMaxAgeSeconds ? config.health.flightMaxAgeSeconds * 1000 : undefined });
+        const report = evaluateHealth({ now: clock.now(), bootAt, pollIntervalMs: pollMs, flight: sky.health, dbWritable: dbWritable(), lastClientPollAt, clientSilenceMs: config.health.clientSilenceMinutes * 60_000, flightMaxAgeMs: flightMaxAgeMs(config) });
         return json(res, report.status === 'failing' ? 503 : 200, { ...report, buildId, uptimeSeconds: Math.round((clock.now() - bootAt) / 1000) });
       }
       const audioMatch = /^\/audio\/([0-9a-f]+)\.wav$/.exec(url.pathname);

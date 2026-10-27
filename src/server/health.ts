@@ -7,7 +7,8 @@ export interface HealthInput {
   dbWritable: boolean;
   lastClientPollAt: number | null;
   clientSilenceMs: number;
-  flightMaxAgeMs?: number;
+  /** Flight-source freshness threshold; computed once by `flightMaxAgeMs(config)` (src/server/config.ts). */
+  flightMaxAgeMs: number;
 }
 
 export interface HealthReport {
@@ -24,7 +25,7 @@ export function evaluateHealth(i: HealthInput): HealthReport {
   if (!i.dbWritable) failing.push('database not writable');
   const lastTick = i.flight.lastTickAt ?? i.bootAt;
   if (i.now - lastTick > 5 * i.pollIntervalMs) failing.push('poll scheduler has not ticked');
-  const maxAge = i.flightMaxAgeMs ?? 3 * i.pollIntervalMs;
+  const maxAge = i.flightMaxAgeMs;
   const flightAge = i.flight.lastSuccessAt === null ? null : i.now - i.flight.lastSuccessAt;
   if (flightAge === null ? i.now - i.bootAt > maxAge : flightAge > maxAge) degraded.push('flight source stale');
   const sinceClient = i.now - (i.lastClientPollAt ?? i.bootAt);

@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { evaluateHealth, type HealthInput } from '../../../src/server/health';
 
 const POLL = 30_000;
-const base = (o: Partial<HealthInput> = {}): HealthInput => ({ now: 1_000_000, bootAt: 0, pollIntervalMs: POLL, flight: { lastSuccessAt: 990_000, lastTickAt: 990_000, consecutiveFailures: 0, lastErrorClass: null }, dbWritable: true, lastClientPollAt: 995_000, clientSilenceMs: 600_000, ...o });
+const base = (o: Partial<HealthInput> = {}): HealthInput => ({ now: 1_000_000, bootAt: 0, pollIntervalMs: POLL, flightMaxAgeMs: 3 * POLL, flight: { lastSuccessAt: 990_000, lastTickAt: 990_000, consecutiveFailures: 0, lastErrorClass: null }, dbWritable: true, lastClientPollAt: 995_000, clientSilenceMs: 600_000, ...o });
 
 describe('evaluateHealth (ADR 0011)', () => {
   it('ok when fresh', () => { expect(evaluateHealth(base())).toMatchObject({ status: 'ok', reasons: [] }); });

@@ -53,6 +53,9 @@ const schema = z.object({
 
 export type Config = z.infer<typeof schema>;
 
+/** The one shared freshness threshold for the flight source: scene staleness and /healthz `degraded` (ADR 0011). Default 3 Takte. */
+export const flightMaxAgeMs = (c: Pick<Config, 'pollIntervalSeconds' | 'health'>): number => (c.health.flightMaxAgeSeconds ?? 3 * c.pollIntervalSeconds) * 1000;
+
 export class ConfigError extends Error {}
 
 export function parseConfig(yamlText: string): Config {

@@ -52,18 +52,30 @@ test('Wechsel waehrend des Vorlesens wird zurueckgehalten, danach erscheint die 
   await expect(app(page)).toHaveAttribute('data-planes', 'bbbbbb');
 });
 
-test('Ausfall der Quelle: letzte Szene bleibt, Kopfzeile zeigt „Letzter Stand“, dann Erholung von selbst', async ({ page }) => {
+test('Ausfall der Quelle: ein Takt Ausfall bleibt „Live“, erst nach > 90 s „Letzter Stand“, dann Erholung von selbst', async ({ page }) => {
   svc = await startMockService('outage-recovery');
   await page.goto(svc.url);
+  const header = page.locator('.pa-scene-header');
   await expect(app(page)).toHaveAttribute('data-planes', 'aaaaaa');
   await expect(app(page)).toHaveAttribute('data-stale', 'false');
-  await svc.advance(30); // 429 von der Quelle
-  await expect(app(page)).toHaveAttribute('data-stale', 'true');
+  await svc.advance(30); // kurzer Ausfall: 429 von der Quelle, ein Takt
   await expect(app(page)).toHaveAttribute('data-planes', 'aaaaaa');
-  await expect(page.locator('.pa-scene-header')).toContainText('Letzter Stand · ');
-  await expect(page.locator('.pa-scene-header')).not.toContainText('Live');
+  await expect(app(page)).toHaveAttribute('data-stale', 'false');
+  await expect(header).toContainText('Live · ');
+  await svc.advance(30); // Quelle zurueck
+  await expect(app(page)).toHaveAttribute('data-planes', 'bbbbbb');
+  await expect(app(page)).toHaveAttribute('data-stale', 'false');
+  await svc.advance(30); // laengerer Ausfall beginnt (letzter Erfolg 30 s her)
+  await svc.advance(60); // 90 s seit dem letzten Erfolg: noch nicht veraltet
+  await expect(app(page)).toHaveAttribute('data-stale', 'false');
+  await expect(header).toContainText('Live · ');
+  await svc.advance(30); // 120 s > 90 s
+  await expect(app(page)).toHaveAttribute('data-stale', 'true');
+  await expect(app(page)).toHaveAttribute('data-planes', 'bbbbbb');
+  await expect(header).toContainText('Letzter Stand · ');
+  await expect(header).not.toContainText('Live');
   await svc.advance(30); // Quelle zurueck
   await expect(app(page)).toHaveAttribute('data-stale', 'false');
-  await expect(page.locator('.pa-scene-header')).toContainText('Live · ');
-  await expect(app(page)).toHaveAttribute('data-planes', 'bbbbbb');
+  await expect(header).toContainText('Live · ');
+  await expect(app(page)).toHaveAttribute('data-planes', 'cccccc');
 });
