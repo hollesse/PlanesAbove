@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:19 -- Modeling / Promoted: airspace-v6m3h - airplanes.live als zweite Flugquelle in der FlightSource-Kette
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 18:19 -- Task verified and completed: airspace-k2d7f - adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker
 
 **Type:** Work / Task completion

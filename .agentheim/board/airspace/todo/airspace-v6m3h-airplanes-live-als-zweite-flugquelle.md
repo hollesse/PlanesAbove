@@ -1,7 +1,7 @@
 ---
 id: airspace-v6m3h
 title: airplanes.live als zweite Flugquelle in der FlightSource-Kette
-status: backlog
+status: todo
 type: feature
 context: airspace
 created: 2026-10-27
