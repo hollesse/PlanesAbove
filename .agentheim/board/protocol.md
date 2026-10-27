@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:41 -- Batch started: [design-system-kcpnw]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-kcpnw - Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch
+**Parallel:** no (1 worker — wave 3; task promoted mid-run, only ready task)
+
+---
+
 ## 2026-10-27 19:40 -- Task verified and completed: airspace-hw8f9 - Flugphasen-Prüfung nur unterhalb der Reiseflughöhe, ab 5 m/s und erst 400 km vom Flughafen; Steigprofil nahe dem Abflughafen lockern (Abflugrouten sind länger als die Luftlinie)
 
 **Type:** Work / Task completion

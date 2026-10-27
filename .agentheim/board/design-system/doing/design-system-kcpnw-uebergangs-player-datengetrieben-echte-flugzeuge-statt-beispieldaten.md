@@ -1,7 +1,7 @@
 ---
 id: design-system-kcpnw
 title: Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch
-status: todo
+status: doing
 type: refactor
 context: design-system
 created: 2026-10-27
