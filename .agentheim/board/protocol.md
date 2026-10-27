@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 15:32 -- Modeling / Captured: airspace-n8c4t - Unmapped Keys aus dem Live-Betrieb kuratieren: 26 Airline-Präfixe und 10 Typcodes in die Tabellen aufnehmen
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** 26 Airline-Praefixe (EXS, KLC, LHX, OCN, TKJ, ...) und 10 Typcodes aus unmapped_keys nach einem Tag Live-Betrieb in die Tabellen kuratieren; kuratierte Schluessel aus unmapped_keys bereinigen.
+
+---
+
 ## 2026-10-27 15:22 -- Work session ended
 
 **Type:** Work / Session end

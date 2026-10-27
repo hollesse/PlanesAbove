@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 2
+- **Backlog:** 3
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 5
@@ -35,6 +35,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **airspace-n8c4t** — Unmapped Keys aus dem Live-Betrieb kuratieren: 26 Airline-Präfixe und 10 Typcodes in die Tabellen aufnehmen (chore) — `backlog/airspace-n8c4t-unmapped-keys-kuratieren-airlines-und-typcodes-aus-dem-live-betrieb.md`
 - **airspace-w3k8d** — hexdb.io als zweite Routenquelle zwischen adsbdb und VRS, mit Konfliktregel bei widersprüchlichen Online-Antworten (feature) — `backlog/airspace-w3k8d-hexdb-als-zweite-routenquelle-zwischen-adsbdb-und-vrs.md`
 - **airspace-p2v6d** — Persistierter Routen-Cache fuer Online-Quellen (feature) — `backlog/airspace-p2v6d-persistierter-routen-cache-fuer-online-quellen.md`
 <!-- backlog-list:end -->
