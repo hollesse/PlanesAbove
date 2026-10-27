@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:27 -- Modeling / Refined: sky-scene-n0sfy - Flugzeug-Übergänge in der Live-Szene abspielen
+
+**Type:** Modeling / Refine
+**BC:** sky-scene
+**Status after:** todo
+**Summary:** Dritter Durchgang: Blocker design-system-kcpnw ist integriert; TRANSITION_MS, renderTransitionStage/playTransition, data-side und VorleseSperre.whenFree im Code gegengeprüft. Notes ergänzt, Task bereit.
+**Split into:** none
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 21:26 -- Batch started: [airspace-b7kx2]
 
 **Type:** Work / Batch start
