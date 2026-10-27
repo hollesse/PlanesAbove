@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:26 -- Batch started: [airspace-b7kx2]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-b7kx2 - Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen
+**Parallel:** scoped — builder named airspace-b7kx2; 0 other ready tasks
+
+---
+
 ## 2026-10-27 21:23 -- Modeling / Refined: airspace-b7kx2 - Anzeigeformat Stadt (IATA)
 
 **Type:** Modeling / Refine

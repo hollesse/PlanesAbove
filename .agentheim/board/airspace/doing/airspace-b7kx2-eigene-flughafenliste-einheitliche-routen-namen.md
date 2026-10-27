@@ -1,7 +1,7 @@
 ---
 id: airspace-b7kx2
 title: Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen
-status: todo
+status: doing
 type: feature
 context: airspace
 created: 2026-10-27
