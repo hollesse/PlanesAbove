@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:19 -- Modeling / Promoted: airspace-b9r4w - adsb.lol als dritte Flugquelle mit persistiertem Tagesbudget (400 von 500 Requests) und Auswertung der Rate-Limit-Header
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 18:19 -- Modeling / Promoted: airspace-v6m3h - airplanes.live als zweite Flugquelle in der FlightSource-Kette
 
 **Type:** Modeling / Promote
