@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:32 -- Modeling / Promoted: infrastructure-d3v7k - Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
+
+**Type:** Modeling / Promote
+**BC:** infrastructure
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 21:32 -- Modeling / Refined: infrastructure-d3v7k - Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
 
 **Type:** Modeling / Refine
