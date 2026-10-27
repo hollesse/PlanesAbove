@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 2
 - **Todo:** 0
-- **Doing:** 2
-- **Done:** 2
+- **Doing:** 1
+- **Done:** 3
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,12 +22,12 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **airspace-f7k2m** — Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergänzen (Ikarus C42 D-MMDP) (bug) — `doing/airspace-f7k2m-ultraleicht-und-unbekannte-typcodes-werden-als-narrowbody-gezeichnet.md`
 - **airspace-m3w9c** — VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen (feature) — `doing/airspace-m3w9c-vrs-standing-data-cc0-als-bevorzugte-routesource-mit-offline.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **airspace-f7k2m** — Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergänzen (Ikarus C42 D-MMDP) (bug) — `done/airspace-f7k2m-ultraleicht-und-unbekannte-typcodes-werden-als-narrowbody-gezeichnet.md`
 - **airspace-h76v2** — Decide Typklasse, Kategorie and airline derivation from static curated tables (decision) — `done/airspace-h76v2-type-class-and-airline-tables.md`
 - **airspace-jy8hz** — Decide free ADS-B position and route sources behind a replaceable port (adsb.lol / airplanes.live / adsbdb) (decision) — `done/airspace-jy8hz-flight-and-route-sources.md`
 <!-- done-list:end -->

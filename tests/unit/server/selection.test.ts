@@ -31,6 +31,12 @@ describe('selectNearest (Auswahl der zwei Naechsten)', () => {
     const r = selectNearest([at('out', 31), at('gnd', 1, { onGround: true }), at('in', 29)], HOME, 30);
     expect(r.map((x) => x.aircraft.icao24)).toEqual(['in']);
   });
+  it('never selects B2/B3/B6/B7 or C* emitters even when nearest (ADR 0015); B1/B4/A* stay selectable', () => {
+    const excluded = ['B2', 'B3', 'B6', 'B7', 'C1', 'C2', 'C3'].map((c, i) => at(`x${i}`, 1, { emitterCategory: c }));
+    const ok = ['B1', 'B4', 'A3'].map((c, i) => at(`ok${i}`, 5 + i, { emitterCategory: c }));
+    const r = selectNearest([...excluded, ...ok], HOME, 30, 10);
+    expect(r.map((x) => x.aircraft.icao24)).toEqual(['ok0', 'ok1', 'ok2']);
+  });
   it('is deterministic on equal distance (icao24 order)', () => {
     const r = selectNearest([at('b', 10), at('a', 10)], HOME, 30);
     expect(r.map((x) => x.aircraft.icao24)).toEqual(['a', 'b']);

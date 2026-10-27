@@ -36,7 +36,8 @@ export interface ResolvedTypeClass {
   unmapped: boolean;
 }
 
-const EMITTER_FALLBACK: Record<string, PlaneType> = { A1: 'light-aircraft', A2: 'regional-jet', A3: 'narrowbody', A4: 'narrowbody', A5: 'widebody', A6: 'business-jet', A7: 'helicopter' };
+const EMITTER_FALLBACK: Record<string, PlaneType> = { A1: 'light-aircraft', A2: 'regional-jet', A3: 'narrowbody', A4: 'narrowbody', A5: 'widebody', A6: 'business-jet', A7: 'helicopter', B1: 'glider', B4: 'light-aircraft' };
+// ADR 0015: B0/B5 count as "no category"; B2/B3/B6/B7 and C* never reach here (excluded in selectNearest).
 const KATEGORIE_BY_CLASS: Partial<Record<PlaneType, string>> = { 'light-aircraft': 'Allgemeine Luftfahrt', glider: 'Segelflug', helicopter: 'Hubschrauber', 'business-jet': 'Geschäftsreise', 'regional-jet': 'Regional', turboprop: 'Regional' };
 
 export function resolveTypeClass(t: Tables, typeCode: string | undefined, emitterCategory: string | undefined): ResolvedTypeClass {
@@ -45,7 +46,7 @@ export function resolveTypeClass(t: Tables, typeCode: string | undefined, emitte
   const unmapped = Boolean(typeCode);
   const byEmitter = emitterCategory ? EMITTER_FALLBACK[emitterCategory] : undefined;
   if (byEmitter) return { typklasse: byEmitter, kategorie: KATEGORIE_BY_CLASS[byEmitter] ?? 'unbekannt', fallback: true, unmapped };
-  return { typklasse: 'narrowbody', kategorie: 'unbekannt', fallback: true, unmapped };
+  return { typklasse: 'light-aircraft', kategorie: 'unbekannt', fallback: true, unmapped };
 }
 
 export interface ResolvedAirline { prefix: string; name?: string; country?: string }

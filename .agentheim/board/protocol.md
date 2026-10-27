@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 12:30 -- Task verified and completed: airspace-f7k2m - Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergänzen (Ikarus C42 D-MMDP)
+
+**Type:** Work / Task completion
+**Task:** airspace-f7k2m - Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergänzen (Ikarus C42 D-MMDP)
+**Summary:** Unbekannte Flugzeuge fallen auf light-aircraft/unbekannt statt narrowbody; B1/B4 gemappt, B2/B3/B6/B7 und C* aus der Auswahl ausgeschlossen, 17 Typcodes (u. a. C42) kuratiert
+**Duration:** 4m10s
+**Verification:** PASS (iteration 1)
+**Files changed:** 6
+**Tests added:** 6
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 12:26 -- Batch started: [airspace-m3w9c, airspace-f7k2m]
 
 **Type:** Work / Batch start

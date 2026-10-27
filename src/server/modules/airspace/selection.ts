@@ -11,6 +11,9 @@ export function distanceKm(a: LatLon, b: LatLon): number {
   return 2 * R_KM * Math.asin(Math.min(1, Math.sqrt(h)));
 }
 
+/** ADR 0015: B2 (balloon), B3 (skydiver), B6 (UAV), B7 (space) and all C* (surface vehicles/obstacles) are not "planes above". */
+export const isExcludedEmitter = (c: string | undefined): boolean => Boolean(c) && (/^C/.test(c as string) || ['B2', 'B3', 'B6', 'B7'].includes(c as string));
+
 export interface Candidate { aircraft: Flugzeug; distanceKm: number }
 
 /**
@@ -19,7 +22,7 @@ export interface Candidate { aircraft: Flugzeug; distanceKm: number }
  */
 export function selectNearest(aircraft: Flugzeug[], home: LatLon, radiusKm: number, count = 2): Candidate[] {
   return aircraft
-    .filter((a) => !a.onGround)
+    .filter((a) => !a.onGround && !isExcludedEmitter(a.emitterCategory))
     .map((a) => ({ aircraft: a, distanceKm: distanceKm(home, a) }))
     .filter((c) => c.distanceKm <= radiusKm)
     .sort((x, y) => x.distanceKm - y.distanceKm || (x.aircraft.icao24 < y.aircraft.icao24 ? -1 : 1))

@@ -671,5 +671,90 @@
   "name": "Hubschrauber",
   "typklasse": "helicopter",
   "kategorie": "Hubschrauber"
+ },
+ "C42": {
+  "name": "Comco Ikarus C42",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "FDCT": {
+  "name": "Flight Design CT",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "PC12": {
+  "name": "Pilatus PC-12",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "C82R": {
+  "name": "Cessna 182RG",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "DV20": {
+  "name": "Diamond DV20 Katana",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "B36T": {
+  "name": "Beechcraft Bonanza 36 Turbine",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "C560": {
+  "name": "Cessna Citation V/Ultra",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "C295": {
+  "name": "Airbus C295",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "C27J": {
+  "name": "Leonardo C-27J Spartan",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "H47": {
+  "name": "Boeing CH-47 Chinook",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "TAMP": {
+  "name": "Socata TB-9 Tampico",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "LGND": {
+  "name": "Lancair Legacy",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "A210": {
+  "name": "Aquila A210",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "CTSW": {
+  "name": "Flight Design CTSW",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "EV97": {
+  "name": "Evektor EV-97 Eurostar",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "AAT3": {
+  "name": "Aero AT-3",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "DA62": {
+  "name": "Diamond DA62",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
  }
 }

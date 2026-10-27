@@ -23,9 +23,27 @@ describe('resolveTypeClass (ADR 0010)', () => {
     expect(resolveTypeClass(T, undefined, 'A6').typklasse).toBe('business-jet');
     expect(resolveTypeClass(T, undefined, 'A7').typklasse).toBe('helicopter');
   });
-  it('uses the neutral narrowbody silhouette with Kategorie "unbekannt" when nothing is known', () => {
-    expect(resolveTypeClass(T, undefined, undefined)).toMatchObject({ typklasse: 'narrowbody', kategorie: 'unbekannt', fallback: true, unmapped: false });
-    expect(resolveTypeClass(T, 'ZZZZ', undefined)).toMatchObject({ typklasse: 'narrowbody', kategorie: 'unbekannt', unmapped: true });
+  it('maps B emitter categories in the fallback (ADR 0015): B1 glider, B4 light-aircraft', () => {
+    expect(resolveTypeClass(T, 'ZZZZ', 'B1')).toMatchObject({ typklasse: 'glider', fallback: true, unmapped: true });
+    expect(resolveTypeClass(T, 'ZZZZ', 'B4')).toMatchObject({ typklasse: 'light-aircraft', fallback: true, unmapped: true });
+  });
+  it('treats B0/B5 like "no category"', () => {
+    for (const c of ['B0', 'B5']) expect(resolveTypeClass(T, 'ZZZZ', c)).toEqual(resolveTypeClass(T, 'ZZZZ', undefined));
+  });
+  it('falls back to light-aircraft "unbekannt" when nothing is known (ADR 0015)', () => {
+    expect(resolveTypeClass(T, undefined, undefined)).toMatchObject({ typklasse: 'light-aircraft', kategorie: 'unbekannt', fallback: true, unmapped: false });
+    expect(resolveTypeClass(T, 'ZZZZ', undefined)).toMatchObject({ typklasse: 'light-aircraft', kategorie: 'unbekannt', unmapped: true });
+  });
+  it('contains the live-test additions with valid curated Kategorien', () => {
+    const curated = ['Allgemeine Luftfahrt', 'Geschäftsreise', 'Hubschrauber', 'Kurzstrecke', 'Langstrecke', 'Mittelstrecke', 'Regional', 'Segelflug'];
+    const expected: Record<string, string> = { C42: 'light-aircraft', FDCT: 'light-aircraft', PC12: 'turboprop', C82R: 'light-aircraft', DV20: 'light-aircraft', B36T: 'light-aircraft', C560: 'business-jet', C295: 'turboprop', C27J: 'turboprop', H47: 'helicopter', TAMP: 'light-aircraft', LGND: 'light-aircraft', A210: 'light-aircraft', CTSW: 'light-aircraft', EV97: 'light-aircraft', AAT3: 'light-aircraft', DA62: 'light-aircraft' };
+    for (const [code, klass] of Object.entries(expected)) {
+      expect(T.typeClasses[code], code).toBeDefined();
+      expect(T.typeClasses[code].typklasse).toBe(klass);
+      expect(PLANE_TYPE_IDS).toContain(T.typeClasses[code].typklasse);
+      expect(curated).toContain(T.typeClasses[code].kategorie);
+      expect(resolveTypeClass(T, code, 'B4')).toMatchObject({ fallback: false, unmapped: false });
+    }
   });
   it('only ever yields Typklasse ids of the design-system catalog', () => {
     for (const e of Object.values(T.typeClasses)) expect(PLANE_TYPE_IDS).toContain(e.typklasse);

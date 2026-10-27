@@ -2,6 +2,9 @@
 import { describe, expect, it } from 'vitest';
 import fs from 'node:fs';
 import { AdsbLolFlightSource, kmToNm } from '../../../src/server/modules/airspace/adapters/adsb-lol';
+import { normaliseAircraft } from '../../../src/server/modules/airspace/adapters/adsb-lol';
+import { selectNearest } from '../../../src/server/modules/airspace/selection';
+import { defaultTables, resolveTypeClass } from '../../../src/server/modules/airspace/typeclass';
 import { SourceError } from '../../../src/server/modules/airspace/model';
 import type { Fetch } from '../../../src/server/modules/airspace/adapters/http';
 
@@ -49,5 +52,22 @@ describe('AdsbLolFlightSource contract (recorded fixtures)', () => {
     expect(await src(async () => { throw new TypeError('fetch failed'); }).fetchAircraft(HOME, 30).catch((e: SourceError) => e.errorClass)).toBe('network');
     expect(await src(reply(200, '<html>oops')).fetchAircraft(HOME, 30).catch((e: SourceError) => e.errorClass)).toBe('parse');
     expect(await src(reply(200, '{"msg":"x"}')).fetchAircraft(HOME, 30).catch((e: SourceError) => e.errorClass)).toBe('parse');
+  });
+});
+
+describe('regression: Ikarus C42 (constructed fixture row, hex is made up) must not render as narrowbody', () => {
+  const row = { hex: 'ff0c42', flight: 'DMMDP', t: 'C42', category: 'B4', type: 'mlat', lat: 50.06, lon: 8.57, alt_baro: 4900 };
+  const T = defaultTables();
+  const pick = (r: object) => {
+    const ac = normaliseAircraft(r)!;
+    const sel = selectNearest([ac], HOME, 30);
+    expect(sel).toHaveLength(1);
+    return resolveTypeClass(T, sel[0].aircraft.typeCode, sel[0].aircraft.emitterCategory);
+  };
+  it('resolves via the table hit C42', () => {
+    expect(pick(row)).toMatchObject({ typklasse: 'light-aircraft', fallback: false });
+  });
+  it('resolves via the B4 fallback without t', () => {
+    expect(pick({ ...row, t: undefined })).toMatchObject({ typklasse: 'light-aircraft', fallback: true, unmapped: false });
   });
 });

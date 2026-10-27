@@ -15,7 +15,7 @@ core — die Auswahl-Regel und die Anreicherung (Route, Typklasse, Kategorie) be
 - **Takt** — Aktualisierung alle 30 Sekunden.
 - **Auswahl** — die bis zu zwei nächsten Flugzeuge im Umkreis zu einem Takt.
 - **Route** — Abflug → Ziel (Stadt + Land); kann **unbekannt** sein, das ist ein regulärer Zustand.
-- **Typklasse** — eine der zehn gezeichneten Silhouetten (Ids wie im Design-System, ADR 0009), abgeleitet aus dem ICAO-Typcode über die Tabelle `type-classes`; ohne Treffer per Emitter-Kategorie-Fallback. Siehe ADR 0010.
+- **Typklasse** — eine der zehn gezeichneten Silhouetten (Ids wie im Design-System, ADR 0009), abgeleitet aus dem ICAO-Typcode über die Tabelle `type-classes`; ohne Treffer per Emitter-Kategorie-Fallback; ohne jede Information `light-aircraft` mit Kategorie `unbekannt` (nicht mehr narrowbody). Siehe ADR 0010, 0015.
 - **Kategorie** — Kurz-/Mittel-/Langstrecke etc., für den Steckbrief; kuratierter Wert der Tabelle `type-classes` (nicht aus der Route berechnet), sonst *unbekannt*. Siehe ADR 0010.
 - **Flugphase** — Steigflug, Sinkflug, Horizontalflug.
 - **Flugquelle (FlightSource)** — Port, der pro Takt die Flugzeuge im Umkreis liefert; Adapter: adsb.lol (primär), OpenSky (optional). Siehe ADR 0005.
@@ -24,7 +24,7 @@ core — die Auswahl-Regel und die Anreicherung (Route, Typklasse, Kategorie) be
 - **Besonderheit** — optionaler Kurztext zu einem Flugzeugtyp (z. B. „Doppelstock“) in der Tabelle `type-classes`.
 - **Airline-Tabelle (`airlines`)** — statische Zuordnung ICAO-3-Buchstaben-Präfix des Rufzeichens → Name, Land; bestimmt die Airline. Unbekanntes Präfix: Airline unbenannt, Standard-Lackierung. Siehe ADR 0010.
 - **Lackierungs-Zuordnung (`airline-liveries`)** — kuratierte Tabelle ICAO-Präfix → Lackierungs-Id des Design-Systems; ohne Eintrag oder bei Typklassen ohne Lackierungen (Light Aircraft, Glider) gilt die Standard-Lackierung (`def`). Siehe ADR 0010.
-- **Emitter-Kategorie** — ADS-B-Kategorie A1–A7 (A1 leicht, A2 mittel 1, A3 mittel 2, A4 High Vortex, A5 schwer, A6 Hochleistung, A7 Drehflügler); oft nicht vorhanden; nur Fallback für die Typklasse.
+- **Emitter-Kategorie** — ADS-B-Kategorie A1–A7 (A1 leicht, A2 mittel 1, A3 mittel 2, A4 High Vortex, A5 schwer, A6 Hochleistung, A7 Drehflügler) sowie B1 (Segelflieger -> glider) und B4 (Ultraleicht/Gleitschirm -> light-aircraft); B0/B5 gelten als "keine Kategorie"; oft nicht vorhanden; nur Fallback für die Typklasse. B2, B3, B6, B7 und alle C* werden wie Flugzeuge am Boden aus der Auswahl ausgeschlossen (ADR 0015).
 - **Auswahl (Umsetzung)** — die bis zu zwei nächsten Flugzeuge im Umkreis, nach eigener Haversine-Distanz aus dem normalisierten Modell berechnet (nicht nach Anbieter-Distanz); im Walking Skeleton umgesetzt (infrastructure-001).
 
 ## Aggregates

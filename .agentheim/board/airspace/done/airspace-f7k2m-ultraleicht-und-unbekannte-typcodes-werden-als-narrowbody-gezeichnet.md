@@ -1,7 +1,7 @@
 ---
 id: airspace-f7k2m
 title: Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergänzen (Ikarus C42 D-MMDP)
-status: doing
+status: done
 type: bug
 context: airspace
 created: 2026-10-27
@@ -55,3 +55,7 @@ Ursache: `C42` fehlt in `type-classes.json`, `EMITTER_FALLBACK` in `typeclass.ts
 
 ## Notes
 Captured via `quick-capture` am 2026-10-27, refined am selben Tag. Beleg: `unmapped_keys` in der lokalen SQLite-DB listet C42, PC12, C82R, C295, FDCT (plus die übrigen oben genannten Codes). Die Ikarus kam per MLAT (seen_pos ca. 5 s), nicht per ADS-B; Position war trotzdem brauchbar. Light-aircraft und glider werden auf Livery `def` erzwungen (ADR 0009), der Fallback zeigt also keine erfundene Airline. Kategorie `unbekannt` ist ein neuer Wert außerhalb der kuratierten Liste und entsteht nur über den Fallback, nie in der Tabelle.
+
+## Outcome
+
+Endfallback von `resolveTypeClass` ist jetzt `light-aircraft`/`unbekannt` (ADR 0015); EMITTER_FALLBACK kennt zusätzlich B1 -> glider und B4 -> light-aircraft, B0/B5 fallen wie "keine Kategorie" durch. `selectNearest` schliesst über `isExcludedEmitter` B2/B3/B6/B7 und alle C* aus (zusätzlich zu on-ground). `type-classes.json` um 17 Codes ergänzt (13 aus dem Live-Test plus CTSW, EV97, AAT3, DA62). Tests: Unit-Tests für Fallbacks, Ausschluss, Tabellenvollständigkeit und eine Adapter-Regression mit konstruierter D-MMDP-Zeile (Hex ff0c42, konstruiert) mit und ohne `t`. `npm test` grün (202). `npm run typecheck` zeigt nur bereits vorhandene Fehler wegen fehlender generierter Assets unter src/client/ui/assets/generated, keine in den geänderten Dateien.
