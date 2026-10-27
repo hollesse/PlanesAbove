@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 00:23 -- Modeling / Promoted: design-system-q7m3k - Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 00:18 -- Task verified and completed: design-system-v8q3n - Schein hinter der Kopfzeile verstärken (Variante E) und Kopfzeile in Plex Mono 500
 
 **Type:** Work / Task completion
