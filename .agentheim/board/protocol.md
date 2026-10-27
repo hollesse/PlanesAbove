@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 11:56 -- Capture / Captured: sky-scene-g3r8w - Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel
+
+**Type:** Capture
+**BC:** sky-scene
+**Filed to:** backlog
+**Summary:** Mindesthaltezeit von 2-3 Takten pro Slot, damit die Szene nicht jeden Takt flackert
+
+---
+
 ## 2026-10-27 11:56 -- Capture / Captured: airspace-h9x4p - Nähe nach Sichtbarkeit gewichten statt rein horizontaler Distanz
 
 **Type:** Capture
