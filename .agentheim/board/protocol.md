@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:57 -- Modeling / Captured: design-system-z9rzp - Flugphase als Pfeil vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen mehr Platz haben
+
+**Type:** Modeling / Capture
+**BC:** design-system
+**Filed to:** todo
+**Summary:** Flugphase in der Info-Leiste als Pfeil (↗ ↘ →) vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen Platz bekommen. Betreiber-Idee, Storybook-first, direkt nach todo.
+
+---
+
 ## 2026-10-27 21:53 -- Capture / Captured: airspace-cn6t7 - Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen
 
 **Type:** Capture
