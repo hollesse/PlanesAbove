@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:15 -- Modeling / Dismissed: airspace-p2v6d
+
+**Type:** Modeling / Dismiss
+**Dismissed:**
+- airspace-p2v6d - Persistierter Routen-Cache fuer Online-Quellen (airspace)
+
+---
+
 ## 2026-10-27 19:14 -- Capture / Captured: sky-scene-bvnnx - Animationen für den Wechsel der Flugzeuge wie in Design-Prototyp und Storybook umsetzen
 
 **Type:** Capture

@@ -28,7 +28,7 @@ adsbdb (`GET https://api.adsbdb.com/v0/callsign/{callsign}`, keyless; unknown ca
 - Route coverage and correctness rise markedly, especially for reassigned callsigns.
 - The default path now depends on a one-person hobby service. The offline VRS snapshot keeps the scene stable when adsbdb is slow, down or rate-limiting; availability is a soft dependency, not a hard one.
 - The licence boundary is explicit and testable: adsbdb text never reaches SQLite. Historic stats can say "route known" for adsbdb sightings but cannot show the route afterwards; this is accepted.
-- ADR 0007's persisted route cache (airspace-p2v6d) must never store adsbdb results.
+- ADR 0007's persisted route cache must never store adsbdb results (the cache task airspace-p2v6d was dismissed on 2026-10-27; see ADR 0007 amendment).
 - Schema change: migration adds `sightings.route_source`; existing rows with `route` are set to `vrs`.
 - README must attribute adsbdb as live route source (no persistence) alongside VRS.
 - The first-boot "unknown for ~10 minutes" problem is removed for the unavailable case.

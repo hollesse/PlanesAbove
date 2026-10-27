@@ -37,6 +37,9 @@ The sighting log must survive restarts and be analysable in v2. Volume is tiny (
 - Adds the adsbdb exclusion from the DB (ADR 0005) and puts the VRS snapshot in a separate file instead of the DB.
 - Adds `PRAGMA user_version` migration tracking and the refuse-newer-DB rule; `.env`/env-only rule for secrets is made explicit.
 
+## Amendment 2026-10-27 (airspace-p2v6d dismissed)
+The persisted **route cache** named above is dropped. Every online route source in use (adsbdb, hexdb) may not be persisted by licence; the VRS snapshot is offline and needs no cache; FlightAware (ADR 0018) is not enabled. The route cache stays in memory only (`RouteService`, positive TTL hours, negative minutes). Only the last-good weather value remains a persisted cache. Revisit if FlightAware is switched on.
+
 ## Consequences
 ### Positive
 - No DB server; backup = copy a file; v2 analysis via plain SQL.

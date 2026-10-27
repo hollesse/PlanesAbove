@@ -6,7 +6,7 @@ type: feature
 context: airspace
 created: 2026-10-27
 depends_on: [infrastructure-001-walking-skeleton]
-blocks: [airspace-p2v6d]
+blocks: []
 tags: [routes, follow-up]
 related_adrs: [0005, 0007, 0010, 0013, 0014]
 related_research: []

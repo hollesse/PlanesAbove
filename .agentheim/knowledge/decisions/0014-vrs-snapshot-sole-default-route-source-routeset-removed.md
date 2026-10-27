@@ -6,7 +6,7 @@ status: accepted
 date: 2026-10-27
 supersedes: []
 superseded_by: []
-related_tasks: [airspace-m3w9c, airspace-p2v6d]
+related_tasks: [airspace-m3w9c]
 related_adrs: [0001, 0005, 0007, 0013]
 ---
 # ADR 0014: VRS standing-data snapshot is the sole default route source; adsb.lol routeset removed
