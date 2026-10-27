@@ -1,7 +1,7 @@
 ---
 id: design-system-q7m3k
 title: Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern
-status: todo
+status: doing
 type: chore
 context: design-system
 created: 2026-10-26

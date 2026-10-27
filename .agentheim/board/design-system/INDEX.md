@@ -11,19 +11,19 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 5
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **design-system-q7m3k** — Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern (chore) — `todo/design-system-q7m3k-fehlende-logo-pngs-f-r-13-logos-erg-nzen.md`
 - **design-system-001-styleguide** — Storybook-Instanz nach Atomic Design mit allen vorhandenen Assets aufbauen und vom Betreiber abnehmen lassen (feature) — depends_on: [infrastructure-pn3w4] — `todo/design-system-001-styleguide.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **design-system-q7m3k** — Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern (chore) — `doing/design-system-q7m3k-fehlende-logo-pngs-f-r-13-logos-erg-nzen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
