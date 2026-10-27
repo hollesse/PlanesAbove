@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:10 -- Batch started: [airspace-v4kqz]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-v4kqz - Gesperrte Lufträume in der Plausibilitätsprüfung: schneidet der Großkreis einen gesperrten Luftraum, entfällt die Korridorprüfung und die erlaubte Kursabweichung steigt (Befund KAL908 London–Seoul)
+**Parallel:** no (1 worker)
+
+---
+
 ## 2026-10-27 21:05 -- Modeling / Promoted: airspace-v4kqz - Gesperrte Lufträume in der Plausibilitätsprüfung: schneidet der Großkreis einen gesperrten Luftraum, entfällt die Korridorprüfung und die erlaubte Kursabweichung steigt (Befund KAL908 London–Seoul)
 
 **Type:** Modeling / Promote

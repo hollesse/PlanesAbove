@@ -1,7 +1,7 @@
 ---
 id: airspace-v4kqz
 title: Gesperrte Lufträume in der Plausibilitätsprüfung: schneidet der Großkreis einen gesperrten Luftraum, entfällt die Korridorprüfung und die erlaubte Kursabweichung steigt (Befund KAL908 London–Seoul)
-status: todo
+status: doing
 type: bug
 context: airspace
 created: 2026-10-27
