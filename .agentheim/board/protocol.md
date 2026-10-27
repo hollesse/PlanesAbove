@@ -5,6 +5,35 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:46 -- Modeling / Refined: design-system-t6wz4 - Neue Lackierungen und Logos für Airlines ohne eigenes Design zeichnen
+
+**Type:** Modeling / Refine
+**BC:** design-system
+**Status after:** backlog
+**Summary:** Der Capture hatte drei Teile. Befund aus Code und Sichtungslog: 41 Lackierungen im Katalog, aber nur 24 Präfix-Zuordnungen und liveries.enabled per Default aus; 15 Logos vorhanden. Zuordnungs-Fix und Statistik abgespalten (beide direkt in todo). t6wz4 bleibt Zeichenarbeit (erste Runde: SunExpress, Cathay Pacific, AJet, Corendon, Aegean, Virgin Atlantic + Logos für 10 häufige Airlines), hängt an airspace-f9cjz und bleibt im Backlog, bis der Betreiber entscheidet, woher die Logo-Bilder kommen.
+**Split into:** airspace-f9cjz, sighting-log-t8tfb
+**ADRs written:** none
+
+---
+
+## 2026-10-27 19:46 -- Modeling / Captured: sighting-log-t8tfb - Lackierungs-Statistik „npm run stats:liveries“: welche Airlines wie oft mit der Standard-Lackierung gezeigt wurden, weil kein Design oder keine Zuordnung vorlag
+
+**Type:** Modeling / Capture
+**BC:** sighting-log
+**Filed to:** todo
+**Summary:** Abgespalten aus design-system-t6wz4: neue Auswertung npm run stats:liveries zeigt je Airline, wie oft die Standard-Lackierung gezeigt wurde, plus unmapped Präfixe.
+
+---
+
+## 2026-10-27 19:46 -- Modeling / Captured: airspace-f9cjz - Airline-Lackierungszuordnung für alle Katalog-Lackierungen vervollständigen (Emirates, Qatar, United, Jet2, KLM Cityhopper …) und Lackierungen standardmäßig einschalten
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** todo
+**Summary:** Abgespalten aus design-system-t6wz4: 17 Katalog-Lackierungen sind keinem Airline-Präfix zugeordnet (Emirates, Qatar, United, Jet2, KLM Cityhopper …) und liveries.enabled ist per Default aus. Zuordnung vervollständigen, Test dafür, Default auf true.
+
+---
+
 ## 2026-10-27 19:43 -- Modeling / Refined: sky-scene-n0sfy - Flugzeug-Übergänge in der Live-Szene abspielen; Diff per icao24, Übergang-Sperre
 
 **Type:** Modeling / Refine
