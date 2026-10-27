@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:10 -- Modeling / Captured: airspace-k2d7f - adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** adsb.fi als primaere Flugquelle plus FlightSource-Kette mit Failover im selben Takt, Backoff nach Rate-Limit-Headern, Circuit Breaker, Attribution; ADR-Ergaenzung zu 0005. Ausloeser: adsb.lol Tageslimit 500/IP.
+
+---
+
 ## 2026-10-27 18:04 -- Research: Alternativen zu adsb.lol als Positionsquelle
 
 **Type:** Research
