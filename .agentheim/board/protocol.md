@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 17:10 -- Modeling / Promoted: airspace-f4q9z - FlightAware AeroAPI als budgetierte Notfall-Routenquelle (Opt-in, letzte Stufe, hartes Monatslimit, Usage-Sync)
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 17:10 -- Modeling / Refined: airspace-f4q9z - FlightAware AeroAPI als budgetierte Notfall-Routenquelle
 
 **Type:** Modeling / Refine
