@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 16:34 -- Modeling / Captured: airspace-f4q9z - FlightAware AeroAPI als budgetierte Notfall-Routenquelle (Opt-in, letzte Stufe, hartes Monatslimit, Usage-Sync beim Start und alle 30 Minuten)
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** FlightAware AeroAPI Personal als Opt-in-Notfallquelle: nur wenn freie Quellen versagen, nur narrowbody+ mit bekannter Airline, hartes Budget 4,50 $/900 Requests je Periode, Usage-Sync beim Start und alle 30 Minuten, Key nur aus Env. Abweichung von ADR 0001 per neuem ADR.
+
+---
+
 ## 2026-10-27 15:34 -- Research: Routenabdeckung steigern — Quellen, Heuristiken, Lizenzen
 
 **Type:** Research
