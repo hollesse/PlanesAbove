@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 15:22 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 35m
+**Completed:** 1 (first-try PASS: 0, re-dispatched: 1, skipped: 0)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** sighting-log-m7p2v: 3
+**Commits:** 2
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (1 task)
+**Carry-over:** left behind (user WIP, 2 files: config.yaml, data/)
+
+---
+
 ## 2026-10-27 15:22 -- Task verified and completed: sighting-log-m7p2v - Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte (nur Befunde, nie Routentext)
 
 **Type:** Work / Task completion
