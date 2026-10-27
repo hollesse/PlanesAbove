@@ -5,6 +5,25 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:36 -- Modeling / Refined: sky-scene-bvnnx - Animationen für den Wechsel der Flugzeuge wie in Design-Prototyp und Storybook umsetzen
+
+**Type:** Modeling / Refine
+**BC:** sky-scene
+**Status after:** todo (Kinder), Parent dismissed
+**Summary:** Umfang auf die 11 Flugzeug-Übergänge begrenzt (Himmel-Crossfades Folge-Task). Regeln: laufender Übergang wird nie unterbrochen, neuester Stand nach Ende (zweite VorleseSperre-Instanz, verkettet); Ende per festem Timer statt animationend; Diff per icao24 auf dem kompaktierten planes[] mit vollständiger Entscheidungstabelle, Fallback Schnitt; Tippen ab Frame 0. Befund: planes[] ist kompaktiert, Überlebender kann Index 1 sein (Spiegelfall 1→2 ohne Spec → Schnitt). Parent per Split ersetzt und dismissed.
+**Split into:** design-system-kcpnw (Player datengetrieben), sky-scene-n0sfy (Live-Abspielen, depends_on kcpnw)
+**ADRs written:** 0020
+
+---
+
+## 2026-10-27 19:36 -- Modeling / Dismissed: sky-scene-bvnnx
+
+**Type:** Modeling / Dismiss
+**Dismissed:**
+- sky-scene-bvnnx - Animationen für den Wechsel der Flugzeuge wie in Design-Prototyp und Storybook umsetzen (sky-scene)
+
+---
+
 ## 2026-10-27 19:36 -- Batch started: [infrastructure-q2w8h, airspace-hw8f9]
 
 **Type:** Work / Batch start

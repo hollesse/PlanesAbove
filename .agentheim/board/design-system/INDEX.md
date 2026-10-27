@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 0
+- **Backlog:** 1
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 7
@@ -38,6 +38,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **design-system-kcpnw** — Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch (refactor) — `backlog/design-system-kcpnw-uebergangs-player-datengetrieben-echte-flugzeuge-statt-beispieldaten.md`
 <!-- backlog-list:end -->
 
 ## Pointers

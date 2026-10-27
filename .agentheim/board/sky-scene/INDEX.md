@@ -45,7 +45,7 @@ prior-art matcher additionally checks `done-archive/` when present.
 
 ### Backlog
 <!-- backlog-list:start -->
-- **sky-scene-bvnnx** — Animationen für den Wechsel der Flugzeuge wie in Design-Prototyp und Storybook umsetzen (feature) — `backlog/sky-scene-bvnnx-animationen-flugzeugwechsel-wie-prototyp-und-storybook.md`
+- **sky-scene-n0sfy** — Flugzeug-Übergänge (kommt / geht / wechselt) in der Live-Szene abspielen statt hart zu schneiden; Diff per icao24, Übergang-Sperre puffert den neuesten Stand (feature) — `backlog/sky-scene-n0sfy-flugzeug-uebergaenge-live-abspielen-diff-und-uebergang-sperre.md`
 - **sky-scene-t6h2p** — ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback (feature) — `backlog/sky-scene-t6h2p-elevenlabs-adapter-opt-in-mit-zeichenbudget-und-piper-fallba.md`
 <!-- backlog-list:end -->
 
