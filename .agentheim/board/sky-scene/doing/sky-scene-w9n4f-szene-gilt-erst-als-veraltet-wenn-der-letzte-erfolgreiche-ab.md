@@ -1,7 +1,7 @@
 ---
 id: sky-scene-w9n4f
 title: Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist
-status: todo
+status: doing
 type: feature
 context: sky-scene
 created: 2026-10-27

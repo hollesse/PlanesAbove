@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 1
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **sky-scene-w9n4f** — Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist (feature) — `todo/sky-scene-w9n4f-szene-gilt-erst-als-veraltet-wenn-der-letzte-erfolgreiche-ab.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **sky-scene-w9n4f** — Szene gilt erst als veraltet, wenn der letzte erfolgreiche Abruf älter als 3 Takte (90 s) ist (feature) — `doing/sky-scene-w9n4f-szene-gilt-erst-als-veraltet-wenn-der-letzte-erfolgreiche-ab.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
