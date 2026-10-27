@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:40 -- Capture / Captured: design-system-t6wz4 - Flugzeuge je Airline in eigener Lackierung zeichnen, fehlende Airline-Designs in der Statistik ausweisen
+
+**Type:** Capture
+**BC:** design-system
+**Filed to:** backlog
+**Summary:** Flugzeuge je Airline in eigener Lackierung zeichnen; in der Statistik ausweisen, für welche Airline kein Design vorhanden war und die Standard-Lackierung genommen wurde
+
+---
+
 ## 2026-10-27 19:39 -- Task verified and completed: infrastructure-q2w8h - Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind
 
 **Type:** Work / Task completion

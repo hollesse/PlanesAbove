@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 0
+- **Backlog:** 1
 - **Todo:** 1
 - **Doing:** 0
 - **Done:** 7
@@ -39,6 +39,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **design-system-t6wz4** — Flugzeuge je Airline in eigener Lackierung zeichnen, fehlende Airline-Designs in der Statistik ausweisen (feature) — `backlog/design-system-t6wz4-flugzeuge-je-airline-in-eigener-lackierung-statistik-standard-fallback.md`
 <!-- backlog-list:end -->
 
 ## Pointers
