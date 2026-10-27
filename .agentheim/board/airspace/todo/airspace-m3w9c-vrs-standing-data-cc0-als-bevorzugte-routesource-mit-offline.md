@@ -1,7 +1,7 @@
 ---
 id: airspace-m3w9c
 title: VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen
-status: backlog
+status: todo
 type: feature
 context: airspace
 created: 2026-10-27

@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 12:16 -- Modeling / Promoted: airspace-m3w9c - VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 12:15 -- Modeling / Refined: airspace-m3w9c - VRS standing-data (CC0) als einzige Standard-RouteSource mit Offline-Snapshot, routeset entfernen
 
 **Type:** Modeling / Refine
