@@ -5,7 +5,8 @@ import { z } from 'zod';
 
 import { FLIGHT_SOURCE_NAMES } from './modules/airspace/flight-source-names';
 const FLIGHTAWARE_DEFAULTS = { timeoutMs: 8000, monthlyBudgetUsd: 4.5, monthlyRequestCap: 900, usageSyncMinutes: 30, usageLagMinutes: 15, billingPeriodStartDay: 1 };
-const ROUTE_DEFAULTS = { enabled: true, order: ['adsbdb' as const, 'vrs' as const], adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS };
+const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 5, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 250, climbMetersPerKm: 120, descentMetersPerKm: 80, profileSlackM: 600 };
+const ROUTE_DEFAULTS = { enabled: true, order: ['adsbdb' as const, 'vrs' as const], adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS, plausibility: PLAUSIBILITY_DEFAULTS };
 
 const schema = z.object({
   mode: z.enum(['live', 'mock']).default('live'),
@@ -52,6 +53,19 @@ const schema = z.object({
       negativeTtlMinutes: z.number().positive().default(10),
       /** Ask every source (not just until the first plausible hit) so conflicts between sources can be recorded; costs extra requests. */
       compareAll: z.boolean().default(false),
+      /** Plausibility of a source's route against own observation (airspace-p8w2k, ADR 0005 #3). */
+      plausibility: z.object({
+        corridorBaseKm: z.number().positive().default(50),
+        corridorPercent: z.number().positive().default(5),
+        originZoneKm: z.number().positive().default(60),
+        destinationZoneKm: z.number().positive().default(80),
+        minHeadingCheckAltitudeM: z.number().positive().default(3000),
+        maxHeadingDeviationDeg: z.number().positive().max(180).default(65),
+        maxClimbDistanceKm: z.number().positive().default(250),
+        climbMetersPerKm: z.number().positive().default(120),
+        descentMetersPerKm: z.number().positive().default(80),
+        profileSlackM: z.number().positive().default(600),
+      }).default(PLAUSIBILITY_DEFAULTS),
       /** FlightAware AeroAPI: paid, opt-in last resort with a hard budget (ADR 0018). Only active when listed in `order` and FLIGHTAWARE_API_KEY is set in the environment (never here). */
       flightaware: z.object({
         timeoutMs: z.number().int().positive().default(8000),

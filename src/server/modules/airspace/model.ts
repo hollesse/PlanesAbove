@@ -25,7 +25,8 @@ export interface Flugzeug {
 export type RouteOrigin = 'vrs' | 'adsbdb' | 'flightaware';
 
 /** Facts about the aircraft that a paid last-resort source needs before it may be asked (ADR 0018). Passed in by the caller; the chain itself only knows callsign + position. */
-export interface LookupContext { typklasse: string; airlineKnown: boolean }
+/** Per-plane context for a route lookup. The observation fields (own ADS-B data) let the plausibility check use heading and flight phase as arbiter (airspace-p8w2k). */
+export interface LookupContext { typklasse: string; airlineKnown: boolean; altitudeM?: number; verticalRateMs?: number; trackDeg?: number }
 
 export interface Airport { name: string; city: string; lat?: number; lon?: number }
 

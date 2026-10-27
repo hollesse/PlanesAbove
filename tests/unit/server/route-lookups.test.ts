@@ -133,7 +133,7 @@ describe('route_lookups schema, migration and live path (compareAll)', () => {
     const { ScenarioDriver, ScenarioFlightSource, parseScenario } = await import('../../../src/server/mock/scenario');
     const { silentLogger } = await import('../../../src/server/logger');
     const clock = new FakeClock(Date.parse(nowIso));
-    const driver = new ScenarioDriver(parseScenario(JSON.stringify({ name: 't', startTime: nowIso, steps: [{ at: 0, planes: [{ icao24: 'a', distanceKm: 8, bearingDeg: 0, altitudeFt: 36000, speedKt: 450, callsign: 'DLH400', typeCode: 'A20N' }] }] })), clock, clock.now());
+    const driver = new ScenarioDriver(parseScenario(JSON.stringify({ name: 't', startTime: nowIso, steps: [{ at: 0, planes: [{ icao24: 'a', distanceKm: 8, bearingDeg: 0, altitudeFt: 5000, speedKt: 450, callsign: 'DLH400', typeCode: 'A20N' }] }] })), clock, clock.now());
     const db = openDatabase(file);
     const s = new SkyService({
       config: parseConfig('location: { lat: 50.05, lon: 8.57 }\nmode: live\n'), clock, log: silentLogger, flight: new ScenarioFlightSource(driver), tables: defaultTables(), sightings: new SightingRepository(db, 1800_000), buildId: 't', timeZone: 'UTC',

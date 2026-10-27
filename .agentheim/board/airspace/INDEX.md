@@ -10,23 +10,24 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 3
-- **Todo:** 0
-- **Doing:** 1
-- **Done:** 10
+- **Backlog:** 2
+- **Todo:** 1
+- **Doing:** 0
+- **Done:** 11
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **airspace-n8c4t** — Unmapped Keys aus dem Live-Betrieb kuratieren: 30 Airline-Präfixe und 13 Typcodes in die Tabellen aufnehmen, ZZZZ als "kein Typcode" behandeln (chore) — `todo/airspace-n8c4t-unmapped-keys-kuratieren-airlines-und-typcodes-aus-dem-live-betrieb.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
-- **airspace-p8w2k** — Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand (feature) — `doing/airspace-p8w2k-plausibilitaet-schaerfen-kurs-flugphase-querabstand.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **airspace-p8w2k** — Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand (feature) — `done/airspace-p8w2k-plausibilitaet-schaerfen-kurs-flugphase-querabstand.md`
 - **airspace-c5t9m** — airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben) (chore) — `done/airspace-c5t9m-airplanes-live-adapter-entfernen.md`
 - **airspace-b9r4w** — adsb.lol als dritte Flugquelle mit persistiertem Tagesbudget (400 von 500 Requests) und Auswertung der Rate-Limit-Header (feature) — `done/airspace-b9r4w-adsb-lol-als-dritte-flugquelle-mit-tagesbudget.md`
 - **airspace-v6m3h** — airplanes.live als zweite Flugquelle in der FlightSource-Kette (feature) — `done/airspace-v6m3h-airplanes-live-als-zweite-flugquelle.md`
@@ -41,7 +42,6 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
-- **airspace-n8c4t** — Unmapped Keys aus dem Live-Betrieb kuratieren: 26 Airline-Präfixe und 10 Typcodes in die Tabellen aufnehmen (chore) — `backlog/airspace-n8c4t-unmapped-keys-kuratieren-airlines-und-typcodes-aus-dem-live-betrieb.md`
 - **airspace-w3k8d** — hexdb.io als zweite Routenquelle zwischen adsbdb und VRS, mit Konfliktregel bei widersprüchlichen Online-Antworten (feature) — `backlog/airspace-w3k8d-hexdb-als-zweite-routenquelle-zwischen-adsbdb-und-vrs.md`
 - **airspace-p2v6d** — Persistierter Routen-Cache fuer Online-Quellen (feature) — `backlog/airspace-p2v6d-persistierter-routen-cache-fuer-online-quellen.md`
 <!-- backlog-list:end -->

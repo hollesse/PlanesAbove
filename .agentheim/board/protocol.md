@@ -5,6 +5,38 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:03 -- Task verified and completed: airspace-p8w2k - Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand
+
+**Type:** Work / Task completion
+**Task:** airspace-p8w2k - Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand
+**Summary:** Plausibilitätsprüfung geschärft: Querabstand-Korridor, Höhenprofil, Flugphase und Kurs außerhalb der Flughafenzonen; Schwellen konfigurierbar unter sources.route.plausibility
+**Duration:** 41m
+**Verification:** PASS (iteration 2)
+**Files changed:** 11
+**Tests added:** 20 (route-plausibility.test.ts)
+**ADRs written:** none
+
+---
+
+## 2026-10-27 19:03 -- Modeling / Promoted: airspace-n8c4t - Unmapped Keys aus dem Live-Betrieb kuratieren: 30 Airline-Präfixe und 13 Typcodes in die Tabellen aufnehmen, ZZZZ als "kein Typcode" behandeln
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
+## 2026-10-27 19:03 -- Modeling / Refined: airspace-n8c4t - Unmapped Keys aus dem Live-Betrieb kuratieren
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** Umfang auf den aktuellen Zählstand erweitert (30 Airline-Präfixe mit ≥ 2 Sichtungen, 13 Typcodes inkl. A124, T6); ZZZZ wird als kein Typcode behandelt und nicht mehr als unmapped gemeldet; K35R = narrowbody/Langstrecke; offene Frage Bereinigung von unmapped_keys entschieden: keine Bereinigung, weder Migration noch Start-up-Prune. Kriterien auf Tabellen- und Unit-Tests konkretisiert.
+**Split into:** —
+**ADRs written:** —
+
+---
+
 ## 2026-10-27 19:00 -- Modeling / Promoted: infrastructure-q2w8h - Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind
 
 **Type:** Modeling / Promote

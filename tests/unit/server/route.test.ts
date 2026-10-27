@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import { RouteService, isPlausibleRoute, formatRoute } from '../../../src/server/modules/airspace/route-service';
+import { destinationPoint } from '../../../src/server/modules/airspace/geo';
 import { SourceError, type Route, type RouteSource } from '../../../src/server/modules/airspace/model';
 
 const POS = { lat: 50, lon: 8.5 };
@@ -23,7 +24,7 @@ describe('isPlausibleRoute (a route that fails the check is never stated)', () =
     const bhx = { name: 'BHX', city: 'Birmingham', lat: 52.45, lon: -1.75 };
     const multi: Route = { ...FRA_JFK, legs: [FRA_JFK.from, bhx, FRA_JFK.to] };
     expect(formatRoute(multi)).toBe('Frankfurt → Birmingham → New York');
-    expect(isPlausibleRoute(multi, { lat: 51, lon: -20 })).toBe(true);
+    expect(isPlausibleRoute(multi, destinationPoint(bhx, 1200, 286))).toBe(true); // on the BHX-JFK leg (the cross-track corridor is tighter than the old ellipse, airspace-p8w2k)
     expect(isPlausibleRoute(multi, { lat: -33.9, lon: 151.2 })).toBe(false);
   });
 });

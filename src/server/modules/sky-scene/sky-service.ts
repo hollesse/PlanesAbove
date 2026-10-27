@@ -61,7 +61,7 @@ export class SkyService {
     for (const c of chosen) {
       const a = c.aircraft;
       const { tc, airline } = this.identify(a);
-      const lookup = await this.d.routes.lookupFor(a.callsign, a, { typklasse: tc.typklasse, airlineKnown: Boolean(airline?.name) });
+      const lookup = await this.d.routes.lookupFor(a.callsign, a, { typklasse: tc.typklasse, airlineKnown: Boolean(airline?.name), altitudeM: a.altitudeM, verticalRateMs: a.verticalRateMs, trackDeg: a.trackDeg });
       routeById.set(a.icao24, lookup);
       planes.push(this.toScenePlane(a, lookup?.info?.text ?? null));
     }

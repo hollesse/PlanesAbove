@@ -1,7 +1,7 @@
 ---
 id: airspace-p8w2k
 title: Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand
-status: doing
+status: done
 type: feature
 context: airspace
 created: 2026-10-27
@@ -43,3 +43,15 @@ Am 2026-10-27 passierten zwei falsche Routen (umgewidmete Eurowings-Flugnummern 
 - Betreiber-Entscheidung 2026-10-27: Kurs/Phase nur prüfen, wenn weit genug vom Start- und Zielflughafen entfernt. Research route-coverage-sources-2026-10-27 §2 (eigene Beobachtung als Schiedsrichter).
 - Messungen 2026-10-27 (Oberweyer 50.45/8.09): EWG9YV track 140°, alt 35000 ft, vrate −64; EWG16Y track 113°, alt 26225 ft, vrate +2496 ft/min. Cross-Track STR–LCA 134 km, CGN–VIE 20 km, SPU–CGN 17 km, DUS–MUC 10 km.
 - Nebeneffekt: Quote "Route bekannt" sinkt leicht, Vorlesefehler sinken deutlich. Konflikt-Schiedsrichter für hexdb (airspace-w3k8d) kann dieselben Prüfungen nutzen.
+
+## Verifier note (iteration 1)
+FAIL — Testabdeckung, kein Code-Defekt:
+- Kriterium 3: keine Tests für die Positivfälle LHX1979 Köln–München und AUA166D Düsseldorf–Wien (DUS–VIE liegt mit ~49 km Querabstand bei Oberweyer nahe am Korridor und ist ungeprüft). Der Test „true routes stay plausible" prüft CGN–VIE und DUS–MUC.
+- Kriterium 1: der Test „EWG9YV … rejected for heading" nutzt FL350 bei ~81 km von CGN; das Höhenprofil allein lehnt ab (Hüllkurve ≈ 7080 m). Der Test würde auch ohne Kurs-Check bestehen. Gleiches gilt für den RouteService-Test (:347-353) und den Multi-Leg-Negativfall (:330).
+- Vorschlag: Positivfälle LHX1979 und AUA166D bei Oberweyer mit realistischen Reiseflug-Beobachtungen ergänzen; für EWG9YV einen Fall, in dem nur der Kurs ablehnen kann (z. B. SPU–CGN bei Oberweyer, altitudeM 5000: plausibel ohne trackDeg, abgelehnt mit trackDeg 140).
+- Hinweis: typecheck im Worktree braucht vorher `npm run assets` (gitignorierte Dateien) — kein Defekt.
+
+## Outcome
+Sharpened `isPlausibleRoute` (ADR 0005 #3 rule unchanged, no new ADR): the ellipse is replaced by a cross-track corridor (geo.ts: `bearingDeg`, `angleDiffDeg`, `crossTrackKm`), and an optional `Observation` (trackDeg, verticalRateMs, altitudeM) drives altitude-profile, flight-phase and heading checks per leg; heading only outside the origin/destination zones and above 3000 m. `LookupContext` gained optional `altitudeM/verticalRateMs/trackDeg` (filled in sky-service); `RouteService` takes `plausibility` (wired in app.ts from `sources.route.plausibility`, zod-validated with defaults in config.ts). Rejections remain `rejected` in route_lookups. Docs: README + config.example.yaml.
+
+Findings: (1) The task's EWG16Y arithmetic (134 km > 50+5%x2521) does not hold: the measured 134 km is not the segment cross-track (computed 212 km > 176), so the corridor rejects it; heading/phase would not. (2) The altitude profile alone also rejects EWG9YV (FL350 at 81 km from CGN, envelope 7080 m) in addition to heading. (3) The stricter corridor needed two existing tests adjusted: route.test.ts multi-leg position now on the BHX-JFK leg, route-lookups.test.ts scenario plane altitude 36000 -> 5000 ft (fixture routes ~110 km away). (4) Pre-existing, unrelated: client bundle tests (platform, deploy-files, client suites) fail because src/client/ui/assets/generated/* is absent in the worktree; typecheck errors are only those missing modules. Airport elevation is not modelled, so the altitude profile uses altitude above sea level (slack covers it). Tests: tests/unit/server/route-plausibility.test.ts. Iteration 2 test additions: positive cases LHX1979 (CGN-MUC) and AUA166D (DUS-VIE, ~49 km cross-track) at Oberweyer in level cruise; the EWG9YV heading test, the multi-leg negative and the RouteService rejection test now use 5000 m, where only the heading check can decide (plausible without trackDeg, rejected with trackDeg 140); the FL350 variant is kept as an additional profile-rejection assertion.

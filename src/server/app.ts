@@ -109,7 +109,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     speech = config.speech.adapter === 'piper' ? new PiperSpeechSynthesizer({ fetch: fetchFn, endpoint: config.speech.endpoint, timeoutMs: config.speech.timeoutMs }) : new FakeSpeechSynthesizer();
   }
   const noRoutes: RouteSource = { name: 'none', lookup: async () => null };
-  const routes = new RouteService(config.sources.route.enabled ? routeSources : [noRoutes], clock, { ttlMs: config.sources.route.cacheTtlHours * 3_600_000, negativeTtlMs: config.sources.route.negativeTtlMinutes * 60_000, compareAll: config.sources.route.compareAll, log });
+  const routes = new RouteService(config.sources.route.enabled ? routeSources : [noRoutes], clock, { ttlMs: config.sources.route.cacheTtlHours * 3_600_000, negativeTtlMs: config.sources.route.negativeTtlMinutes * 60_000, compareAll: config.sources.route.compareAll, plausibility: config.sources.route.plausibility, log });
   const audio = new AudioService(speech, { voice: config.speech.voice, render: mock ? 'lazy' : config.speech.render, cacheDir: path.join(config.dataDir, 'audio'), log });
   const sky = new SkyService({ config, clock, log, flight, routes, tables: defaultTables(), sightings, audio, buildId, timeZone: o.timeZone });
 
