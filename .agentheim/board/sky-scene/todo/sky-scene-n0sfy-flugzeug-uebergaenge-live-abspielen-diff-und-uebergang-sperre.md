@@ -1,7 +1,7 @@
 ---
 id: sky-scene-n0sfy
 title: Flugzeug-Übergänge (kommt / geht / wechselt) in der Live-Szene abspielen statt hart zu schneiden; Diff per icao24, Übergang-Sperre puffert den neuesten Stand
-status: backlog
+status: todo
 type: feature
 context: sky-scene
 created: 2026-10-27

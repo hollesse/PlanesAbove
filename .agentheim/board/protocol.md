@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:28 -- Modeling / Promoted: sky-scene-n0sfy - Flugzeug-Übergänge (kommt / geht / wechselt) in der Live-Szene abspielen statt hart zu schneiden; Diff per icao24, Übergang-Sperre puffert den neuesten Stand
+
+**Type:** Modeling / Promote
+**BC:** sky-scene
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 21:27 -- Modeling / Refined: sky-scene-n0sfy - Flugzeug-Übergänge in der Live-Szene abspielen
 
 **Type:** Modeling / Refine
