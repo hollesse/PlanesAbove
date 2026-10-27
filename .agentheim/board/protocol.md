@@ -5,6 +5,26 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:37 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 11m (21:26–21:37)
+**Completed:** 1 (first-try PASS: 0, re-dispatched: 1, skipped: 0) — airspace-b7kx2
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 1 (iteration 1 sidecar header-mismatch: trailing FILE_LIST abgekürzt; gleicher Worker schrieb den Sidecar neu)
+**Lost-result escalations:** 0
+**Dispatches:** airspace-b7kx2: 2
+**Commits:** 2 (batch start, integration)
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (1 task)
+**Carry-over:** none — working tree clean (.agentheim/); left behind (user WIP, 3 files: .agentheim/.dashboard/, config.yaml, data/)
+**Scoped run:** airspace-b7kx2 — integrated (Verifier FAIL it.1: LRTR fehlte nach neuer Sichtung WMT448; PASS it.2 mit festem Seed-Cutoff 2026-10-27T20:40Z)
+**Note:** 3 stranded RESULT sidecars removed (b7kx2 iter-1/2, v4kqz iter-1).
+
+---
+
 ## 2026-10-27 21:36 -- Task verified and completed: airspace-b7kx2 - Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen
 
 **Type:** Work / Task completion
