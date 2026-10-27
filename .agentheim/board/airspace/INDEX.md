@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 5
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 6
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **airspace-k2d7f** — adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker (feature) — `todo/airspace-k2d7f-adsb-fi-als-primaere-flugquelle-mit-failover-kette-und-backoff.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **airspace-k2d7f** — adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker (feature) — `doing/airspace-k2d7f-adsb-fi-als-primaere-flugquelle-mit-failover-kette-und-backoff.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

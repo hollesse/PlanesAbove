@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:10 -- Batch started: [airspace-k2d7f]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-k2d7f - adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker
+**Parallel:** no (1 worker) — airspace-v6m3h and airspace-b9r4w in todo are blocked on airspace-k2d7f and will be dispatched after it integrates
+
+---
+
 ## 2026-10-27 18:10 -- Modeling / Promoted: airspace-k2d7f - adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker
 
 **Type:** Modeling / Promote
