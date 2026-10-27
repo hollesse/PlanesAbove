@@ -5,6 +5,16 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:17 -- Modeling / Refined: infrastructure-d3v7k - Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
+
+**Type:** Modeling / Refine
+**BC:** infrastructure
+**Status after:** todo
+**Summary:** In Worker-Hälfte (Podman: Piper-Sidecar gegen echten Server verifizieren und Fixture ersetzen, Dienst-Image live starten, Playwright WebKit grün, README-Betriebsabschnitt auf aktuelle Quellketten und stats:routes) und Betreiber-Hälfte (fünf [human-eye]-Kriterien: Compose auf ZimaOS, iPad, Gegenprüfung, Hörprobe, Befunde a-c) geteilt; neue depends_on airspace-w3k8d und sighting-log-k4m7q; Stichprobe 1 h per stats:routes. Kein Split.
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 19:17 -- Work session ended
 
 **Type:** Work / Session end

@@ -6,27 +6,49 @@ type: chore
 context: infrastructure
 created: 2026-10-27
 completed:
-depends_on: [infrastructure-001-walking-skeleton]
+depends_on: [infrastructure-001-walking-skeleton, airspace-w3k8d, sighting-log-k4m7q]
 blocks: []
-tags: [walking-skeleton, operator, device]
-related_adrs: [0004, 0005, 0008, 0011, 0012]
+tags: [walking-skeleton, operator, device, piper, podman, webkit]
+related_adrs: [0004, 0005, 0008, 0011, 0012, 0013, 0016, 0019]
 related_research: [free-flight-weather-tts-apis-2026-10-26]
 prior_art: [infrastructure-001-walking-skeleton]
 ---
 
 ## Why
-Der Walking Skeleton wurde in der Cloud gebaut und dort im Mock-Modus und per E2E geprüft. Die Kriterien, die echte Hardware, den echten Standort und echte Ohren brauchen, kann nur der Betreiber vor Ort prüfen.
+Der Walking Skeleton wurde in der Cloud gebaut und dort im Mock-Modus und per E2E (nur Chromium) geprüft. Seit der Erfassung heute Vormittag hat sich der Unterbau bewegt: Flugquellenkette adsb.fi → adsb.lol (ADR 0019), Routenkette hexdb → adsbdb → VRS-Snapshot → FlightAware (airspace-w3k8d, ADR 0016, ADR 0018), Routen-Statistik per `npm run stats:routes`, Beobachtungsstandort je Sichtung (sighting-log-k4m7q). Der Dienst läuft auf dem Entwicklungsrechner bereits live mit echten Daten. Was noch nie lief: der Piper-Container (nur gegen konstruierte Fixtures gebaut, ADR 0013), die Container-Images selbst, Playwright unter WebKit, der Heimserver und das iPad.
+
+Der Task hat deshalb zwei Hälften. Alles ohne Hardware erledigt ein Worker auf dem Entwicklungsrechner (dort gibt es Podman, kein Docker). Die Kriterien, die Heimserver, iPad, echten Standort und echte Ohren brauchen, sind `[human-eye]` und bleiben für den Betreiber offen (ADR 0061); der Verifier meldet sie als „builder eye-check pending", nicht als FAIL, und der Worker bounct den Task deswegen nicht.
 
 ## What
-Der Betreiber deployt den Skeleton auf den ZimaOS-Heimserver, öffnet ihn auf dem iPad und hält die Befunde fest. Die genaue Schritt-für-Schritt-Anleitung steht im README bzw. Outcome von infrastructure-001-walking-skeleton.
+**Worker-Hälfte (Entwicklungsrechner, Podman):**
+1. Piper-Sidecar bauen und starten (`podman build -t planesabove-tts:local docker/piper`, `podman run --rm -p 5000:5000 planesabove-tts:local`). Die echte Anfrageform von `piper.http_server` (piper1-gpl) ermitteln, Dockerfile (Pip-Extras, Voice-Download, CMD) und `PiperSpeechSynthesizer` daran anpassen, die konstruierte WAV-Fixture durch eine vom laufenden Server aufgezeichnete ersetzen. Wenn `voice` je Anfrage nicht wählbar ist, Voice beim Start fest verdrahten und die Config-Doku entsprechend korrigieren. Die „UNVERIFIED"-Hinweise in Dockerfile, Adapter, ADR-0013-Verweis im README und infrastructure-README-Open-Question entfernen bzw. als geklärt markieren.
+2. Dienst-Image bauen und live starten (`podman build -t planesabove:local .`, `podman run` mit gemountetem `config.yaml` und Datenverzeichnis, `speech.adapter: piper`, `speech.endpoint` auf den lokalen Piper). `/healthz` muss `ok` melden, ein Tipp in Chromium muss eine WAV aus Piper abspielen.
+3. Playwright WebKit installieren (`npx playwright install webkit`) und `npx playwright test --project=webkit` grün bekommen; WebKit-spezifische Fehler sind Teil dieses Tasks.
+4. Root-README-Abschnitt „Betrieb auf dem Heimserver (ZimaOS) und iPad-Pruefung" auf den aktuellen Stand bringen: Quellketten, Befund (c) per `npm run stats:routes -- --db /DATA/AppData/planesabove/data/planesabove.db --days 1` statt roher sqlite-Abfrage, Hinweis dass lokal Podman (build/run) und auf ZimaOS Docker Compose genutzt wird, Piper-Schritt ohne „unverifiziert"-Vorbehalt.
+5. Abschnitt `## Befunde` unten in diesem Task als ausfüllbare Vorlage für (a)–(c) belassen; der Worker trägt dort nur die lokal ermittelten Werte ein (Piper-Anfrageform, WebKit-Version).
+
+**Betreiber-Hälfte (vor Ort):** Deployment auf dem ZimaOS-Heimserver per Docker Compose, Einrichtung des iPads nach README, Gegenprüfung mit öffentlichem Tracker, Hörprobe, eine Stunde Routen-Stichprobe, Befunde (a)–(c) eintragen. Danach die Vision-Open-Questions zu iPad, Vorlesestimme und Radius in einer Modeling-Session schließen.
 
 ## Acceptance criteria
-- [ ] Mit `config.yaml` auf dem echten Standort und Default-Radius 30 km startet der Dienst per `docker compose up` auf dem Heimserver; `/healthz` meldet OK; das iPad zeigt die Szene unter der LAN-URL. [human-eye]
+- [ ] `podman build docker/piper` gelingt; `POST` gegen den laufenden Container mit der im Adapter kodierten Anfrageform liefert `audio/wav`, und ein Contract-Test `src/**/piper*.test.*` läuft gegen eine vom echten Server aufgezeichnete WAV-Fixture (Fixture-Datei mit Herkunftskommentar, keine konstruierte mehr).
+- [ ] Kein Vorkommen von `UNVERIFIED`/`unverified`/`unverifiziert` mehr in `docker/piper/Dockerfile`, dem Piper-Adapter und dem README-Betriebsabschnitt; die Piper-Open-Question im infrastructure-README ist gestrichen oder als geklärt umformuliert.
+- [ ] `podman build .` erzeugt das Dienst-Image; mit gemounteter Live-Konfiguration (echter Standort, Radius 30, `speech.adapter: piper`) meldet `GET /healthz` innerhalb von 60 s `"status":"ok"`; ein JSON-Logeintrag belegt eine erfolgreiche Piper-Synthese (kein `speech synthesis failed`).
+- [ ] `npx playwright test --project=webkit` ist auf dem Entwicklungsrechner grün; Root-README nennt WebKit nicht mehr als „läuft hier nicht".
+- [ ] Root-README-Betriebsabschnitt nennt die aktuellen Quellketten (adsb.fi → adsb.lol; hexdb → adsbdb → VRS → FlightAware), `npm run stats:routes` für Befund (c), Podman lokal vs. Compose auf ZimaOS; `docker compose config` bleibt fehlerfrei.
+- [ ] Auf dem ZimaOS-Heimserver startet `docker compose --profile tts up -d --build` mit der Live-`config.yaml`; `/healthz` meldet `ok`; das iPad zeigt die Szene unter der LAN-URL. [human-eye]
 - [ ] Innerhalb von 60 s erscheinen die real im Umkreis fliegenden Flugzeuge (gegengeprüft mit einem öffentlichen Tracker): korrekte Typklasse, höchstens die 2 nächsten, Callsign/Typ/Höhe in der Info-Leiste. [human-eye]
-- [ ] Tippen spricht eine verständliche deutsche Zeile über den iPad-Lautsprecher (Piper-Container). [human-eye]
-- [ ] Playwright-E2E laufen auf dem Betreiber-Rechner auch unter WebKit grün (`npx playwright test --project=webkit`).
-- [ ] Befunde festgehalten: (a) iPad-Modell, iPadOS- und Safari-Version, Bestätigung der Mindestgrenze Safari 16; (b) deutsche Sprachausgabe über Server-Audio / `speechSynthesis` / beides / keins; (c) Anteil der Callsigns mit brauchbarer Route in einer Stunde Stichprobe.
+- [ ] Tippen spricht eine verständliche deutsche Zeile über den iPad-Lautsprecher (Piper-Sidecar). [human-eye]
+- [ ] Befunde (a)–(c) im Abschnitt `## Befunde` eingetragen: iPad-Modell, iPadOS- und Safari-Version, Mindestgrenze Safari 16 bestätigt; deutsche Sprachausgabe über Server-Audio ja/nein; Routenanteil aus `stats:routes` über eine Stunde Stichprobe (Quellen, Unbekannte, Konflikte). [human-eye]
 
 ## Notes
 - Ausgelagert aus infrastructure-001-walking-skeleton (Betreiber-Entscheidung 2026-10-27), weil die Cloud-Umgebung weder Heimserver noch iPad noch den echten Standort hat.
-- Die Befunde (b) und (c) beantworten offene Fragen der Vision (Vorlesestimme, Routen-Abdeckung).
+- Refinement 2026-10-27 (Betreiber-Entscheidungen): Worker macht alles ohne Hardware und bounct nicht; Abnahme wartet auf airspace-w3k8d und sighting-log-k4m7q, damit die Stichprobe die endgültige Routenkette misst und je Standort auswertbar ist; Stichprobe 1 h, Auswertung per `stats:routes`; lokal steht Podman zur Verfügung (kein Docker-Daemon), Compose wird erst auf ZimaOS geprüft.
+- Piper-Hinweis für den Worker: piper1-gpl's `piper.http_server` lädt die Stimme beim Start (`-m`); ob ein `voice`-Feld pro Anfrage akzeptiert wird, ist genau die zu klärende Frage. Antwort ist WAV; `wavDurationMs` muss die echte Datei parsen.
+- Die fünf `[human-eye]`-Kästchen bleiben bis zur Abnahme vor Ort offen (ADR 0061). Der Betreiber hakt sie von Hand ab.
+- Befunde (b) und (c) beantworten offene Fragen der Vision (Vorlesestimme, Routen-Abdeckung); (a) die iPad-Frage. Die Routen-Open-Question ist seit ADR 0016 inhaltlich beantwortet und wartet nur auf die Streichung.
+
+## Befunde
+- (a) iPad: _Modell / iPadOS / Safari / Safari ≥ 16 bestätigt:_
+- (b) Sprachausgabe deutsch über Server-Audio: _ja / nein, Piper-Anfrageform:_
+- (c) Routenanteil (1 h, `stats:routes`): _Anteil mit Route / je Quelle / Unbekannte / Konflikte:_
+- WebKit-Version im lokalen Playwright-Lauf: _
