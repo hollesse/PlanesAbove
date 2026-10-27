@@ -262,5 +262,33 @@
  "MSC": {
   "name": "Air Cairo",
   "country": "EG"
+ },
+ "ACA": {
+  "name": "Air Canada",
+  "country": "CA"
+ },
+ "SWA": {
+  "name": "Southwest Airlines",
+  "country": "US"
+ },
+ "CSN": {
+  "name": "China Southern Airlines",
+  "country": "CN"
+ },
+ "KAL": {
+  "name": "Korean Air",
+  "country": "KR"
+ },
+ "SVA": {
+  "name": "Saudia",
+  "country": "SA"
+ },
+ "IGO": {
+  "name": "IndiGo",
+  "country": "IN"
+ },
+ "AEA": {
+  "name": "Air Europa",
+  "country": "ES"
  }
 }

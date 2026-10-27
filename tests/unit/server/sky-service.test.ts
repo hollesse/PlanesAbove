@@ -35,7 +35,7 @@ describe('SkyService Takt', () => {
     expect(svc.state()).toMatchObject({ planes: [], stale: false, recent: undefined });
   });
   it('one plane: Typklasse silhouette in the Standard-Lackierung, flight info and speech URL', async () => {
-    const { svc } = rig([{ at: 0, planes: [P('a', 8, A320)], routes: { DLH400: { from: 'Frankfurt', to: 'New York' } } }]);
+    const { svc } = rig([{ at: 0, planes: [P('a', 8, A320)], routes: { DLH400: { from: 'Frankfurt', to: 'New York' } } }], 'liveries: { enabled: false }');
     await svc.tick();
     const [p] = svc.state().planes;
     expect(p.plane).toEqual({ type: 'narrowbody', livery: 'def' });

@@ -2,6 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { loadTables, resolveAirline, resolveLivery, resolveTypeClass, defaultTables } from '../../../src/server/modules/airspace/typeclass';
 import { PLANE_TYPE_IDS } from '../../../src/client/ui/domain/catalog';
+import { LIVERIES } from '../../../src/client/ui/domain/liveries';
 
 const T = defaultTables();
 
@@ -80,6 +81,19 @@ describe('resolveLivery', () => {
     expect(resolveLivery(T, 'DLH', 'narrowbody', false)).toEqual({ liveryId: 'def', present: true });
     expect(resolveLivery(T, 'QQQ', 'narrowbody', true)).toEqual({ liveryId: 'def', present: false });
     expect(resolveLivery(T, undefined, 'narrowbody', true)).toEqual({ liveryId: 'def', present: false });
+  });
+  it('resolves the completed mapping (airspace-f9cjz)', () => {
+    expect(resolveLivery(T, 'UAE', 'double-decker', true)).toEqual({ liveryId: 'emirates', present: true });
+    expect(resolveLivery(T, 'EXS', 'narrowbody', true)).toEqual({ liveryId: 'jet2', present: true });
+  });
+  it('references every catalog livery except def by at least one prefix', () => {
+    const used = new Set(Object.values(T.airlineLiveries));
+    const missing = LIVERIES.map((l) => l.id).filter((id) => id !== 'def' && !used.has(id));
+    expect(missing).toEqual([]);
+  });
+  it('names every prefix of airline-liveries in airlines', () => {
+    const missing = Object.keys(T.airlineLiveries).filter((p) => !T.airlines[p]?.name);
+    expect(missing).toEqual([]);
   });
   it('forces def for classes without liveries', () => {
     expect(resolveLivery(T, 'DLH', 'light-aircraft', true)).toEqual({ liveryId: 'def', present: false });

@@ -1,7 +1,7 @@
 ---
 id: airspace-f9cjz
 title: Airline-Lackierungszuordnung für alle Katalog-Lackierungen vervollständigen (Emirates, Qatar, United, Jet2, KLM Cityhopper …) und Lackierungen standardmäßig einschalten
-status: doing
+status: done
 type: bug
 context: airspace
 created: 2026-10-27
@@ -38,3 +38,7 @@ Mona soll Flugzeuge in der Lackierung ihrer Airline sehen. Heute ist das aus zwe
 - Zahlen stammen aus `data/planesabove.db` (`sightings.livery_present = 0` je Airline, `unmapped_keys`), Stand 2026-10-27.
 - ADR 0010 §4: Lackierung = Eintrag in `airline-liveries`, sonst `def`; `light-aircraft`/`glider` immer `def`. Keine Änderung an dieser Regel.
 - Betreiber: nach dem Merge `liveries.enabled: true` in der eigenen `config.yaml` setzen oder die Zeile entfernen.
+
+## Outcome
+
+airline-liveries.json now maps 48 prefixes; all catalog liveries except def are referenced (UAE emirates, QTR qatar, UAL united, AAL aa, DAL delta, ETD etihad, ICE icelandair, SIA singapore, EXS jet2, KLC klm, LHX lh, CCA airchina, AIC airindia, WMT/WUK wizz, TOM/JAF tui, plus ACA aircanada, SWA southwest, CSN chinasouthern, KAL korean, SVA saudia, IGO indigo, AEA aireuropa). Added name+country entries to airlines.json for ACA, SWA, CSN, KAL, SVA, IGO, AEA. GEC, CAO and HOP deliberately stay unmapped (no matching livery). liveries.enabled now defaults to true in src/server/config.ts (Skeleton comment removed). New tests: completeness invariant, every livery prefix named in airlines, resolveLivery UAE/double-decker and EXS/narrowbody; config default test flipped; sky-service Standard-Lackierung test now sets enabled:false explicitly. Operator note: an existing config.yaml with liveries.enabled: false still overrides the default; remove it or set true to see liveries.

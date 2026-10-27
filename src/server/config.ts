@@ -24,8 +24,7 @@ const schema = z.object({
     time: z.enum(['dawn', 'day', 'dusk', 'night']).default('day'),
     weather: z.enum(['clear', 'light', 'overcast', 'fog', 'rain', 'snow', 'storm']).default('clear'),
   }).default({ time: 'day', weather: 'clear' }),
-  /** Skeleton: only the white Standard-Lackierung is shown unless enabled. */
-  liveries: z.object({ enabled: z.boolean().default(false) }).default({ enabled: false }),
+  liveries: z.object({ enabled: z.boolean().default(true) }).default({ enabled: true }),
   sources: z.object({
     userAgent: z.string().default('PlanesAbove/0.1 (self-hosted, single household)'),
     flight: z.object({
