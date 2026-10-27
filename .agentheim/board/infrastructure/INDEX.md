@@ -10,14 +10,15 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 3
-- **Todo:** 0
+- **Backlog:** 2
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 5
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **infrastructure-q2w8h** — Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind (chore) — `todo/infrastructure-q2w8h-test-sichert-ab-dass-die-mock-endpunkte-im-live-modus-nicht.md`
 - **infrastructure-001-walking-skeleton** — Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert (spike) — depends_on: [design-system-001-styleguide, infrastructure-pn3w4, infrastructure-y8epz, airspace-jy8hz, airspace-h76v2, weather-yttgx, sky-scene-xczgm, infrastructure-w7qbc, infrastructure-p6s30] — `todo/infrastructure-001-walking-skeleton.md`
 <!-- todo-list:end -->
 
@@ -36,7 +37,6 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
-- **infrastructure-q2w8h** — Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind (chore) — `backlog/infrastructure-q2w8h-test-sichert-ab-dass-die-mock-endpunkte-im-live-modus-nicht.md`
 - **infrastructure-b4k8n** — Heartbeat (Dead-Man's-Switch) und Log-Erinnerungen nach ADR 0011 nachziehen (feature) — `backlog/infrastructure-b4k8n-heartbeat-dead-man-s-switch-und-log-erinnerungen-nach-adr-00.md`
 - **infrastructure-d3v7k** — Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad (chore) — `backlog/infrastructure-d3v7k-ger-teabnahme-des-walking-skeletons-auf-zimaos-heimserver-un.md`
 <!-- backlog-list:end -->

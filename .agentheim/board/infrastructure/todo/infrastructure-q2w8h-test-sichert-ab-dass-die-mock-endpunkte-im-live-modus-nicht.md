@@ -1,7 +1,7 @@
 ---
 id: infrastructure-q2w8h
 title: Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind
-status: backlog
+status: todo
 type: chore
 context: infrastructure
 created: 2026-10-27

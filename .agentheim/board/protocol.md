@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:00 -- Modeling / Promoted: infrastructure-q2w8h - Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind
+
+**Type:** Modeling / Promote
+**BC:** infrastructure
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 19:00 -- Modeling / Refined: infrastructure-q2w8h - Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind
 
 **Type:** Modeling / Refine
