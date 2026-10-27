@@ -4,7 +4,7 @@ title: Walking skeleton - mock-mode control surface, real-service E2E and explic
 scope: infrastructure
 status: accepted
 date: 2026-10-27
-related_tasks: [infrastructure-001, infrastructure-d3v7k]
+related_tasks: [infrastructure-001, infrastructure-d3v7k, infrastructure-q2w8h]
 related_adrs: [0003, 0004, 0005, 0012]
 ---
 
@@ -25,3 +25,6 @@ The skeleton was built in a cloud environment without a home server, iPad, Docke
 - Tests are fast (30 s Takt in milliseconds) and hermetic; a failing boot path (config, bundle, migrations) fails E2E.
 - The mock endpoints are an attack-surface-free test seam only because they are absent outside mock mode; a config switch must never be set to mock on the home server.
 - Speech and routeset behaviour on real infrastructure is not proven until the device acceptance.
+
+## Amendment 2026-10-27 (infrastructure-q2w8h)
+In live mode `GET /mock/sightings` answers 404 (static fallback, body `not found`) and `POST /mock/advance` answers 405 (not 404 as stated above); neither has any mock effect (no clock advance, no scene change). Both are pinned by `tests/unit/server/mock-endpoints-live.test.ts`.

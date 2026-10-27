@@ -1,7 +1,7 @@
 ---
 id: infrastructure-q2w8h
 title: Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind
-status: doing
+status: done
 type: chore
 context: infrastructure
 created: 2026-10-27
@@ -41,3 +41,11 @@ Befund aus dem Refinement: ADR 0013 sagt "404 via static fallback" für beide Pf
 - Der Service nutzt `port: 0`; die URL kommt aus `svc.port`. `afterEach` muss `svc.stop()` aufrufen und das Temp-Verzeichnis löschen (siehe bestehende Wiring-Tests).
 - Im Live-Modus läuft beim Start sofort ein erster Takt (`sky.tick()`), der den injizierten `fetch` trifft; ein ablehnender `fetch` führt nur zu einem stale-markierten Zustand, nicht zu einem Boot-Fehler (ADR 0011, Stale-but-serving).
 - Kein E2E nötig: Playwright-Specs starten den Dienst ohnehin nur im Mock-Modus; der Unit-Test gegen `startService` deckt die Komposition ab.
+
+## Outcome
+
+Added tests/unit/server/mock-endpoints-live.test.ts: boots startService in live mode (fake speech, route source disabled, rejecting injected fetch) and asserts GET /mock/sightings -> 404 with body `not found` (not JSON), POST /mock/advance {"seconds":3600} -> 405 without a `now` answer, and /api/state identical before/after (compared without the wall-clock `serverTime` field). Counter-check in `mode: mock`: both paths answer 200.
+
+Manual mutation check: removing the `mock &&` condition at src/server/app.ts (`if (mock && url.pathname.startsWith('/mock/'))`) made the two live-mode tests fail; the condition was restored and the full suite is green (421 passed). `npm run typecheck` reports pre-existing errors in tests/unit/livery.test.ts (missing generated assets), unrelated.
+
+ADR 0013 amendment: Amendment (infrastructure-q2w8h): in live mode GET /mock/sightings answers 404 (static fallback, body `not found`) and POST /mock/advance answers 405; neither has any mock effect (no clock advance, no scene change). Both are pinned by tests/unit/server/mock-endpoints-live.test.ts.

@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:39 -- Task verified and completed: infrastructure-q2w8h - Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind
+
+**Type:** Work / Task completion
+**Task:** infrastructure-q2w8h - Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind
+**Summary:** Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind (GET 404, POST 405, kein Mock-Effekt); ADR 0013 amendiert
+**Duration:** 4m10s
+**Verification:** PASS (iteration 1)
+**Files changed:** 1
+**Tests added:** 3
+**ADRs written:** 0013 (amendment)
+
+---
+
 ## 2026-10-27 19:36 -- Modeling / Promoted: design-system-kcpnw - Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch
 
 **Type:** Modeling / Promote
