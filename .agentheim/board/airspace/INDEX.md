@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 5
+- **Backlog:** 6
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 6
@@ -36,6 +36,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **airspace-b9r4w** — adsb.lol als dritte Flugquelle mit persistiertem Tagesbudget (400 von 500 Requests) und Auswertung der Rate-Limit-Header (feature) — `backlog/airspace-b9r4w-adsb-lol-als-dritte-flugquelle-mit-tagesbudget.md`
 - **airspace-v6m3h** — airplanes.live als zweite Flugquelle in der FlightSource-Kette (feature) — `backlog/airspace-v6m3h-airplanes-live-als-zweite-flugquelle.md`
 - **airspace-k2d7f** — adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker (feature) — `backlog/airspace-k2d7f-adsb-fi-als-primaere-flugquelle-mit-failover-kette-und-backoff.md`
 - **airspace-n8c4t** — Unmapped Keys aus dem Live-Betrieb kuratieren: 26 Airline-Präfixe und 10 Typcodes in die Tabellen aufnehmen (chore) — `backlog/airspace-n8c4t-unmapped-keys-kuratieren-airlines-und-typcodes-aus-dem-live-betrieb.md`
