@@ -10,6 +10,7 @@ import { createLogger, type Logger } from './logger';
 import { loadScenario, ScenarioDriver, ScenarioFlightSource, ScenarioRouteSource } from './mock/scenario';
 import { AdsbLolFlightSource } from './modules/airspace/adapters/adsb-lol';
 import type { Fetch } from './modules/airspace/adapters/http';
+import { AdsbdbRouteSource } from './modules/airspace/adapters/adsbdb-route-source';
 import { VrsRouteSource } from './modules/airspace/adapters/vrs-route-source';
 import type { FlightSource, RouteSource } from './modules/airspace/model';
 import { RouteService } from './modules/airspace/route-service';
@@ -64,23 +65,30 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   const fetchFn: Fetch = o.fetch ?? ((url, init) => fetch(url, init));
   const ua = config.sources.userAgent;
   let flight: FlightSource;
-  let routeSource: RouteSource;
+  let routeSources: RouteSource[];
   let stopSnapshot: (() => void) | undefined;
   let speech: SpeechSynthesizer;
   if (driver) {
     flight = new ScenarioFlightSource(driver);
-    routeSource = new ScenarioRouteSource(driver);
+    routeSources = [new ScenarioRouteSource(driver)];
     speech = new FakeSpeechSynthesizer(() => (driver as ScenarioDriver).current().tts);
   } else {
     flight = new AdsbLolFlightSource({ fetch: fetchFn, userAgent: ua, timeoutMs: config.sources.flight.timeoutMs });
-    for (const name of config.sources.route.order) if (name !== 'vrs') log.warn('route source not wired, ignored', { source: name });
-    const vrs = new VrsRouteSource({ fetch: fetchFn, dataDir: config.dataDir, userAgent: ua, timeoutMs: config.sources.route.timeoutMs, clock: scheduler, log, refreshMs: config.sources.route.snapshotRefreshHours * 3_600_000 });
-    routeSource = vrs;
-    if (config.sources.route.enabled && config.sources.route.order.includes('vrs')) stopSnapshot = vrs.start();
+    routeSources = [];
+    for (const name of config.sources.route.order) {
+      if (name === 'adsbdb') {
+        const r = config.sources.route.adsbdb;
+        routeSources.push(new AdsbdbRouteSource({ fetch: fetchFn, userAgent: ua, timeoutMs: r.timeoutMs, backoffMs: r.backoffMinutes * 60_000, clock, log }));
+      } else {
+        const vrs = new VrsRouteSource({ fetch: fetchFn, dataDir: config.dataDir, userAgent: ua, timeoutMs: config.sources.route.timeoutMs, clock: scheduler, log, refreshMs: config.sources.route.snapshotRefreshHours * 3_600_000 });
+        routeSources.push(vrs);
+        if (config.sources.route.enabled) stopSnapshot = vrs.start();
+      }
+    }
     speech = config.speech.adapter === 'piper' ? new PiperSpeechSynthesizer({ fetch: fetchFn, endpoint: config.speech.endpoint, timeoutMs: config.speech.timeoutMs }) : new FakeSpeechSynthesizer();
   }
   const noRoutes: RouteSource = { name: 'none', lookup: async () => null };
-  const routes = new RouteService(config.sources.route.enabled ? routeSource : noRoutes, clock, { ttlMs: config.sources.route.cacheTtlHours * 3_600_000, negativeTtlMs: config.sources.route.negativeTtlMinutes * 60_000 });
+  const routes = new RouteService(config.sources.route.enabled ? routeSources : [noRoutes], clock, { ttlMs: config.sources.route.cacheTtlHours * 3_600_000, negativeTtlMs: config.sources.route.negativeTtlMinutes * 60_000, log });
   const audio = new AudioService(speech, { voice: config.speech.voice, render: mock ? 'lazy' : config.speech.render, cacheDir: path.join(config.dataDir, 'audio'), log });
   const sky = new SkyService({ config, clock, log, flight, routes, tables: defaultTables(), sightings, audio, buildId, timeZone: o.timeZone });
 

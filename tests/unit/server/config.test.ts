@@ -36,8 +36,15 @@ describe('parseConfig (ADR 0007)', () => {
 });
 
 describe('sources.route (ADR 0014)', () => {
-  it('defaults to order [vrs] with a 24h snapshot refresh', () => {
-    expect(parseConfig(MIN).sources.route).toMatchObject({ order: ['vrs'], snapshotRefreshHours: 24 });
+  it('defaults to order [adsbdb, vrs] with a 24h snapshot refresh (ADR 0016)', () => {
+    expect(parseConfig(MIN).sources.route).toMatchObject({ order: ['adsbdb', 'vrs'], snapshotRefreshHours: 24, adsbdb: { timeoutMs: 5000, backoffMinutes: 5 } });
+  });
+  it('keeps [vrs] valid and validates the adsbdb timeout/backoff', () => {
+    expect(parseConfig(MIN + 'sources: { route: { order: [vrs] } }\n').sources.route.order).toEqual(['vrs']);
+    for (const bad of ['0', '-1', '"x"']) {
+      expect(() => parseConfig(MIN + `sources: { route: { adsbdb: { timeoutMs: ${bad} } } }\n`)).toThrow(/adsbdb\.timeoutMs/);
+      expect(() => parseConfig(MIN + `sources: { route: { adsbdb: { backoffMinutes: ${bad} } } }\n`)).toThrow(/adsbdb\.backoffMinutes/);
+    }
   });
   it('accepts vrs and adsbdb, rejects anything else (e.g. adsblol)', () => {
     expect(parseConfig(MIN + 'sources: { route: { order: [vrs, adsbdb] } }\n').sources.route.order).toEqual(['vrs', 'adsbdb']);

@@ -1,7 +1,7 @@
 ---
 id: airspace-r5n3k
 title: adsbdb als erste Routenquelle vor VRS (nie persistiert, 429-Backoff) und Negativ-Cache-Fix bei nicht verfuegbaren Quellen
-status: doing
+status: done
 type: feature
 context: airspace
 created: 2026-10-27
@@ -47,3 +47,20 @@ Live-Test 2026-10-27 in Oberweyer, 50 Callsigns: nur 16 Routen angezeigt. 15 Cal
 - Vorbild: airspace-m3w9c (VrsRouteSource, Snapshot, Index). Der persistierte Online-Cache airspace-p2v6d bleibt fuer adsbdb ausdruecklich ausgeschlossen (Lizenz); er betrifft nur Quellen, die Persistenz erlauben.
 - Fixtures: echte Antworten am 2026-10-27 aufzeichnen (QTR56H, DLH400); Fehlerfaelle konstruiert und als solche markiert (ADR 0013).
 - Risiko: adsbdb ist ein Ein-Personen-Hobbydienst; der VRS-Fallback haelt die Szene stabil.
+
+## Verifier note (iteration 1)
+**REASONS:**
+- Criterion 12 (licence boundary) only partly covered: the live guard lives in `sky-service.ts` `recordSighting` (`route = routeInfo?.source === 'vrs' ? routeInfo.text : null`, passes `routeSource`), but no test exercises that path. Both new sighting-log tests call `SightingRepository.observe` directly with `routeSource: 'adsbdb'` by hand; `sky-service.test.ts` has no adsbdb case. The repository fallback `s.routeSource ?? (s.route ? 'vrs' : null)` labels any unlabelled route text as 'vrs' and stores it, so a regression in sky-service would persist adsbdb text with the suite still green.
+- Criterion 8 partly covered: the backoff test checks 0 adapter calls in the window and a call afterwards, but not that VRS answers during the window. Criterion 7's 429 fallthrough is likewise only tested with a generic fake throwing `SourceError('unavailable')`, never a real 429 from `AdsbdbRouteSource`.
+- Minor: UPDATE uses `route = COALESCE(route, ?), route_source = COALESCE(route_source, ?)`; a visit first recorded via adsbdb and later answered by VRS ends with VRS text in `route` but `route_source = 'adsbdb'`. Not a licence breach, but the columns disagree — keep consistent or document.
+- Passed: vitest 233 green, typecheck clean; criteria 1–6, 9, 10, 11, 13, 14 covered; migration 0002 via user_version loop; negative-cache fix tested; global fetch stub throws.
+
+**SUGGESTED_FIX:** Add a SkyService-level test: RouteService whose first source answers with source 'adsbdb', run a Takt against a file-backed SightingRepository, assert `route IS NULL`, `route_source = 'adsbdb'`, and that the DB file (after WAL checkpoint) contains no route text. Add a chain test with a real `AdsbdbRouteSource` returning 429 in front of a VRS fake with FakeClock: VRS answers during the backoff window, adsbdb gets 0 calls. Fix or document the COALESCE inconsistency.
+
+**ITERATION_HINT:** likely-fixable
+
+## Outcome
+
+adsbdb is now the first route source ahead of the VRS snapshot (config `sources.route.order`, default [adsbdb, vrs]). A new `AdsbdbRouteSource` adapter implements the 429 backoff (no calls during backoffMinutes, then asked again, warn logged once). RouteService falls through to VRS on unknown, unavailable or corridor-rejected adsbdb answers, no longer negatively caches when a source was unavailable, and labels every answer with its source. adsbdb route text is never persisted: `sky-service.ts` hands only VRS text to the sighting log, and migration 0002 adds `route_source` (existing routed rows become 'vrs').
+
+Iteration 2 (verifier fixes): `SightingRepository.observe` now stores route text only when explicitly labelled `routeSource: 'vrs'` (adsbdb forced NULL, unlabelled text never silently becomes 'vrs'); the UPDATE path sets route and route_source together (only when route_source is NULL, or upgrading adsbdb to vrs), so the columns never disagree. New tests in `tests/unit/server/adsbdb-route-source.test.ts`: a SkyService Takt with an adsbdb-answering RouteService against a file-backed repository (route NULL, route_source adsbdb, DB file free of the route text after WAL checkpoint); unlabelled text not stored; adsbdb-to-vrs upgrade consistency and no downgrade; real AdsbdbRouteSource 429 in front of a VRS fake with FakeClock (VRS answers in the window with 0 adsbdb calls, adsbdb asked again afterwards). Key files: src/server/modules/airspace/adapters/adsbdb-route-source.ts, src/server/modules/airspace/route-service.ts, src/server/modules/sighting-log/repository.ts, src/server/modules/sky-scene/sky-service.ts, src/server/migrations/0002-route-source.ts. Suite: 237 tests green, typecheck clean.

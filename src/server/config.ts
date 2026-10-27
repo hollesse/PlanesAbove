@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import YAML from 'yaml';
 import { z } from 'zod';
 
-const ROUTE_DEFAULTS = { enabled: true, order: ['vrs' as const], timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10 };
+const ROUTE_DEFAULTS = { enabled: true, order: ['adsbdb' as const, 'vrs' as const], adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10 };
 
 const schema = z.object({
   mode: z.enum(['live', 'mock']).default('live'),
@@ -28,8 +28,13 @@ const schema = z.object({
     flight: z.object({ timeoutMs: z.number().int().positive().default(8000) }).default({ timeoutMs: 8000 }),
     route: z.object({
       enabled: z.boolean().default(true),
-      /** Source order; only the offline VRS standing-data snapshot (default) and the optional online adsbdb lookup (ADR 0014). */
-      order: z.array(z.enum(['vrs', 'adsbdb'])).min(1).default(['vrs']),
+      /** Source order: adsbdb live lookup first, offline VRS snapshot as fallback (ADR 0016). */
+      order: z.array(z.enum(['vrs', 'adsbdb'])).min(1).default(['adsbdb', 'vrs']),
+      adsbdb: z.object({
+        timeoutMs: z.number().int().positive().default(5000),
+        /** adsbdb is skipped this long after an HTTP 429. */
+        backoffMinutes: z.number().positive().default(5),
+      }).default({ timeoutMs: 5000, backoffMinutes: 5 }),
       /** Timeout for the snapshot download. */
       timeoutMs: z.number().int().positive().default(300000),
       /** How often the VRS snapshot is re-downloaded. */

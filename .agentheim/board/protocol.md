@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 13:47 -- Task verified and completed: airspace-r5n3k - adsbdb als erste Routenquelle vor VRS (nie persistiert, 429-Backoff) und Negativ-Cache-Fix bei nicht verfuegbaren Quellen
+
+**Type:** Work / Task completion
+**Task:** airspace-r5n3k - adsbdb als erste Routenquelle vor VRS (nie persistiert, 429-Backoff) und Negativ-Cache-Fix bei nicht verfuegbaren Quellen
+**Summary:** adsbdb ist erste Routenquelle vor dem VRS-Snapshot, Treffer nie persistiert (route_source), 429-Backoff, kein Negativ-Cache bei nicht verfuegbaren Quellen
+**Duration:** 14m
+**Verification:** PASS (iteration 2)
+**Files changed:** 17
+**Tests added:** 21
+**ADRs written:** none
+
+---
+
+## 2026-10-27 13:43 -- Verification failed: airspace-r5n3k - adsbdb als erste Routenquelle vor VRS, Nicht-Persistenz und Negativ-Cache-Fix
+
+**Type:** Work / Verification failure
+**Task:** airspace-r5n3k - adsbdb als erste Routenquelle vor VRS, Nicht-Persistenz und Negativ-Cache-Fix
+**Iteration:** 1 of 3
+**Reasons:** licence boundary untested on the live SkyService -> sighting-log path (repository fallback would persist unlabelled adsbdb text), 429 backoff test does not show VRS answering during the window, COALESCE leaves route/route_source inconsistent
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-27 13:36 -- Batch started: [airspace-r5n3k]
 
 **Type:** Work / Batch start

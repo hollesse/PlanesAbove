@@ -19,7 +19,7 @@ core — die Auswahl-Regel und die Anreicherung (Route, Typklasse, Kategorie) be
 - **Kategorie** — Kurz-/Mittel-/Langstrecke etc., für den Steckbrief; kuratierter Wert der Tabelle `type-classes` (nicht aus der Route berechnet), sonst *unbekannt*. Siehe ADR 0010.
 - **Flugphase** — Steigflug, Sinkflug, Horizontalflug.
 - **Flugquelle (FlightSource)** — Port, der pro Takt die Flugzeuge im Umkreis liefert; Adapter: adsb.lol (primär), OpenSky (optional). Siehe ADR 0005.
-- **Routenquelle (RouteSource)** — Port, der zu einem Rufzeichen eine Route oder den Wert *Route unbekannt* liefert; einziger Standard-Adapter ist der VRS-standing-data-Snapshot (offline), adsbdb optional und nur nicht persistiert. Siehe ADR 0005, 0014.
+- **Routenquelle (RouteSource)** — Port, der zu einem Rufzeichen eine Route oder den Wert *Route unbekannt* liefert und dabei *unbekannt* von *nicht verfuegbar* unterscheidet (kein Snapshot, Netzfehler, 429). Standardreihenfolge `[adsbdb, vrs]`: adsbdb als Live-Lookup zuerst (nie persistiert, 429-Backoff), der offline VRS-standing-data-Snapshot als Fallback; jede Route jeder Quelle besteht die Plausibilitaetspruefung. Nur ein echtes *unbekannt* in allen Quellen wird negativ gecacht. Siehe ADR 0005, 0014, 0016.
 - **Veraltet (stale)** — Zustand der Auswahl bei Totalausfall aller Flugquellen: letzter guter Stand bleibt sichtbar, ist aber als veraltet markiert.
 - **Besonderheit** — optionaler Kurztext zu einem Flugzeugtyp (z. B. „Doppelstock“) in der Tabelle `type-classes`.
 - **Airline-Tabelle (`airlines`)** — statische Zuordnung ICAO-3-Buchstaben-Präfix des Rufzeichens → Name, Land; bestimmt die Airline. Unbekanntes Präfix: Airline unbenannt, Standard-Lackierung. Siehe ADR 0010.
@@ -28,6 +28,8 @@ core — die Auswahl-Regel und die Anreicherung (Route, Typklasse, Kategorie) be
 - **Auswahl (Umsetzung)** — die bis zu zwei nächsten Flugzeuge im Umkreis, nach eigener Haversine-Distanz aus dem normalisierten Modell berechnet (nicht nach Anbieter-Distanz); im Walking Skeleton umgesetzt (infrastructure-001).
 - **Route-Snapshot** — the offline copy of VRS standing-data (CC0) routes/ and airports/ in dataDir/vrs-standing-data, swapped atomically and indexed in memory (callsign -> airport ICAO legs); the only default RouteSource (ADR 0014). A callsign absent from it, or with an unknown airport, is Route unbekannt.
 - **Mehrlegige Route** — a Route whose AirportCodes list more than two airports; kept as legs, shown as 'A -> B -> C', plausible if the plane lies in the corridor of any leg.
+- **Routenherkunft (route_source)** — Welche Quelle die Route einer Sichtung kannte (`vrs` | `adsbdb` | leer). Nur bei `vrs` wird der Routentext gespeichert; bei `adsbdb` bleibt `route` leer (Lizenz), "Route bekannt" zaehlt ueber die Herkunft. Siehe ADR 0016.
+- **adsbdb-Route** — a route answered by the adsbdb web API, the first RouteSource in the default chain [adsbdb, vrs] (ADR 0016). Its text may be shown live and cached in memory but is never persisted (adsbdb terms): sightings record only `route_source = 'adsbdb'` with `route` NULL; only an explicitly VRS-labelled route text reaches SQLite. A 429 backs adsbdb off for backoffMinutes (VRS answers meanwhile). On a later Takt of the same visit, a VRS answer upgrades route and route_source together; VRS is never downgraded.
 
 ## Aggregates
 _Noch nicht modelliert — entsteht in `modeling` / bei der Arbeit an Tasks._

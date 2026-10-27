@@ -34,7 +34,10 @@ sources:
     timeoutMs: 8000
   route:
     enabled: true
-    order: [vrs]               # vrs = offline VRS standing-data snapshot (CC0); adsbdb is optional/online, not wired yet
+    order: [adsbdb, vrs]       # adsbdb = live lookup first (never persisted), vrs = offline VRS standing-data snapshot (CC0) as fallback
+    adsbdb:
+      timeoutMs: 5000          # adsbdb request timeout
+      backoffMinutes: 5        # skip adsbdb this long after an HTTP 429
     snapshotRefreshHours: 24   # how often the snapshot (routes + airports, ~22 MB) is re-downloaded into dataDir
     timeoutMs: 300000          # snapshot download timeout
     cacheTtlHours: 6

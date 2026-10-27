@@ -103,11 +103,11 @@ describe('snapshot lifecycle', () => {
     expect(await src.lookup('DLH400')).not.toBeNull();
     expect(warns().some((w) => /refresh failed/.test(String(w.msg)))).toBe(true);
   });
-  it('starts with no snapshot and no network: warns, every lookup is Route unbekannt', async () => {
+  it('starts with no snapshot and no network: warns, every lookup is unavailable (not unknown)', async () => {
     const { src, warns } = mk(failFetch);
     src.start();
     await src.refresh();
-    expect(await src.lookup('DLH400')).toBeNull();
+    await expect(src.lookup('DLH400')).rejects.toMatchObject({ errorClass: 'unavailable' });
     expect(warns().some((w) => /snapshot missing/.test(String(w.msg)))).toBe(true);
   });
   it('downloads the tarball into dataDir/vrs-standing-data (routes/ and airports/ only), swapping atomically', async () => {

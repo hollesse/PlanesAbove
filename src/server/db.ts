@@ -1,11 +1,12 @@
 // One SQLite file (better-sqlite3, WAL), numbered forward-only migrations tracked by PRAGMA user_version (ADR 0007).
 import Database from 'better-sqlite3';
 import migration0001 from './migrations/0001-sightings';
+import migration0002 from './migrations/0002-route-source';
 
 export type Db = Database.Database;
 
 /** Ordered by number; index + 1 is the schema version. Add new files at the end only. */
-const MIGRATIONS: string[] = [migration0001];
+const MIGRATIONS: string[] = [migration0001, migration0002];
 export const LATEST_SCHEMA_VERSION = MIGRATIONS.length;
 
 export function openDatabase(file: string): Db {

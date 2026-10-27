@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { Scheduler, Cancel } from '../../../clock';
 import type { Logger } from '../../../logger';
-import type { Airport, Route, RouteSource } from '../model';
+import { SourceError, type Airport, type Route, type RouteSource } from '../model';
 import type { Fetch } from './http';
 import { parseCsv } from './vrs-csv';
 import { downloadSnapshot, FETCHED_AT_FILE, recoverSnapshot, snapshotPaths } from './vrs-snapshot';
@@ -88,10 +88,11 @@ export class VrsRouteSource implements RouteSource {
   }
 
   async lookup(callsign: string): Promise<Route | null> {
-    const codes = this.index?.routes.get(callsign.trim().toUpperCase());
+    if (!this.index) throw new SourceError('unavailable', 'no route snapshot loaded');
+    const codes = this.index.routes.get(callsign.trim().toUpperCase());
     if (!codes) return null;
     const legs: Airport[] = [];
-    for (const c of codes) { const a = this.index?.airports.get(c); if (!a) return null; legs.push(a); }
-    return { from: legs[0], to: legs[legs.length - 1], legs };
+    for (const c of codes) { const a = this.index.airports.get(c); if (!a) return null; legs.push(a); }
+    return { from: legs[0], to: legs[legs.length - 1], legs, source: 'vrs' };
   }
 }

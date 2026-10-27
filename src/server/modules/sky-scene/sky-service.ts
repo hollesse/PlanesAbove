@@ -5,7 +5,7 @@ import type { Logger } from '../../logger';
 import type { SceneState, ScenePlane } from '../../../shared/state';
 import type { FlightPhase } from '../airspace/model';
 import { SourceError, type FlightSource, type Flugzeug } from '../airspace/model';
-import type { RouteService } from '../airspace/route-service';
+import type { RouteInfo, RouteService } from '../airspace/route-service';
 import { selectNearest } from '../airspace/selection';
 import { resolveAirline, resolveLivery, resolveTypeClass, type Tables } from '../airspace/typeclass';
 import type { SightingRepository } from '../sighting-log/repository';
@@ -49,12 +49,12 @@ export class SkyService {
     const inRadius = selectNearest(aircraft, config.location, config.radiusKm, Number.MAX_SAFE_INTEGER);
     const chosen = inRadius.slice(0, 2);
     const planes: ScenePlane[] = [];
-    const routeById = new Map<string, string | null>();
+    const routeById = new Map<string, RouteInfo | null>();
     for (const c of chosen) {
       const a = c.aircraft;
-      const route = await this.d.routes.routeFor(a.callsign, a);
+      const route = await this.d.routes.routeInfoFor(a.callsign, a);
       routeById.set(a.icao24, route);
-      planes.push(this.toScenePlane(a, route));
+      planes.push(this.toScenePlane(a, route?.text ?? null));
     }
     inRadius.forEach((c, i) => this.recordSighting(c.aircraft, c.distanceKm, routeById.get(c.aircraft.icao24) ?? null, i < 2 ? i + 1 : null, now));
     this.planes = planes;
@@ -89,9 +89,11 @@ export class SkyService {
     };
   }
 
-  private recordSighting(a: Flugzeug, distanceKm: number, route: string | null, slot: number | null, now: number): void {
+  private recordSighting(a: Flugzeug, distanceKm: number, routeInfo: RouteInfo | null, slot: number | null, now: number): void {
     const { tc, airline, livery } = this.identify(a);
-    const verdict = this.d.sightings.observe({ icao24: a.icao24, callsign: a.callsign, airline: airline?.name, typeCode: a.typeCode, typklasse: tc.typklasse, liveryPresent: livery.present, distanceKm, route, slot }, now);
+    // adsbdb text must never reach SQLite (its terms, ADR 0016): only the source is recorded for it.
+    const route = routeInfo?.source === 'vrs' ? routeInfo.text : null;
+    const verdict = this.d.sightings.observe({ icao24: a.icao24, callsign: a.callsign, airline: airline?.name, typeCode: a.typeCode, typklasse: tc.typklasse, liveryPresent: livery.present, distanceKm, route, routeSource: routeInfo?.source ?? null, slot }, now);
     if (verdict === 'new') {
       if (tc.unmapped && a.typeCode) this.d.sightings.reportUnmapped('type', a.typeCode);
       if (airline && !airline.name) this.d.sightings.reportUnmapped('airline', airline.prefix);
