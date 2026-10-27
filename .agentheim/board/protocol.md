@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:33 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 1h55m
+**Completed:** 3 (first-try PASS: 1, re-dispatched: 2, skipped: 0)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 1
+**Lost-result escalations:** 0
+**Dispatches:** airspace-k2d7f: 1, airspace-v6m3h: 2, airspace-b9r4w: 3 (incl. 1 merge-conflict resolve dispatch, ADR-0072 ladder rungs 1-6)
+**Commits:** 7
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (3 tasks)
+**Carry-over:** left behind (user WIP, 2 files: config.yaml, data/); salvage patch .agentheim/salvage/airspace-b9r4w-merge-conflict.patch kept (gitignored)
+
+---
+
 ## 2026-10-27 18:33 -- Task verified and completed: airspace-b9r4w - adsb.lol als dritte Flugquelle mit persistiertem Tagesbudget (400 von 500 Requests) und Auswertung der Rate-Limit-Header
 
 **Type:** Work / Task completion
