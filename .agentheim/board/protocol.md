@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 15:09 -- Batch started: [sighting-log-m7p2v]
+
+**Type:** Work / Batch start
+**Tasks:** sighting-log-m7p2v - Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte (nur Befunde, nie Routentext)
+**Parallel:** no (1 worker) — single ready task
+
+---
+
 ## 2026-10-27 14:45 -- Modeling / Promoted: sighting-log-m7p2v - Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte (nur Befunde, nie Routentext)
 
 **Type:** Modeling / Promote

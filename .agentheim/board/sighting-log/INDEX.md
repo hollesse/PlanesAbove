@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 0
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **sighting-log-m7p2v** — Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte (nur Befunde, nie Routentext) (feature) — `todo/sighting-log-m7p2v-routen-statistik-je-quelle-und-liste-der-unbekannten.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **sighting-log-m7p2v** — Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte (nur Befunde, nie Routentext) (feature) — `doing/sighting-log-m7p2v-routen-statistik-je-quelle-und-liste-der-unbekannten.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
