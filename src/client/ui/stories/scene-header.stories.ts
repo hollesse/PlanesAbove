@@ -18,3 +18,5 @@ export const Kopfzeile: StoryObj<Args> = {
 
 export const TinteDunkel: StoryObj = { name: 'Tinte dunkel (Tag)', render: () => skyStage({ time: 'day', weather: 'light' }, '4:3', renderSceneHeader({ place: 'Kirchstrasse 17', clock: '10:08', ink: 'dark' })) };
 export const TinteHell: StoryObj = { name: 'Tinte hell (Abend)', render: () => skyStage({ time: 'dusk', weather: 'light' }, '4:3', renderSceneHeader({ place: 'Kirchstrasse 17', clock: '19:42', ink: 'light' })) };
+export const VeraltetDunkel: StoryObj = { name: 'Veraltet · Letzter Stand (Tinte dunkel, Tag)', render: () => skyStage({ time: 'day', weather: 'light' }, '4:3', renderSceneHeader({ place: 'Kirchstrasse 17', clock: '10:12', ink: 'dark', stale: { since: '10:08' } })) };
+export const VeraltetHell: StoryObj = { name: 'Veraltet · Letzter Stand (Tinte hell, Abend)', render: () => skyStage({ time: 'dusk', weather: 'light' }, '4:3', renderSceneHeader({ place: 'Kirchstrasse 17', clock: '19:42', ink: 'light', stale: { since: '19:36' } })) };

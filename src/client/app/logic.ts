@@ -17,12 +17,12 @@ export function reloadDue(now: Date, reloadAt: string, lastReloadDay: string | n
   return { due: afterTime && lastReloadDay !== day, day };
 }
 
-/** Stale indicator text: the server says the source is down, or we could not reach the server for `staleAfterMs`. */
-export function staleText(state: SceneState, msSinceLastSuccessfulPoll: number, staleAfterMs: number): string | undefined {
-  return state.stale || msSinceLastSuccessfulPoll > staleAfterMs ? `Keine aktuellen Daten · Stand ${state.clock}` : undefined;
+/** Veraltet-Zustand der Kopfzeile: the server says the source is down, or we could not reach the server for `staleAfterMs`. `since` = time of the last good Stand. */
+export function staleSince(state: SceneState, msSinceLastSuccessfulPoll: number, staleAfterMs: number): { since: string } | undefined {
+  return state.stale || msSinceLastSuccessfulPoll > staleAfterMs ? { since: state.clock } : undefined;
 }
 
-export function toScreenProps(state: SceneState, stale: string | undefined): ScreenProps {
+export function toScreenProps(state: SceneState, stale: { since: string } | undefined): ScreenProps {
   return {
     aspect: '4:3',
     sky: state.sky,

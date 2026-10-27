@@ -2,7 +2,7 @@
 // holds the Vorlese-Sperre, recovers by itself. Imports UI only from the design-system barrel (ADR 0002).
 import type { SceneState } from '../../shared/state';
 import { renderScreen } from '../ui';
-import { backoffMs, dayKey, reloadDue, staleText, tapTarget, toScreenProps } from './logic';
+import { backoffMs, dayKey, reloadDue, staleSince, tapTarget, toScreenProps } from './logic';
 import { Narrator, type AudioLike } from './narrator';
 import { VorleseSperre, type Timers } from './sperre';
 
@@ -31,7 +31,7 @@ export function startApp(d: AppDeps): App {
 
   const render = (): void => {
     if (!current) return;
-    const stale = staleText(current, d.now().getTime() - lastOkMs, settings.staleAfterMinutes * 60_000);
+    const stale = staleSince(current, d.now().getTime() - lastOkMs, settings.staleAfterMinutes * 60_000);
     const stage = renderScreen(toScreenProps(current, stale));
     d.root.replaceChildren(stage);
     d.root.dataset.stale = stale ? 'true' : 'false';

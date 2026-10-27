@@ -49,15 +49,19 @@ describe('startApp (client composition)', () => {
     await r.advance(6 * 60_000);
     await r.app.pollNow();
     expect(r.root.dataset.stale).toBe('true');
+    expect(r.root.querySelector('.pa-scene-header')?.textContent).toContain('Letzter Stand · 10:00');
+    expect(r.root.querySelector('.pa-scene-header')?.textContent).not.toContain('Live');
     expect(r.root.dataset.planes).toBe('a');
     r.set(state(['c'])); await r.app.pollNow();
     expect(r.root.dataset.stale).toBe('false');
+    expect(r.root.querySelector('.pa-scene-header')?.textContent).toContain('Live · ');
     expect(r.root.dataset.planes).toBe('c');
   });
   it('shows a server-flagged stale scene immediately', async () => {
     const r = rig(state(['a'])); await r.flush();
-    r.set(state(['a'], { stale: true })); await r.app.pollNow();
+    r.set(state(['a'], { stale: true, clock: '09:58' })); await r.app.pollNow();
     expect(r.root.dataset.stale).toBe('true');
+    expect(r.root.querySelector('.pa-scene-header')?.textContent).toContain('Letzter Stand · 09:58');
   });
   it('reloads when the server reports a different buildId, but not while narrating', async () => {
     const r = rig(state(['a'])); await r.flush();

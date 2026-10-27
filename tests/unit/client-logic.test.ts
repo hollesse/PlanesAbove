@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { backoffMs, reloadDue, staleText, toScreenProps, tapTarget } from '../../src/client/app/logic';
+import { backoffMs, reloadDue, staleSince, toScreenProps, tapTarget } from '../../src/client/app/logic';
 import type { SceneState } from '../../src/shared/state';
 import { renderScreen } from '../../src/client/ui';
 
@@ -28,28 +28,30 @@ describe('reloadDue (nightly reload via injectable clock)', () => {
 
 const state = (o: Partial<SceneState> = {}): SceneState => ({ buildId: 'b', serverTime: 0, stale: false, lastSuccessAt: 0, place: 'Test', clock: '10:08', sky: { time: 'day', weather: 'clear' }, planes: [], client: { pollIntervalSeconds: 10, staleAfterMinutes: 5, reloadAt: '04:00', speechWatchdogSeconds: 60 }, ...o });
 
-describe('staleText', () => {
-  it('shows nothing for a fresh scene', () => { expect(staleText(state(), 0, 1000)).toBeUndefined(); });
+describe('staleSince', () => {
+  it('shows nothing for a fresh scene', () => { expect(staleSince(state(), 0, 1000)).toBeUndefined(); });
   it('marks a server-flagged stale scene immediately with the time of the last good data', () => {
-    expect(staleText(state({ stale: true }), 0, 1000)).toBe('Keine aktuellen Daten · Stand 10:08');
+    expect(staleSince(state({ stale: true }), 0, 1000)).toEqual({ since: '10:08' });
   });
   it('marks the scene stale when the server itself was unreachable for longer than the threshold', () => {
-    expect(staleText(state(), 5 * 60_000 + 1, 5 * 60_000)).toBe('Keine aktuellen Daten · Stand 10:08');
-    expect(staleText(state(), 5 * 60_000 - 1, 5 * 60_000)).toBeUndefined();
+    expect(staleSince(state(), 5 * 60_000 + 1, 5 * 60_000)).toEqual({ since: '10:08' });
+    expect(staleSince(state(), 5 * 60_000 - 1, 5 * 60_000)).toBeUndefined();
   });
 });
 
 describe('toScreenProps -> design-system screen', () => {
-  it('empty sky shows the "Zuletzt" bar, two planes show two rows, stale adds the notice', () => {
+  it('empty sky shows the "Zuletzt" bar, two planes show two rows, stale turns the Kopfzeile into "Letzter Stand"', () => {
     const f = { operator: 'Lufthansa', callsign: 'DLH400', aircraft: 'Airbus A320neo', registration: '', route: null, altitudeM: 11000, speedKmh: 800, phase: 'level' as const };
     const sp = (id: string) => ({ icao24: id, plane: { type: 'narrowbody' as const, livery: 'def' }, flight: f, speech: { text: 't', audioUrl: '/audio/x.wav' } });
     const empty = renderScreen(toScreenProps(state({ recent: 'Zuletzt: Lufthansa DLH400 · vor 6 Min' }), undefined));
     expect(empty.dataset.state).toBe('empty');
     expect(empty.querySelector('.pa-bar-recent')?.textContent).toContain('vor 6 Min');
-    const two = renderScreen(toScreenProps(state({ planes: [sp('a'), sp('b')] }), 'Keine aktuellen Daten · Stand 10:08'));
+    const two = renderScreen(toScreenProps(state({ planes: [sp('a'), sp('b')] }), { since: '10:08' }));
     expect(two.dataset.state).toBe('two');
     expect(two.querySelectorAll('.pa-info-row')).toHaveLength(2);
-    expect(two.querySelector('.pa-stale-notice')?.textContent).toContain('Stand 10:08');
+    expect(two.querySelector('.pa-scene-header')?.textContent).toContain('Letzter Stand · 10:08');
+    expect(empty.querySelector('.pa-scene-header')?.textContent).toContain('Live · 10:08');
+    expect(document.querySelector('.pa-stale-notice')).toBeNull();
     expect(two.querySelector('.pa-plane')?.getAttribute('data-livery')).toBe('def');
   });
 });

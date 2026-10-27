@@ -67,5 +67,3 @@
 .pa-play { font: inherit; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; background: var(--pa-ink); color: var(--pa-paper); border: 2px solid var(--pa-ink); padding: 4px 12px; border-radius: 0; cursor: pointer; flex: none; white-space: nowrap; }
 .pa-play:hover { background: var(--pa-signal); border-color: var(--pa-signal); }
 
-/* Stale indicator (atom): last good scene kept while the source is unreachable */
-.pa-stale-notice { position: absolute; right: 3.5%; top: 9.5%; font-family: var(--pa-font-mono); font-size: 1.4cqw; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.85; }

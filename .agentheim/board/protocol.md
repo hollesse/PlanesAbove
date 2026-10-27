@@ -5,6 +5,20 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 07:19 -- Task verified and completed: design-system-r5d7v - Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“)
+
+**Type:** Work / Task completion
+**Task:** design-system-r5d7v - Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“)
+**Summary:** stale state shown in the header as Letzter Stand with the last good time, separate stale notice removed
+**Duration:** ~6m
+**Verification:** PASS (iteration 1)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 14
+**Tests added:** 1
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 07:14 -- Batch started: [design-system-r5d7v]
 
 **Type:** Work / Batch start

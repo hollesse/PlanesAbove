@@ -52,7 +52,7 @@ test('Wechsel waehrend des Vorlesens wird zurueckgehalten, danach erscheint die 
   await expect(app(page)).toHaveAttribute('data-planes', 'bbbbbb');
 });
 
-test('Ausfall der Quelle: letzte Szene bleibt mit Stale-Markierung, dann Erholung von selbst', async ({ page }) => {
+test('Ausfall der Quelle: letzte Szene bleibt, Kopfzeile zeigt „Letzter Stand“, dann Erholung von selbst', async ({ page }) => {
   svc = await startMockService('outage-recovery');
   await page.goto(svc.url);
   await expect(app(page)).toHaveAttribute('data-planes', 'aaaaaa');
@@ -60,8 +60,10 @@ test('Ausfall der Quelle: letzte Szene bleibt mit Stale-Markierung, dann Erholun
   await svc.advance(30); // 429 von der Quelle
   await expect(app(page)).toHaveAttribute('data-stale', 'true');
   await expect(app(page)).toHaveAttribute('data-planes', 'aaaaaa');
-  await expect(page.locator('.pa-stale-notice')).toContainText('Keine aktuellen Daten');
+  await expect(page.locator('.pa-scene-header')).toContainText('Letzter Stand · ');
+  await expect(page.locator('.pa-scene-header')).not.toContainText('Live');
   await svc.advance(30); // Quelle zurueck
   await expect(app(page)).toHaveAttribute('data-stale', 'false');
+  await expect(page.locator('.pa-scene-header')).toContainText('Live · ');
   await expect(app(page)).toHaveAttribute('data-planes', 'bbbbbb');
 });

@@ -1,7 +1,7 @@
 ---
 id: design-system-r5d7v
 title: Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“)
-status: doing
+status: done
 type: feature
 context: design-system
 created: 2026-10-27
@@ -31,3 +31,17 @@ Der Walking Skeleton (infrastructure-001) hat für den veralteten Zustand (ADR 0
 ## Notes
 - Feedback des Betreibers wörtlich: „Es steht immer noch live. Da sollte stehen anstatt Live letzter Stand dann die Uhrzeit vom letzten Stand.“
 - ADR 0008 (Client-Selbstheilung, dezente Stale-Markierung) bleibt erfüllt; die Markierung wandert in die Kopfzeile. ADR 0013 nennt das Atom — im Outcome vermerken, dass es durch den Kopfzeilen-Zustand ersetzt wurde.
+
+## Outcome
+
+Der veraltete Zustand (ADR 0008) wandert in die Kopfzeile. `renderSceneHeader` (`src/client/ui/molecules/scene-header.ts`) nimmt `stale?: { since: 'HH:MM' }`: live "Live · <clock>", veraltet "Letzter Stand · <since>", gleiche Position/Tinte/Schein (Glow-Klassen unveraltert), zusätzlich `data-state="live|stale"`. Die Screen-Vorlage reicht `stale: { since }` an die Kopfzeile durch. Der Baustein Stale-Hinweis ist komplett entfernt (Atom `atoms/stale-notice.ts`, Stories `Atoms/Stale-Hinweis`, CSS `.pa-stale-notice`, Export in `ui/index.ts`); kein Code nutzt ihn mehr. ADR 0013 nennt das Atom noch - es wurde durch den Kopfzeilen-Zustand ersetzt (ADR bleibt als Historie unverändert).
+
+App-Client: `staleText` wurde zu `staleSince(state, msSincePoll, staleAfterMs)` in `src/client/app/logic.ts` (liefert `{ since: state.clock }`; `state.clock` ist serverseitig bereits die Uhrzeit der letzten erfolgreichen Abfrage), `toScreenProps` und `app.ts` angepasst. Nach Erholung wieder "Live".
+
+Stories: Molecules/Kopfzeile "Veraltet · Letzter Stand" in beiden Tinten (dunkel/Tag, hell/Abend), Templates/Bildschirm "Eins · veraltet (Letzter Stand)" (Screen-Story reicht neues `stale`-Arg durch).
+
+Tests: neu 1 it() (Kopfzeile veraltet in info-bar.test.ts); geändert (keine neuen Fälle): info-bar.test.ts (live-Fall prüft data-state), client-logic.test.ts (staleSince + toScreenProps prüfen "Letzter Stand · 10:08" / "Live", Stale-Notice nicht mehr da), app.test.ts (zwei bestehende Fälle prüfen Kopfzeilentext "Letzter Stand · 10:00" bzw. "· 09:58" und "Live" nach Erholung), e2e skeleton.spec.ts "Ausfall der Quelle" prüft Kopfzeilentext (Letzter Stand, kein Live, danach Live). Grün: npm test (190), typecheck, build, build-storybook, Playwright Chromium (10).
+
+Screenshot (Chromium, Storybook-Build): Kopfzeile hell auf Abendhimmel zeigt links "DER HIMMEL ÜBER KIRCHSTRASSE 17", rechts "LETZTER STAND · 19:36" in heller Tinte mit dunklem Schein, gleiche Position wie vorher, kein zweiter Hinweis unter der Kopfzeile. Bildschirm-Vorlage veraltet (Tag, ein Flugzeug) zeigt rechts oben "LETZTER STAND · 10:02" in dunkler Tinte, Info-Leiste unverändert. Abnahme durch den Betreiber [human-eye] steht noch aus.
+
+Hinweis: ich habe `git rm` auf die zwei gelöschten Dateien ausgeführt (staged Löschung, versehentlicher git-Schreibzugriff, sonst keine git-Operation).

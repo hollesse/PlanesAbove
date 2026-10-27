@@ -1,5 +1,4 @@
 import { renderSky } from '../atoms/sky';
-import { renderStaleNotice } from '../atoms/stale-notice';
 import { h } from '../dom';
 import { skyInk, type SkyKey } from '../domain/catalog';
 import type { FlightInfo } from '../domain/flight';
@@ -22,8 +21,8 @@ export interface ScreenProps {
   planes: ScreenPlane[];
   /** Text of the slim "Zuletzt" bar shown when no plane is up. */
   recent?: string;
-  /** Stale indicator text (last good scene kept while the source is down); absent = fresh. */
-  stale?: string;
+  /** Veraltet (last good scene kept while the source is down): the Kopfzeile reads "Letzter Stand · since" instead of "Live". Absent = live. */
+  stale?: { since: string };
 }
 
 /** Empty positioned stage in the requested format (container for cqw units). */
@@ -36,8 +35,7 @@ export function renderScreen(props: ScreenProps): HTMLElement {
   if (props.planes.length > 2) throw new Error('A screen shows at most two planes');
   const stage = renderStage(props.aspect);
   stage.dataset.state = ['empty', 'one', 'two'][props.planes.length];
-  stage.append(renderSkyLayer(props.sky), renderSceneHeader({ place: props.place, clock: props.clock, ink: skyInk(props.sky) }), renderSceneLayer({ planes: props.planes.map((p) => p.plane) }));
-  if (props.stale) stage.append(renderStaleNotice({ text: props.stale, ink: skyInk(props.sky) }));
+  stage.append(renderSkyLayer(props.sky), renderSceneHeader({ place: props.place, clock: props.clock, ink: skyInk(props.sky), stale: props.stale }), renderSceneLayer({ planes: props.planes.map((p) => p.plane) }));
   if (props.planes.length === 1) stage.append(renderInfoBar({ variant: 'single', flight: props.planes[0].flight }));
   else if (props.planes.length === 2) stage.append(renderInfoBar({ variant: 'double', flights: [props.planes[0].flight, props.planes[1].flight] }));
   else if (props.recent) stage.append(renderInfoBar({ variant: 'recent', text: props.recent }));

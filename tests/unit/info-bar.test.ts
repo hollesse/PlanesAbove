@@ -42,6 +42,14 @@ describe('Info-Leiste', () => {
     expect(el.textContent).toBe('Zuletzt: Lufthansa LH400 · vor 6 Min');
   });
 
+  it('scene header veraltet: "Letzter Stand · HH:MM" with the time of the last good Stand, same ink and glow, no "Live"', () => {
+    const stale = renderSceneHeader({ place: 'Kirchstrasse 17', clock: '19:42', ink: 'light', stale: { since: '19:36' } });
+    expect(stale.textContent).toBe('Der Himmel über Kirchstrasse 17Letzter Stand · 19:36');
+    expect(stale.textContent).not.toContain('Live');
+    expect(stale.dataset.state).toBe('stale');
+    expect(stale.classList.contains('pa-ink-light') && stale.classList.contains('pa-glow-on-light-ink')).toBe(true);
+  });
+
   it('derives the state name from props', () => {
     expect(infoBarState({ variant: 'single', flight: SAMPLE_FLIGHTS.A })).toBe('single-known');
     expect(infoBarState({ variant: 'single', flight: SAMPLE_FLIGHTS.B })).toBe('single-unknown');
@@ -52,6 +60,7 @@ describe('Info-Leiste', () => {
     const light = renderSceneHeader({ place: 'Kirchstrasse 17', clock: '19:42', ink: 'light' });
     expect(light.textContent).toBe('Der Himmel über Kirchstrasse 17Live · 19:42');
     expect(light.className).toContain('pa-ink-light');
+    expect(light.dataset.state).toBe('live');
     expect(renderSceneHeader({ place: 'x', clock: '1', ink: 'dark' }).className).toContain('pa-ink-dark');
     // Schein je Tinte
     expect(light.classList.contains('pa-glow-on-light-ink')).toBe(true);
