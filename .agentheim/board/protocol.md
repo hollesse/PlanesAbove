@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:00 -- Modeling / Refined: infrastructure-q2w8h - Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind
+
+**Type:** Modeling / Refine
+**BC:** infrastructure
+**Status after:** todo
+**Summary:** Testort und Boot-Muster festgelegt (Vitest gegen startService im live-Modus, ablehnender fetch, kein Netz). Code-Befund: GET /mock/sightings → 404 (statischer Fallback), POST /mock/advance → 405 (nicht 404 wie ADR 0013 sagt); Kriterien entsprechend geschärft, plus Nebenwirkungsfreiheit von /api/state, Gegenprobe im mock-Modus, manuelle Mutationsprobe und ein Amendment-Satz in ADR 0013.
+
+---
+
+## 2026-10-27 18:59 -- Verification failed (iteration 1): airspace-p8w2k
+
+**Type:** Work
+**Task:** airspace-p8w2k
+**Verdict:** FAIL — Positivfälle LHX1979 Köln–München und AUA166D Düsseldorf–Wien nicht getestet; EWG9YV-Test beweist nicht die Ablehnung wegen Richtung (Höhenprofil lehnt bereits ab). Code selbst korrekt; alle Suiten grün nach npm run assets.
+**Next:** Re-Dispatch Iteration 2 mit Verifier-Hinweis.
+
+---
+
 ## 2026-10-27 18:54 -- Task verified and completed: airspace-c5t9m - airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben)
 
 **Type:** Work / Task completion
