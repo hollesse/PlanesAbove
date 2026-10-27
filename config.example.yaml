@@ -44,6 +44,7 @@ sources:
     timeoutMs: 300000          # snapshot download timeout
     cacheTtlHours: 6
     negativeTtlMinutes: 10
+    compareAll: false          # true = ask every source and record conflicts (differing plausible routes) for stats:routes; costs extra requests
 
 # German speech (ADR 0012). piper = the `tts` sidecar container; fake = silent clip (mock/testing only).
 speech:

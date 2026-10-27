@@ -22,10 +22,16 @@ export function isPlausibleRoute(route: Route, position: LatLon): boolean {
 
 export interface RouteInfo { text: string; source: RouteOrigin }
 
+/** What one source said in one lookup: hit (plausible route), unknown (null), unavailable (threw), rejected (implausible). Findings only, no route data. */
+export type LookupOutcome = 'hit' | 'unknown' | 'unavailable' | 'rejected';
+export interface RouteAttempt { source: string; outcome: LookupOutcome }
+/** Result of one `lookupFor`. `fresh` is false for cache hits (no sources were asked, nothing to record). `chosen` is the name of the source whose route was taken. */
+export interface RouteLookup { info: RouteInfo | null; attempts: RouteAttempt[]; conflict: boolean; chosen: string | null; fresh: boolean }
+
 export class RouteService {
   private cache = new Map<string, { until: number; info: RouteInfo | null }>();
   private readonly sources: RouteSource[];
-  constructor(source: RouteSource | RouteSource[], private readonly clock: Clock, private readonly o: { ttlMs: number; negativeTtlMs: number; log?: Logger }) {
+  constructor(source: RouteSource | RouteSource[], private readonly clock: Clock, private readonly o: { ttlMs: number; negativeTtlMs: number; log?: Logger; /** Ask every source and flag a conflict when two plausible routes differ; the first in order is still chosen. Default false: stop at the first plausible hit. */ compareAll?: boolean }) {
     this.sources = Array.isArray(source) ? source : [source];
   }
 
@@ -36,23 +42,38 @@ export class RouteService {
 
   /** Route text plus the answering source, asking the chain in order. Every route must pass `isPlausibleRoute`. Never throws. */
   async routeInfoFor(callsign: string | undefined, position: LatLon): Promise<RouteInfo | null> {
+    return (await this.lookupFor(callsign, position))?.info ?? null;
+  }
+
+  /** Like `routeInfoFor`, plus the per-source findings of this lookup (for the sighting log). null when there is no callsign. Never throws. */
+  async lookupFor(callsign: string | undefined, position: LatLon): Promise<RouteLookup | null> {
     if (!callsign) return null;
     const now = this.clock.now();
     const hit = this.cache.get(callsign);
-    if (hit && hit.until > now) return hit.info;
+    if (hit && hit.until > now) return { info: hit.info, attempts: [], conflict: false, chosen: hit.info?.source ?? null, fresh: false };
     let info: RouteInfo | null = null;
+    let chosen: string | null = null;
+    const attempts: RouteAttempt[] = [];
+    const texts = new Set<string>();
     let unavailable = false;
     for (const src of this.sources) {
       try {
         const r = await src.lookup(callsign, position);
-        if (r && isPlausibleRoute(r, position)) { info = { text: formatRoute(r), source: r.source ?? (src.name === 'adsbdb' ? 'adsbdb' : 'vrs') }; break; }
+        if (!r) { attempts.push({ source: src.name, outcome: 'unknown' }); continue; }
+        if (!isPlausibleRoute(r, position)) { attempts.push({ source: src.name, outcome: 'rejected' }); continue; }
+        attempts.push({ source: src.name, outcome: 'hit' });
+        texts.add(formatRoute(r));
+        if (!info) { info = { text: formatRoute(r), source: r.source ?? (src.name === 'adsbdb' ? 'adsbdb' : 'vrs') }; chosen = src.name; }
+        if (!this.o.compareAll) break;
       } catch {
+        attempts.push({ source: src.name, outcome: 'unavailable' });
         unavailable = true; // unavailable is not unknown: try the next source, and do not cache a miss
       }
     }
-    if (!info && unavailable) return null;
+    const conflict = texts.size > 1;
+    if (!info && unavailable) return { info: null, attempts, conflict: false, chosen: null, fresh: true };
     this.cache.set(callsign, { until: now + (info ? this.o.ttlMs : this.o.negativeTtlMs), info });
     this.o.log?.info('route lookup', { callsign, source: info?.source ?? 'none' });
-    return info;
+    return { info, attempts, conflict, chosen, fresh: true };
   }
 }

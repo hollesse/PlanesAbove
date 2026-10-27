@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import YAML from 'yaml';
 import { z } from 'zod';
 
-const ROUTE_DEFAULTS = { enabled: true, order: ['adsbdb' as const, 'vrs' as const], adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10 };
+const ROUTE_DEFAULTS = { enabled: true, order: ['adsbdb' as const, 'vrs' as const], adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false };
 
 const schema = z.object({
   mode: z.enum(['live', 'mock']).default('live'),
@@ -41,6 +41,8 @@ const schema = z.object({
       snapshotRefreshHours: z.number().positive().default(24),
       cacheTtlHours: z.number().positive().default(6),
       negativeTtlMinutes: z.number().positive().default(10),
+      /** Ask every source (not just until the first plausible hit) so conflicts between sources can be recorded; costs extra requests. */
+      compareAll: z.boolean().default(false),
     }).default(ROUTE_DEFAULTS),
   }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 8000 }, route: ROUTE_DEFAULTS }),
   speech: z.object({

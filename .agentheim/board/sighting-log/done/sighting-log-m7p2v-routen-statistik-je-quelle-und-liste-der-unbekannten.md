@@ -1,7 +1,7 @@
 ---
 id: sighting-log-m7p2v
 title: Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte (nur Befunde, nie Routentext)
-status: doing
+status: done
 type: feature
 context: sighting-log
 created: 2026-10-27
@@ -51,3 +51,35 @@ Captured via `modeling` am 2026-10-27, am selben Tag refined. Ausgangslage 2026-
 Builder-Entscheidungen (final): (1) nur Befunde, nie adsbdb/hexdb-Inhalte persistieren; (2) Zugang nur per CLI-Skript auf die SQLite-Datei, kein HTTP, kein UI; (3) Scope nur angezeigte Sichtungen. Kein neuer ADR nötig: ADR 0007 (BC-eigene Tabellen) und ADR 0016 (adsbdb nie persistiert) decken es ab; die Befund-Ausnahme ist hier festgehalten.
 
 Abhängigkeit zu airspace-w3k8d (hexdb als zweite Quelle, Konfliktregel): `source` ist ein offener Quellname, hexdb ergänzt sich ohne Schemaänderung; ohne w3k8d tritt `conflict` praktisch nie auf, die Spalten und Tests bleiben trotzdem gültig. Reihenfolge der Umsetzung ist unabhängig. Findings werden nur im Takt des echten Lookups aufgezeichnet, weil nur ein Lookup je Callsign und Positiv-TTL stattfindet (In-Memory-Cache).
+
+## Verifier note (iteration 1)
+**REASONS:**
+- Criterion 1 (migration 0003 on a 0002-level DB with sightings, no data loss, user_version 3, idempotent): no new test — the only new migration test opens a fresh `:memory:` DB and checks the table exists. Follow the 0002 pattern in adsbdb-route-source.test.ts:155 (raw DB, earlier migrations, set user_version, reopen).
+- Criterion 3 (live SkyService path with a fake chain producing all four outcomes and a conflict): only partly covered — the SkyService test uses a 2-source chain (unknown + hit) with compareAll off; `unavailable`, `rejected` and a conflict never flow through the live path, and `conflict`/`looked_up_at` are never asserted there.
+- Criterion 6 (schema test via `PRAGMA table_info(route_lookups)` whitelisting columns): no test at all (schema itself is licence-clean).
+- Criterion 5 (licence scan): only one adsbdb city string checked; no hexdb fixture with route text, no airport codes, no assertion that VRS text appears only in sightings.route.
+- Criterion 9 (unknown share per airline prefix): only `airlines[0]` asserted; the second prefix (DLH 0/2) is never checked.
+- Context: npm test green (271), typecheck clean, CLI runs under Node 26. RouteLookup instead of RouteInfo extension keeps the intent. The `looked_up_at` index named in What was not added (only the sighting_id index exists) — add it.
+
+**SUGGESTED_FIX:** Add tests to tests/unit/server/route-lookups.test.ts, production code mostly as is: (1) 0002-level DB with sightings migrated to user_version 3, no rows lost, idempotent reopen; (2) PRAGMA table_info column whitelist; (3) SkyService run with compareAll on and a chain covering unavailable, unknown, rejected and two differing hits, asserting conflict and looked_up_at; (4) licence scan widened to all fixture codes/texts incl. a hexdb fixture, plus VRS-text-only-in-sightings.route; (5) assert the second airline prefix. Add the looked_up_at index in migration 0003.
+
+**ITERATION_HINT:** likely-fixable
+
+## Verifier note (iteration 2)
+**REASONS:**
+- Criterion 12 second half / What item 5: root README.md has no section on using `npm run stats:routes` (flags `--db`, `--days`, `--json` with keys days/sources/unknown/airlines/conflicts, read-only, only shown sightings) and no mention of the licence rule for `route_lookups` (findings only, never adsbdb/hexdb codes or route text; VRS text only in `sightings.route`). Only a one-line comment in the command list was added. `compareAll` (conflicts recorded only when `sources.route.compareAll: true`) is documented only in config.example.yaml.
+- All iteration-1 findings are fixed; npm test 275 green, tsc clean.
+
+**SUGGESTED_FIX:** Add a README.md section "Routen-Statistik" covering the script usage, the JSON keys, the licence rule, and the compareAll switch. No production or test changes needed.
+
+**ITERATION_HINT:** likely-fixable
+
+## Outcome
+
+Routen-Befund implemented. Migration 0003 (src/server/migrations/0003-route-lookups.ts) adds route_lookups(id, sighting_id, source, outcome, conflict, chosen, looked_up_at); source is free text, so hexdb etc. need no schema change. airspace: RouteService gets lookupFor() returning RouteLookup {info, attempts: {source, outcome}[], conflict, chosen, fresh}; routeInfoFor() delegates and still returns the unchanged RouteInfo {text, source} (existing tests use toEqual on it, so attempts/conflict live on RouteLookup, not RouteInfo - deliberate deviation from the brief). SkyService calls lookupFor and, only when fresh (real lookup, not cache hit), hands the attempts to the new SightingRepository.recordLookup(), which writes one row per asked source against the visit's latest sighting. Findings only; the licence test scans the DB file for adsbdb route text.
+
+Conflict detection: default mode keeps the early break at the first plausible hit, so conflict is always false and no extra network calls happen. Conflict becomes meaningful only when the chain consults all sources: opt-in config sources.route.compareAll (default false, in config.ts, config.example.yaml, wired in app.ts) asks every source, sets conflict when 2+ plausible routes differ in text, still chooses the first in order. Both modes tested. Note: with compareAll an agreeing second source is also asked (extra requests).
+
+CLI: npm run stats:routes -- --db <file> --days N [--json]; scripts/stats-routes.mjs (better-sqlite3 read-only) imports src/server/modules/sighting-log/route-stats.ts via Node type stripping (Node 26; the module is self-contained, no runtime imports, so no build step). Output: per-day counts by final route_source incl. none + known share, per-source outcome counts (+ chosen), unknown list (time, callsign, airline, typklasse), unknown share per callsign prefix, conflicts. Only slot IS NOT NULL sightings within the window (last_seen_ms). JSON keys: days, sources, unknown, airlines, conflicts. Missing --db / file / non-sightings DB exits 1; a pre-0003 DB still works. Iteration 2 added the looked_up_at index (route_lookups_time) and tests: 0002-to-0003 upgrade (user_version 3, no rows lost, idempotent reopen), column whitelist + index list, live compareAll Takt with unavailable/unknown/rejected/two differing hits (conflict, chosen, looked_up_at), widened licence scan (adsbdb+hexdb codes/texts absent, VRS text only in sightings.route), second airline prefix share. Tests: tests/unit/server/route-lookups.test.ts (17); suite 275 green, typecheck green.
+
+Airspace README wording needed (not edited by me): RouteService additionally exposes lookupFor() with per-source findings (hit/unknown/unavailable/rejected) and a conflict flag; opt-in sources.route.compareAll consults all sources. Iteration 3 added the "Routen-Statistik" section to the root README.md (usage, tables, --json keys, licence rule, compareAll note). Notes: an all-unavailable lookup records its findings but is not cached, so it writes a new row set each Takt while the sources stay down; package.json on main carries uncommitted changes of its own, only the stats:routes script line is mine.

@@ -1,4 +1,4 @@
-// Sighting-log BC: owns the `sightings` and `unmapped_keys` tables; the only code that touches them (ADR 0007).
+// Sighting-log BC: owns the `sightings`, `route_lookups` and `unmapped_keys` tables; the only code that touches them (ADR 0007).
 import type { Db } from '../../db';
 import { SightingDedup } from './dedup';
 
@@ -62,6 +62,15 @@ export class SightingRepository {
         .run(iso, nowMs, s.distanceKm, routeSource, route, routeSource, routeSource, s.slot ?? null, s.icao24);
     }
     return verdict;
+  }
+
+  /** Record what one route lookup found for the visit's sighting (findings only, ADR 0016): one row per asked source. */
+  recordLookup(icao24: string, attempts: { source: string; outcome: string }[], conflict: boolean, chosen: string | null, nowMs: number): void {
+    const row = this.db.prepare('SELECT id FROM sightings WHERE icao24 = ? ORDER BY last_seen_ms DESC, id DESC LIMIT 1').get(icao24) as { id: number } | undefined;
+    if (!row) return;
+    const ins = this.db.prepare('INSERT INTO route_lookups (sighting_id, source, outcome, conflict, chosen, looked_up_at) VALUES (?,?,?,?,?,?)');
+    const iso = new Date(nowMs).toISOString();
+    this.db.transaction(() => { for (const a of attempts) ins.run(row.id, a.source, a.outcome, conflict ? 1 : 0, chosen !== null && a.source === chosen && a.outcome === 'hit' ? 1 : 0, iso); })();
   }
 
   list(): Sighting[] {

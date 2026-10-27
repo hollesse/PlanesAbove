@@ -47,6 +47,7 @@ npm test                   # Unit- + Contract-Tests (Vitest, offline, ohne Netz)
 npm run typecheck
 npm run e2e                # baut Storybook + Dienst; Playwright WebKit + Chromium gegen den echten Dienst im Mock-Modus
 npm run e2e:chromium       # nur Chromium (WebKit laeuft in Containern ohne Systembibliotheken nicht)
+npm run stats:routes -- --db data/planesabove.db --days 7 [--json]   # Routen-Statistik aus dem Sichtungsprotokoll (Quellen, Unbekannte, Konflikte)
 ```
 
 ### Mock-Modus und Szenarien
@@ -56,6 +57,28 @@ npm run e2e:chromium       # nur Chromium (WebKit laeuft in Containern ohne Syst
 **Routenquelle.** Routen werden zuerst live bei [adsbdb](https://www.adsbdb.com/) abgefragt (`GET api.adsbdb.com/v0/callsign/{callsign}`, ohne Key). Nach den adsbdb-Bedingungen duerfen diese Daten nicht kopiert oder in andere Datenbanken uebernommen werden: Sie leben nur im Arbeitsspeicher-Cache und werden **nie persistiert** (Sichtungen speichern bei adsbdb-Treffern nur `route_source = 'adsbdb'`, keinen Routentext). Bei 429 pausiert adsbdb fuer `sources.route.adsbdb.backoffMinutes` (Default 5). Als Fallback (unbekannt, nicht erreichbar, 429, unplausible Route) dient der offline Snapshot der [VRS standing-data](https://github.com/vradarserver/standing-data) (Lizenz CC0-1.0): Der Dienst laedt `routes/` und `airports/` (~22 MB) nach `<dataDir>/vrs-standing-data/`, tauscht sie atomar aus und erneuert sie alle `sources.route.snapshotRefreshHours` (Default 24). Jede Route jeder Quelle muss den Plausibilitaets-Korridor bestehen, sonst bleibt es `Route unbekannt`. `sources.route.order` (Default `[adsbdb, vrs]`) legt die Reihenfolge fest.
 
 Contract-Fixtures liegen in `tests/fixtures/` (`vrs/` ist eine aufgezeichnete Teilmenge der VRS standing-data vom 2026-10-27, Details in `vrs/README.txt`; `adsblol-point-frankfurt.json` ist eine echte Antwort vom 2026-10-27; die uebrigen sind konstruiert, siehe Kommentare in den Tests).
+
+## Routen-Statistik
+
+Welche Routenquelle liefert wie oft was? Das beantwortet
+
+```
+npm run stats:routes -- --db data/planesabove.db --days 7 [--json]
+```
+
+Der Befehl liest die SQLite-Datei nur lesend; es muss kein Dienst laufen. Ausgewertet werden nur gezeigte Sichtungen (`slot IS NOT NULL`) der letzten `--days` Tage. Ausgegeben werden Tabellen:
+
+- **Je Tag und Quelle** (inkl. `none`): wie viele Sichtungen welche Routenquelle hatten, plus Anteil bekannter Routen.
+- **Je Quelle**: Befunde `hit` / `unknown` / `unavailable` / `rejected` (Treffer, unbekannt, nicht erreichbar, am Plausibilitaets-Korridor abgelehnt).
+- **Liste der Unbekannten**: Zeit, Rufzeichen, Airline, Typklasse der Sichtungen ohne Route.
+- **Unbekannt-Anteil je Airline-Praefix** (Rufzeichen-Praefix).
+- **Konflikte**: Sichtungen, bei denen zwei Quellen plausible, aber verschiedene Routen lieferten.
+
+Mit `--json` erscheint dasselbe als ein JSON-Objekt mit den Top-Level-Schluesseln `days`, `sources`, `unknown`, `airlines`, `conflicts`.
+
+**Lizenz.** Die Tabelle `route_lookups` speichert nur Befunde (Quelle, Ergebnis, Konflikt-/Gewaehlt-Flag), nie Flughafencodes oder Routentext von adsbdb/hexdb. Routentext der VRS standing-data (CC0) steht nur in `sightings.route` (ADR 0016).
+
+**Konflikte** werden nur erfasst, wenn `sources.route.compareAll: true` gesetzt ist (Default `false`): Dann werden alle Quellen gefragt, nicht nur bis zum ersten plausiblen Treffer, was zusaetzliche Anfragen kostet. Ohne `compareAll` ist die Konflikt-Tabelle leer.
 
 ## Betrieb auf dem Heimserver (ZimaOS) und iPad-Pruefung
 

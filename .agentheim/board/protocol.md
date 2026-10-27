@@ -5,6 +5,41 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 15:22 -- Task verified and completed: sighting-log-m7p2v - Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte (nur Befunde, nie Routentext)
+
+**Type:** Work / Task completion
+**Task:** sighting-log-m7p2v - Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte (nur Befunde, nie Routentext)
+**Summary:** Routen-Befunde je Quelle in route_lookups (nur Befunde, nie Routentext), Opt-in compareAll fuer Konflikte, npm run stats:routes mit Tages-, Quellen-, Unbekannt-, Airline- und Konflikt-Auswertung
+**Duration:** 31m
+**Verification:** PASS (iteration 3)
+**Files changed:** 13
+**Tests added:** 17
+**ADRs written:** none
+
+---
+
+## 2026-10-27 15:19 -- Verification failed: sighting-log-m7p2v - Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte
+
+**Type:** Work / Verification failure
+**Task:** sighting-log-m7p2v - Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte
+**Iteration:** 2 of 3
+**Reasons:** root README lacks the section on npm run stats:routes usage, JSON keys, the route_lookups licence rule and the compareAll switch; all iteration-1 findings fixed, tests 275 green
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
+## 2026-10-27 15:16 -- Verification failed: sighting-log-m7p2v - Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte
+
+**Type:** Work / Verification failure
+**Task:** sighting-log-m7p2v - Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte
+**Iteration:** 1 of 3
+**Reasons:** missing tests for migration on a 0002-level DB, PRAGMA schema whitelist, live SkyService path with all four outcomes + conflict, licence scan too narrow, second airline prefix unasserted, looked_up_at index missing
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-27 15:09 -- Batch started: [sighting-log-m7p2v]
 
 **Type:** Work / Batch start
