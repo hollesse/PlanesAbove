@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:55 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 34m (19:26–20:00, 4 waves)
+**Completed:** 8 (first-try PASS: 5, re-dispatched: 3, skipped: 0) — airspace-n8c4t, airspace-prwpv, sighting-log-k4m7q, infrastructure-q2w8h, airspace-hw8f9, design-system-kcpnw, airspace-f9cjz, sighting-log-t8tfb
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** airspace-n8c4t: 2, airspace-prwpv: 2, sighting-log-k4m7q: 1, infrastructure-q2w8h: 1, airspace-hw8f9: 1, design-system-kcpnw: 2, airspace-f9cjz: 1, sighting-log-t8tfb: 1
+**Commits:** 12 (4 batch-start, 8 integrating) + this entry
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 75% product-facing / 25% harness / 0% bookkeeping (8 tasks)
+**Carry-over:** .agentheim/.dashboard/: left behind (owner: dashboard runtime, untracked before this session); left behind (user WIP, 2 files: config.yaml, data/)
+
+---
+
 ## 2026-10-27 19:54 -- Task verified and completed: sighting-log-t8tfb - Lackierungs-Statistik „npm run stats:liveries“: welche Airlines wie oft mit der Standard-Lackierung gezeigt wurden, weil kein Design oder keine Zuordnung vorlag
 
 **Type:** Work / Task completion
