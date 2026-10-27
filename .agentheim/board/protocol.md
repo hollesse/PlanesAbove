@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 13:36 -- Batch started: [airspace-r5n3k]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-r5n3k - adsbdb als erste Routenquelle vor VRS (nie persistiert, 429-Backoff) und Negativ-Cache-Fix bei nicht verfuegbaren Quellen
+**Parallel:** no (1 worker) — single ready task
+
+---
+
 ## 2026-10-27 13:34 -- Modeling / Promoted: airspace-r5n3k - adsbdb als erste Routenquelle vor VRS (nie persistiert, 429-Backoff) und Negativ-Cache-Fix bei nicht verfuegbaren Quellen
 
 **Type:** Modeling / Promote
