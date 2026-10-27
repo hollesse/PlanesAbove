@@ -1,7 +1,7 @@
 ---
 id: airspace-w3k8d
 title: hexdb.io als Routenquelle, vorerst an erster Stelle vor adsbdb und VRS; Konfliktregel: erste plausible Route gewinnt
-status: todo
+status: doing
 type: feature
 context: airspace
 created: 2026-10-27

@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:10 -- Batch started: [airspace-w3k8d]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-w3k8d - hexdb.io als Routenquelle, vorerst an erster Stelle vor adsbdb und VRS; Konfliktregel: erste plausible Route gewinnt
+**Parallel:** no (1 worker)
+
+---
+
 ## 2026-10-27 19:06 -- Modeling / Promoted: sighting-log-k4m7q - Beobachtungsstandort je Sichtung mitloggen (Tabelle observation_points, Standortwechsel beendet den Besuch, Statistik je Standort)
 
 **Type:** Modeling / Promote
