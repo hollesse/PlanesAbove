@@ -20,7 +20,7 @@ Der Kiosk-Client (`src/client/app/app.ts`) ersetzt bei jedem Poll den ganzen Bil
 ## What
 Nur die 11 Flugzeug-Übergänge (Gruppen kommt / geht / wechselt). Ein Himmel- oder Tageszeitwechsel bleibt vorerst ein harter Schnitt (Crossfades sind ein Folge-Task).
 
-- **`pickTransition(prev, next)`** – reine Funktion (`src/client/app/logic.ts` oder `transition-plan.ts`), vergleicht ausschließlich icao24 und Array-Position. Das Wire-Array `planes[]` ist kompaktiert (`sky-service.ts:58`): Slot-Positionen sind stabil (ADR 0017), Array-Positionen nicht – nach dem Gehen von Slot 1 steht der Überlebende an Index 0 und rutscht beim nächsten Neuzugang auf Index 1. Nie Slot-Nummern annehmen. Ergebnis ist eine Spec-Id, `'cut'` oder `'same'`:
+- **`pickTransition(prev, next)`** – reine Funktion (`src/client/app/logic.ts` oder `transition-plan.ts`), vergleicht ausschließlich icao24 und Array-Position. Das Wire-Array `planes[]` ist kompaktiert (`src/server/modules/sky-scene/sky-service.ts:59-69` – nur belegte Slots werden gepusht): Slot-Positionen sind stabil (ADR 0017), Array-Positionen nicht – nach dem Gehen von Slot 1 steht der Überlebende an Index 0 und rutscht beim nächsten Neuzugang auf Index 1. Nie Slot-Nummern annehmen. Ergebnis ist eine Spec-Id, `'cut'` oder `'same'`:
 
   | prev | next | Ergebnis |
   |---|---|---|
@@ -79,3 +79,4 @@ Nur die 11 Flugzeug-Übergänge (Gruppen kommt / geht / wechselt). Ein Himmel- o
 - Folge-Capture (nicht hier): Wetter-/Tageszeit-Crossfades (11 Specs) live abspielen.
 - Der Mock-Client pollt alle 200 ms; eine echte 5-s-Wartezeit im E2E ist in Ordnung.
 - Eine Spiegel-Spec „one-to-two, Überlebender rechts“ fehlt im Katalog; falls der Schnitt dort im Betrieb stört, ist das ein design-system-Capture (neue Story + Abnahme), nicht Teil dieses Tasks.
+- Refinement 2026-10-27 (zweiter Durchgang): Voraussetzungen gegengeprüft – ADR 0020 liegt vor, alle 11 Spec-Ids existieren in `src/client/ui`, Kompaktierung in `sky-service.ts` bestätigt. `TRANSITION_MS` und `data-side` kommen aus design-system-kcpnw (in Arbeit); `work` hält diesen Task, bis kcpnw integriert ist.

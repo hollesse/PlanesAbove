@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:43 -- Modeling / Refined: sky-scene-n0sfy - Flugzeug-Übergänge in der Live-Szene abspielen; Diff per icao24, Übergang-Sperre
+
+**Type:** Modeling / Refine
+**BC:** sky-scene
+**Status after:** todo
+**Summary:** Zweiter Durchgang: Voraussetzungen gegengeprüft (ADR 0020 vorhanden, 11 Spec-Ids im Katalog, Kompaktierung des planes-Arrays bestätigt), Dateipfad-Verweis auf sky-service.ts korrigiert. Akzeptanzkriterien und Abhängigkeiten unverändert; Task klärt die Readiness-Schwelle und wird promotet.
+
+---
+
 ## 2026-10-27 19:41 -- Batch started: [design-system-kcpnw]
 
 **Type:** Work / Batch start
