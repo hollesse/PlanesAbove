@@ -10,9 +10,16 @@
   --pa-signal: #C8313E;
   --pa-sky-ink-light: #F6EEDC;
   --pa-sky-ink-dark: #1F2A33;
-  --pa-sky-glow-on-light-ink: rgba(0, 0, 0, 0.4); /* Schein hinter heller Himmel-Schrift */
-  --pa-sky-glow-on-dark-ink: rgba(255, 255, 255, 0.4); /* Schein hinter dunkler Himmel-Schrift */
-  --pa-sky-glow-blur: 0.8cqw; /* Breite des Scheins (weich, ohne Offset) */
+  /* Schein (Variante E): drei offsetfreie text-shadow-Lagen, Farbe/Deckkraft je Tinte und Lage, Radius je Lage */
+  --pa-sky-glow-on-light-ink-tight: rgba(0, 0, 0, 0.9);
+  --pa-sky-glow-on-light-ink-mid: rgba(0, 0, 0, 0.9);
+  --pa-sky-glow-on-light-ink-wide: rgba(0, 0, 0, 0.7);
+  --pa-sky-glow-on-dark-ink-tight: rgba(255, 255, 255, 0.8);
+  --pa-sky-glow-on-dark-ink-mid: rgba(255, 255, 255, 0.8);
+  --pa-sky-glow-on-dark-ink-wide: rgba(255, 255, 255, 0.6);
+  --pa-sky-glow-blur-tight: 0.3cqw;
+  --pa-sky-glow-blur-mid: 1cqw;
+  --pa-sky-glow-blur-wide: 2.4cqw;
   --pa-muted: #5B6670;
   --pa-plane-backdrop: #C9D6E1;
   --pa-font-display: 'Archivo', sans-serif;

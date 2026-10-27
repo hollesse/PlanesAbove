@@ -76,10 +76,14 @@ test('the sky covers the whole stage in every template and page story, transitio
   }
 });
 
-test('text on the sky gets a wide soft glow per ink (black 40% on light ink, white 40% on dark ink); text on paper gets none', async ({ page }) => {
+test('text on the sky gets the three-layer Schein per ink (black 90/90/70 % on light ink, white 80/80/60 % on dark ink), header in weight 500; text on paper gets none', async ({ page }) => {
   const index = (await (await page.request.get('/index.json')).json()) as { entries: Record<string, Entry> };
   const ids = Object.values(index.entries).filter((e) => e.type === 'story' && (e.title.startsWith('Templates/') || e.title.startsWith('Pages/') || e.title === 'Molecules/Kopfzeile')).map((e) => e.id);
   const LIGHT = 'rgb(246, 238, 220)';
+  const EXPECTED = {
+    light: ['rgba(0, 0, 0, 0.9)', 'rgba(0, 0, 0, 0.9)', 'rgba(0, 0, 0, 0.7)'],
+    dark: ['rgba(255, 255, 255, 0.8)', 'rgba(255, 255, 255, 0.8)', 'rgba(255, 255, 255, 0.6)'],
+  };
   const seen = new Set<string>();
   for (const id of ids) {
     await page.goto(`/iframe.html?id=${id}&viewMode=story`);
@@ -87,25 +91,27 @@ test('text on the sky gets a wide soft glow per ink (black 40% on light ink, whi
     const res = await page.evaluate(() => {
       const hdr = document.querySelector('.pa-scene-header') as HTMLElement;
       const cs = getComputedStyle(hdr);
-      const paper = [...document.querySelectorAll('.pa-bar, .pa-bar *, .pa-info-row, .pa-info-row *, .pa-badge')].map((e) => getComputedStyle(e).textShadow);
-      return { color: cs.color, shadow: cs.textShadow, paper };
+      const paperEls = [...document.querySelectorAll('.pa-bar, .pa-bar *, .pa-info-row, .pa-info-row *, .pa-badge')];
+      return { color: cs.color, shadow: cs.textShadow, weight: cs.fontWeight, width: hdr.getBoundingClientRect().width, paper: paperEls.map((e) => getComputedStyle(e).textShadow), paperWeights: paperEls.map((e) => getComputedStyle(e).fontWeight) };
     });
     const layers = res.shadow.match(/rgba?\([^)]*\)\s+[-\d.]+px\s+[-\d.]+px\s+[-\d.]+px/g)!;
-    expect(layers.length, id).toBeGreaterThanOrEqual(1);
-    expect(layers.length, id).toBeLessThanOrEqual(2); // no 8-direction outline
+    expect(layers.length, id).toBe(3);
     seen.add(res.color);
-    const expected = res.color === LIGHT ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)';
+    const expected = res.color === LIGHT ? EXPECTED.light : EXPECTED.dark;
     const blurs: number[] = [];
-    for (const l of layers) {
+    layers.forEach((l, i) => {
       const m = /^(rgba?\([^)]*\))\s+([-\d.]+)px\s+([-\d.]+)px\s+([-\d.]+)px$/.exec(l)!;
-      expect(m[1], id).toBe(expected);
+      expect(m[1], `${id} layer ${i}`).toBe(expected[i]);
       expect(Number(m[2]), `${id} x offset`).toBe(0);
       expect(Number(m[3]), `${id} y offset`).toBe(0);
       blurs.push(Number(m[4]));
-    }
-    expect(Math.max(...blurs), `${id} widest layer is wide`).toBeGreaterThan(3);
-    expect(Math.min(...blurs), `${id} every layer is soft`).toBeGreaterThan(1);
+    });
+    // radii 0.3 / 1 / 2.4 cqw of the stage; the header spans 93 % of it
+    const stage = res.width / 0.93;
+    [0.003, 0.01, 0.024].forEach((f, i) => expect(Math.abs(blurs[i] - f * stage), `${id} radius ${i}`).toBeLessThan(0.02 * stage));
+    expect(res.weight, `${id} header weight`).toBe('500');
     for (const p of res.paper) expect(p, `${id} paper text`).toBe('none');
+    for (const w of res.paperWeights) expect(w, `${id} paper weight`).not.toBe('500');
   }
   expect(seen.size, 'both inks covered').toBe(2);
 });

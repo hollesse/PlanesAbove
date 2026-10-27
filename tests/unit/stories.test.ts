@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { COLORS, FONTS, GLOW_BLUR } from '../../src/client/ui/domain/tokens';
+import { COLORS, FONTS, GLOW_BLUR, GLOW_COLORS } from '../../src/client/ui/domain/tokens';
 
 const modules = import.meta.glob('../../src/client/ui/stories/*.stories.ts', { eager: true }) as Record<string, { default: { title: string }; [k: string]: unknown }>;
 const LEVELS = ['Atoms', 'Molecules', 'Organisms', 'Templates', 'Pages'];
@@ -29,45 +29,58 @@ describe('Atomic Design Story-Hierarchie', () => {
 });
 
 describe('Tokens', () => {
-  it('glow is a wide cqw-blurred, offset-free text-shadow, not a text-stroke or 8-direction outline (Safari 16)', async () => {
-    const fs = await import('node:fs');
-    const css = fs.readFileSync('src/client/ui/styles/ui.css', 'utf8');
-    const tokens = fs.readFileSync('src/client/ui/styles/tokens.css', 'utf8');
-    const blur = Number(/--pa-sky-glow-blur: ([\d.]+)cqw/.exec(tokens)?.[1]);
-    expect(blur).toBeGreaterThan(0.1 * 5); // far wider than the old 0.1cqw outline
+  const LAYERS = ['tight', 'mid', 'wide'] as const;
+  const read = async (f: string) => (await import('node:fs')).readFileSync(f, 'utf8');
+
+  it('Schein (variant E) is three stacked offset-free cqw text-shadows per ink, no text-stroke or 8-direction outline (Safari 16)', async () => {
+    const css = await read('src/client/ui/styles/ui.css');
     expect(css).not.toContain('text-stroke');
-    expect(css).not.toMatch(/halo/);
-    expect(tokens).not.toMatch(/halo/);
-    const rule = /\.pa-glow-on-light-ink[^{]*\{[^}]*text-shadow:([^;]+);/.exec(css)?.[1] ?? '';
-    expect(rule).toContain('var(--pa-sky-glow-blur)');
-    // every shadow layer has zero x/y offset (centred glow)
-    for (const layer of rule.split(/,(?![^()]*\))/)) expect(layer.trim(), layer).toMatch(/^0 0 /);
-    expect(rule.split(/,(?![^()]*\))/).length).toBeLessThanOrEqual(2);
+    for (const ink of ['light', 'dark']) {
+      const rule = new RegExp(`\\.pa-glow-on-${ink}-ink \\{[^}]*text-shadow:([^;]+);`).exec(css)?.[1] ?? '';
+      const layers = rule.split(/,(?![^()]*\))/).map((l) => l.trim());
+      expect(layers, ink).toHaveLength(3);
+      layers.forEach((layer, i) => {
+        expect(layer, `${ink} ${i}`).toMatch(/^0 0 /); // zero x/y offset
+        expect(layer).toContain(`var(--pa-sky-glow-blur-${LAYERS[i]})`);
+        expect(layer).toContain(`var(--pa-sky-glow-on-${ink}-ink-${LAYERS[i]})`);
+      });
+    }
   });
 
-  it('css defines the sky glow tokens matching COLORS: black ~40% on light ink, white ~40% on dark ink', async () => {
-    const css = (await import('node:fs')).readFileSync('src/client/ui/styles/tokens.css', 'utf8');
-    expect(css).toContain(`--pa-sky-glow-on-light-ink: ${COLORS.skyGlowOnLightInk.value}`);
-    expect(css).toContain(`--pa-sky-glow-on-dark-ink: ${COLORS.skyGlowOnDarkInk.value}`);
-    expect(COLORS.skyGlowOnLightInk.value).toBe('rgba(0, 0, 0, 0.4)');
-    expect(COLORS.skyGlowOnDarkInk.value).toBe('rgba(255, 255, 255, 0.4)');
+  it('glow tokens in css mirror the TS tokens: black 90/90/70 % on light ink, white 80/80/60 % on dark ink, radii 0.3/1/2.4cqw', async () => {
+    const css = await read('src/client/ui/styles/tokens.css');
+    for (const l of LAYERS) {
+      expect(css).toContain(`${GLOW_BLUR[l].token}: ${GLOW_BLUR[l].value}`);
+      expect(css).toContain(`${GLOW_COLORS.light[l].token}: ${GLOW_COLORS.light[l].value}`);
+      expect(css).toContain(`${GLOW_COLORS.dark[l].token}: ${GLOW_COLORS.dark[l].value}`);
+    }
+    expect(LAYERS.map((l) => GLOW_BLUR[l].value)).toEqual(['0.3cqw', '1cqw', '2.4cqw']);
+    expect(LAYERS.map((l) => GLOW_COLORS.light[l].value)).toEqual(['rgba(0, 0, 0, 0.9)', 'rgba(0, 0, 0, 0.9)', 'rgba(0, 0, 0, 0.7)']);
+    expect(LAYERS.every((l) => GLOW_COLORS.dark[l].value.startsWith('rgba(255, 255, 255, '))).toBe(true);
+    expect(css).not.toContain('--pa-sky-glow-blur:');
+    expect(css).not.toMatch(/--pa-sky-glow-on-(light|dark)-ink:/);
   });
 
-  it('Token story "Schein" shows both glow colours and the blur token, with the glow applied on both inks', () => {
+  it('scene header glow classes set font-weight 500; info bar classes stay without glow or weight override', async () => {
+    const css = await read('src/client/ui/styles/ui.css');
+    expect(css).toMatch(/\.pa-glow-on-light-ink, \.pa-glow-on-dark-ink \{ font-weight: 500; \}/);
+    expect(css).not.toMatch(/\.pa-(bar|info-row|badge|meta-small|eyebrow)[^{]*\{[^}]*font-weight: 500/);
+  });
+
+  it('Token story "Schein" shows all three radii and every per-ink layer colour, with the glow applied on both inks', () => {
     const story = (modules['../../src/client/ui/stories/tokens.stories.ts'] as unknown as { Schein: { render: () => HTMLElement } }).Schein;
     const el = story.render();
     const text = el.textContent ?? '';
-    expect(text).toContain('--pa-sky-glow-blur');
-    expect(text).toContain('0.8cqw');
-    expect(text).toContain(COLORS.skyGlowOnLightInk.value);
-    expect(text).toContain(COLORS.skyGlowOnDarkInk.value);
+    for (const l of LAYERS) {
+      expect(text).toContain(GLOW_BLUR[l].token);
+      expect(text).toContain(GLOW_BLUR[l].value);
+      expect(text).toContain(GLOW_COLORS.light[l].token);
+      expect(text).toContain(GLOW_COLORS.dark[l].token);
+    }
+    expect(text).toContain('rgba(0, 0, 0, 0.7)');
+    expect(text).toContain('rgba(255, 255, 255, 0.6)');
     expect(el.querySelector('.pa-glow-on-light-ink')).not.toBeNull();
     expect(el.querySelector('.pa-glow-on-dark-ink')).not.toBeNull();
-  });
-
-  it('GLOW_BLUR mirrors the --pa-sky-glow-blur value in tokens.css', async () => {
-    const css = (await import('node:fs')).readFileSync('src/client/ui/styles/tokens.css', 'utf8');
-    expect(css).toContain(`${GLOW_BLUR.token}: ${GLOW_BLUR.value}`);
   });
 
   it('defines the brand colours and fonts', () => {

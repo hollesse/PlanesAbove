@@ -1,7 +1,7 @@
 ---
 id: design-system-v8q3n
 title: Schein hinter der Kopfzeile verstärken (Variante E) und Kopfzeile in Plex Mono 500
-status: doing
+status: done
 type: feature
 context: design-system
 created: 2026-10-27
@@ -39,3 +39,11 @@ Schein der Kopfzeile (Text direkt auf dem Himmel) nach Variante E:
 - Referenz-CSS der Variante E (Conductor-Test): `text-shadow: 0 0 .3cqw rgba(0,0,0,.9), 0 0 1cqw rgba(0,0,0,.9), 0 0 2.4cqw rgba(0,0,0,.7); font-weight: 500` auf `.pa-scene-header` bei heller Tinte.
 - Dateien: `styles/ui.css` (`.pa-glow-on-*`), `styles/tokens.css`, `domain/tokens.ts`, `stories/tokens.stories.ts`, `molecules/scene-header.ts`, Tests in `tests/unit/stories.test.ts`, `tests/unit/info-bar.test.ts`, `tests/e2e/stories.spec.ts`.
 - Story-Id der Beispielszene: `pages-beispielszenen--einzeln` mit `&args=page:two-planes`.
+
+## Outcome
+
+Replaced the two-layer Schein (g7w4m) with variant E. `styles/tokens.css` now holds per-ink, per-layer colour tokens (`--pa-sky-glow-on-{light,dark}-ink-{tight,mid,wide}`) and three radius tokens (`--pa-sky-glow-blur-{tight,mid,wide}` = 0.3/1/2.4cqw); the old `--pa-sky-glow-on-*-ink` and `--pa-sky-glow-blur` tokens and the COLORS.skyGlow* entries are gone. `styles/ui.css`: `.pa-glow-on-light-ink` = black 0.9/0.9/0.7, `.pa-glow-on-dark-ink` = white 0.8/0.8/0.6 (tuned start values kept), both with `font-weight: 500`; only the scene header carries these classes, so the Info-Leiste, Plaketten and Zuletzt-Leiste are untouched. `domain/tokens.ts` mirrors via `GLOW_LAYERS`, `GLOW_BLUR`, `GLOW_COLORS`; the Token story "Schein" lists all radii and per-ink layer tokens and shows both inks.
+
+Screenshots (Chromium, throwaway script in the scratchpad, not committed; night-header.png / day-header.png): in "Zwei Flugzeuge, Nacht, klar" the cream "LIVE · 22:15" over the cream moon now has a clearly dark halo and separates cleanly from the moon edge; it reads well, and the 500 weight is visible. On the bright day scene with dark ink, the white halo is subtle and keeps the dark text crisp over the pale cloud and blue sky; it does not look like a white blob or box, so 80/80/60 % was kept. The operator still needs to check legibility on a phone [human-eye].
+
+Tests: modified existing tests in `tests/unit/stories.test.ts` (3 rewritten: shadow structure, token mirror, Token story), `tests/e2e/stories.spec.ts` (glow test rewritten to check 3 layers, colours per ink, offset 0, radii in cqw, weight 500, paper text no shadow and not weight 500); added 1 new it() (header classes set font-weight 500, paper classes do not). `tests/unit/info-bar.test.ts` unchanged in the end (its class assertions still hold). npm test 48 passing, typecheck clean, Chromium e2e 5 passing after rebuild-storybook. WebKit not run (not available here).

@@ -6,7 +6,7 @@ import { renderSky } from '../atoms/sky';
 import { renderText, TEXT_STYLES, type TextStyle } from '../atoms/text';
 import { h } from '../dom';
 import { ALL_SKIES, PLANE_TYPES, SKY_TIMES, SKY_WEATHERS, skyId, type PlaneType, type SkyTime, type SkyWeather } from '../domain/catalog';
-import { COLORS, FONTS, GLOW_BLUR } from '../domain/tokens';
+import { COLORS, FONTS, GLOW_BLUR, GLOW_COLORS, GLOW_LAYERS } from '../domain/tokens';
 import { grid, TIME_IDS, WEATHER_IDS } from './helpers';
 
 const meta: Meta = { title: 'Atoms/Tokens' };
@@ -25,21 +25,21 @@ export const Farben: StoryObj = {
 
 export const Schein: StoryObj = {
   render: () => {
-    const sample = (cls: string, ink: string, bg: string, glow: { name: string; value: string }) =>
+    const sample = (cls: string, ink: string, bg: string, layers: readonly { name: string; value: string; token: string }[]) =>
       h(
         'div',
         { style: 'container-type:inline-size;min-width:0' },
         h('div', { style: `background:${bg};color:${ink};padding:28px 16px;font-family:var(--pa-font-mono);font-size:20px` }, h('span', { class: cls, text: 'Frankfurt → New York' })),
-        h('span', { class: 'pa-eyebrow', style: 'font-size:11px', text: `${glow.name} ${glow.value}` }),
+        ...layers.map((l) => h('div', { class: 'pa-eyebrow', style: 'font-size:11px', text: `${l.token} ${l.value} · ${l.name}` })),
       );
     return h(
       'div',
       { style: 'display:flex;flex-direction:column;gap:16px' },
-      h('div', { class: 'pa-eyebrow', text: `${GLOW_BLUR.token} ${GLOW_BLUR.value} · ${GLOW_BLUR.name}` }),
+      ...GLOW_LAYERS.map((l) => h('div', { class: 'pa-eyebrow', text: `${GLOW_BLUR[l].token} ${GLOW_BLUR[l].value} · ${GLOW_BLUR[l].name}` })),
       grid(
         [
-          { caption: '', el: sample('pa-glow-on-light-ink', COLORS.skyInkLight.value, '#6C8CA8', COLORS.skyGlowOnLightInk) },
-          { caption: '', el: sample('pa-glow-on-dark-ink', COLORS.skyInkDark.value, '#E8DFC8', COLORS.skyGlowOnDarkInk) },
+          { caption: '', el: sample('pa-glow-on-light-ink', COLORS.skyInkLight.value, '#6C8CA8', GLOW_LAYERS.map((l) => GLOW_COLORS.light[l])) },
+          { caption: '', el: sample('pa-glow-on-dark-ink', COLORS.skyInkDark.value, '#E8DFC8', GLOW_LAYERS.map((l) => GLOW_COLORS.dark[l])) },
         ],
         260,
       ),

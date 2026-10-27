@@ -23,10 +23,10 @@
 .pa-scene-header { position: absolute; left: 3.5%; right: 3.5%; top: 5.5%; display: flex; justify-content: space-between; font-family: var(--pa-font-mono); font-size: 1.9cqw; letter-spacing: 0.18em; text-transform: uppercase; }
 .pa-ink-dark { color: var(--pa-sky-ink-dark); }
 .pa-ink-light { color: var(--pa-sky-ink-light); }
-.pa-glow-on-light-ink { --pa-glow: var(--pa-sky-glow-on-light-ink); }
-.pa-glow-on-dark-ink { --pa-glow: var(--pa-sky-glow-on-dark-ink); }
-/* Weicher, breiter Schein ohne Offset: zwei gestapelte text-shadows (eng = Dichte nah an der Schrift, weit = Ausstrahlung), cqw-skaliert. */
-.pa-glow-on-light-ink, .pa-glow-on-dark-ink { text-shadow: 0 0 calc(var(--pa-sky-glow-blur) * 0.5) var(--pa-glow), 0 0 var(--pa-sky-glow-blur) var(--pa-glow); }
+/* Schein (Variante E): drei gestapelte, offsetfreie text-shadows (eng/mittel/breit), cqw-skaliert; Kopfzeile in Plex Mono 500. */
+.pa-glow-on-light-ink, .pa-glow-on-dark-ink { font-weight: 500; }
+.pa-glow-on-light-ink { text-shadow: 0 0 var(--pa-sky-glow-blur-tight) var(--pa-sky-glow-on-light-ink-tight), 0 0 var(--pa-sky-glow-blur-mid) var(--pa-sky-glow-on-light-ink-mid), 0 0 var(--pa-sky-glow-blur-wide) var(--pa-sky-glow-on-light-ink-wide); }
+.pa-glow-on-dark-ink { text-shadow: 0 0 var(--pa-sky-glow-blur-tight) var(--pa-sky-glow-on-dark-ink-tight), 0 0 var(--pa-sky-glow-blur-mid) var(--pa-sky-glow-on-dark-ink-mid), 0 0 var(--pa-sky-glow-blur-wide) var(--pa-sky-glow-on-dark-ink-wide); }
 
 /* Info bar organism */
 .pa-bar { position: absolute; left: 0; right: 0; bottom: 0; background: var(--pa-paper); border-top: 2px solid var(--pa-ink); box-sizing: border-box; }
