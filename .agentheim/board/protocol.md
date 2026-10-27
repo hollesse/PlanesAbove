@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:16 -- Task verified and completed: airspace-w3k8d - hexdb.io als Routenquelle, vorerst an erster Stelle vor adsbdb und VRS; Konfliktregel: erste plausible Route gewinnt
+
+**Type:** Work / Task completion
+**Task:** airspace-w3k8d - hexdb.io als Routenquelle, vorerst an erster Stelle vor adsbdb und VRS; Konfliktregel: erste plausible Route gewinnt
+**Summary:** hexdb.io als erste Routenquelle (Default-Kette hexdb → adsbdb → vrs), erste plausible Route gewinnt, hexdb-Text nie persistiert; ADR 0016 amendiert
+**Duration:** 8m
+**Verification:** PASS (iteration 1)
+**Files changed:** 15
+**Tests added:** 17 (hexdb-route-source.test.ts)
+**ADRs written:** 0016 (amendment)
+
+---
+
 ## 2026-10-27 19:15 -- Modeling / Dismissed: airspace-p2v6d
 
 **Type:** Modeling / Dismiss

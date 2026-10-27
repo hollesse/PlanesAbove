@@ -36,14 +36,21 @@ describe('parseConfig (ADR 0007)', () => {
 });
 
 describe('sources.route (ADR 0014)', () => {
-  it('defaults to order [adsbdb, vrs] with a 24h snapshot refresh (ADR 0016)', () => {
-    expect(parseConfig(MIN).sources.route).toMatchObject({ order: ['adsbdb', 'vrs'], snapshotRefreshHours: 24, adsbdb: { timeoutMs: 5000, backoffMinutes: 5 } });
+  it('defaults to order [hexdb, adsbdb, vrs] with a 24h snapshot refresh (ADR 0016)', () => {
+    expect(parseConfig(MIN).sources.route).toMatchObject({ order: ['hexdb', 'adsbdb', 'vrs'], snapshotRefreshHours: 24, hexdb: { timeoutMs: 5000, backoffMinutes: 5 }, adsbdb: { timeoutMs: 5000, backoffMinutes: 5 } });
   });
   it('keeps [vrs] valid and validates the adsbdb timeout/backoff', () => {
     expect(parseConfig(MIN + 'sources: { route: { order: [vrs] } }\n').sources.route.order).toEqual(['vrs']);
     for (const bad of ['0', '-1', '"x"']) {
       expect(() => parseConfig(MIN + `sources: { route: { adsbdb: { timeoutMs: ${bad} } } }\n`)).toThrow(/adsbdb\.timeoutMs/);
       expect(() => parseConfig(MIN + `sources: { route: { adsbdb: { backoffMinutes: ${bad} } } }\n`)).toThrow(/adsbdb\.backoffMinutes/);
+    }
+  });
+  it('accepts hexdb in the order and validates hexdb timeout/backoff', () => {
+    expect(parseConfig(MIN + 'sources: { route: { order: [vrs, hexdb] } }\n').sources.route.order).toEqual(['vrs', 'hexdb']);
+    for (const bad of [0, -1]) {
+      expect(() => parseConfig(MIN + `sources: { route: { hexdb: { timeoutMs: ${bad} } } }\n`)).toThrow(/hexdb\.timeoutMs/);
+      expect(() => parseConfig(MIN + `sources: { route: { hexdb: { backoffMinutes: ${bad} } } }\n`)).toThrow(/hexdb\.backoffMinutes/);
     }
   });
   it('accepts vrs and adsbdb, rejects anything else (e.g. adsblol)', () => {

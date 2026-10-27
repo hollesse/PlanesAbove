@@ -101,7 +101,7 @@ export class SkyService {
   private recordSighting(a: Flugzeug, distanceKm: number, lookup: RouteLookup | null, slot: number | null, now: number): void {
     const routeInfo = lookup?.info ?? null;
     const { tc, airline, livery } = this.identify(a);
-    // adsbdb text must never reach SQLite (its terms, ADR 0016): only the source is recorded for it. VRS and FlightAware text may be stored (ADR 0018).
+    // adsbdb/hexdb text must never reach SQLite (its terms, ADR 0016): only the source is recorded for it. VRS and FlightAware text may be stored (ADR 0018).
     const route = routeInfo?.source === 'vrs' || routeInfo?.source === 'flightaware' ? routeInfo.text : null;
     const verdict = this.d.sightings.observe({ icao24: a.icao24, callsign: a.callsign, airline: airline?.name, typeCode: a.typeCode, typklasse: tc.typklasse, liveryPresent: livery.present, distanceKm, route, routeSource: routeInfo?.source ?? null, slot }, now);
     if (lookup?.fresh && lookup.attempts.length) this.d.sightings.recordLookup(a.icao24, lookup.attempts, lookup.conflict, lookup.chosen, now);

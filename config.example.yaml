@@ -39,7 +39,10 @@ sources:
       dailyRequestCap: 400     # adsb.lol allows 500 requests per UTC day; stay below it. Cap reached -> adsb-lol is skipped until 00:00 UTC (persisted, survives restarts)
   route:
     enabled: true
-    order: [adsbdb, vrs]       # adsbdb = live lookup first (never persisted), vrs = offline VRS standing-data snapshot (CC0) as fallback
+    order: [hexdb, adsbdb, vrs]  # first plausible route wins. hexdb, adsbdb = live lookups (never persisted), vrs = offline VRS standing-data snapshot (CC0) as fallback
+    hexdb:
+      timeoutMs: 5000          # hexdb request timeout
+      backoffMinutes: 5        # skip hexdb this long after an HTTP 429
     adsbdb:
       timeoutMs: 5000          # adsbdb request timeout
       backoffMinutes: 5        # skip adsbdb this long after an HTTP 429

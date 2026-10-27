@@ -13,6 +13,7 @@ import { AdsbFiFlightSource } from './modules/airspace/adapters/adsb-fi';
 import { DailyRequestBudget } from './modules/airspace/flight-source-budget';
 import { buildFlightSourceChain, type FlightSourceChain } from './modules/airspace/flight-source-chain';
 import type { Fetch } from './modules/airspace/adapters/http';
+import { HexdbRouteSource } from './modules/airspace/adapters/hexdb-route-source';
 import { AdsbdbRouteSource } from './modules/airspace/adapters/adsbdb-route-source';
 import { FlightAwareRouteSource } from './modules/airspace/adapters/flightaware-route-source';
 import { FlightAwareCallLog } from './modules/airspace/flightaware-call-log';
@@ -97,6 +98,9 @@ export async function startService(o: ServiceOptions): Promise<Service> {
         const f = config.sources.route.flightaware;
         flightaware = new FlightAwareRouteSource({ fetch: fetchFn, apiKey, clock: scheduler, log, calls: new FlightAwareCallLog(db), ...f });
         routeSources.push(flightaware);
+      } else if (name === 'hexdb') {
+        const r = config.sources.route.hexdb;
+        routeSources.push(new HexdbRouteSource({ fetch: fetchFn, userAgent: ua, timeoutMs: r.timeoutMs, backoffMs: r.backoffMinutes * 60_000, clock, log }));
       } else if (name === 'adsbdb') {
         const r = config.sources.route.adsbdb;
         routeSources.push(new AdsbdbRouteSource({ fetch: fetchFn, userAgent: ua, timeoutMs: r.timeoutMs, backoffMs: r.backoffMinutes * 60_000, clock, log }));

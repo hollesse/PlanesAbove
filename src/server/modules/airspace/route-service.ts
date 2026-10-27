@@ -1,5 +1,5 @@
 // Route enrichment: plausibility rule + in-memory cache (positive TTL hours, negative shorter). ADR 0005 #3/#4.
-// The cache is in memory only; the persisted route cache is airspace-p2v6d (ADR 0014). Never persist adsbdb results (ADR 0005).
+// The cache is in memory only; the persisted route cache is airspace-p2v6d (ADR 0014). Never persist adsbdb/hexdb results (ADR 0005).
 import type { Clock } from '../../clock';
 import { distanceKm } from './selection';
 import { angleDiffDeg, bearingDeg, crossTrackKm } from './geo';
@@ -94,7 +94,7 @@ export class RouteService {
         if (!isPlausibleRoute(r, position, { trackDeg: ctx?.trackDeg, verticalRateMs: ctx?.verticalRateMs, altitudeM: ctx?.altitudeM }, this.o.plausibility)) { attempts.push({ source: src.name, outcome: 'rejected' }); continue; }
         attempts.push({ source: src.name, outcome: 'hit' });
         texts.add(formatRoute(r));
-        if (!info) { info = { text: formatRoute(r), source: r.source ?? (src.name === 'adsbdb' ? 'adsbdb' : src.name === 'flightaware' ? 'flightaware' : 'vrs') }; chosen = src.name; }
+        if (!info) { info = { text: formatRoute(r), source: r.source ?? (src.name === 'hexdb' ? 'hexdb' : src.name === 'adsbdb' ? 'adsbdb' : src.name === 'flightaware' ? 'flightaware' : 'vrs') }; chosen = src.name; }
         if (!this.o.compareAll) break;
       } catch {
         attempts.push({ source: src.name, outcome: 'unavailable' });

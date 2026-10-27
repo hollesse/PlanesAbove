@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { FLIGHT_SOURCE_NAMES } from './modules/airspace/flight-source-names';
 const FLIGHTAWARE_DEFAULTS = { timeoutMs: 8000, monthlyBudgetUsd: 4.5, monthlyRequestCap: 900, usageSyncMinutes: 30, usageLagMinutes: 15, billingPeriodStartDay: 1 };
 const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 5, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 250, climbMetersPerKm: 120, descentMetersPerKm: 80, profileSlackM: 600 };
-const ROUTE_DEFAULTS = { enabled: true, order: ['adsbdb' as const, 'vrs' as const], adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS, plausibility: PLAUSIBILITY_DEFAULTS };
+const ROUTE_DEFAULTS = { enabled: true, order: ['hexdb' as const, 'adsbdb' as const, 'vrs' as const], hexdb: { timeoutMs: 5000, backoffMinutes: 5 }, adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS, plausibility: PLAUSIBILITY_DEFAULTS };
 
 const schema = z.object({
   mode: z.enum(['live', 'mock']).default('live'),
@@ -38,8 +38,13 @@ const schema = z.object({
     }).default({ timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES], adsbLol: { dailyRequestCap: 400 } }),
     route: z.object({
       enabled: z.boolean().default(true),
-      /** Source order: adsbdb live lookup first, offline VRS snapshot as fallback (ADR 0016). */
-      order: z.array(z.enum(['vrs', 'adsbdb', 'flightaware'])).min(1).default(['adsbdb', 'vrs']),
+      /** Source order: hexdb, then adsbdb live lookups, offline VRS snapshot as fallback (ADR 0016, amendment 2026-10-27). */
+      order: z.array(z.enum(['vrs', 'adsbdb', 'hexdb', 'flightaware'])).min(1).default(['hexdb', 'adsbdb', 'vrs']),
+      hexdb: z.object({
+        timeoutMs: z.number().int().positive().default(5000),
+        /** hexdb is skipped this long after an HTTP 429. */
+        backoffMinutes: z.number().positive().default(5),
+      }).default({ timeoutMs: 5000, backoffMinutes: 5 }),
       adsbdb: z.object({
         timeoutMs: z.number().int().positive().default(5000),
         /** adsbdb is skipped this long after an HTTP 429. */

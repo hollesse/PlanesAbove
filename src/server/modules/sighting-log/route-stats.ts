@@ -4,7 +4,7 @@
 
 export interface StatsDb { prepare(sql: string): { all(...p: unknown[]): unknown[] } }
 
-export interface DayStat { date: string; total: number; vrs: number; adsbdb: number; other: number; none: number; knownShare: number }
+export interface DayStat { date: string; total: number; vrs: number; adsbdb: number; hexdb: number; other: number; none: number; knownShare: number }
 export interface SourceStat { source: string; hit: number; unknown: number; unavailable: number; rejected: number; chosen: number }
 export interface UnknownStat { time: string; callsign: string | null; airline: string | null; typklasse: string }
 export interface AirlineStat { prefix: string; total: number; unknown: number; unknownShare: number }
@@ -23,9 +23,9 @@ export function routeStats(db: StatsDb, opts: { days: number; nowMs: number }): 
   const unknown: UnknownStat[] = [];
   for (const s of sightings) {
     const date = s.t.slice(0, 10);
-    const d = byDay.get(date) ?? { date, total: 0, vrs: 0, adsbdb: 0, other: 0, none: 0, knownShare: 0 };
+    const d = byDay.get(date) ?? { date, total: 0, vrs: 0, adsbdb: 0, hexdb: 0, other: 0, none: 0, knownShare: 0 };
     d.total++;
-    if (s.rs === 'vrs') d.vrs++; else if (s.rs === 'adsbdb') d.adsbdb++; else if (s.rs === null) d.none++; else d.other++;
+    if (s.rs === 'vrs') d.vrs++; else if (s.rs === 'adsbdb') d.adsbdb++; else if (s.rs === 'hexdb') d.hexdb++; else if (s.rs === null) d.none++; else d.other++;
     byDay.set(date, d);
     const p = prefixOf(s.callsign);
     const a = byPrefix.get(p) ?? { total: 0, unknown: 0 };
@@ -67,7 +67,7 @@ const pct = (x: number): string => `${Math.round(x * 100)}%`;
 export function formatRouteStats(s: RouteStats): string {
   const out: string[] = [];
   out.push('Routen je Tag (Sichtungen mit Slot, nach endgueltiger Quelle)');
-  for (const d of s.days) out.push(`  ${d.date}  gesamt ${d.total}  vrs ${d.vrs}  adsbdb ${d.adsbdb}${d.other ? `  andere ${d.other}` : ''}  none ${d.none}  bekannt ${pct(d.knownShare)}`);
+  for (const d of s.days) out.push(`  ${d.date}  gesamt ${d.total}  vrs ${d.vrs}  adsbdb ${d.adsbdb}  hexdb ${d.hexdb}${d.other ? `  andere ${d.other}` : ''}  none ${d.none}  bekannt ${pct(d.knownShare)}`);
   out.push('', 'Befunde je Quelle');
   for (const r of s.sources) out.push(`  ${r.source}  hit ${r.hit}  unknown ${r.unknown}  unavailable ${r.unavailable}  rejected ${r.rejected}  gewaehlt ${r.chosen}`);
   out.push('', `Unbekannte Routen (${s.unknown.length})`);

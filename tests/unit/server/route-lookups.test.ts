@@ -193,7 +193,7 @@ describe('routeStats + CLI', () => {
   it('counts per day, per source, unknown list, airline share and conflicts - slot sightings in the window only', () => {
     const { db } = seed();
     const s = routeStats(db, { days: 7, nowMs: NOW });
-    expect(s.days).toEqual([{ date: '2026-10-27', total: 3, vrs: 1, adsbdb: 1, other: 0, none: 1, knownShare: 0.667 }]);
+    expect(s.days).toEqual([{ date: '2026-10-27', total: 3, vrs: 1, adsbdb: 1, hexdb: 0, other: 0, none: 1, knownShare: 0.667 }]);
     expect(s.sources).toEqual([
       { source: 'adsbdb', hit: 1, unknown: 1, unavailable: 1, rejected: 0, chosen: 1 },
       { source: 'hexdb', hit: 1, unknown: 0, unavailable: 0, rejected: 0, chosen: 0 },

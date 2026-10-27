@@ -1,7 +1,7 @@
 ---
 id: airspace-w3k8d
 title: hexdb.io als Routenquelle, vorerst an erster Stelle vor adsbdb und VRS; Konfliktregel: erste plausible Route gewinnt
-status: doing
+status: done
 type: feature
 context: airspace
 created: 2026-10-27
@@ -36,3 +36,7 @@ Messung am 2026-10-27 über 78 angezeigte Flüge (Oberweyer): adsbdb und hexdb.i
 
 ## Notes
 Captured via `modeling` on 2026-10-27; refined 2026-10-27 (Entscheidungen des Betreibers: hexdb an erster Stelle, Konfliktregel „erste plausible Route gewinnt“, keine Altersgewichtung). Flightradar-Wahrheit für die 12 Konfliktfälle fehlt; Beispiele: KLM47X adsbdb EHAM-LSZH vs hexdb EHAM-EDDM, DLH1EK adsbdb EGBB-EDDF vs hexdb EDDF-EDDL, DLH9MU adsbdb EDDF-ENGM vs hexdb EDDL-EDDM. Charter-/Privatflüge (PGT, LAV, TKJ, Kennzeichen-Callsigns) bleiben in allen freien Quellen unbekannt; dafür käme nur ein Tracking-Dienst (FlightAware AeroAPI, kostenpflichtig, ADR-0001-Abweichung) in Frage.
+
+## Outcome
+
+hexdb.io is now the first route source of the default chain [hexdb, adsbdb, vrs] (first plausible route wins, chain semantics unchanged). New adapter `HexdbRouteSource` (src/server/modules/airspace/adapters/hexdb-route-source.ts): GET /api/v2/routes/{callsign}, 404 = unknown (null), 429/5xx/timeout/parse errors throw unavailable, 429 backoff via backoffMinutes, multi-leg routes from `airports[]`; hexdb has no municipality, so the airport city is its name without the "(International) Airport" suffix. Config: `sources.route.order` accepts `hexdb`, new `sources.route.hexdb.{timeoutMs, backoffMinutes}` (defaults 5000/5), wired in app.ts. RouteService maps source name `hexdb` to `RouteInfo.source`. Persistence: hexdb is stored like adsbdb (route NULL, route_source 'hexdb'), vrs/flightaware may replace it; route-stats and `stats:routes` have a hexdb column (table and --json). Live code never touches FlightAware. Docs: README route section and licence note, config.example.yaml; ADR 0016 amendment and README delta reported. Fixtures recorded 2026-10-27 from hexdb.io (LHX1HL, DLH400, ZZZZ9Q 404) in tests/fixtures/hexdb/. Tests: tests/unit/server/hexdb-route-source.test.ts (17, incl. chain cases, SkyService Takt with DB scan for fixture codes and texts, stats), config.test.ts and route-lookups.test.ts adjusted. Suite 399 green, typecheck clean; Playwright not run in this worktree.
