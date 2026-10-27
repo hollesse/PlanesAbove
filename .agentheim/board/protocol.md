@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:50 -- Modeling / Captured: airspace-w1q3x - hexdb und VRS immer beide fragen; eine VRS-Mehrleg-Route, deren Endstück zur hexdb-Route passt, gewinnt (Startflughafen bei Zwischenlandungen)
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** todo
+**Summary:** Befund UPS1: hexdb kennt nur das letzte Leg (Sharjah → Köln), VRS die ganze Kette ab Hongkong. hexdb und VRS künftig immer beide fragen (VRS ist lokal, kein Request); passt die hexdb-Route als Endstück zur VRS-Mehrleg-Route, gewinnt VRS, bei echtem Konflikt bleibt hexdb vorn. Direkt nach todo, Regel und Testfälle sind mit dem Betreiber abgestimmt.
+
+---
+
 ## 2026-10-27 21:37 -- Work session ended
 
 **Type:** Work / Session end

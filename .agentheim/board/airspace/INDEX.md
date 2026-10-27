@@ -11,13 +11,14 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 0
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 18
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **airspace-w1q3x** — hexdb und VRS immer beide fragen; eine VRS-Mehrleg-Route, deren Endstück zur hexdb-Route passt, gewinnt (Startflughafen bei Zwischenlandungen) (feature) — `todo/airspace-w1q3x-hexdb-und-vrs-immer-beide-fragen-mehrleg-route-bevorzugen.md`
 <!-- todo-list:end -->
 
 ### Doing
