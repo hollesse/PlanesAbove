@@ -5,6 +5,16 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:04 -- Research: Alternativen zu adsb.lol als Positionsquelle
+
+**Type:** Research
+**Requested by:** user
+**Report:** knowledge/research/flight-position-source-alternatives-2026-10-27.md
+**Review:** PASS (iteration 1)
+**Summary:** adsb.lol keyless ist auf 500 Requests/Tag je IP begrenzt (gemessen: 4/s, 60/min, 500/Tag), der 30-s-Takt braucht 2880. adsb.fi v3 liefert dasselbe readsb-Schema (gemessen), 1 req/s, nicht-kommerziell mit Quellenangabe: Drop-in-Primaerquelle. airplanes.live derzeit offen (1 req/s), adsb.one archiviert, OpenSky 4000 Credits/Tag als letzter Fallback. Empfehlung: Kette adsb.fi -> airplanes.live -> adsb.lol (Tagesbudget) -> OpenSky, Backoff nach Rate-Limit-Headern, Circuit Breaker; Eigenempfaenger (RTL-SDR, 40-70 EUR) mittelfristig als Stufe 0.
+
+---
+
 ## 2026-10-27 17:21 -- Work session ended
 
 **Type:** Work / Session end

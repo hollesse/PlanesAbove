@@ -21,6 +21,7 @@ Catalog of ADRs, research, and concept synthesis pages scoped to this bounded co
 ## Research touching this BC
 
 <!-- research-local:start -->
+- **flight-position-source-alternatives-2026-10-27** — adsb.lol keyless = 500 Requests/Tag je IP (gemessen); adsb.fi v3 als Drop-in-Primaerquelle (1 req/s, nicht-kommerziell, Quellenangabe), airplanes.live, adsb.one (archiviert), OpenSky 4000 Credits/Tag als Fallback; Backoff/Circuit-Breaker; Eigenempfaenger als Stufe 0 — `../../research/flight-position-source-alternatives-2026-10-27.md`
 - **route-coverage-sources-2026-10-27** — Routenabdeckung steigern: keine freie Quelle kennt den getrackten Flug; hexdb +8 Punkte; FlightAware AeroAPI Personal als Last Resort ($5/Monat frei); Heuristiken als Konflikt-Schiedsrichter — `../../research/route-coverage-sources-2026-10-27.md`
 <!-- research-local:end -->
 
