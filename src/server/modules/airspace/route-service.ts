@@ -5,9 +5,16 @@ import { distanceKm } from './selection';
 import { angleDiffDeg, bearingDeg, crossTrackKm } from './geo';
 import { closedAirspaceHit, DEFAULT_CLOSED_AIRSPACES, type ClosedAirspace } from './closed-airspace';
 import type { Logger } from '../../logger';
-import type { LatLon, LookupContext, Route, RouteOrigin, RouteSource } from './model';
+import type { AirportEntry } from './typeclass';
+import type { Airport, LatLon, LookupContext, Route, RouteOrigin, RouteSource } from './model';
 
-export const formatRoute = (r: Route): string => (r.legs && r.legs.length > 2 ? r.legs : [r.from, r.to]).map((a) => a.city).join(' → ');
+/** "Frankfurt (FRA)" from the own airport table; no IATA -> city only; no entry (or no ICAO / no table) -> the source's city, `onMissing(icao)` told about the gap. */
+const airportLabel = (a: Airport, table?: Record<string, AirportEntry>, onMissing?: (icao: string) => void): string => {
+  const e = table && a.icao ? table[a.icao.toUpperCase()] : undefined;
+  if (!e) { if (table && a.icao) onMissing?.(a.icao.toUpperCase()); return a.city; }
+  return e.iata ? `${e.city} (${e.iata})` : e.city;
+};
+export const formatRoute = (r: Route, airports?: Record<string, AirportEntry>, onMissing?: (icao: string) => void): string => (r.legs && r.legs.length > 2 ? r.legs : [r.from, r.to]).map((a) => airportLabel(a, airports, onMissing)).join(' → ');
 
 /** Thresholds of the plausibility check (config `sources.route.plausibility`, airspace-p8w2k). */
 export interface PlausibilityConfig {
@@ -66,12 +73,17 @@ export class RouteService {
   /** `rejected`: routes a source delivered that failed plausibility at the time; re-judged each tick against the current position, never re-asked (airspace-prwpv). */
   private cache = new Map<string, { until: number; info: RouteInfo | null; rejected?: { route: Route; source: string; origin: RouteOrigin }[] }>();
   private readonly sources: RouteSource[];
-  constructor(source: RouteSource | RouteSource[], private readonly clock: Clock, private readonly o: { ttlMs: number; negativeTtlMs: number; log?: Logger; /** Ask every source and flag a conflict when two plausible routes differ; the first in order is still chosen. Default false: stop at the first plausible hit. */ compareAll?: boolean; /** Plausibility thresholds; defaults to DEFAULT_PLAUSIBILITY. */ plausibility?: PlausibilityConfig }) {
+  constructor(source: RouteSource | RouteSource[], private readonly clock: Clock, private readonly o: { ttlMs: number; negativeTtlMs: number; log?: Logger; /** Ask every source and flag a conflict when two plausible routes differ; the first in order is still chosen. Default false: stop at the first plausible hit. */ compareAll?: boolean; /** Plausibility thresholds; defaults to DEFAULT_PLAUSIBILITY. */ plausibility?: PlausibilityConfig; /** Own airport table for the uniform display text; an ICAO missing from it is warned about once per process. */ airports?: Record<string, AirportEntry> }) {
     const all = Array.isArray(source) ? source : [source];
     this.sources = [...all.filter((s) => !s.lastResort), ...all.filter((s) => s.lastResort)]; // paid last-resort sources always come last (ADR 0018)
   }
 
-  /** "Frankfurt → New York" or null (Route unbekannt). Never throws. */
+  private readonly warnedIcao = new Set<string>();
+  private format(r: Route): string {
+    return formatRoute(r, this.o.airports, (icao) => { if (this.warnedIcao.has(icao)) return; this.warnedIcao.add(icao); this.o.log?.warn('airport missing in tables/airports.json, showing the source name', { icao }); });
+  }
+
+  /** "Frankfurt (FRA) → New York (JFK)" or null (Route unbekannt). Never throws. */
   async routeFor(callsign: string | undefined, position: LatLon, ctx?: LookupContext): Promise<string | null> {
     return (await this.routeInfoFor(callsign, position, ctx))?.text ?? null;
   }
@@ -91,7 +103,7 @@ export class RouteService {
         const obs = { trackDeg: ctx?.trackDeg, verticalRateMs: ctx?.verticalRateMs, altitudeM: ctx?.altitudeM };
         const ok = hit.rejected.find((x) => isPlausibleRoute(x.route, position, obs, this.o.plausibility, this.o.log));
         if (ok) { // became plausible with the plane's new position: show it, no source is asked again
-          const info: RouteInfo = { text: formatRoute(ok.route), source: ok.origin };
+          const info: RouteInfo = { text: this.format(ok.route), source: ok.origin };
           this.cache.set(callsign, { until: hit.until, info });
           this.o.log?.info('route lookup', { callsign, source: info.source });
           return { info, attempts: [{ source: ok.source, outcome: 'hit' }], conflict: false, chosen: ok.source, fresh: true };
@@ -114,8 +126,8 @@ export class RouteService {
         if (!r) { attempts.push({ source: src.name, outcome: 'unknown' }); continue; }
         if (!isPlausibleRoute(r, position, { trackDeg: ctx?.trackDeg, verticalRateMs: ctx?.verticalRateMs, altitudeM: ctx?.altitudeM }, this.o.plausibility, this.o.log)) { attempts.push({ source: src.name, outcome: 'rejected' }); rejected.push({ route: r, source: src.name, origin: originOf(r, src) }); continue; }
         attempts.push({ source: src.name, outcome: 'hit' });
-        texts.add(formatRoute(r));
-        if (!info) { info = { text: formatRoute(r), source: originOf(r, src) }; chosen = src.name; }
+        texts.add(this.format(r));
+        if (!info) { info = { text: this.format(r), source: originOf(r, src) }; chosen = src.name; }
         if (!this.o.compareAll) break;
       } catch {
         attempts.push({ source: src.name, outcome: 'unavailable' });

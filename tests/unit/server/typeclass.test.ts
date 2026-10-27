@@ -53,10 +53,10 @@ describe('resolveTypeClass (ADR 0010)', () => {
 
 describe('loadTables validation', () => {
   it('rejects an unknown Typklasse id', () => {
-    expect(() => loadTables({ typeClasses: { X1: { name: 'x', typklasse: 'zeppelin', kategorie: 'k' } }, airlines: {}, airlineLiveries: {} })).toThrow(/zeppelin/);
+    expect(() => loadTables({ typeClasses: { X1: { name: 'x', typklasse: 'zeppelin', kategorie: 'k' } }, airlines: {}, airports: {}, airlineLiveries: {} })).toThrow(/zeppelin/);
   });
   it('rejects a livery id that is not in the catalog', () => {
-    expect(() => loadTables({ typeClasses: {}, airlines: {}, airlineLiveries: { DLH: 'nonexistent' } })).toThrow(/nonexistent/);
+    expect(() => loadTables({ typeClasses: {}, airlines: {}, airports: {}, airlineLiveries: { DLH: 'nonexistent' } })).toThrow(/nonexistent/);
   });
 });
 

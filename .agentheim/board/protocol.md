@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:36 -- Task verified and completed: airspace-b7kx2 - Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen
+
+**Type:** Work / Task completion
+**Task:** airspace-b7kx2 - Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen
+**Summary:** Eigene Flughafentabelle tables/airports.json (209 Flughäfen, VRS-Seed bis Cutoff 2026-10-27T20:40Z): Routen heißen quellenunabhängig Stadt (IATA), Fallback Anbietername mit einmaliger Warnung je ICAO; Verifier PASS it.2 (476 Tests)
+**Duration:** 9m
+**Verification:** PASS (iteration 2)
+**Files changed:** 12
+**Tests added:** 11
+**ADRs written:** 0021
+
+---
+
+## 2026-10-27 21:33 -- Verification failed: airspace-b7kx2 - Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen
+
+**Type:** Work / Verification failure
+**Task:** airspace-b7kx2 - Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen
+**Iteration:** 1 of 3
+**Reasons:** Seed-Coverage-Test gegen die Live-DB rot (LRTR fehlt, Sichtung WMT448 kam nach dem Seed-Lauf), sonst alles grün (475 Tests, typecheck)
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-27 21:32 -- Modeling / Promoted: infrastructure-d3v7k - Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
 
 **Type:** Modeling / Promote

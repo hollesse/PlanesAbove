@@ -15,7 +15,9 @@ function toAirport(v: unknown): Airport {
   if (!a || typeof lat !== 'number' || typeof lon !== 'number' || !Number.isFinite(lat) || !Number.isFinite(lon)) throw new SourceError('parse', 'airport without coordinates');
   const city = [a.municipality, a.name, a.icao_code].find((x): x is string => typeof x === 'string' && x !== '');
   if (!city) throw new SourceError('parse', 'airport without name');
-  return { name: typeof a.name === 'string' && a.name ? a.name : city, city, lat, lon };
+  const icao = typeof a.icao_code === 'string' && a.icao_code ? a.icao_code : undefined;
+  const iata = typeof a.iata_code === 'string' && a.iata_code ? a.iata_code : undefined;
+  return { name: typeof a.name === 'string' && a.name ? a.name : city, city, ...(icao && { icao }), ...(iata && { iata }), lat, lon };
 }
 
 export class AdsbdbRouteSource implements RouteSource {

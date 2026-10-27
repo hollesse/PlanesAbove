@@ -4,10 +4,14 @@ import { LIVERIES } from '../../../client/ui/domain/liveries';
 import typeClassesJson from './tables/type-classes.json';
 import airlinesJson from './tables/airlines.json';
 import airlineLiveriesJson from './tables/airline-liveries.json';
+import airportsJson from './tables/airports.json';
 
 export interface TypeClassEntry { name: string; typklasse: string; kategorie: string; besonderheit?: string }
 export interface AirlineEntry { name: string; country: string }
+/** Own airport table (airspace-b7kx2): ICAO -> display city and optional IATA, so a route reads the same whichever source delivered it. */
+export interface AirportEntry { city: string; iata?: string }
 export interface Tables {
+  airports: Record<string, AirportEntry>;
   typeClasses: Record<string, TypeClassEntry>;
   airlines: Record<string, AirlineEntry>;
   airlineLiveries: Record<string, string>;
@@ -19,11 +23,16 @@ export function loadTables(raw: Tables): Tables {
   for (const [code, e] of Object.entries(raw.typeClasses)) if (!PLANE_TYPE_IDS.includes(e.typklasse as PlaneType)) problems.push(`type-classes.${code}: unknown typklasse "${e.typklasse}"`);
   const liveryIds = LIVERIES.map((l) => l.id);
   for (const [prefix, id] of Object.entries(raw.airlineLiveries)) if (!liveryIds.includes(id)) problems.push(`airline-liveries.${prefix}: unknown livery "${id}"`);
+  for (const [icao, e] of Object.entries(raw.airports)) {
+    if (!/^[A-Z0-9]{4}$/.test(icao)) problems.push(`airports.${icao}: key is not a 4-character ICAO code`);
+    if (typeof e.city !== 'string' || !e.city.trim()) problems.push(`airports.${icao}: empty city`);
+    if (e.iata !== undefined && !/^[A-Z0-9]{3}$/.test(e.iata)) problems.push(`airports.${icao}: iata "${e.iata}" is not a 3-character code`);
+  }
   if (problems.length) throw new Error(`Invalid airspace tables:\n${problems.join('\n')}`);
   return raw;
 }
 
-export const defaultTables = (): Tables => loadTables({ typeClasses: typeClassesJson as Record<string, TypeClassEntry>, airlines: airlinesJson, airlineLiveries: airlineLiveriesJson });
+export const defaultTables = (): Tables => loadTables({ typeClasses: typeClassesJson as Record<string, TypeClassEntry>, airlines: airlinesJson, airports: airportsJson as Record<string, AirportEntry>, airlineLiveries: airlineLiveriesJson });
 
 export interface ResolvedTypeClass {
   typklasse: PlaneType;

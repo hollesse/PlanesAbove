@@ -18,7 +18,9 @@ function toAirport(v: unknown): Airport {
   // hexdb has no municipality: the city is the airport name without its "(International) Airport" suffix.
   const city = [name.replace(/\s+(International\s+)?Airport$/i, '').trim(), name, a.icao].find((x): x is string => typeof x === 'string' && x !== '');
   if (!city) throw new SourceError('parse', 'airport without name');
-  return { name: name || city, city, lat, lon };
+  const icao = typeof a.icao === 'string' && a.icao ? a.icao : undefined;
+  const iata = typeof a.iata === 'string' && a.iata ? a.iata : undefined;
+  return { name: name || city, city, ...(icao && { icao }), ...(iata && { iata }), lat, lon };
 }
 
 export class HexdbRouteSource implements RouteSource {

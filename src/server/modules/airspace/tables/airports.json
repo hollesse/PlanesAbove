@@ -1,0 +1,838 @@
+{
+ "BIKF": {
+  "city": "Reykjavík",
+  "iata": "KEF"
+ },
+ "BKPR": {
+  "city": "Prishtina",
+  "iata": "PRN"
+ },
+ "CYVR": {
+  "city": "Vancouver",
+  "iata": "YVR"
+ },
+ "CYYC": {
+  "city": "Calgary",
+  "iata": "YYC"
+ },
+ "CYYZ": {
+  "city": "Toronto",
+  "iata": "YYZ"
+ },
+ "DAAG": {
+  "city": "Algiers",
+  "iata": "ALG"
+ },
+ "DNAA": {
+  "city": "Abuja",
+  "iata": "ABV"
+ },
+ "DNMM": {
+  "city": "Lagos",
+  "iata": "LOS"
+ },
+ "DNPO": {
+  "city": "Port Harcourt",
+  "iata": "PHC"
+ },
+ "DTMB": {
+  "city": "Monastir",
+  "iata": "MIR"
+ },
+ "DTTJ": {
+  "city": "Djerba",
+  "iata": "DJE"
+ },
+ "EBBR": {
+  "city": "Brussels",
+  "iata": "BRU"
+ },
+ "EBCI": {
+  "city": "Brussels",
+  "iata": "CRL"
+ },
+ "EBLG": {
+  "city": "Liège",
+  "iata": "LGG"
+ },
+ "EDDB": {
+  "city": "Berlin",
+  "iata": "BER"
+ },
+ "EDDC": {
+  "city": "Dresden",
+  "iata": "DRS"
+ },
+ "EDDF": {
+  "city": "Frankfurt",
+  "iata": "FRA"
+ },
+ "EDDG": {
+  "city": "Münster",
+  "iata": "FMO"
+ },
+ "EDDH": {
+  "city": "Hamburg",
+  "iata": "HAM"
+ },
+ "EDDK": {
+  "city": "Cologne",
+  "iata": "CGN"
+ },
+ "EDDL": {
+  "city": "Düsseldorf",
+  "iata": "DUS"
+ },
+ "EDDM": {
+  "city": "Munich",
+  "iata": "MUC"
+ },
+ "EDDN": {
+  "city": "Nürnberg",
+  "iata": "NUE"
+ },
+ "EDDP": {
+  "city": "Leipzig",
+  "iata": "LEJ"
+ },
+ "EDDS": {
+  "city": "Stuttgart",
+  "iata": "STR"
+ },
+ "EDDT": {
+  "city": "Berlin",
+  "iata": "TXL"
+ },
+ "EDDV": {
+  "city": "Hannover",
+  "iata": "HAJ"
+ },
+ "EDDW": {
+  "city": "Bremen",
+  "iata": "BRE"
+ },
+ "EDLP": {
+  "city": "Paderborn",
+  "iata": "PAD"
+ },
+ "EDLV": {
+  "city": "Weeze",
+  "iata": "NRN"
+ },
+ "EDLW": {
+  "city": "Dortmund",
+  "iata": "DTM"
+ },
+ "EETN": {
+  "city": "Tallinn",
+  "iata": "TLL"
+ },
+ "EFHK": {
+  "city": "Helsinki",
+  "iata": "HEL"
+ },
+ "EGAA": {
+  "city": "Belfast",
+  "iata": "BFS"
+ },
+ "EGBB": {
+  "city": "Birmingham",
+  "iata": "BHX"
+ },
+ "EGCC": {
+  "city": "Manchester",
+  "iata": "MAN"
+ },
+ "EGFF": {
+  "city": "Cardiff",
+  "iata": "CWL"
+ },
+ "EGGD": {
+  "city": "Bristol",
+  "iata": "BRS"
+ },
+ "EGGP": {
+  "city": "Liverpool",
+  "iata": "LPL"
+ },
+ "EGGW": {
+  "city": "London",
+  "iata": "LTN"
+ },
+ "EGHH": {
+  "city": "Bournemouth",
+  "iata": "BOH"
+ },
+ "EGKK": {
+  "city": "London",
+  "iata": "LGW"
+ },
+ "EGLL": {
+  "city": "London",
+  "iata": "LHR"
+ },
+ "EGMC": {
+  "city": "Southend",
+  "iata": "SEN"
+ },
+ "EGNH": {
+  "city": "Blackpool",
+  "iata": "BLK"
+ },
+ "EGNM": {
+  "city": "Leeds",
+  "iata": "LBA"
+ },
+ "EGNX": {
+  "city": "Nottingham",
+  "iata": "EMA"
+ },
+ "EGPF": {
+  "city": "Glasgow",
+  "iata": "GLA"
+ },
+ "EGPH": {
+  "city": "Edinburgh",
+  "iata": "EDI"
+ },
+ "EGSS": {
+  "city": "London",
+  "iata": "STN"
+ },
+ "EHAM": {
+  "city": "Amsterdam",
+  "iata": "AMS"
+ },
+ "EIDW": {
+  "city": "Dublin",
+  "iata": "DUB"
+ },
+ "EKBI": {
+  "city": "Billund",
+  "iata": "BLL"
+ },
+ "EKCH": {
+  "city": "Copenhagen",
+  "iata": "CPH"
+ },
+ "ELLX": {
+  "city": "Luxembourg",
+  "iata": "LUX"
+ },
+ "ENGM": {
+  "city": "Oslo",
+  "iata": "OSL"
+ },
+ "ENTC": {
+  "city": "Tromsø",
+  "iata": "TOS"
+ },
+ "EPGD": {
+  "city": "Gdańsk",
+  "iata": "GDN"
+ },
+ "EPKK": {
+  "city": "Kraków",
+  "iata": "KRK"
+ },
+ "EPWA": {
+  "city": "Warsaw",
+  "iata": "WAW"
+ },
+ "ESMS": {
+  "city": "Malmö",
+  "iata": "MMX"
+ },
+ "ESSA": {
+  "city": "Stockholm",
+  "iata": "ARN"
+ },
+ "EVRA": {
+  "city": "Riga",
+  "iata": "RIX"
+ },
+ "GCFV": {
+  "city": "Fuerteventura",
+  "iata": "FUE"
+ },
+ "GCLP": {
+  "city": "Gran Canaria",
+  "iata": "LPA"
+ },
+ "GCRR": {
+  "city": "Lanzarote",
+  "iata": "ACE"
+ },
+ "GCTS": {
+  "city": "Teneriffa",
+  "iata": "TFS"
+ },
+ "GMMX": {
+  "city": "Marrakech",
+  "iata": "RAK"
+ },
+ "HECA": {
+  "city": "Cairo",
+  "iata": "CAI"
+ },
+ "HEGN": {
+  "city": "Hurghada",
+  "iata": "HRG"
+ },
+ "HKJK": {
+  "city": "Nairobi",
+  "iata": "NBO"
+ },
+ "HLLB": {
+  "city": "Benghazi",
+  "iata": "BEN"
+ },
+ "KATL": {
+  "city": "Atlanta",
+  "iata": "ATL"
+ },
+ "KBOS": {
+  "city": "Boston",
+  "iata": "BOS"
+ },
+ "KDEN": {
+  "city": "Denver",
+  "iata": "DEN"
+ },
+ "KDFW": {
+  "city": "Dallas-Fort Worth",
+  "iata": "DFW"
+ },
+ "KDTW": {
+  "city": "Detroit",
+  "iata": "DTW"
+ },
+ "KEWR": {
+  "city": "Newark",
+  "iata": "EWR"
+ },
+ "KIAD": {
+  "city": "Washington",
+  "iata": "IAD"
+ },
+ "KIAH": {
+  "city": "Houston",
+  "iata": "IAH"
+ },
+ "KJFK": {
+  "city": "New York",
+  "iata": "JFK"
+ },
+ "KLAX": {
+  "city": "Los Angeles",
+  "iata": "LAX"
+ },
+ "KMCO": {
+  "city": "Orlando",
+  "iata": "MCO"
+ },
+ "KORD": {
+  "city": "Chicago",
+  "iata": "ORD"
+ },
+ "KPHL": {
+  "city": "Philadelphia",
+  "iata": "PHL"
+ },
+ "KRSW": {
+  "city": "Fort Myers",
+  "iata": "RSW"
+ },
+ "KSAN": {
+  "city": "San Diego",
+  "iata": "SAN"
+ },
+ "KSEA": {
+  "city": "Seattle",
+  "iata": "SEA"
+ },
+ "KSFO": {
+  "city": "San Francisco",
+  "iata": "SFO"
+ },
+ "KTPA": {
+  "city": "Tampa",
+  "iata": "TPA"
+ },
+ "LBSF": {
+  "city": "Sofia",
+  "iata": "SOF"
+ },
+ "LCLK": {
+  "city": "Larnaca",
+  "iata": "LCA"
+ },
+ "LCPH": {
+  "city": "Paphos",
+  "iata": "PFO"
+ },
+ "LDPL": {
+  "city": "Pula",
+  "iata": "PUY"
+ },
+ "LDSP": {
+  "city": "Split",
+  "iata": "SPU"
+ },
+ "LDZA": {
+  "city": "Zagreb",
+  "iata": "ZAG"
+ },
+ "LDZD": {
+  "city": "Zadar",
+  "iata": "ZAD"
+ },
+ "LEAL": {
+  "city": "Alicante",
+  "iata": "ALC"
+ },
+ "LEBB": {
+  "city": "Bilbao",
+  "iata": "BIO"
+ },
+ "LEBL": {
+  "city": "Barcelona",
+  "iata": "BCN"
+ },
+ "LEGE": {
+  "city": "Girona",
+  "iata": "GRO"
+ },
+ "LEIB": {
+  "city": "Ibiza",
+  "iata": "IBZ"
+ },
+ "LEJR": {
+  "city": "Jerez de la Frontera",
+  "iata": "XRY"
+ },
+ "LELC": {
+  "city": "Murcia",
+  "iata": "MJV"
+ },
+ "LEMD": {
+  "city": "Madrid",
+  "iata": "MAD"
+ },
+ "LEMG": {
+  "city": "Málaga",
+  "iata": "AGP"
+ },
+ "LEPA": {
+  "city": "Palma de Mallorca",
+  "iata": "PMI"
+ },
+ "LEST": {
+  "city": "Santiago de Compostela",
+  "iata": "SCQ"
+ },
+ "LEVC": {
+  "city": "Valencia",
+  "iata": "VLC"
+ },
+ "LFBO": {
+  "city": "Toulouse",
+  "iata": "TLS"
+ },
+ "LFLL": {
+  "city": "Lyon",
+  "iata": "LYS"
+ },
+ "LFML": {
+  "city": "Marseille",
+  "iata": "MRS"
+ },
+ "LFPG": {
+  "city": "Paris",
+  "iata": "CDG"
+ },
+ "LFSB": {
+  "city": "Basel",
+  "iata": "EAP"
+ },
+ "LGAV": {
+  "city": "Athens",
+  "iata": "ATH"
+ },
+ "LGIR": {
+  "city": "Heraklion",
+  "iata": "HER"
+ },
+ "LGKO": {
+  "city": "Kos",
+  "iata": "KGS"
+ },
+ "LGPZ": {
+  "city": "Preveza",
+  "iata": "PVK"
+ },
+ "LGRP": {
+  "city": "Rhodes",
+  "iata": "RHO"
+ },
+ "LGSA": {
+  "city": "Chania",
+  "iata": "CHQ"
+ },
+ "LGTS": {
+  "city": "Thessaloniki",
+  "iata": "SKG"
+ },
+ "LHBP": {
+  "city": "Budapest",
+  "iata": "BUD"
+ },
+ "LHDC": {
+  "city": "Debrecen",
+  "iata": "DEB"
+ },
+ "LIBP": {
+  "city": "Pescara",
+  "iata": "PSR"
+ },
+ "LICA": {
+  "city": "Lamezia Terme",
+  "iata": "SUF"
+ },
+ "LICC": {
+  "city": "Catania",
+  "iata": "CTA"
+ },
+ "LICJ": {
+  "city": "Palermo",
+  "iata": "PMO"
+ },
+ "LIEA": {
+  "city": "Alghero",
+  "iata": "AHO"
+ },
+ "LIMC": {
+  "city": "Milan",
+  "iata": "MXP"
+ },
+ "LIMJ": {
+  "city": "Genova",
+  "iata": "GOA"
+ },
+ "LIML": {
+  "city": "Milan",
+  "iata": "LIN"
+ },
+ "LIPB": {
+  "city": "Bolzano",
+  "iata": "BZO"
+ },
+ "LIPE": {
+  "city": "Bologna",
+  "iata": "BLQ"
+ },
+ "LIPH": {
+  "city": "Treviso",
+  "iata": "TSF"
+ },
+ "LIPO": {
+  "city": "Brescia",
+  "iata": "VBS"
+ },
+ "LIPZ": {
+  "city": "Venezia",
+  "iata": "VCE"
+ },
+ "LIRF": {
+  "city": "Rome",
+  "iata": "FCO"
+ },
+ "LIRN": {
+  "city": "Napoli",
+  "iata": "NAP"
+ },
+ "LIRQ": {
+  "city": "Firenze",
+  "iata": "FLR"
+ },
+ "LJLJ": {
+  "city": "Ljubljana",
+  "iata": "LJU"
+ },
+ "LKPR": {
+  "city": "Prague",
+  "iata": "PRG"
+ },
+ "LLBG": {
+  "city": "Tel Aviv",
+  "iata": "TLV"
+ },
+ "LMML": {
+  "city": "Malta",
+  "iata": "MLA"
+ },
+ "LOWL": {
+  "city": "Linz",
+  "iata": "LNZ"
+ },
+ "LOWS": {
+  "city": "Salzburg",
+  "iata": "SZG"
+ },
+ "LOWW": {
+  "city": "Vienna",
+  "iata": "VIE"
+ },
+ "LPFR": {
+  "city": "Faro",
+  "iata": "FAO"
+ },
+ "LPMA": {
+  "city": "Funchal",
+  "iata": "FNC"
+ },
+ "LPPR": {
+  "city": "Porto",
+  "iata": "OPO"
+ },
+ "LPPT": {
+  "city": "Lisbon",
+  "iata": "LIS"
+ },
+ "LROP": {
+  "city": "Bucharest",
+  "iata": "OTP"
+ },
+ "LRSB": {
+  "city": "Sibiu",
+  "iata": "SBZ"
+ },
+ "LRTR": {
+  "city": "Timișoara",
+  "iata": "TSR"
+ },
+ "LSGG": {
+  "city": "Geneva",
+  "iata": "GVA"
+ },
+ "LSZH": {
+  "city": "Zürich",
+  "iata": "ZRH"
+ },
+ "LTAC": {
+  "city": "Ankara",
+  "iata": "ESB"
+ },
+ "LTAI": {
+  "city": "Antalya",
+  "iata": "AYT"
+ },
+ "LTAJ": {
+  "city": "Gaziantep",
+  "iata": "GZT"
+ },
+ "LTAY": {
+  "city": "Denizli",
+  "iata": "DNZ"
+ },
+ "LTBJ": {
+  "city": "İzmir",
+  "iata": "ADB"
+ },
+ "LTBR": {
+  "city": "Bursa",
+  "iata": "YEI"
+ },
+ "LTBS": {
+  "city": "Dalaman",
+  "iata": "DLM"
+ },
+ "LTBY": {
+  "city": "Eskişehir",
+  "iata": "AOE"
+ },
+ "LTCD": {
+  "city": "Erzincan",
+  "iata": "ERC"
+ },
+ "LTCG": {
+  "city": "Trabzon",
+  "iata": "TZX"
+ },
+ "LTFG": {
+  "city": "Alanya",
+  "iata": "GZP"
+ },
+ "LTFH": {
+  "city": "Samsun",
+  "iata": "SZF"
+ },
+ "LTFJ": {
+  "city": "Istanbul",
+  "iata": "SAW"
+ },
+ "LTFM": {
+  "city": "Istanbul",
+  "iata": "IST"
+ },
+ "LYBE": {
+  "city": "Belgrade",
+  "iata": "BEG"
+ },
+ "LYPG": {
+  "city": "Podgorica",
+  "iata": "TGD"
+ },
+ "LZTT": {
+  "city": "Poprad",
+  "iata": "TAT"
+ },
+ "MMMX": {
+  "city": "Mexico City",
+  "iata": "MEX"
+ },
+ "MMSM": {
+  "city": "Mexico City",
+  "iata": "NLU"
+ },
+ "OEJN": {
+  "city": "Jeddah",
+  "iata": "JED"
+ },
+ "OJAI": {
+  "city": "Amman",
+  "iata": "AMM"
+ },
+ "OKKK": {
+  "city": "Kuwait City",
+  "iata": "KWI"
+ },
+ "OLBA": {
+  "city": "Beirut",
+  "iata": "BEY"
+ },
+ "OMAA": {
+  "city": "Abu Dhabi",
+  "iata": "AUH"
+ },
+ "OMDB": {
+  "city": "Dubai",
+  "iata": "DXB"
+ },
+ "OMSJ": {
+  "city": "Sharjah",
+  "iata": "SHJ"
+ },
+ "OPIS": {
+  "city": "Islamabad",
+  "iata": "ISB"
+ },
+ "ORBI": {
+  "city": "Baghdad",
+  "iata": "BGW"
+ },
+ "OTHH": {
+  "city": "Doha",
+  "iata": "DOH"
+ },
+ "RJTT": {
+  "city": "Tokyo",
+  "iata": "HND"
+ },
+ "RKSI": {
+  "city": "Seoul",
+  "iata": "ICN"
+ },
+ "UAII": {
+  "city": "Shymkent",
+  "iata": "CIT"
+ },
+ "UAKK": {
+  "city": "Karaganda",
+  "iata": "KGF"
+ },
+ "UTSA": {
+  "city": "Navoi",
+  "iata": "NVI"
+ },
+ "UTTT": {
+  "city": "Tashkent",
+  "iata": "TAS"
+ },
+ "VABB": {
+  "city": "Mumbai",
+  "iata": "BOM"
+ },
+ "VHHH": {
+  "city": "Hong Kong",
+  "iata": "HKG"
+ },
+ "VIDP": {
+  "city": "New Delhi",
+  "iata": "DEL"
+ },
+ "VOBL": {
+  "city": "Bangalore",
+  "iata": "BLR"
+ },
+ "VOHS": {
+  "city": "Hyderabad",
+  "iata": "HYD"
+ },
+ "VOMM": {
+  "city": "Chennai",
+  "iata": "MAA"
+ },
+ "VTBS": {
+  "city": "Bangkok",
+  "iata": "BKK"
+ },
+ "VVTS": {
+  "city": "Ho Chi Minh City",
+  "iata": "SGN"
+ },
+ "WMKK": {
+  "city": "Kuala Lumpur",
+  "iata": "KUL"
+ },
+ "WSSS": {
+  "city": "Singapore",
+  "iata": "SIN"
+ },
+ "YPPH": {
+  "city": "Perth",
+  "iata": "PER"
+ },
+ "YSSY": {
+  "city": "Sydney",
+  "iata": "SYD"
+ },
+ "ZBAA": {
+  "city": "Beijing",
+  "iata": "PEK"
+ },
+ "ZGGG": {
+  "city": "Guangzhou",
+  "iata": "CAN"
+ },
+ "ZHEC": {
+  "city": "Ezhou, Hubei",
+  "iata": "EHU"
+ },
+ "ZSHC": {
+  "city": "Hangzhou",
+  "iata": "HGH"
+ },
+ "ZSPD": {
+  "city": "Shanghai",
+  "iata": "PVG"
+ },
+ "ZUTF": {
+  "city": "Chengdu",
+  "iata": "TFU"
+ },
+ "ZUUU": {
+  "city": "Chengdu",
+  "iata": "CTU"
+ }
+}

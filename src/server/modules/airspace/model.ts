@@ -28,7 +28,7 @@ export type RouteOrigin = 'vrs' | 'adsbdb' | 'hexdb' | 'flightaware';
 /** Per-plane context for a route lookup. The observation fields (own ADS-B data) let the plausibility check use heading and flight phase as arbiter (airspace-p8w2k). */
 export interface LookupContext { typklasse: string; airlineKnown: boolean; altitudeM?: number; verticalRateMs?: number; trackDeg?: number }
 
-export interface Airport { name: string; city: string; lat?: number; lon?: number }
+export interface Airport { name: string; city: string; /** ICAO code as delivered by the source; key into the own airport table (airspace-b7kx2). */ icao?: string; iata?: string; lat?: number; lon?: number }
 
 /** A known route; "Route unbekannt" is represented by `null` at the port. */
 export interface Route { from: Airport; to: Airport; /** All airports in order for multi-leg routes (first = from, last = to). */ legs?: Airport[]; /** A source's own plausibility flag - a weak heuristic, used only when airports lack coordinates (ADR 0005). */ vendorPlausible?: boolean; /** Which source answered; adsbdb and hexdb results are never persisted (ADR 0016); vrs and flightaware may be. */ source?: RouteOrigin }

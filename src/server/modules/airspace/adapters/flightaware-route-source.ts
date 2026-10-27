@@ -38,7 +38,8 @@ function toAirport(v: unknown): Airport | null {
   const icao = str(a.code_icao) ?? str(a.code);
   const city = str(a.city) ?? str(a.name) ?? icao;
   if (!city) return null;
-  return { name: str(a.name) ?? city, city };
+  const iata = str(a.code_iata);
+  return { name: str(a.name) ?? city, city, ...(icao && { icao }), ...(iata && { iata }) };
 }
 
 /** Route of a chosen flight; null for "no flight plan" (position_only) or a missing end. */

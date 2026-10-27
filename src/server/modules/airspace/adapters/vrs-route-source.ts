@@ -40,7 +40,8 @@ export function loadIndex(root: string): Index | null {
       const lat = Number(r[6]);
       const lon = Number(r[7]);
       if (!icao || !r[6] || !r[7] || !Number.isFinite(lat) || !Number.isFinite(lon)) continue;
-      airports.set(icao, { name: r[1] || icao, city: r[4] || r[1] || icao, lat, lon });
+      const iata = r[3]?.trim();
+      airports.set(icao, { name: r[1] || icao, city: r[4] || r[1] || icao, icao, ...(iata && { iata }), lat, lon });
     }
   }
   return { routes, airports };
