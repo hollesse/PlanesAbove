@@ -11,13 +11,14 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 0
+- **Todo:** 1
 - **Doing:** 2
 - **Done:** 12
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **airspace-hw8f9** — Flugphasen-Prüfung nur unterhalb der Reiseflughöhe, ab 5 m/s und erst 400 km vom Flughafen; Turbulenz und Stufen-Sinkflug nicht als Anflug werten (bug) — `todo/airspace-hw8f9-flugphasen-pruefung-nur-unterhalb-der-reiseflughoehe.md`
 <!-- todo-list:end -->
 
 ### Doing

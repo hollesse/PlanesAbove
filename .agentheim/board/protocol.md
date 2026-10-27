@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:29 -- Modeling / Captured: airspace-hw8f9 - Flugphasen-Prüfung nur unterhalb der Reiseflughöhe, ab 5 m/s und erst 400 km vom Flughafen; Turbulenz und Stufen-Sinkflug nicht als Anflug werten
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** todo
+**Summary:** Flugphasen-Prüfung nur unter 8000 m, ab 5 m/s, erst 400 km vom Flughafen — Befund LZB407 (Sinkflug in FL314 280 km vor Brüssel abgelehnt)
+
+---
+
 ## 2026-10-27 19:24 -- Batch started: [airspace-n8c4t, airspace-prwpv, sighting-log-k4m7q]
 
 **Type:** Work / Batch start
