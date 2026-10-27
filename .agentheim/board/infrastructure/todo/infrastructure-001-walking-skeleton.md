@@ -6,12 +6,12 @@ type: spike
 context: infrastructure
 created: 2026-10-26
 completed:
-depends_on: [design-system-001-styleguide, infrastructure-pn3w4, infrastructure-y8epz, airspace-jy8hz, airspace-h76v2, weather-yttgx, sky-scene-xczgm, infrastructure-w7qbc, infrastructure-p6s30]
+depends_on: [design-system-001, infrastructure-pn3w4, infrastructure-y8epz, airspace-jy8hz, airspace-h76v2, weather-yttgx, sky-scene-xczgm, infrastructure-w7qbc, infrastructure-p6s30]
 blocks: []
 tags: [foundation, walking-skeleton, prototype]
-related_adrs: [0001, 0002, 0003]
+related_adrs: [0001, 0002, 0003, 0004, 0005, 0006, 0007, 0008, 0009, 0010, 0011, 0012]
 related_research: []
-prior_art: []
+prior_art: [design-system-001, design-system-c4v3r, design-system-v8q3n, design-system-q7m3k]
 ---
 
 ## Why
@@ -31,15 +31,23 @@ Der dünnste lauffähige Durchstich durch alle Bereiche, gemäß den akzeptierte
 - **Infrastruktur:** Deployment auf dem Heimserver (Lenovo ThinkCentre mit ZimaOS). Das iPad öffnet die Seite vorerst manuell.
 - **Oberfläche:** ausschließlich aus den abgenommenen Storybook-Komponenten (`design-system-001-styleguide`). Fehlt ein Baustein, entsteht er zuerst als Story (ADR 0002).
 
+## Refinement (2026-10-27, Betreiber-Entscheidung)
+Der Skeleton wird in der Cloud-Umgebung gebaut; dort gibt es keinen Heimserver, kein iPad und keinen echten Standort. Deshalb:
+- **In diesem Task:** alles, was ohne Gerät prüfbar ist — Dienst, Client aus den abgenommenen Storybook-Komponenten, Adapter mit Contract-Tests, SQLite-Sichtungen, Mock-Modus mit Szenarien und steuerbarer Zeit, E2E-Szenarien, `docker-compose.yml`, `config.example.yaml`, README-Doku. Zusätzlich ein kurzer **Live-Smoke-Check** gegen adsb.lol (aus der Cloud erreichbar) mit Beispielkoordinaten, um Contract-Fixtures aus echten Antworten aufzunehmen.
+- **Ausgelagert in `infrastructure-d3v7k`** (Geräteabnahme durch den Betreiber): Start auf ZimaOS mit echtem Standort, Gegenprüfung mit öffentlichem Tracker, Sprachausgabe auf dem echten iPad, Routen-Stichprobe über eine Stunde und die Befunde (a)–(c).
+- Die mit **[→ infrastructure-d3v7k]** markierten Kriterien unten gelten für diesen Task als erfüllt, wenn der jeweilige Pfad im Mock-Modus/E2E nachgewiesen und die Geräte-Prüfung in `infrastructure-d3v7k` beschrieben ist.
+- Umgebung: Playwright hier nur Chromium (WebKit-Projekt konfigurieren, auf dem Betreiber-Rechner nachholen). Docker-CLI vorhanden; ob ein Daemon läuft, ist offen — `docker compose config` als Mindestprüfung.
+- Sprachausgabe: Piper-Container ist hier ggf. nicht startbar; der `fake`-Adapter (ADR 0012) deckt Mock/E2E ab, der `piper`-Adapter bekommt Contract-Tests gegen aufgezeichnete/konstruierte Fixtures.
+
 ## Acceptance criteria
-- [ ] Mit `config.yaml` auf dem echten Standort und dem Default-Radius 30 km startet der Dienst auf dem Heimserver (z. B. `docker compose up`). `/healthz` meldet OK, und das iPad zeigt die Szene unter der LAN-URL des Servers.
-- [ ] Innerhalb von 60 s nach dem Laden erscheinen die Flugzeuge, die real im Umkreis sind (gegengeprüft mit einem öffentlichen Tracker):
+- [ ] [→ infrastructure-d3v7k] Mit `config.yaml` auf dem echten Standort und dem Default-Radius 30 km startet der Dienst auf dem Heimserver (z. B. `docker compose up`). `/healthz` meldet OK, und das iPad zeigt die Szene unter der LAN-URL des Servers.
+- [ ] [→ infrastructure-d3v7k für die Gegenprüfung mit echten Daten] Innerhalb von 60 s nach dem Laden erscheinen die Flugzeuge, die real im Umkreis sind (gegengeprüft mit einem öffentlichen Tracker):
   - als korrekte Typklassen-Silhouette in weißer Standard-Lackierung,
   - höchstens 2, und zwar die 2 nächsten,
   - mit Callsign, Typ und Höhe in der Info-Leiste.
   Ohne Flugzeug im Umkreis zeigt die Szene den leeren Himmel bzw. „Zuletzt: … vor N Min“.
 - [ ] Die Auswahl aktualisiert sich alle 30 s. Fällt die primäre Flugdatenquelle oder das Netz aus, bleibt die letzte gute Szene mit Stale-Markierung stehen. Sobald die Quelle zurück ist, erholt sich die Szene von selbst.
-- [ ] Tippen auf ein Flugzeug oder seinen Text spricht eine deutsche Zeile (Airline oder Callsign, Typ, Höhe) über den Lautsprecher des iPads. Die Zeile ist auf dem echten alten iPad verständlich. [human-eye]
+- [ ] Tippen auf ein Flugzeug oder seinen Text spricht eine deutsche Zeile (Airline oder Callsign, Typ, Höhe) über den Lautsprecher des iPads. Die Zeile ist auf dem echten alten iPad verständlich. [human-eye] [→ infrastructure-d3v7k]
 - [ ] Während diese Ausgabe läuft, ändert sich die Auswahl nicht, auch wenn ein Takt andere Flugzeuge liefert. Die neuere Auswahl erscheint beim ersten Takt nach Ende der Ausgabe. Eine hängende Wiedergabe wird vom Watchdog freigegeben.
 - [ ] Jeder unterschiedliche Flug im Umkreis schreibt genau eine Zeile in die Sichtungs-Tabelle: Zeit, Airline/Callsign, Typ, Typklasse, Lackierung vorhanden ja/nein. Wiederholte Takte desselben Flugs ändern die Anzahl nicht. Die Zeilen überleben einen Neustart des Dienstes.
 - [ ] Der Himmel ist ein fester Platzhalter (z. B. „Tag/Klar“), per Konfiguration austauschbar. Der echte Wetter-Himmel ist ein Folge-Task.
@@ -54,7 +62,7 @@ Der dünnste lauffähige Durchstich durch alle Bereiche, gemäß den akzeptierte
   - Ausfall der Quelle, dann Erholung
 
   Die Zeit ist in den Tests steuerbar, sodass ein 30-s-Takt in Millisekunden läuft. `npm test` und `npm run e2e` (oder Äquivalente) sind im BC-README dokumentiert.
-- [ ] Die Befunde sind im Outcome festgehalten:
+- [ ] [→ infrastructure-d3v7k] Die Befunde sind im Outcome festgehalten:
   - (a) genutztes iPad-Modell (iPad Pro 12,9" 1. Gen. oder das kleinere iPad), iPadOS- und Safari-Version, Bestätigung der Mindestgrenze Safari 16.
   - (b) Funktioniert deutsche Sprachausgabe auf dem echten iPad über Server-Audio, über `speechSynthesis`, beides oder keins?
   - (c) Welcher Anteil der beobachteten Callsigns bekam in einer Stunde Stichprobe eine brauchbare Route?
