@@ -34,7 +34,7 @@ sources:
   userAgent: "PlanesAbove/0.1 (self-hosted, single household)"
   flight:
     timeoutMs: 5000            # per-source request timeout; on failure the next source is asked in the same Takt
-    order: [adsb-fi, airplanes-live, adsb-lol]   # failover order (ADR 0019); names without an adapter yet are skipped with a warning
+    order: [adsb-fi, airplanes-live, adsb-lol]   # failover order (ADR 0019); names without an adapter are skipped with a warning; airplanes-live is feeder-only (403) as of 2026-10-27 and pauses 1 h
   route:
     enabled: true
     order: [adsbdb, vrs]       # adsbdb = live lookup first (never persisted), vrs = offline VRS standing-data snapshot (CC0) as fallback

@@ -10,6 +10,7 @@ import { createLogger, type Logger } from './logger';
 import { loadScenario, ScenarioDriver, ScenarioFlightSource, ScenarioRouteSource } from './mock/scenario';
 import { AdsbLolFlightSource } from './modules/airspace/adapters/adsb-lol';
 import { AdsbFiFlightSource } from './modules/airspace/adapters/adsb-fi';
+import { AirplanesLiveFlightSource } from './modules/airspace/adapters/airplanes-live';
 import { buildFlightSourceChain, type FlightSourceChain } from './modules/airspace/flight-source-chain';
 import type { Fetch } from './modules/airspace/adapters/http';
 import { AdsbdbRouteSource } from './modules/airspace/adapters/adsbdb-route-source';
@@ -82,8 +83,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     speech = new FakeSpeechSynthesizer(() => (driver as ScenarioDriver).current().tts);
   } else {
     const fo = { fetch: fetchFn, userAgent: ua, timeoutMs: config.sources.flight.timeoutMs };
-    // airplanes-live (airspace-v6m3h) registers here once its adapter exists.
-    flightChain = buildFlightSourceChain(config.sources.flight.order, { 'adsb-fi': new AdsbFiFlightSource(fo), 'adsb-lol': new AdsbLolFlightSource(fo) }, { clock, log });
+    flightChain = buildFlightSourceChain(config.sources.flight.order, { 'adsb-fi': new AdsbFiFlightSource(fo), 'airplanes-live': new AirplanesLiveFlightSource(fo), 'adsb-lol': new AdsbLolFlightSource(fo) }, { clock, log });
     flight = flightChain;
     routeSources = [];
     for (const name of config.sources.route.order) {

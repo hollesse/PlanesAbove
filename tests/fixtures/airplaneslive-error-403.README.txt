@@ -1,0 +1,2 @@
+airplaneslive-error-403.json: real response of GET https://api.airplanes.live/v2/point/50.45/8.09/17 recorded 2026-10-27 (HTTP 403, application/json).
+The point endpoint is feeder-only; no key available. Body is the verbatim 164-byte error message.

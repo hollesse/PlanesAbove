@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:26 -- Task verified and completed: airspace-v6m3h - airplanes.live als zweite Flugquelle in der FlightSource-Kette
+
+**Type:** Work / Task completion
+**Task:** airspace-v6m3h - airplanes.live als zweite Flugquelle in der FlightSource-Kette
+**Summary:** airplanes.live als zweite Flugquelle registriert; Live-Test zeigt feeder-only (403), Adapter pausiert 1 h, Kette faellt im selben Takt auf adsb.lol durch
+**Duration:** 28m
+**Verification:** PASS (iteration 2)
+**Files changed:** 8
+**Tests added:** 7
+**ADRs written:** none
+
+---
+
+## 2026-10-27 18:24 -- Verification failed: airspace-v6m3h - airplanes.live als zweite Flugquelle
+
+**Type:** Work / Verification failure
+**Task:** airspace-v6m3h - airplanes.live als zweite Flugquelle
+**Iteration:** 1 of 3
+**Reasons:** criterion 2 half-covered — no test for adsb.fi blocked + airplanes.live 200 serving the same Takt
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-27 18:19 -- Batch started: [airspace-v6m3h, airspace-b9r4w]
 
 **Type:** Work / Batch start
