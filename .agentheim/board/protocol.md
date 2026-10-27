@@ -5,6 +5,25 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 13:34 -- Modeling / Refined: airspace-r5n3k - adsbdb als erste Routenquelle vor VRS, Nicht-Persistenz und Negativ-Cache-Fix
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** Builder-Entscheidung nach Live-Stichprobe (QTR56H Doha-London statt VRS Doha-Dubai): Kette adsbdb -> VRS, Korridor-Check auf jeder Quelle, adsbdb nie in SQLite (route_source-Spalte), 429-Backoff 512/min, kein Negativ-Cache bei nicht verfuegbarer Quelle. 14 maschinell pruefbare Kriterien.
+**ADRs written:** 0016
+
+---
+
+## 2026-10-27 13:34 -- Modeling / Captured: airspace-r5n3k - adsbdb als erste Routenquelle vor VRS (nie persistiert, 429-Backoff) und Negativ-Cache-Fix bei nicht verfuegbaren Quellen
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** adsbdb wird erste Routenquelle vor dem VRS-Snapshot (Live-Test: 9 falsche VRS-Routen, adsbdb alle korrekt), nie persistiert (route_source-Spalte), 429-Backoff, kein Negativ-Cache bei nicht verfuegbarer Quelle. ADR 0016.
+
+---
+
 ## 2026-10-27 12:38 -- Work session ended
 
 **Type:** Work / Session end
