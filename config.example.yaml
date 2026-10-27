@@ -44,6 +44,13 @@ sources:
     timeoutMs: 300000          # snapshot download timeout
     cacheTtlHours: 6
     negativeTtlMinutes: 10
+    flightaware:               # OPTIONAL paid last resort (ADR 0018): only used when `flightaware` is added to `order` AND the env var FLIGHTAWARE_API_KEY is set (never put the key here)
+      timeoutMs: 8000
+      monthlyBudgetUsd: 4.50   # hard stop per billing period (Personal tier gives up to 5 USD credit; 0.005 USD per result set)
+      monthlyRequestCap: 900   # hard stop in result sets per period
+      usageSyncMinutes: 30     # usage sync with /account/usage, 1..30
+      usageLagMinutes: 15      # own calls of this window are added to the last synced total (usage data lags up to 10 min)
+      billingPeriodStartDay: 1 # 1..28 (UTC); check against the AeroAPI portal
     compareAll: false          # true = ask every source and record conflicts (differing plausible routes) for stats:routes; costs extra requests
 
 # German speech (ADR 0012). piper = the `tts` sidecar container; fake = silent clip (mock/testing only).

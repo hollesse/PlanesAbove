@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { FakeClock } from '../../../src/server/clock';
-import { openDatabase } from '../../../src/server/db';
+import { LATEST_SCHEMA_VERSION, openDatabase } from '../../../src/server/db';
 import { SourceError, type Route, type RouteSource } from '../../../src/server/modules/airspace/model';
 import { RouteService } from '../../../src/server/modules/airspace/route-service';
 import { SightingRepository } from '../../../src/server/modules/sighting-log/repository';
@@ -107,12 +107,12 @@ describe('route_lookups schema, migration and live path (compareAll)', () => {
     raw.exec("INSERT INTO sightings (icao24, typklasse, livery_present, route, closest_distance_km, first_seen_at, last_seen_at, last_seen_ms) VALUES ('a','x',0,'A → B',1,'t','t',1), ('b','x',0,NULL,1,'t','t',2)");
     raw.close();
     const db = openDatabase(file);
-    expect(db.pragma('user_version', { simple: true })).toBe(3);
+    expect(db.pragma('user_version', { simple: true })).toBe(LATEST_SCHEMA_VERSION); // 0003 and every later migration applied
     expect(db.prepare('SELECT icao24, route FROM sightings ORDER BY id').all()).toEqual([{ icao24: 'a', route: 'A → B' }, { icao24: 'b', route: null }]);
     expect(db.prepare('SELECT COUNT(*) AS n FROM route_lookups').get()).toEqual({ n: 0 });
     db.close();
     const again = openDatabase(file);
-    expect(again.pragma('user_version', { simple: true })).toBe(3);
+    expect(again.pragma('user_version', { simple: true })).toBe(LATEST_SCHEMA_VERSION);
     expect(again.prepare('SELECT COUNT(*) AS n FROM sightings').get()).toEqual({ n: 2 });
     again.close();
   });

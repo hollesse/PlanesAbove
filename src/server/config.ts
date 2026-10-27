@@ -3,7 +3,8 @@ import fs from 'node:fs';
 import YAML from 'yaml';
 import { z } from 'zod';
 
-const ROUTE_DEFAULTS = { enabled: true, order: ['adsbdb' as const, 'vrs' as const], adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false };
+const FLIGHTAWARE_DEFAULTS = { timeoutMs: 8000, monthlyBudgetUsd: 4.5, monthlyRequestCap: 900, usageSyncMinutes: 30, usageLagMinutes: 15, billingPeriodStartDay: 1 };
+const ROUTE_DEFAULTS = { enabled: true, order: ['adsbdb' as const, 'vrs' as const], adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS };
 
 const schema = z.object({
   mode: z.enum(['live', 'mock']).default('live'),
@@ -29,7 +30,7 @@ const schema = z.object({
     route: z.object({
       enabled: z.boolean().default(true),
       /** Source order: adsbdb live lookup first, offline VRS snapshot as fallback (ADR 0016). */
-      order: z.array(z.enum(['vrs', 'adsbdb'])).min(1).default(['adsbdb', 'vrs']),
+      order: z.array(z.enum(['vrs', 'adsbdb', 'flightaware'])).min(1).default(['adsbdb', 'vrs']),
       adsbdb: z.object({
         timeoutMs: z.number().int().positive().default(5000),
         /** adsbdb is skipped this long after an HTTP 429. */
@@ -43,6 +44,18 @@ const schema = z.object({
       negativeTtlMinutes: z.number().positive().default(10),
       /** Ask every source (not just until the first plausible hit) so conflicts between sources can be recorded; costs extra requests. */
       compareAll: z.boolean().default(false),
+      /** FlightAware AeroAPI: paid, opt-in last resort with a hard budget (ADR 0018). Only active when listed in `order` and FLIGHTAWARE_API_KEY is set in the environment (never here). */
+      flightaware: z.object({
+        timeoutMs: z.number().int().positive().default(8000),
+        monthlyBudgetUsd: z.number().positive().default(4.5),
+        monthlyRequestCap: z.number().int().positive().default(900),
+        /** Usage-sync interval; AeroAPI usage data lags up to 10 minutes, so never sync less often than every 30. */
+        usageSyncMinutes: z.number().int().min(1).max(30).default(30),
+        /** Window in which own calls are added on top of the last synced total (the usage endpoint lags). */
+        usageLagMinutes: z.number().positive().default(15),
+        /** Day of month (UTC) the billing period starts on; check against the AeroAPI portal. */
+        billingPeriodStartDay: z.number().int().min(1).max(28).default(1),
+      }).default(FLIGHTAWARE_DEFAULTS),
     }).default(ROUTE_DEFAULTS),
   }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 8000 }, route: ROUTE_DEFAULTS }),
   speech: z.object({

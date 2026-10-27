@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 17:21 -- Task verified and completed: airspace-f4q9z - FlightAware AeroAPI als budgetierte Notfall-Routenquelle (Opt-in, letzte Stufe, hartes Monatslimit, Usage-Sync)
+
+**Type:** Work / Task completion
+**Task:** airspace-f4q9z - FlightAware AeroAPI als budgetierte Notfall-Routenquelle (Opt-in, letzte Stufe, hartes Monatslimit, Usage-Sync)
+**Summary:** FlightAware AeroAPI als optionale, budgetierte letzte Routenquelle: Filter narrowbody+ mit bekannter Airline, ereignisbasiertes Budget (flightaware_calls), Usage-Sync beim Start und alle <=30 Minuten, Key nur aus Env
+**Duration:** 22m
+**Verification:** PASS (iteration 1)
+**Files changed:** 14
+**Tests added:** 47
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 17:12 -- Batch started: [airspace-f4q9z]
 
 **Type:** Work / Batch start

@@ -11,6 +11,8 @@ import { loadScenario, ScenarioDriver, ScenarioFlightSource, ScenarioRouteSource
 import { AdsbLolFlightSource } from './modules/airspace/adapters/adsb-lol';
 import type { Fetch } from './modules/airspace/adapters/http';
 import { AdsbdbRouteSource } from './modules/airspace/adapters/adsbdb-route-source';
+import { FlightAwareRouteSource } from './modules/airspace/adapters/flightaware-route-source';
+import { FlightAwareCallLog } from './modules/airspace/flightaware-call-log';
 import { VrsRouteSource } from './modules/airspace/adapters/vrs-route-source';
 import type { FlightSource, RouteSource } from './modules/airspace/model';
 import { RouteService } from './modules/airspace/route-service';
@@ -31,6 +33,8 @@ export interface ServiceOptions {
   /** Logging sink (default stdout). */
   write?: (line: string) => void;
   timeZone?: string;
+  /** Environment for secrets (default process.env); FLIGHTAWARE_API_KEY is read only from here, never from config (ADR 0007/0018). */
+  env?: Record<string, string | undefined>;
 }
 
 export interface Service { port: number; stop(): Promise<void> }
@@ -67,6 +71,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   let flight: FlightSource;
   let routeSources: RouteSource[];
   let stopSnapshot: (() => void) | undefined;
+  let flightaware: FlightAwareRouteSource | undefined;
   let speech: SpeechSynthesizer;
   if (driver) {
     flight = new ScenarioFlightSource(driver);
@@ -76,7 +81,13 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     flight = new AdsbLolFlightSource({ fetch: fetchFn, userAgent: ua, timeoutMs: config.sources.flight.timeoutMs });
     routeSources = [];
     for (const name of config.sources.route.order) {
-      if (name === 'adsbdb') {
+      if (name === 'flightaware') {
+        const apiKey = (o.env ?? process.env).FLIGHTAWARE_API_KEY;
+        if (!apiKey) { log.warn('flightaware is in sources.route.order but FLIGHTAWARE_API_KEY is not set: FlightAware disabled'); continue; }
+        const f = config.sources.route.flightaware;
+        flightaware = new FlightAwareRouteSource({ fetch: fetchFn, apiKey, clock: scheduler, log, calls: new FlightAwareCallLog(db), ...f });
+        routeSources.push(flightaware);
+      } else if (name === 'adsbdb') {
         const r = config.sources.route.adsbdb;
         routeSources.push(new AdsbdbRouteSource({ fetch: fetchFn, userAgent: ua, timeoutMs: r.timeoutMs, backoffMs: r.backoffMinutes * 60_000, clock, log }));
       } else {
@@ -91,6 +102,8 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   const routes = new RouteService(config.sources.route.enabled ? routeSources : [noRoutes], clock, { ttlMs: config.sources.route.cacheTtlHours * 3_600_000, negativeTtlMs: config.sources.route.negativeTtlMinutes * 60_000, compareAll: config.sources.route.compareAll, log });
   const audio = new AudioService(speech, { voice: config.speech.voice, render: mock ? 'lazy' : config.speech.render, cacheDir: path.join(config.dataDir, 'audio'), log });
   const sky = new SkyService({ config, clock, log, flight, routes, tables: defaultTables(), sightings, audio, buildId, timeZone: o.timeZone });
+
+  const stopFlightAwareSync = config.sources.route.enabled ? await flightaware?.start() : undefined; // usage sync before the first paid lookup (ADR 0018)
 
   let lastClientPollAt: number | null = null;
   const pollMs = config.pollIntervalSeconds * 1000;
@@ -150,6 +163,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     async stop() {
       cancel();
       stopSnapshot?.();
+      stopFlightAwareSync?.();
       await new Promise<void>((r) => server.close(() => r()));
       try { db.pragma('wal_checkpoint(TRUNCATE)'); } catch { /* best effort */ }
       db.close();

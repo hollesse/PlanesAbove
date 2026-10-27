@@ -10,10 +10,10 @@ export interface SightingInput {
   typklasse: string;
   liveryPresent: boolean;
   distanceKm: number;
-  /** Route text; only ever set for VRS routes (adsbdb text is never persisted, ADR 0016). */
+  /** Route text; only ever set for VRS and FlightAware routes (adsbdb text is never persisted, ADR 0016; FlightAware Personal terms allow it, ADR 0018). */
   route: string | null;
   /** Which source knew the route, if any. */
-  routeSource?: 'vrs' | 'adsbdb' | null;
+  routeSource?: 'vrs' | 'adsbdb' | 'flightaware' | null;
   /** Auswahl slot 1 or 2 when the flight was shown, else null. */
   slot?: number | null;
 }
@@ -49,16 +49,16 @@ export class SightingRepository {
   /** Record one observation at a Takt: inserts a row for a new visit, otherwise only extends the open visit. */
   observe(s: SightingInput, nowMs: number): 'new' | 'seen' {
     const verdict = this.dedup.observe(s.icao24, nowMs);
-    // Defence in depth for the adsbdb licence boundary: route text is stored for VRS only.
-    // Unlabelled text is never stored: only an explicit 'vrs' label lets route text through.
+    // Defence in depth for the adsbdb licence boundary: route text is stored for VRS and FlightAware only.
+    // Unlabelled text is never stored: only an explicit 'vrs' or 'flightaware' label lets route text through.
     const routeSource = s.routeSource ?? null;
-    const route = routeSource === 'vrs' ? s.route : null;
+    const route = routeSource === 'vrs' || routeSource === 'flightaware' ? s.route : null;
     const iso = new Date(nowMs).toISOString();
     if (verdict === 'new') {
       this.db.prepare('INSERT INTO sightings (icao24, callsign, airline, type_code, typklasse, livery_present, route, route_source, slot, closest_distance_km, first_seen_at, last_seen_at, last_seen_ms) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)')
         .run(s.icao24, s.callsign ?? null, s.airline ?? null, s.typeCode ?? null, s.typklasse, s.liveryPresent ? 1 : 0, route, routeSource, s.slot ?? null, s.distanceKm, iso, iso, nowMs);
     } else {
-      this.db.prepare(`UPDATE sightings SET last_seen_at = ?, last_seen_ms = ?, closest_distance_km = MIN(closest_distance_km, ?), route = CASE WHEN route_source IS NULL OR (route_source = 'adsbdb' AND ? = 'vrs') THEN COALESCE(?, route) ELSE route END, route_source = CASE WHEN route_source IS NULL OR (route_source = 'adsbdb' AND ? = 'vrs') THEN COALESCE(?, route_source) ELSE route_source END, slot = COALESCE(slot, ?) WHERE id = (SELECT id FROM sightings WHERE icao24 = ? ORDER BY last_seen_ms DESC, id DESC LIMIT 1)`)
+      this.db.prepare(`UPDATE sightings SET last_seen_at = ?, last_seen_ms = ?, closest_distance_km = MIN(closest_distance_km, ?), route = CASE WHEN route_source IS NULL OR (route_source = 'adsbdb' AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route) ELSE route END, route_source = CASE WHEN route_source IS NULL OR (route_source = 'adsbdb' AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route_source) ELSE route_source END, slot = COALESCE(slot, ?) WHERE id = (SELECT id FROM sightings WHERE icao24 = ? ORDER BY last_seen_ms DESC, id DESC LIMIT 1)`)
         .run(iso, nowMs, s.distanceKm, routeSource, route, routeSource, routeSource, s.slot ?? null, s.icao24);
     }
     return verdict;

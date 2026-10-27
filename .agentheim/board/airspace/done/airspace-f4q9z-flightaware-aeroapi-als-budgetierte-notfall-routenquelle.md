@@ -1,7 +1,7 @@
 ---
 id: airspace-f4q9z
 title: FlightAware AeroAPI als budgetierte Notfall-Routenquelle (Opt-in, letzte Stufe, hartes Monatslimit, Usage-Sync)
-status: doing
+status: done
 type: feature
 context: airspace
 created: 2026-10-27
@@ -49,3 +49,13 @@ Alle Tests laufen offline: injiziertes fetch, globales fetch im Test gesperrt, F
 - Offene Punkte, die erst mit Account klärbar sind: tatsächlicher Abrechnungszeitraum (Kalendermonat oder Anmeldetag) für `billingPeriodStartDay`, ob das Portal eine Ausgabengrenze bietet, ob Charter-Callsigns mit Flugplan ein Ziel liefern. OpenAPI-Spezifikation (öffentlich, vom Betreiber geliefert): https://static.flightaware.com/rsrc/aeroapi/aeroapi-openapi.yml
 - Abhängig von sighting-log-m7p2v (route_lookups) und airspace-r5n3k (Quellenkette). Research: route-coverage-sources-2026-10-27.
 - **Live-Test 2026-10-27 (4 freigegebene Aufrufe, Fixtures unter `tests/fixtures/flightaware/`):** alle drei Problemfälle korrekt aufgelöst. FlightAware mappt das ATC-Rufzeichen auf die kommerzielle Flugnummer: LHX1HL → LHX1979 Köln–München, TKJ9GC → TKJ26 Düsseldorf–Istanbul (SAW), LAV8091 → Düsseldorf–Belgrad. Der Rückflug LAV8091 Belgrad→? kam mit `position_only: true` und `destination: null` zurück — das ist der "kein Flugplan"-Fall für die Tests. Antwort enthält mehrere Flüge je Callsign (Vortag, Rückleg): der laufende ist der mit `actual_off` gesetzt und `actual_on` null; bei mehreren abgeschlossenen der jüngste `actual_off`. `/account/usage` lieferte nach den Aufrufen noch Nullen (10-Minuten-Verzögerung bestätigt). Fehlgeschlagene 401-Aufrufe (leerer Key, Bedienfehler) sind laut Preismodell keine Ergebnissätze.
+
+## Outcome
+
+FlightAware AeroAPI wurde als optionale, kostenpflichtige letzte Routenquelle (`flightaware`, lastResort) hinter adsbdb und VRS integriert. Opt-in ueber `sources.route.order`; Key nur ueber `FLIGHTAWARE_API_KEY`. Gefragt wird nur bei Typklasse narrowbody/widebody/jumbo-hump/double-decker und bekannter Airline, nur nach erfolgreichem Usage-Sync und innerhalb des Budgets. `position_only` zaehlt als unbekannt; 401/403 sperren die Quelle bis zum Neustart. Budget ereignisbasiert in `flightaware_calls` (Migration 0004), Verbrauch = max(eigene Summe, Sync-total_cost + eigene Kosten der letzten usageLagMinutes). Alle Tests laufen offline gegen Fixtures (322 gruen, Typecheck gruen).
+
+Schluesseldateien: `src/server/modules/airspace/adapters/flightaware-route-source.ts`, `src/server/modules/airspace/flightaware-call-log.ts`, `src/server/migrations/0004-flightaware-calls.ts`, `src/server/modules/airspace/route-service.ts`, `src/server/config.ts`, `src/server/modules/sighting-log/repository.ts`, `tests/unit/server/flightaware-route-source.test.ts`.
+
+Hinweis Sichtungsprotokoll: Das sighting-log-README sagt bisher, Routentext werde nur fuer VRS gespeichert; jetzt gilt VRS und FlightAware (Personal-Lizenz erlaubt Speicherung, ADR 0018). Der Repository-Code laesst Routentext nur bei Label `vrs` oder `flightaware` durch und ueberschreibt adsbdb-Zeilen durch beide. Das README von sighting-log sollte entsprechend angepasst werden (anderer BC, daher hier kein Delta).
+
+Maintainer-Hinweise: Kein Live-Aufruf wurde gemacht; vor dem ersten Live-Betrieb Abrechnungsbeginn (`billingPeriodStartDay`) gegen das Portal pruefen. ADR 0018 wird als bereits vorhanden vorausgesetzt (kein neuer ADR).

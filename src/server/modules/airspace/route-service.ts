@@ -3,7 +3,7 @@
 import type { Clock } from '../../clock';
 import { distanceKm } from './selection';
 import type { Logger } from '../../logger';
-import type { LatLon, Route, RouteOrigin, RouteSource } from './model';
+import type { LatLon, LookupContext, Route, RouteOrigin, RouteSource } from './model';
 
 export const formatRoute = (r: Route): string => (r.legs && r.legs.length > 2 ? r.legs : [r.from, r.to]).map((a) => a.city).join(' → ');
 
@@ -32,21 +32,22 @@ export class RouteService {
   private cache = new Map<string, { until: number; info: RouteInfo | null }>();
   private readonly sources: RouteSource[];
   constructor(source: RouteSource | RouteSource[], private readonly clock: Clock, private readonly o: { ttlMs: number; negativeTtlMs: number; log?: Logger; /** Ask every source and flag a conflict when two plausible routes differ; the first in order is still chosen. Default false: stop at the first plausible hit. */ compareAll?: boolean }) {
-    this.sources = Array.isArray(source) ? source : [source];
+    const all = Array.isArray(source) ? source : [source];
+    this.sources = [...all.filter((s) => !s.lastResort), ...all.filter((s) => s.lastResort)]; // paid last-resort sources always come last (ADR 0018)
   }
 
   /** "Frankfurt → New York" or null (Route unbekannt). Never throws. */
-  async routeFor(callsign: string | undefined, position: LatLon): Promise<string | null> {
-    return (await this.routeInfoFor(callsign, position))?.text ?? null;
+  async routeFor(callsign: string | undefined, position: LatLon, ctx?: LookupContext): Promise<string | null> {
+    return (await this.routeInfoFor(callsign, position, ctx))?.text ?? null;
   }
 
   /** Route text plus the answering source, asking the chain in order. Every route must pass `isPlausibleRoute`. Never throws. */
-  async routeInfoFor(callsign: string | undefined, position: LatLon): Promise<RouteInfo | null> {
-    return (await this.lookupFor(callsign, position))?.info ?? null;
+  async routeInfoFor(callsign: string | undefined, position: LatLon, ctx?: LookupContext): Promise<RouteInfo | null> {
+    return (await this.lookupFor(callsign, position, ctx))?.info ?? null;
   }
 
   /** Like `routeInfoFor`, plus the per-source findings of this lookup (for the sighting log). null when there is no callsign. Never throws. */
-  async lookupFor(callsign: string | undefined, position: LatLon): Promise<RouteLookup | null> {
+  async lookupFor(callsign: string | undefined, position: LatLon, ctx?: LookupContext): Promise<RouteLookup | null> {
     if (!callsign) return null;
     const now = this.clock.now();
     const hit = this.cache.get(callsign);
@@ -57,13 +58,15 @@ export class RouteService {
     const texts = new Set<string>();
     let unavailable = false;
     for (const src of this.sources) {
+      if (src.lastResort && info) continue; // never pay when a free source already answered (also with compareAll)
+      if (src.eligible && !src.eligible(ctx)) continue; // filtered/budget-stopped/disabled: not asked, nothing recorded
       try {
-        const r = await src.lookup(callsign, position);
+        const r = await src.lookup(callsign, position, ctx);
         if (!r) { attempts.push({ source: src.name, outcome: 'unknown' }); continue; }
         if (!isPlausibleRoute(r, position)) { attempts.push({ source: src.name, outcome: 'rejected' }); continue; }
         attempts.push({ source: src.name, outcome: 'hit' });
         texts.add(formatRoute(r));
-        if (!info) { info = { text: formatRoute(r), source: r.source ?? (src.name === 'adsbdb' ? 'adsbdb' : 'vrs') }; chosen = src.name; }
+        if (!info) { info = { text: formatRoute(r), source: r.source ?? (src.name === 'adsbdb' ? 'adsbdb' : src.name === 'flightaware' ? 'flightaware' : 'vrs') }; chosen = src.name; }
         if (!this.o.compareAll) break;
       } catch {
         attempts.push({ source: src.name, outcome: 'unavailable' });
