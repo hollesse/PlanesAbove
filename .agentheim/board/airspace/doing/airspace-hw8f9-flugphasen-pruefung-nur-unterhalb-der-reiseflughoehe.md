@@ -1,7 +1,7 @@
 ---
 id: airspace-hw8f9
 title: Flugphasen-Prüfung nur unterhalb der Reiseflughöhe, ab 5 m/s und erst 400 km vom Flughafen; Steigprofil nahe dem Abflughafen lockern (Abflugrouten sind länger als die Luftlinie)
-status: todo
+status: doing
 type: bug
 context: airspace
 created: 2026-10-27

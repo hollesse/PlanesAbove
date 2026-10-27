@@ -5,6 +5,32 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:36 -- Batch started: [infrastructure-q2w8h, airspace-hw8f9]
+
+**Type:** Work / Batch start
+**Tasks:** infrastructure-q2w8h - Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind, airspace-hw8f9 - Flugphasen-Prüfung nur unterhalb der Reiseflughöhe, ab 5 m/s und erst 400 km vom Flughafen; Steigprofil nahe dem Abflughafen lockern (Abflugrouten sind länger als die Luftlinie)
+**Parallel:** yes (2 workers — wave 2; q2w8h held from wave 1 by cap, hw8f9 promoted mid-run and unblocked by prwpv)
+
+---
+
+## 2026-10-27 19:36 -- Modeling / Captured: sky-scene-n0sfy - Flugzeug-Übergänge (kommt / geht / wechselt) in der Live-Szene abspielen statt hart zu schneiden; Diff per icao24, Übergang-Sperre puffert den neuesten Stand
+
+**Type:** Modeling / Capture
+**BC:** sky-scene
+**Filed to:** backlog
+**Summary:** Die 11 Flugzeug-Übergänge live abspielen: pickTransition per icao24 auf kompaktiertem planes[] (Entscheidungstabelle, Fallback Schnitt), zweite VorleseSperre-Instanz als Übergang-Sperre (nie unterbrechen, neuester Stand nach Ende), Tippen ab Frame 0, E2E-Szenario. Kind von sky-scene-bvnnx.
+
+---
+
+## 2026-10-27 19:36 -- Modeling / Captured: design-system-kcpnw - Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch
+
+**Type:** Modeling / Capture
+**BC:** design-system
+**Filed to:** backlog
+**Summary:** Übergangs-Player/Katalog datengetrieben (PlaneRef side+index statt Sample-Keys, TransitionData, TRANSITION_MS, data-side=to); Storybook-Bilder per Snapshot identisch. Kind von sky-scene-bvnnx.
+
+---
+
 ## 2026-10-27 19:35 -- Task verified and completed: airspace-prwpv - Abgelehnte Routen je Takt gegen die aktuelle Position neu prüfen statt 10 Minuten negativ zu cachen; Korridor auf 50 km + 8 % lockern
 
 **Type:** Work / Task completion
