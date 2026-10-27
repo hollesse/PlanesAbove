@@ -54,3 +54,11 @@ describe('sources.route (ADR 0014)', () => {
     expect(() => parseConfig(MIN + 'sources: { route: { snapshotRefreshHours: 0 } }\n')).toThrow(/snapshotRefreshHours/);
   });
 });
+
+describe('scene.slotHoldTakte (ADR 0017)', () => {
+  it('defaults to 3', () => { expect(parseConfig(MIN).scene.slotHoldTakte).toBe(3); });
+  it('accepts a positive integer', () => { expect(parseConfig(MIN + 'scene: { slotHoldTakte: 5 }\n').scene.slotHoldTakte).toBe(5); });
+  it('rejects 0, negatives, decimals and non-numbers', () => {
+    for (const bad of ['0', '-2', '2.5', '"x"']) expect(() => parseConfig(MIN + `scene: { slotHoldTakte: ${bad} }\n`)).toThrow(/scene\.slotHoldTakte/);
+  });
+});

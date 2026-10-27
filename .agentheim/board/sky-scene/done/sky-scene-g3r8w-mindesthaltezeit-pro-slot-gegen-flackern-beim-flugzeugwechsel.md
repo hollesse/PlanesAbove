@@ -1,7 +1,7 @@
 ---
 id: sky-scene-g3r8w
 title: Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel
-status: doing
+status: done
 type: feature
 context: sky-scene
 created: 2026-10-27
@@ -44,3 +44,13 @@ Umsetzung: neue reine Funktion in sky-scene, z. B. `assignSlots(previous, candid
 
 ## Notes
 Verfeinert am 2026-10-27 nach Live-Test. Alle fünf Regeln sind Builder-Entscheidungen und nicht erneut zu öffnen. Verworfen: Hysterese und Höhen-Gewichtung (Schrägdistanz, scheinbare Größe), siehe ADR 0017. Das Geschwister-Capture airspace-h9x4p (Gewichtung der Nähe) wird verworfen. Bei `pollIntervalSeconds` ≠ 30 ändert sich die reale Haltedauer proportional (N Takte, nicht Sekunden). Vision.md-Formulierung "zwei nächsten" wird durch ADR 0017 für v1 erweitert; die Anpassung des Vision-Texts liegt beim Menschen/Modeling-Skill.
+
+## Outcome
+
+Implemented ADR 0017. New pure function `assignSlots(previous, candidates, now, holdMs)` in `src/server/modules/sky-scene/slots.ts` (state: two slots with `{icao24, holdUntil}`); `SkyService` keeps the slot state between Takte, builds the scene from the slot order and writes the stable slot number to the Sichtungslog (`slot` is null for non-holders). New config key `scene.slotHoldTakte` (zod positive int, default 3) in `src/server/config.ts`, documented in `config.example.yaml` and root `README.md`.
+
+Design details: holdUntil = now + (N - 0.5) Takt, so hold covers Takte 1..N and the swap happens at Takt N+1 regardless of clock jitter. After expiry the normal nearest rule applies among open slots, but an expired holder still among the nearest keeps its slot (no swap, only the farther one gets replaced). Vorlese-Sperre composes by construction: the hold is server-side and independent of state() polling; unit test covers that, the existing e2e "Wechsel waehrend des Vorlesens" stays green.
+
+Tests: tests/unit/server/slots.test.ts (table tests, purity), sky-service.test.ts (hold, Takt-4 swap, radius/vanish, no-swap + stable slot column, config), config.test.ts, E2E in tests/e2e/skeleton.spec.ts with scenarios/slot-hold.json. `npm test` 258 passed, typecheck green, `npm run e2e:chromium` 11 passed (WebKit not run; Chromium only).
+
+Note: the task wording "A wird von C verdrängt" at Takt 4 resolves in the E2E as slot 2 (b) being replaced by c while a stays in slot 1, because a is still among the two nearest after expiry. The airspace README / vision wording ("zwei nächsten") is not updated by this task.

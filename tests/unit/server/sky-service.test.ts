@@ -100,3 +100,50 @@ describe('SkyService Takt', () => {
     expect(svc.state().recent).toBe('Zuletzt: Lufthansa DLH400 · vor 6 Min');
   });
 });
+
+describe('SkyService Slot-Haltezeit (ADR 0017)', () => {
+  const ids = (svc: SkyService) => svc.state().planes.map((p) => p.icao24);
+  const takt = async (r: ReturnType<typeof rig>) => { await r.clock.advance(30_000); await r.svc.tick(); };
+  const steps: ScenarioStep[] = [
+    { at: 0, planes: [P('a', 5), P('b', 8), P('far', 20)] },
+    { at: 30, planes: [P('a', 5), P('b', 8), P('c', 2)] },
+  ];
+  it('holder keeps its slot for 3 Takte against a nearer plane, then the nearer plane takes over at Takt 4', async () => {
+    const r = rig(steps);
+    await r.svc.tick();
+    expect(ids(r.svc)).toEqual(['a', 'b']);
+    await takt(r); await takt(r);
+    expect(ids(r.svc)).toEqual(['a', 'b']); // Takt 3: c is nearer but both are held
+    await takt(r);
+    expect(ids(r.svc)).toEqual(['a', 'c']); // Takt 4: b (farther) is displaced by c; a keeps slot 1
+  });
+  it('no slot swap and a stable slot column when only the distance order flips', async () => {
+    const r = rig([{ at: 0, planes: [P('a', 5), P('b', 8)] }, { at: 30, planes: [P('a', 9), P('b', 3)] }]);
+    await r.svc.tick(); await takt(r); await takt(r);
+    expect(ids(r.svc)).toEqual(['a', 'b']);
+    const rows = r.sightings.list();
+    expect(rows).toHaveLength(2);
+    expect(rows.map((x) => [x.icao24, x.slot])).toEqual(expect.arrayContaining([['a', 1], ['b', 2]]));
+  });
+  it('a holder leaving the radius is replaced in the same Takt', async () => {
+    const r = rig([{ at: 0, planes: [P('a', 5), P('b', 8)] }, { at: 30, planes: [P('a', 40), P('b', 8), P('n', 20)] }]);
+    await r.svc.tick(); await takt(r);
+    expect(ids(r.svc)).toEqual(['n', 'b']);
+  });
+  it('a holder vanishing from the data is replaced in the same Takt', async () => {
+    const r = rig([{ at: 0, planes: [P('a', 5), P('b', 8), P('x', 12)] }, { at: 30, planes: [P('b', 8), P('x', 12)] }]);
+    await r.svc.tick(); await takt(r);
+    expect(ids(r.svc)).toEqual(['x', 'b']);
+  });
+  it('hold counting is server-side: polling state() (e.g. a client blocked by the Vorlese-Sperre) does not delay the swap', async () => {
+    const r = rig(steps);
+    await r.svc.tick();
+    for (let i = 0; i < 3; i++) { await takt(r); r.svc.state(); }
+    expect(ids(r.svc)).toEqual(['a', 'c']); // first state the client can apply after narration is already the post-hold state
+  });
+  it('slotHoldTakte is configurable', async () => {
+    const r = rig(steps, 'scene: { slotHoldTakte: 1 }');
+    await r.svc.tick(); await takt(r);
+    expect(ids(r.svc)).toEqual(['a', 'c']);
+  });
+});

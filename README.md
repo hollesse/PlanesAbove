@@ -37,7 +37,7 @@ tests/unit  tests/e2e     Vitest bzw. Playwright
 
 ## Dienst und Client (Walking Skeleton)
 
-Ein Node/TypeScript-Dienst (`src/server/`, ein Modul je Bounded Context unter `modules/`) holt alle 30 s die Flugzeuge von adsb.lol, waehlt die zwei naechsten, schreibt Sichtungen nach SQLite und liefert `GET /api/state`, `GET /healthz`, `GET /audio/<key>.wav` sowie den Client. Der Client (`src/client/app/`, framework-frei, esbuild ES2020/Safari 16) setzt die Szene ausschliesslich aus den abgenommenen Komponenten in `src/client/ui/` zusammen.
+Ein Node/TypeScript-Dienst (`src/server/`, ein Modul je Bounded Context unter `modules/`) holt alle 30 s die Flugzeuge von adsb.lol, waehlt die zwei naechsten (mit Slot-Haltezeit: ein Flugzeug behaelt seinen Platz mindestens `scene.slotHoldTakte` Takte, Default 3 = 90 s, ausser es verlaesst den Umkreis; ADR 0017), schreibt Sichtungen nach SQLite und liefert `GET /api/state`, `GET /healthz`, `GET /audio/<key>.wav` sowie den Client. Der Client (`src/client/app/`, framework-frei, esbuild ES2020/Safari 16) setzt die Szene ausschliesslich aus den abgenommenen Komponenten in `src/client/ui/` zusammen.
 
 ```
 npm run build              # dist/client (Kiosk-Client) + dist/server/server.mjs

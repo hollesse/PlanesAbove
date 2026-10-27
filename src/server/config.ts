@@ -56,6 +56,8 @@ const schema = z.object({
     reloadAt: z.string().regex(/^\d{2}:\d{2}$/).default('04:00'),
     speechWatchdogSeconds: z.number().positive().default(60),
   }).default({ pollIntervalSeconds: 10, staleAfterMinutes: 5, reloadAt: '04:00', speechWatchdogSeconds: 60 }),
+  /** Slot-Haltezeit (ADR 0017): a plane keeps its slot at least this many Takte unless it leaves the radius/data. */
+  scene: z.object({ slotHoldTakte: z.number().int().positive().default(3) }).default({ slotHoldTakte: 3 }),
   sightings: z.object({ visitGapMinutes: z.number().positive().default(30) }).default({ visitGapMinutes: 30 }),
   health: z.object({
     flightMaxAgeSeconds: z.number().positive().optional(),

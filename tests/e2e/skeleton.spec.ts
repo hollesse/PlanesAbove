@@ -52,6 +52,18 @@ test('Wechsel waehrend des Vorlesens wird zurueckgehalten, danach erscheint die 
   await expect(app(page)).toHaveAttribute('data-planes', 'bbbbbb');
 });
 
+test('Slot-Haltezeit: innerhalb von 3 Takten kein Wechsel trotz naeherem Flugzeug, Wechsel bei Takt 4', async ({ page }) => {
+  svc = await startMockService('slot-hold');
+  await page.goto(svc.url);
+  await expect(app(page)).toHaveAttribute('data-planes', 'aaaaaa,bbbbbb');
+  await svc.advance(30); // Takt 2: cccccc ist am naechsten, beide Slots sind gehalten
+  await svc.advance(30); // Takt 3
+  await page.waitForTimeout(800); // mehrere Client-Polls
+  await expect(app(page)).toHaveAttribute('data-planes', 'aaaaaa,bbbbbb');
+  await svc.advance(30); // Takt 4: Haltezeit des zweiten Slots endet, cccccc uebernimmt
+  await expect(app(page)).toHaveAttribute('data-planes', 'aaaaaa,cccccc');
+});
+
 test('Ausfall der Quelle: ein Takt Ausfall bleibt „Live“, erst nach > 90 s „Letzter Stand“, dann Erholung von selbst', async ({ page }) => {
   svc = await startMockService('outage-recovery');
   await page.goto(svc.url);

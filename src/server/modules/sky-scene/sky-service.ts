@@ -10,6 +10,7 @@ import { selectNearest } from '../airspace/selection';
 import { resolveAirline, resolveLivery, resolveTypeClass, type Tables } from '../airspace/typeclass';
 import type { SightingRepository } from '../sighting-log/repository';
 import type { AudioService } from './audio-service';
+import { assignSlots, emptySlots, type Slots } from './slots';
 import { composeSpeech } from './steckbrief';
 
 export interface FlightHealth { lastSuccessAt: number | null; lastTickAt: number | null; consecutiveFailures: number; lastErrorClass: string | null }
@@ -18,6 +19,7 @@ const climbOrDescent = (rateMs: number | undefined): FlightPhase => (rateMs === 
 
 export class SkyService {
   private planes: ScenePlane[] = [];
+  private slots: Slots = emptySlots();
   private readonly bootAt: number;
   readonly health: FlightHealth = { lastSuccessAt: null, lastTickAt: null, consecutiveFailures: 0, lastErrorClass: null };
 
@@ -47,7 +49,13 @@ export class SkyService {
     this.health.lastSuccessAt = now;
 
     const inRadius = selectNearest(aircraft, config.location, config.radiusKm, Number.MAX_SAFE_INTEGER);
-    const chosen = inRadius.slice(0, 2);
+    // Slot-Haltezeit (ADR 0017). Half a Takt is shaved off so clock jitter cannot extend the hold into Takt N+1.
+    const holdMs = (config.scene.slotHoldTakte - 0.5) * config.pollIntervalSeconds * 1000;
+    this.slots = assignSlots(this.slots, inRadius, now, holdMs);
+    const byId = new Map(inRadius.map((c) => [c.aircraft.icao24, c]));
+    const slotOf = new Map<string, number>();
+    this.slots.forEach((h, i) => { if (h) slotOf.set(h.icao24, i + 1); });
+    const chosen = this.slots.flatMap((h) => (h ? [byId.get(h.icao24)!] : []));
     const planes: ScenePlane[] = [];
     const routeById = new Map<string, RouteInfo | null>();
     for (const c of chosen) {
@@ -56,7 +64,7 @@ export class SkyService {
       routeById.set(a.icao24, route);
       planes.push(this.toScenePlane(a, route?.text ?? null));
     }
-    inRadius.forEach((c, i) => this.recordSighting(c.aircraft, c.distanceKm, routeById.get(c.aircraft.icao24) ?? null, i < 2 ? i + 1 : null, now));
+    inRadius.forEach((c) => this.recordSighting(c.aircraft, c.distanceKm, routeById.get(c.aircraft.icao24) ?? null, slotOf.get(c.aircraft.icao24) ?? null, now));
     this.planes = planes;
   }
 

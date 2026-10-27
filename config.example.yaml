@@ -15,6 +15,8 @@ place: dem Haus
 
 radiusKm: 30               # planes within this radius are considered (30 km = 17 nm)
 pollIntervalSeconds: 30    # the Takt
+scene:
+  slotHoldTakte: 3         # a plane keeps its slot at least this many Takte (3 = 90 s at 30 s) unless it leaves the radius or the data (ADR 0017)
 port: 8080
 dataDir: /data             # SQLite file + audio cache (mounted volume in Docker; default ./data)
 logLevel: info             # debug | info | warn | error
