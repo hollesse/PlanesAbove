@@ -5,6 +5,16 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 17:10 -- Modeling / Refined: airspace-f4q9z - FlightAware AeroAPI als budgetierte Notfall-Routenquelle
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** Live-Test mit 4 freigegebenen Aufrufen loeste LHX1HL, TKJ9GC und LAV8091 korrekt auf (Fixtures eingecheckt). Builder-Entscheidungen: letzte Stufe, Filter narrowbody+ mit bekannter Airline, ereignisbasiertes Budget (flightaware_calls, 15-Minuten-Lag-Fenster, 4,50 $/900 Saetze), Usage-Sync beim Start und alle <=30 Minuten, Key nur aus Env, Ergebnisse persistierbar. 14 Kriterien.
+**ADRs written:** 0018
+
+---
+
 ## 2026-10-27 16:34 -- Modeling / Captured: airspace-f4q9z - FlightAware AeroAPI als budgetierte Notfall-Routenquelle (Opt-in, letzte Stufe, hartes Monatslimit, Usage-Sync beim Start und alle 30 Minuten)
 
 **Type:** Modeling / Capture
