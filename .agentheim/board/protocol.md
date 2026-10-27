@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:10 -- Modeling / Captured: airspace-v6m3h - airplanes.live als zweite Flugquelle in der FlightSource-Kette
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** airplanes.live als Stufe 2 der FlightSource-Kette; Vorab-Verifikation ob point ohne Feeder-Status antwortet.
+
+---
+
 ## 2026-10-27 18:10 -- Modeling / Captured: airspace-k2d7f - adsb.fi als primäre Flugquelle; FlightSource-Kette mit Failover, Backoff nach Rate-Limit-Headern und Circuit Breaker
 
 **Type:** Modeling / Capture
