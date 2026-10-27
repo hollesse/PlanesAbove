@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:47 -- Modeling / Promoted: airspace-c5t9m - airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben)
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 18:39 -- Modeling / Captured: airspace-c5t9m - airplanes.live aus der FlightSource-Kette entfernen (feeder-only, Betreiber will keinen Feeder betreiben)
 
 **Type:** Modeling / Capture
