@@ -10,14 +10,15 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 1
-- **Todo:** 0
+- **Backlog:** 0
+- **Todo:** 1
 - **Doing:** 1
 - **Done:** 16
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **airspace-b7kx2** — Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen (feature) — `todo/airspace-b7kx2-eigene-flughafenliste-einheitliche-routen-namen.md`
 <!-- todo-list:end -->
 
 ### Doing
@@ -47,7 +48,6 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
-- **airspace-b7kx2** — Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen (feature) — `backlog/airspace-b7kx2-eigene-flughafenliste-einheitliche-routen-namen.md`
 <!-- backlog-list:end -->
 
 ## Pointers

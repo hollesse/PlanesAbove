@@ -5,6 +5,25 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:18 -- Modeling / Promoted: airspace-b7kx2 - Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
+## 2026-10-27 21:18 -- Modeling / Refined: airspace-b7kx2 - Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** Offene Fragen mit Defaults entschieden (Stadtname statt Flughafenname, Sprache wie VRS-Snapshot, Pflege per Commit). Umfang: icao im Airport-Modell und in allen vier Adaptern, statische Tabelle tables/airports.json, formatRoute nutzt die Tabelle, Fallback mit einmaliger Warnung. Gespeicherte Altdaten bleiben unverändert. Acceptance Criteria definiert.
+**Split into:** none
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 21:16 -- Capture / Captured: airspace-b7kx2 - Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen
 
 **Type:** Capture
