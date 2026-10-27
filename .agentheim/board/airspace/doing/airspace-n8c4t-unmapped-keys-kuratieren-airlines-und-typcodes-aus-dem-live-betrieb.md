@@ -1,7 +1,7 @@
 ---
 id: airspace-n8c4t
 title: Unmapped Keys aus dem Live-Betrieb kuratieren: 30 Airline-Präfixe und 13 Typcodes in die Tabellen aufnehmen, ZZZZ als "kein Typcode" behandeln
-status: todo
+status: doing
 type: chore
 created: 2026-10-27
 context: airspace

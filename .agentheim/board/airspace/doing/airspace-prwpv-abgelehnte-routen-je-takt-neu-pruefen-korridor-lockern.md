@@ -1,7 +1,7 @@
 ---
 id: airspace-prwpv
 title: Abgelehnte Routen je Takt gegen die aktuelle Position neu prüfen statt 10 Minuten negativ zu cachen; Korridor auf 50 km + 8 % lockern
-status: todo
+status: doing
 type: bug
 context: airspace
 created: 2026-10-27

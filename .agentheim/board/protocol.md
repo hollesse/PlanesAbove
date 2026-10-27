@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:24 -- Batch started: [airspace-n8c4t, airspace-prwpv, sighting-log-k4m7q]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-n8c4t - Unmapped Keys aus dem Live-Betrieb kuratieren: 30 Airline-Präfixe und 13 Typcodes in die Tabellen aufnehmen, ZZZZ als "kein Typcode" behandeln, airspace-prwpv - Abgelehnte Routen je Takt gegen die aktuelle Position neu prüfen statt 10 Minuten negativ zu cachen; Korridor auf 50 km + 8 % lockern, sighting-log-k4m7q - Beobachtungsstandort je Sichtung mitloggen (Tabelle observation_points, Standortwechsel beendet den Besuch, Statistik je Standort)
+**Parallel:** yes (3 workers — infrastructure-q2w8h held to next wave by MAX_PARALLEL=3; ready set was 4)
+**Planning advisory:** whats-next (2026-10-27 12:49, stale — older than last Work entry) ranked live-test captures first, q2w8h second
+
+---
+
 ## 2026-10-27 19:22 -- Modeling / Captured: airspace-prwpv - Abgelehnte Routen je Takt gegen die aktuelle Position neu prüfen statt 10 Minuten negativ zu cachen; Korridor auf 50 km + 8 % lockern
 
 **Type:** Modeling / Capture

@@ -1,7 +1,7 @@
 ---
 id: sighting-log-k4m7q
 title: Beobachtungsstandort je Sichtung mitloggen (Tabelle observation_points, Standortwechsel beendet den Besuch, Statistik je Standort)
-status: todo
+status: doing
 type: feature
 context: sighting-log
 created: 2026-10-27
