@@ -75,3 +75,12 @@ Der Skeleton wird in der Cloud-Umgebung gebaut; dort gibt es keinen Heimserver, 
   - Nicht alle davon sind tragend für den Skeleton (Wetter: Stretch; Observability: folgt direkt danach). Sie sind trotzdem vorher zu entscheiden, damit die Grundlage vollständig ist.
 - Die Oberfläche wird aus den Storybook-Komponenten von `design-system-001-styleguide` zusammengesetzt, nicht neu gebaut (ADR 0002).
 - Assets wiederverwenden: `svg/*.svg` (Typklassen, Himmel, Logos) und die CSS-Variablen-Technik aus `Flugzeugmodelle.html`.
+
+## Verifier note (iteration 1)
+**REASONS:**
+- Check 5 (README_DELTA sync): the "Ubiquitous language" op appends a second **Mock-Modus** definition although the infrastructure README already has one (line 20: "- **Mock-Modus** — Startmodus des Dienstes, in dem Flug-, Routen-, Wetter- und TTS-Adapter durch Szenario-Dateien gespeist werden (ADR 0003/0004)."). applyReadmeDelta's append only skips exact duplicates, so two disagreeing bullets would result. Must be a `replace` with anchor `Mock-Modus`, `expected` = the current bullet, merged body.
+- Checks 1–4 passed (npm test 187, typecheck, build, build-storybook, Playwright chromium 10/10, `docker compose config` both profiles; ADR 0002 respected; no `.agentheim/` writes).
+- Not formally judged (stopped at check 5), but unrecorded ADR departures noticed — fix or record now: (a) ADR 0007 `sightings` has an "Auswahl slot" column — the migration (src/server/migrations/0001-sightings.ts) has none; (b) ADR 0007 puts the route cache in tables of the same file — route-service.ts keeps it in memory only, justified by adsbdb which is not used; (c) ADR 0008 asks for an optional `storybook` Compose profile — missing; mentioned in the Outcome but not in ADR 0013's scope cuts.
+- Not blocking: sighting-log ("Besuch"/visitGap) and design-system ("Stale-Hinweis") terms can't go via this task's README_DELTA; the conductor carries them over.
+**SUGGESTED_FIX:** Replace the Mock-Modus append with a `replace` merging both definitions. Then either fix the three ADR departures (Auswahl slot column, persisted route cache, storybook profile) or list them as explicit scope cuts in ADR 0013.
+**ITERATION_HINT:** likely-fixable

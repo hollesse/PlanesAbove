@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 01:03 -- Verification failed: infrastructure-001 - Walking skeleton
+
+**Type:** Work / Verification failure
+**Task:** infrastructure-001 - Walking skeleton
+**Iteration:** 1 of 3
+**Reasons:** README_DELTA duplicates the Mock-Modus term (must be replace); three unrecorded ADR departures (sightings Auswahl-slot column, route cache in memory, storybook compose profile)
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-27 00:41 -- Batch started: [infrastructure-001]
 
 **Type:** Work / Batch start
