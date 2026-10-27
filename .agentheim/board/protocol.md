@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 18:34 -- Modeling / Captured: airspace-p8w2k - Plausibilitätsprüfung schärfen: Kurs und Flugphase gegen die Route prüfen, nur fern von Start- und Zielflughafen; engerer Korridor per Querabstand
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** Plausibilitaet schaerfen: Kurs- und Flugphasenpruefung gegen die Route (nur ausserhalb einer 50-km-Zone um Start- und Zielflughafen), Querabstand statt Ellipse. Ausloeser: EWG16Y und EWG9YV am 2026-10-27 mit falschen, aber durchgelassenen Routen.
+
+---
+
 ## 2026-10-27 18:33 -- Work session ended
 
 **Type:** Work / Session end
