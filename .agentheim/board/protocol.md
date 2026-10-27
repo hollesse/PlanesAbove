@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 21:23 -- Modeling / Refined: airspace-b7kx2 - Anzeigeformat Stadt (IATA)
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** Anzeigeformat auf Stadt (IATA) festgelegt, z. B. Frankfurt (FRA) → Lissabon (LIS); IATA kommt aus der Tabelle, Quellen liefern ihn (adsbdb iata_code, hexdb iata, VRS IATA). Ohne IATA nur Stadt. Acceptance Criteria ergänzt.
+**Split into:** none
+**ADRs written:** none
+
+---
+
 ## 2026-10-27 21:22 -- Work session ended
 
 **Type:** Work
