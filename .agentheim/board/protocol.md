@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 13:58 -- Modeling / Dismissed: airspace-h9x4p
+
+**Type:** Modeling / Dismiss
+**Dismissed:**
+- airspace-h9x4p - Nähe nach Sichtbarkeit gewichten statt rein horizontaler Distanz (airspace)
+
+---
+
 ## 2026-10-27 13:47 -- Work session ended
 
 **Type:** Work / Session end

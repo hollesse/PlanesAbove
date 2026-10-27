@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 2
+- **Backlog:** 1
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 5
@@ -36,7 +36,6 @@ Catalog of this bounded context's tasks by status.
 ### Backlog
 <!-- backlog-list:start -->
 - **airspace-p2v6d** — Persistierter Routen-Cache fuer Online-Quellen (feature) — `backlog/airspace-p2v6d-persistierter-routen-cache-fuer-online-quellen.md`
-- **airspace-h9x4p** — Nähe nach Sichtbarkeit gewichten statt rein horizontaler Distanz (feature) — `backlog/airspace-h9x4p-naehe-nach-sichtbarkeit-gewichten-statt-rein-horizontaler-distanz.md`
 <!-- backlog-list:end -->
 
 ## Pointers
