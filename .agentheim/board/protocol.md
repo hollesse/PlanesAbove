@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 07:14 -- Modeling / Promoted: design-system-r5d7v - Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“)
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 01:09 -- Work session ended
 
 **Type:** Work / Session end
