@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:22 -- Modeling / Captured: airspace-prwpv - Abgelehnte Routen je Takt gegen die aktuelle Position neu prüfen statt 10 Minuten negativ zu cachen; Korridor auf 50 km + 8 % lockern
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** todo
+**Summary:** Abgelehnte Routen je Takt gegen die aktuelle Position neu prüfen statt 10 min negativ zu cachen; Korridor 50 km + 8 % (ggf. Deckel 150 km) — Befund CTN4456
+
+---
+
 ## 2026-10-27 19:17 -- Modeling / Refined: infrastructure-d3v7k - Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
 
 **Type:** Modeling / Refine
