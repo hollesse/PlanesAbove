@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 1
+- **Backlog:** 2
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 3
@@ -45,6 +45,7 @@ prior-art matcher additionally checks `done-archive/` when present.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **sky-scene-bvnnx** — Animationen für den Wechsel der Flugzeuge wie in Design-Prototyp und Storybook umsetzen (feature) — `backlog/sky-scene-bvnnx-animationen-flugzeugwechsel-wie-prototyp-und-storybook.md`
 - **sky-scene-t6h2p** — ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback (feature) — `backlog/sky-scene-t6h2p-elevenlabs-adapter-opt-in-mit-zeichenbudget-und-piper-fallba.md`
 <!-- backlog-list:end -->
 

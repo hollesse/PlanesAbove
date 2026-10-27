@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:14 -- Capture / Captured: sky-scene-bvnnx - Animationen für den Wechsel der Flugzeuge wie in Design-Prototyp und Storybook umsetzen
+
+**Type:** Capture
+**BC:** sky-scene
+**Filed to:** backlog
+**Summary:** Animationen für den Wechsel der Flugzeuge wie in Design-Prototyp und Storybook umsetzen
+
+---
+
 ## 2026-10-27 19:10 -- Batch started: [airspace-w3k8d]
 
 **Type:** Work / Batch start
