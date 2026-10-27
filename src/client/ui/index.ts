@@ -4,6 +4,7 @@ export * from './domain/flight';
 export * from './domain/livery';
 export { LIVERIES, type LiveryDef } from './domain/liveries';
 export * from './domain/samples';
+export * from './domain/transition-samples';
 export * from './domain/tokens';
 export * from './atoms/badge';
 export * from './atoms/logo';

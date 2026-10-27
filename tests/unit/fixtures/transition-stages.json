@@ -1,0 +1,1034 @@
+{
+ "empty-to-one": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "empty-to-one",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": null,
+    "timing": null,
+    "hash": "5998d3cbe372"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": "pa-plane-in",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "1328c40e16a9"
+   },
+   {
+    "cls": "pa-bar pa-bar-recent",
+    "anim": "pa-small-bar",
+    "timing": "ease-in-out",
+    "hash": "0c1e955b0ef0"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": "pa-big-bar",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "14a165c26656"
+   }
+  ]
+ },
+ "one-to-two": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "one-to-two",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": null,
+    "timing": null,
+    "hash": "5998d3cbe372"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": "pa2-plane1",
+    "timing": "cubic-bezier(.45,0,.25,1)",
+    "hash": "2aa2c7ec1bd0"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-one",
+    "anim": "pa2-badge",
+    "timing": "ease-out",
+    "hash": "80e85f68304c"
+   },
+   {
+    "cls": "pa-slot pa-slot-two",
+    "anim": "pa2-plane2",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "f6bc30de5689"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-two",
+    "anim": "pa2-badge",
+    "timing": "ease-out",
+    "hash": "91a62d6ac6e8"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": "pa2-bar1",
+    "timing": "ease-in-out",
+    "hash": "1203b6a610aa"
+   },
+   {
+    "cls": "pa-bar pa-bar-double",
+    "anim": "pa2-bar2",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "1e5f04dcfdcd"
+   }
+  ]
+ },
+ "empty-to-two": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "empty-to-two",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": null,
+    "timing": null,
+    "hash": "5998d3cbe372"
+   },
+   {
+    "cls": "pa-slot pa-slot-one",
+    "anim": "pa11-p1in",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "99de25b7516f"
+   },
+   {
+    "cls": "pa-slot pa-slot-two",
+    "anim": "pa11-p2in",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "03abef014c79"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-one",
+    "anim": "pa11-badge",
+    "timing": "ease-out",
+    "hash": "cec49b554344"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-two",
+    "anim": "pa11-badge",
+    "timing": "ease-out",
+    "hash": "4757149f9c04"
+   },
+   {
+    "cls": "pa-bar pa-bar-recent",
+    "anim": "pa11-small",
+    "timing": "ease-in-out",
+    "hash": "bb85364ca82a"
+   },
+   {
+    "cls": "pa-bar pa-bar-double",
+    "anim": "pa11-bar",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "ef7a5aa4fd0a"
+   }
+  ]
+ },
+ "one-to-empty": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "one-to-empty",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": null,
+    "timing": null,
+    "hash": "5998d3cbe372"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": "pa4-plane",
+    "timing": "cubic-bezier(.55,0,.75,.4)",
+    "hash": "d378243fbd74"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": "pa4-bar",
+    "timing": "ease-in-out",
+    "hash": "7dc0625b952a"
+   },
+   {
+    "cls": "pa-bar pa-bar-recent",
+    "anim": "pa4-small",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "754e0824ccf6"
+   }
+  ]
+ },
+ "two-to-one-b": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "two-to-one-b",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": null,
+    "timing": null,
+    "hash": "5998d3cbe372"
+   },
+   {
+    "cls": "pa-slot pa-slot-one",
+    "anim": "pa5-p1",
+    "timing": "cubic-bezier(.45,0,.25,1)",
+    "hash": "b572a2a74cda"
+   },
+   {
+    "cls": "pa-slot pa-slot-two",
+    "anim": "pa5-p2",
+    "timing": "cubic-bezier(.55,0,.75,.4)",
+    "hash": "1b5dfff1ba7a"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-one",
+    "anim": "pa5-badge",
+    "timing": "ease-out",
+    "hash": "73208836a125"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-two",
+    "anim": "pa5-badge",
+    "timing": "ease-out",
+    "hash": "be40cba29ab2"
+   },
+   {
+    "cls": "pa-bar pa-bar-double",
+    "anim": "pa5-bar2",
+    "timing": "ease-in-out",
+    "hash": "d51ad5b56dba"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": "pa5-bar1",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "952963493b78"
+   }
+  ]
+ },
+ "two-to-one-a": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "two-to-one-a",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": null,
+    "timing": null,
+    "hash": "5998d3cbe372"
+   },
+   {
+    "cls": "pa-slot pa-slot-two",
+    "anim": "pa6-p2",
+    "timing": "cubic-bezier(.45,0,.25,1)",
+    "hash": "7c58cb326334"
+   },
+   {
+    "cls": "pa-slot pa-slot-one",
+    "anim": "pa6-p1",
+    "timing": "cubic-bezier(.55,0,.75,.4)",
+    "hash": "329ac3015669"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-one",
+    "anim": "pa5-badge",
+    "timing": "ease-out",
+    "hash": "73208836a125"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-two",
+    "anim": "pa5-badge",
+    "timing": "ease-out",
+    "hash": "be40cba29ab2"
+   },
+   {
+    "cls": "pa-bar pa-bar-double",
+    "anim": "pa5-bar2",
+    "timing": "ease-in-out",
+    "hash": "d51ad5b56dba"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": "pa5-bar1",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "59556cf5c209"
+   }
+  ]
+ },
+ "two-to-empty": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "two-to-empty",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": null,
+    "timing": null,
+    "hash": "5998d3cbe372"
+   },
+   {
+    "cls": "pa-slot pa-slot-one",
+    "anim": "pa7-pout",
+    "timing": "cubic-bezier(.55,0,.75,.4)",
+    "hash": "56c07296d7d8"
+   },
+   {
+    "cls": "pa-slot pa-slot-two",
+    "anim": "pa8-pout",
+    "timing": "cubic-bezier(.55,0,.75,.4)",
+    "hash": "a6d9fe909a69"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-one",
+    "anim": "pa5-badge",
+    "timing": "ease-out",
+    "hash": "73208836a125"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-two",
+    "anim": "pa5-badge",
+    "timing": "ease-out",
+    "hash": "be40cba29ab2"
+   },
+   {
+    "cls": "pa-bar pa-bar-double",
+    "anim": "pa5-bar2",
+    "timing": "ease-in-out",
+    "hash": "d51ad5b56dba"
+   },
+   {
+    "cls": "pa-bar pa-bar-recent",
+    "anim": "pa4-small",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "82e4b7254ac6"
+   }
+  ]
+ },
+ "switch-one": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "switch-one",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": null,
+    "timing": null,
+    "hash": "5998d3cbe372"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": "pa3-plane-a",
+    "timing": "cubic-bezier(.55,0,.75,.4)",
+    "hash": "1a35a17414c5"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": "pa3-plane-b",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "deeabe26ef16"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": "pa3-bar-a",
+    "timing": "ease-in-out",
+    "hash": "e20f3b470f9f"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": "pa3-bar-b",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "11dcfee91f64"
+   }
+  ]
+ },
+ "switch-two-1": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "switch-two-1",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": null,
+    "timing": null,
+    "hash": "5998d3cbe372"
+   },
+   {
+    "cls": "pa-slot pa-slot-one",
+    "anim": "pa7-pout",
+    "timing": "cubic-bezier(.55,0,.75,.4)",
+    "hash": "56c07296d7d8"
+   },
+   {
+    "cls": "pa-slot pa-slot-one",
+    "anim": "pa7-pin",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "1923c8a45eb6"
+   },
+   {
+    "cls": "pa-slot pa-slot-two",
+    "anim": null,
+    "timing": null,
+    "hash": "2d72ad9f6711"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-one",
+    "anim": "pa7-badge",
+    "timing": "ease-out",
+    "hash": "1b8689826671"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-two",
+    "anim": null,
+    "timing": null,
+    "hash": "8c917f0ec109"
+   },
+   {
+    "cls": "pa-bar pa-bar-double",
+    "anim": "pa5-bar2",
+    "timing": "ease-in-out",
+    "hash": "d51ad5b56dba"
+   },
+   {
+    "cls": "pa-bar pa-bar-double",
+    "anim": "pa5-bar1",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "15edbb10fe5e"
+   }
+  ]
+ },
+ "switch-two-2": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "switch-two-2",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": null,
+    "timing": null,
+    "hash": "5998d3cbe372"
+   },
+   {
+    "cls": "pa-slot pa-slot-one",
+    "anim": null,
+    "timing": null,
+    "hash": "e155a60d1c7e"
+   },
+   {
+    "cls": "pa-slot pa-slot-two",
+    "anim": "pa8-pout",
+    "timing": "cubic-bezier(.55,0,.75,.4)",
+    "hash": "a6d9fe909a69"
+   },
+   {
+    "cls": "pa-slot pa-slot-two",
+    "anim": "pa8-pin",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "ec7dead43769"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-one",
+    "anim": null,
+    "timing": null,
+    "hash": "4da82efff6fe"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-two",
+    "anim": "pa7-badge",
+    "timing": "ease-out",
+    "hash": "f741b52653d6"
+   },
+   {
+    "cls": "pa-bar pa-bar-double",
+    "anim": "pa5-bar2",
+    "timing": "ease-in-out",
+    "hash": "d51ad5b56dba"
+   },
+   {
+    "cls": "pa-bar pa-bar-double",
+    "anim": "pa5-bar1",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "8163593f7040"
+   }
+  ]
+ },
+ "switch-two-both": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "switch-two-both",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": null,
+    "timing": null,
+    "hash": "5998d3cbe372"
+   },
+   {
+    "cls": "pa-slot pa-slot-one",
+    "anim": "pa7-pout",
+    "timing": "cubic-bezier(.55,0,.75,.4)",
+    "hash": "56c07296d7d8"
+   },
+   {
+    "cls": "pa-slot pa-slot-one",
+    "anim": "pa7-pin",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "1923c8a45eb6"
+   },
+   {
+    "cls": "pa-slot pa-slot-two",
+    "anim": "pa8-pout",
+    "timing": "cubic-bezier(.55,0,.75,.4)",
+    "hash": "a6d9fe909a69"
+   },
+   {
+    "cls": "pa-slot pa-slot-two",
+    "anim": "pa8-pin",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "ec7dead43769"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-one",
+    "anim": "pa7-badge",
+    "timing": "ease-out",
+    "hash": "1b8689826671"
+   },
+   {
+    "cls": "pa-badge-slot pa-badge-slot-two",
+    "anim": "pa7-badge",
+    "timing": "ease-out",
+    "hash": "f741b52653d6"
+   },
+   {
+    "cls": "pa-bar pa-bar-double",
+    "anim": "pa5-bar2",
+    "timing": "ease-in-out",
+    "hash": "d51ad5b56dba"
+   },
+   {
+    "cls": "pa-bar pa-bar-double",
+    "anim": "pa5-bar1",
+    "timing": "cubic-bezier(.22,.61,.36,1)",
+    "hash": "83599952b39a"
+   }
+  ]
+ },
+ "wx-light-clear": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "wx-light-clear",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-layer",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "f9e6de7d7a1d"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx-out",
+    "timing": "ease-in-out",
+    "hash": "8d1fb1da1f7f"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "347bc953b4a1"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": null,
+    "timing": null,
+    "hash": "cffb8b6db938"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": null,
+    "timing": null,
+    "hash": "8dd01320cd73"
+   }
+  ]
+ },
+ "wx-clear-light": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "wx-clear-light",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "ab05cf9aa5cc"
+   },
+   {
+    "cls": "pa-layer",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "f7b09d703c7b"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx-out",
+    "timing": "ease-in-out",
+    "hash": "8d1fb1da1f7f"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "347bc953b4a1"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": null,
+    "timing": null,
+    "hash": "cffb8b6db938"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": null,
+    "timing": null,
+    "hash": "8dd01320cd73"
+   }
+  ]
+ },
+ "wx-light-overcast": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "wx-light-overcast",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-layer",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "c77848a4e20a"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx-out",
+    "timing": "ease-in-out",
+    "hash": "8d1fb1da1f7f"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "347bc953b4a1"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": null,
+    "timing": null,
+    "hash": "cffb8b6db938"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": null,
+    "timing": null,
+    "hash": "8dd01320cd73"
+   }
+  ]
+ },
+ "wx-overcast-rain": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "wx-overcast-rain",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "a9402ffd37b1"
+   },
+   {
+    "cls": "pa-layer",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "5b8199263724"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx-out",
+    "timing": "ease-in-out",
+    "hash": "8d1fb1da1f7f"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-light pa-glow-on-light-ink",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "29326435bf72"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": null,
+    "timing": null,
+    "hash": "cffb8b6db938"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": null,
+    "timing": null,
+    "hash": "8dd01320cd73"
+   }
+  ]
+ },
+ "wx-rain-storm": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "wx-rain-storm",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "57104b06d18f"
+   },
+   {
+    "cls": "pa-layer",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "4e335d993051"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-light pa-glow-on-light-ink",
+    "anim": "pa-wx-out",
+    "timing": "ease-in-out",
+    "hash": "b803e9c2c7a3"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-light pa-glow-on-light-ink",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "29326435bf72"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": null,
+    "timing": null,
+    "hash": "cffb8b6db938"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": null,
+    "timing": null,
+    "hash": "8dd01320cd73"
+   }
+  ]
+ },
+ "wx-overcast-fog": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "wx-overcast-fog",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "a9402ffd37b1"
+   },
+   {
+    "cls": "pa-layer",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "35489a05d0f7"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx-out",
+    "timing": "ease-in-out",
+    "hash": "8d1fb1da1f7f"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "347bc953b4a1"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": null,
+    "timing": null,
+    "hash": "cffb8b6db938"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": null,
+    "timing": null,
+    "hash": "8dd01320cd73"
+   }
+  ]
+ },
+ "wx-overcast-snow": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "wx-overcast-snow",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "a9402ffd37b1"
+   },
+   {
+    "cls": "pa-layer",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "1a9c020e3552"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx-out",
+    "timing": "ease-in-out",
+    "hash": "8d1fb1da1f7f"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "347bc953b4a1"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": null,
+    "timing": null,
+    "hash": "cffb8b6db938"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": null,
+    "timing": null,
+    "hash": "8dd01320cd73"
+   }
+  ]
+ },
+ "tod-dawn-day": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "tod-dawn-day",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "869bf1e71ccf"
+   },
+   {
+    "cls": "pa-layer",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "f7b09d703c7b"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx-out",
+    "timing": "ease-in-out",
+    "hash": "8d1fb1da1f7f"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "347bc953b4a1"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": null,
+    "timing": null,
+    "hash": "cffb8b6db938"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": null,
+    "timing": null,
+    "hash": "8dd01320cd73"
+   }
+  ]
+ },
+ "tod-day-dusk": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "tod-day-dusk",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f4daa2b57638"
+   },
+   {
+    "cls": "pa-layer",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "c0004b4cd1aa"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx-out",
+    "timing": "ease-in-out",
+    "hash": "8d1fb1da1f7f"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-light pa-glow-on-light-ink",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "29326435bf72"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": null,
+    "timing": null,
+    "hash": "cffb8b6db938"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": null,
+    "timing": null,
+    "hash": "8dd01320cd73"
+   }
+  ]
+ },
+ "tod-dusk-night": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "tod-dusk-night",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "3395a914a70a"
+   },
+   {
+    "cls": "pa-layer",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "8c91240b3263"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-light pa-glow-on-light-ink",
+    "anim": "pa-wx-out",
+    "timing": "ease-in-out",
+    "hash": "b803e9c2c7a3"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-light pa-glow-on-light-ink",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "29326435bf72"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": null,
+    "timing": null,
+    "hash": "cffb8b6db938"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": null,
+    "timing": null,
+    "hash": "8dd01320cd73"
+   }
+  ]
+ },
+ "tod-night-dawn": {
+  "stageClass": "pa-screen pa-screen-4x3",
+  "transition": "tod-night-dawn",
+  "layers": [
+   {
+    "cls": "pa-layer",
+    "anim": null,
+    "timing": null,
+    "hash": "f51576d9488b"
+   },
+   {
+    "cls": "pa-layer",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "9008cb8dec7c"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-light pa-glow-on-light-ink",
+    "anim": "pa-wx-out",
+    "timing": "ease-in-out",
+    "hash": "b803e9c2c7a3"
+   },
+   {
+    "cls": "pa-scene-header pa-ink-dark pa-glow-on-dark-ink",
+    "anim": "pa-wx",
+    "timing": "ease-in-out",
+    "hash": "347bc953b4a1"
+   },
+   {
+    "cls": "pa-slot pa-slot-single",
+    "anim": null,
+    "timing": null,
+    "hash": "cffb8b6db938"
+   },
+   {
+    "cls": "pa-bar pa-bar-single",
+    "anim": null,
+    "timing": null,
+    "hash": "8dd01320cd73"
+   }
+  ]
+ }
+}

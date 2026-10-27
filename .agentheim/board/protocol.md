@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:50 -- Task verified and completed: design-system-kcpnw - Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch
+
+**Type:** Work / Task completion
+**Task:** design-system-kcpnw - Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch
+**Summary:** Übergangs-Player und -Katalog datengetrieben (TransitionData, PlaneRef, sampleTransitionData, TRANSITION_MS, data-side); alle 22 Bühnen snapshot-identisch
+**Duration:** 12m20s
+**Verification:** PASS (iteration 2)
+**Files changed:** 7
+**Tests added:** 12
+**ADRs written:** none
+
+---
+
+## 2026-10-27 19:47 -- Verification failed: design-system-kcpnw - Übergangs-Player datengetrieben
+
+**Type:** Work / Verification failure
+**Task:** design-system-kcpnw - Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch
+**Iteration:** 1 of 3
+**Reasons:** Kriterium 7 nur für one-to-two geprüft statt je Spec (data-side="to"-Zählung für alle 11 Flugzeug-Specs fehlt); abweichende Zählung 2+2+1 statt 1+1+1 nicht im Outcome begründet
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-27 19:46 -- Modeling / Refined: design-system-t6wz4 - Neue Lackierungen und Logos für Airlines ohne eigenes Design zeichnen
 
 **Type:** Modeling / Refine

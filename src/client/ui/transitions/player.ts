@@ -2,14 +2,26 @@ import { h } from '../dom';
 import { renderBadgeSlot, renderPlaneSlot } from '../organisms/scene-layer';
 import { renderInfoBar, type InfoBarProps } from '../organisms/info-bar';
 import { renderSceneHeader } from '../molecules/scene-header';
-import { SAMPLE_CLOCK, SAMPLE_FLIGHTS, SAMPLE_PLACE, SAMPLE_PLANES } from '../domain/samples';
+import { sampleTransitionData } from '../domain/transition-samples';
+import { skyInk } from '../domain/catalog';
 import { renderSkyLayer, renderStage, type ScreenAspect } from '../templates/screen';
-import { DURATION, type Anim, type BarSpec, type Layer, type TransitionSpec } from './catalog';
+import { DURATION, type Anim, type BarSpec, type Layer, type PlaneRef, type TransitionData, type TransitionSpec } from './catalog';
 
-const barProps = (b: BarSpec): InfoBarProps =>
-  b.kind === 'single' ? { variant: 'single', flight: SAMPLE_FLIGHTS[b.flight] }
-  : b.kind === 'double' ? { variant: 'double', flights: [SAMPLE_FLIGHTS[b.flights[0]], SAMPLE_FLIGHTS[b.flights[1]]] }
-  : { variant: 'recent', text: b.text };
+const planeOf = (d: TransitionData, r: PlaneRef) => d[r.side][r.index];
+
+/** Props for a bar, or null when a referenced flight / text is missing (the layer is then skipped). */
+function barProps(b: BarSpec, d: TransitionData): InfoBarProps | null {
+  if (b.kind === 'single') {
+    const p = planeOf(d, b.flight);
+    return p ? { variant: 'single', flight: p.flight } : null;
+  }
+  if (b.kind === 'double') {
+    const [p1, p2] = [planeOf(d, b.flights[0]), planeOf(d, b.flights[1])];
+    return p1 && p2 ? { variant: 'double', flights: [p1.flight, p2.flight] } : null;
+  }
+  const text = d.recent[b.text];
+  return text === undefined ? null : { variant: 'recent', text };
+}
 
 /** Attach a paused one-shot animation (initial frame visible until played). */
 export function applyAnimation(el: HTMLElement, anim: Anim): void {
@@ -18,24 +30,46 @@ export function applyAnimation(el: HTMLElement, anim: Anim): void {
   el.style.setProperty('animation', `${anim.name} ${DURATION} ${anim.timing} 1 both paused`);
 }
 
-function buildLayer(layer: Layer): HTMLElement {
+function buildLayer(layer: Layer, data: TransitionData): HTMLElement | null {
   let el: HTMLElement;
   switch (layer.kind) {
-    case 'sky': el = renderSkyLayer(layer.sky); break;
-    case 'header': el = renderSceneHeader({ place: SAMPLE_PLACE, clock: SAMPLE_CLOCK, ink: layer.ink }); break;
-    case 'plane': el = renderPlaneSlot(layer.slot, SAMPLE_PLANES[layer.plane]); break;
-    case 'badge': el = renderBadgeSlot(layer.n); break;
-    case 'bar': el = renderInfoBar(barProps(layer.bar)); break;
+    case 'sky': el = renderSkyLayer(layer.sky ?? data.sky); break;
+    case 'header': el = renderSceneHeader({ place: data.place, clock: data.clock, ink: layer.ink ?? skyInk(data.sky), stale: data.stale }); break;
+    case 'plane': {
+      const p = planeOf(data, layer.plane);
+      if (!p) return null;
+      el = renderPlaneSlot(layer.slot, p.plane);
+      el.dataset.side = layer.plane.side;
+      el.dataset.index = String(layer.plane.index);
+      break;
+    }
+    case 'badge': {
+      el = renderBadgeSlot(layer.n);
+      // The badge belongs to the arriving state while it still has a plane there.
+      el.dataset.side = data.to[layer.n - 1] ? 'to' : 'from';
+      el.dataset.index = String(layer.n - 1);
+      break;
+    }
+    case 'bar': {
+      const props = barProps(layer.bar, data);
+      if (!props) return null;
+      el = renderInfoBar(props);
+      el.dataset.side = layer.bar.kind === 'recent' ? layer.bar.text : layer.bar.kind === 'single' ? layer.bar.flight.side : layer.bar.flights[0].side;
+      break;
+    }
   }
   if (layer.anim) applyAnimation(el, layer.anim);
   return el;
 }
 
-/** The screen of a transition in its start state, all animations paused. */
-export function renderTransitionStage(spec: TransitionSpec, aspect: ScreenAspect = '4:3'): HTMLElement {
+/** The screen of a transition in its start state, all animations paused. Layers whose data is missing are skipped. */
+export function renderTransitionStage(spec: TransitionSpec, data: TransitionData, aspect: ScreenAspect = '4:3'): HTMLElement {
   const stage = renderStage(aspect);
   stage.dataset.transition = spec.id;
-  stage.append(...spec.layers.map(buildLayer));
+  for (const layer of spec.layers) {
+    const el = buildLayer(layer, data);
+    if (el) stage.append(el);
+  }
   return stage;
 }
 
@@ -59,11 +93,11 @@ export function resetTransition(stage: HTMLElement): void {
   });
 }
 
-export interface TransitionProps { spec: TransitionSpec; aspect?: ScreenAspect; autoplay?: boolean }
+export interface TransitionProps { spec: TransitionSpec; aspect?: ScreenAspect; autoplay?: boolean; data?: TransitionData }
 
 /** Pages/Übergänge: a playable transition (label, "Start ▸" button, screen). */
-export function renderTransition({ spec, aspect = '4:3', autoplay = false }: TransitionProps): HTMLElement {
-  const stage = renderTransitionStage(spec, aspect);
+export function renderTransition({ spec, aspect = '4:3', autoplay = false, data = sampleTransitionData(spec.id) }: TransitionProps): HTMLElement {
+  const stage = renderTransitionStage(spec, data, aspect);
   const btn = h('button', { class: 'pa-play', text: 'Start ▸', attrs: { type: 'button' } });
   btn.addEventListener('click', () => playTransition(stage));
   const root = h('div', { class: 'pa-transition', data: { transition: spec.id } }, h('div', { class: 'pa-transition-head' }, h('span', { class: 'pa-eyebrow', text: `${spec.label} · 5 s` }), btn), stage);
