@@ -1,7 +1,7 @@
 ---
 id: design-system-v8q3n
 title: Schein hinter der Kopfzeile verstärken (Variante E) und Kopfzeile in Plex Mono 500
-status: todo
+status: doing
 type: feature
 context: design-system
 created: 2026-10-27
