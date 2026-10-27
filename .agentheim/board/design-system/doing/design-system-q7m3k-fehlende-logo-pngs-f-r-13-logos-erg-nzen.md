@@ -32,3 +32,10 @@ Zusätzlich festgestellt (Betreiber-Durchsicht): Einige Logos werden abgeschnitt
 - [ ] `npm run assets` meldet keine fehlenden Logo-PNGs mehr.
 - [ ] Jedes Logo ist in Storybook (Atoms/Logo, Molecules/Lackiertes Flugzeug) sichtbar und sitzt am richtigen Ankerpunkt.
 - [ ] Der Betreiber hat die Logos gesehen. [human-eye]
+## Verifier note (iteration 1)
+**REASONS:**
+- Check 1, criterion 3 (no logo clipped in Atoms/Logo AND Molecules/Lackiertes Flugzeug; a test checks it): only the atom half has a test (`the logo atom viewBox encloses all painted content…` in tests/unit/livery.test.ts, renderLogo only). No new test touches `placeLogo`/`renderPaintedPlane`. The plane half rests on the worker's screenshot description and the existing `overflow="visible"` in `nestKeepViewBox`/`nestSquare` (src/client/ui/domain/livery.ts:39-45), which no test asserts.
+- In the plane SVGs (e.g. src/client/ui/assets/svg/narrowbody.svg:73-81) `logo-tail-lead` sits inside `<g clip-path="url(#…-fin-clip)">` — easyjet/pegasus are intentionally clipped to the fin outline. Not tested and not settled in the Outcome against "vollständig sichtbar … ohne die Ankerpunkt-Platzierung der Entwürfe zu verfälschen".
+- Fine: missing-PNG guard fails when a PNG is absent; `data-missing-asset` guard; TESTS_ADDED 3 matches; scope OK.
+**SUGGESTED_FIX:** Add a test for the painted-plane case: for every logo × Typklasse render the painted plane and assert the nested logo `<svg>` has `overflow="visible"` (or its content boxes fit the plane's unclipped area). Then either exempt `logo-tail-lead`'s fin clip with a comment citing the drafts as intended cropping, or show that easyjet/pegasus are not cut; record which in the Outcome.
+**ITERATION_HINT:** likely-fixable

@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 00:29 -- Verification failed: design-system-q7m3k - Fehlende Logo-PNGs, Logo-Beschnitt
+
+**Type:** Work / Verification failure
+**Task:** design-system-q7m3k - Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern
+**Iteration:** 1 of 3
+**Reasons:** no test for logo clipping on painted planes; logo-tail-lead fin clip (easyjet, pegasus) unsettled
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-27 00:23 -- Batch started: [design-system-q7m3k]
 
 **Type:** Work / Batch start
