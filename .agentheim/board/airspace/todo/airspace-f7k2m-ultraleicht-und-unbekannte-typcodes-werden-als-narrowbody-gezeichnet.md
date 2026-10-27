@@ -1,7 +1,7 @@
 ---
 id: airspace-f7k2m
 title: Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergänzen (Ikarus C42 D-MMDP)
-status: backlog
+status: todo
 type: bug
 context: airspace
 created: 2026-10-27

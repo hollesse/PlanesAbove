@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 12:24 -- Modeling / Promoted: airspace-f7k2m - Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergänzen (Ikarus C42 D-MMDP)
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-27 12:24 -- Modeling / Refined: airspace-f7k2m - Unbekannte Typcodes und B-Emitterkategorien als light-aircraft statt narrowbody darstellen, Typtabelle ergaenzen
 
 **Type:** Modeling / Refine
