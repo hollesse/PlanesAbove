@@ -1,7 +1,7 @@
 ---
 id: sighting-log-t8tfb
 title: Lackierungs-Statistik „npm run stats:liveries“: welche Airlines wie oft mit der Standard-Lackierung gezeigt wurden, weil kein Design oder keine Zuordnung vorlag
-status: todo
+status: doing
 type: feature
 context: sighting-log
 created: 2026-10-27

@@ -1,7 +1,7 @@
 ---
 id: airspace-f9cjz
 title: Airline-Lackierungszuordnung für alle Katalog-Lackierungen vervollständigen (Emirates, Qatar, United, Jet2, KLM Cityhopper …) und Lackierungen standardmäßig einschalten
-status: todo
+status: doing
 type: bug
 context: airspace
 created: 2026-10-27

@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-27 19:50 -- Batch started: [airspace-f9cjz, sighting-log-t8tfb]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-f9cjz - Airline-Lackierungszuordnung für alle Katalog-Lackierungen vervollständigen (Emirates, Qatar, United, Jet2, KLM Cityhopper …) und Lackierungen standardmäßig einschalten, sighting-log-t8tfb - Lackierungs-Statistik „npm run stats:liveries“: welche Airlines wie oft mit der Standard-Lackierung gezeigt wurden, weil kein Design oder keine Zuordnung vorlag
+**Parallel:** yes (2 workers — wave 4; both promoted mid-run, no file overlap)
+
+---
+
 ## 2026-10-27 19:50 -- Task verified and completed: design-system-kcpnw - Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch
 
 **Type:** Work / Task completion
