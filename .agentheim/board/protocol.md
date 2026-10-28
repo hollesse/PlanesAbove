@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 09:38 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 33m (09:04 batch start → 09:37; measured). Note: the per-task Duration lines in this session's completion entries were conductor estimates, not clock measurements — treat them as unreliable.
+**Completed:** 7 (first-try PASS: 4, re-dispatched: 3, skipped: 0)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** infrastructure-agdax: 2, airspace-w1q3x: 3, design-system-z9rzp: 1, design-system-h3b7q: 2, sky-scene-n0sfy: 1, airspace-cn6t7: 1, infrastructure-d3v7k: 2
+**Commits:** 10 (3 batch starts, 7 integrations)
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 71% product-facing / 29% harness / 0% bookkeeping (7 tasks)
+**Carry-over:** .agentheim/.dashboard/: left behind (owner: dashboard, untracked advisory state present since session start); left behind (user WIP, 2 files: config.yaml, data/)
+
+---
+
 ## 2026-10-28 09:37 -- Task verified and completed: infrastructure-d3v7k - Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
 
 **Type:** Work / Task completion
