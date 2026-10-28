@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 2
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 9
+- **Doing:** 0
+- **Done:** 10
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **design-system-h3b7q** — Lange Route in der Info-Leiste: drei Alternativen als Storybook-Entwürfe, Betreiber wählt eine (spike) — `doing/design-system-h3b7q-lange-route-drei-alternativen-in-storybook.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **design-system-h3b7q** — Lange Route in der Info-Leiste: drei Alternativen als Storybook-Entwürfe, Betreiber wählt eine (spike) — `done/design-system-h3b7q-lange-route-drei-alternativen-in-storybook.md`
 - **design-system-z9rzp** — Flugphase als Pfeil vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen mehr Platz haben (feature) — `done/design-system-z9rzp-flugphase-als-pfeil-vor-der-hoehe-hoehe-und-tempo-eigene-zeilen.md`
 - **design-system-kcpnw** — Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch (refactor) — `done/design-system-kcpnw-uebergangs-player-datengetrieben-echte-flugzeuge-statt-beispieldaten.md`
 - **design-system-r5d7v** — Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“) (feature) — `done/design-system-r5d7v-stale-hinweis-neuer-baustein-vom-betreiber-abnehmen.md`

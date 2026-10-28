@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 09:31 -- Task verified and completed: design-system-h3b7q - Lange Route in der Info-Leiste: drei Alternativen als Storybook-Entwürfe, Betreiber wählt eine
+
+**Type:** Work / Task completion
+**Task:** design-system-h3b7q - Lange Route in der Info-Leiste: drei Alternativen als Storybook-Entwürfe, Betreiber wählt eine
+**Summary:** Drei Entwürfe (A: erst kleiner dann Umbruch, B: Umbruch ab Schwelle, C: nur Verkleinerung) für lange Routen als Storybook-Stories mit Bounding-Box-Badge bei 4:3 und 5:3; Komponenten unverändert; Wahl liegt beim Betreiber
+**Duration:** 46m
+**Verification:** PASS (iteration 2)
+**Files changed:** 1
+**Tests added:** 0
+**ADRs written:** none
+
+---
+
 ## 2026-10-28 09:28 -- Task verified and completed: sky-scene-n0sfy - Flugzeug-Übergänge (kommt / geht / wechselt) in der Live-Szene abspielen statt hart zu schneiden; Diff per icao24, Übergang-Sperre puffert den neuesten Stand
 
 **Type:** Work / Task completion
@@ -15,6 +28,7 @@ Newest entries on top.
 **Files changed:** 6
 **Tests added:** 29
 **ADRs written:** none
+**README delta:** README.md: appended-fallback into ## Ubiquitous language (named section "Übergang-Sperre" not found)
 
 ---
 
