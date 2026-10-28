@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 08:21 -- Modeling / Captured: infrastructure-agdax - Continuous Deployment: GitHub Action testet und baut Images nach GHCR bei jedem Push auf main; Watchtower auf ZimaOS zieht sie, das iPad lädt sich über die buildId selbst neu
+
+**Type:** Modeling / Capture
+**BC:** infrastructure
+**Filed to:** todo
+**Summary:** Continuous Deployment: GitHub Action testet, baut und pusht Dienst- und Piper-Image nach GHCR bei jedem Push auf main; Watchtower auf ZimaOS zieht die Images, das iPad lädt sich über die buildId neu. Betreiber-Entscheidung für CI-gebaute Images statt Build auf dem Server. Abhängig von d3v7k, direkt nach todo.
+
+---
+
 ## 2026-10-27 23:17 -- Modeling / Promoted: airspace-cn6t7 - Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen
 
 **Type:** Modeling / Promote
