@@ -60,6 +60,7 @@ describe('docker-compose.yml (ADR 0022)', () => {
     expect(w.image).not.toContain('containrrr');
     expect(w.image).toMatch(/^nickfedor\/watchtower:\d+\.\d+\.\d+$/); // pinned, updated deliberately (e.g. Renovate), never :latest
     expect(w.command).toContain('--label-enable');
+    expect(w.command).toContain('--interval 60'); // ADR 0025: a green CI run reaches the device within ~1 min
     expect(w.volumes).toContain('/var/run/docker.sock:/var/run/docker.sock');
   });
 });
@@ -95,6 +96,7 @@ describe('docker-compose.zimaos.yml (UI import on ZimaOS)', () => {
     const w = c.services.watchtower;
     expect(w.image).toMatch(/^nickfedor\/watchtower:\d+\.\d+\.\d+$/); // pinned, updated deliberately (e.g. Renovate), never :latest
     expect(w.command).toContain('--label-enable');
+    expect(w.command).toContain('--interval 60'); // ADR 0025: a green CI run reaches the device within ~1 min
     expect(w.volumes).toContain('/var/run/docker.sock:/var/run/docker.sock');
   });
 });

@@ -15,7 +15,7 @@ ADR 0008 defines a manual update path (`git pull && docker compose up -d --build
 
 ## Decision
 - A GitHub Actions workflow (`.github/workflows/deploy.yml`) runs on push to `main`. Job `test` runs `npm ci`, typecheck, `npm test`, build. Job `publish` `needs: test`, so a failing step publishes nothing. It pushes `ghcr.io/hollesse/planesabove` and `ghcr.io/hollesse/planesabove-tts` with tags `main` and `sha-<commit>`, using `GITHUB_TOKEN` with `packages: write`. The Piper image is rebuilt only when `docker/piper/**` changed anywhere in the pushed range (`github.event.before..github.sha`, full checkout depth; a missing or all-zero `before` forces a build), when it is missing in GHCR, or on manual dispatch (`force_tts`). Playwright E2E is a separate non-blocking job (amended 2026-10-28, see below: E2E now gates `publish`).
-- `docker-compose.yml` references the GHCR images (`build:` stays for local Podman builds) and adds a `watchtower` service (5 min interval, `--label-enable`, `--cleanup`) that only touches containers labelled `com.centurylinklabs.watchtower.enable=true`.
+- `docker-compose.yml` references the GHCR images (`build:` stays for local Podman builds) and adds a `watchtower` service (5 min interval — 60 s since 2026-10-28, see ADR 0025 —, `--label-enable`, `--cleanup`) that only touches containers labelled `com.centurylinklabs.watchtower.enable=true`.
 - The new container reports a new `buildId`; the iPad reloads itself (ADR 0008, unchanged).
 - Rollback: pin a `sha-<commit>` tag in the compose file.
 - This amends the "Update path" of ADR 0008.

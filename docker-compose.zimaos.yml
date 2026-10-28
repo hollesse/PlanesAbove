@@ -46,7 +46,7 @@ services:
     image: nickfedor/watchtower:1.23.2   # pinned; bump deliberately (e.g. via Renovate), Watchtower does not update itself
     container_name: planesabove-watchtower
     restart: unless-stopped
-    command: --label-enable --cleanup --interval 300
+    command: --label-enable --cleanup --interval 60
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     logging:

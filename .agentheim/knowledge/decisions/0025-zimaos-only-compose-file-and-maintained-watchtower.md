@@ -29,3 +29,4 @@ The operator decided on 2026-10-28 to install PlanesAbove through the ZimaOS UI 
 - Two compose files must be kept in sync; `tests/unit/deploy-workflow.test.ts` guards the ZimaOS file's rules (no build/profiles/relative mounts/storybook, GHCR images and labels, fork watchtower).
 - The operator checks `docker version` on ZimaOS; the real import remains a human-eye acceptance step.
 - A tile with a web link in the ZimaOS dashboard is not provided until `x-casaos` is verified.
+- Watchtower checks every 60 s (`--interval 60`, was 300 s in ADR 0022), so a green CI run reaches the iPad within about a minute — useful when testing on the real device. Cost: two anonymous GHCR manifest checks per minute, well within GHCR's limits; the Watchtower image itself is never checked (no label).
