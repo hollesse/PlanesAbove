@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 11:22 -- Capture / Captured: design-system-m4r7v - Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei
+
+**Type:** Capture
+**BC:** design-system
+**Filed to:** backlog
+**Summary:** Beispieldaten der Info-Leisten-Stories auf echtes Anzeigeformat (Stadt (IATA), echte Callsigns/Typen) bringen, lange Routen in den regulären Zuständen mit dabei.
+
+---
+
 ## 2026-10-28 11:19 -- Work session ended
 
 **Type:** Work / Session end
