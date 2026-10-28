@@ -1,7 +1,7 @@
 ---
 id: design-system-h3b7q
 title: Lange Route in der Info-Leiste: drei Alternativen als Storybook-Entwürfe, Betreiber wählt eine
-status: todo
+status: doing
 type: spike
 context: design-system
 created: 2026-10-27

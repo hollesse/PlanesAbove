@@ -5,6 +5,25 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 09:17 -- Batch started: [design-system-h3b7q, sky-scene-n0sfy]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-h3b7q - Lange Route in der Info-Leiste: drei Alternativen als Storybook-Entwürfe, Betreiber wählt eine, sky-scene-n0sfy - Flugzeug-Übergänge (kommt / geht / wechselt) in der Live-Szene abspielen statt hart zu schneiden; Diff per icao24, Übergang-Sperre puffert den neuesten Stand
+**Parallel:** yes (2 workers + airspace-w1q3x still in iteration 3 = 3 live; airspace-cn6t7 held: shares route-service.ts with w1q3x; infrastructure-d3v7k held by cap 3, next wave)
+
+---
+
+## 2026-10-28 09:17 -- Verification failed: airspace-w1q3x - hexdb und VRS immer beide fragen
+
+**Type:** Work / Verification failure
+**Task:** airspace-w1q3x - hexdb und VRS immer beide fragen; VRS-Mehrleg-Route gewinnt bei passendem Endstück
+**Iteration:** 2 of 3
+**Reasons:** README-Delta ergänzt nur einen neuen Eintrag; der bestehende Eintrag Routenquelle (erste plausible Route gewinnt) widerspricht dem neuen Verhalten; Code und Tests in Ordnung (484 Tests)
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-28 09:14 -- Task verified and completed: infrastructure-agdax - Continuous Deployment: GitHub Action testet und baut Images nach GHCR bei jedem Push auf main; Watchtower auf ZimaOS zieht sie, das iPad lädt sich über die buildId selbst neu
 
 **Type:** Work / Task completion
