@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 12:39 -- Modeling / Captured: design-system-w5n2k - Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil)
+
+**Type:** Modeling / Capture
+**BC:** design-system
+**Filed to:** backlog
+**Summary:** Long-Route-E2E-Tests unter WebKit flaky; e2e-CI-Job dadurch dauerhaft rot.
+
+---
+
 ## 2026-10-28 12:34 -- Modeling / Captured: sighting-log-r3m8x - Routen- und Lackierungs-Statistik als API-Endpunkt des Dienstes, damit die Auswertung auf dem Heimserver ohne Node und ohne DB-Kopie im Browser abrufbar ist
 
 **Type:** Modeling / Capture

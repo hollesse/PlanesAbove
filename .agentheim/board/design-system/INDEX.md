@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 2
+- **Backlog:** 3
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 11
@@ -42,6 +42,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **design-system-w5n2k** — Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil) (bug) — `backlog/design-system-w5n2k-long-route-webkit-tests-instabil.md`
 - **design-system-m4r7v** — Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei (feature) — `backlog/design-system-m4r7v-realistische-beispieldaten-info-leiste-stories.md`
 - **design-system-t6wz4** — Flugzeuge je Airline in eigener Lackierung zeichnen, fehlende Airline-Designs in der Statistik ausweisen (feature) — `backlog/design-system-t6wz4-flugzeuge-je-airline-in-eigener-lackierung-statistik-standard-fallback.md`
 <!-- backlog-list:end -->
