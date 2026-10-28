@@ -36,6 +36,15 @@ const schema = z.object({
       /** adsb.lol allows 500 requests/day; stay below it (airspace-b9r4w). UTC day. */
       adsbLol: z.object({ dailyRequestCap: z.number().int().positive().default(400) }).default({ dailyRequestCap: 400 }),
     }).default({ timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES], adsbLol: { dailyRequestCap: 400 } }),
+    /** Live cross-check of the aircraft type per hex against hexdb (airspace-t4x9k); results memory-only. Backoff after 429 is route.hexdb.backoffMinutes (same host). */
+    aircraftType: z.object({
+      hexdb: z.object({
+        enabled: z.boolean().default(true),
+        /** Short on purpose: the lookup runs inside the Takt before the selection is shown. */
+        timeoutMs: z.number().int().positive().default(2000),
+        cacheTtlHours: z.number().positive().default(24),
+      }).default({ enabled: true, timeoutMs: 2000, cacheTtlHours: 24 }),
+    }).default({ hexdb: { enabled: true, timeoutMs: 2000, cacheTtlHours: 24 } }),
     route: z.object({
       enabled: z.boolean().default(true),
       /** Source order: hexdb, then adsbdb live lookups, offline VRS snapshot as fallback (ADR 0016, amendment 2026-10-27). */
@@ -97,7 +106,7 @@ const schema = z.object({
         billingPeriodStartDay: z.number().int().min(1).max(28).default(1),
       }).default(FLIGHTAWARE_DEFAULTS),
     }).default(ROUTE_DEFAULTS),
-  }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES], adsbLol: { dailyRequestCap: 400 } }, route: ROUTE_DEFAULTS }),
+  }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES], adsbLol: { dailyRequestCap: 400 } }, aircraftType: { hexdb: { enabled: true, timeoutMs: 2000, cacheTtlHours: 24 } }, route: ROUTE_DEFAULTS }),
   speech: z.object({
     adapter: z.enum(['piper', 'fake']).default('piper'),
     voice: z.string().default('de_DE-thorsten-medium'),

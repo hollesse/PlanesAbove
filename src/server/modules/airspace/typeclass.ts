@@ -5,6 +5,7 @@ import typeClassesJson from './tables/type-classes.json';
 import airlinesJson from './tables/airlines.json';
 import airlineLiveriesJson from './tables/airline-liveries.json';
 import airportsJson from './tables/airports.json';
+import typeOverridesJson from './tables/type-overrides.json';
 
 export interface TypeClassEntry { name: string; typklasse: string; kategorie: string; besonderheit?: string }
 export interface AirlineEntry { name: string; country: string }
@@ -15,12 +16,18 @@ export interface Tables {
   typeClasses: Record<string, TypeClassEntry>;
   airlines: Record<string, AirlineEntry>;
   airlineLiveries: Record<string, string>;
+  /** Own correction table (airspace-t4x9k): hex (6 chars, lower case) -> ICAO type code; wins over hexdb and the flight source. */
+  typeOverrides?: Record<string, string>;
 }
 
 /** Validates the tables against the design-system catalog ids (ADR 0009); throws with all problems. */
 export function loadTables(raw: Tables): Tables {
   const problems: string[] = [];
   for (const [code, e] of Object.entries(raw.typeClasses)) if (!PLANE_TYPE_IDS.includes(e.typklasse as PlaneType)) problems.push(`type-classes.${code}: unknown typklasse "${e.typklasse}"`);
+  for (const [hex, code] of Object.entries(raw.typeOverrides ?? {})) {
+    if (!/^[0-9a-f]{6}$/.test(hex)) problems.push(`type-overrides.${hex}: key is not a 6-character lower-case hex`);
+    if (!raw.typeClasses[code]) problems.push(`type-overrides.${hex}: type code "${code}" is not in type-classes`);
+  }
   const liveryIds = LIVERIES.map((l) => l.id);
   for (const [prefix, id] of Object.entries(raw.airlineLiveries)) if (!liveryIds.includes(id)) problems.push(`airline-liveries.${prefix}: unknown livery "${id}"`);
   for (const [icao, e] of Object.entries(raw.airports)) {
@@ -32,7 +39,7 @@ export function loadTables(raw: Tables): Tables {
   return raw;
 }
 
-export const defaultTables = (): Tables => loadTables({ typeClasses: typeClassesJson as Record<string, TypeClassEntry>, airlines: airlinesJson, airports: airportsJson as Record<string, AirportEntry>, airlineLiveries: airlineLiveriesJson });
+export const defaultTables = (): Tables => loadTables({ typeClasses: typeClassesJson as Record<string, TypeClassEntry>, airlines: airlinesJson, airports: airportsJson as Record<string, AirportEntry>, airlineLiveries: airlineLiveriesJson, typeOverrides: typeOverridesJson });
 
 export interface ResolvedTypeClass {
   typklasse: PlaneType;

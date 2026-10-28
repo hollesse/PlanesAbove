@@ -71,6 +71,14 @@ npm run stats:liveries -- --db data/planesabove.db --days 30 [--json] [--standor
 
 Contract-Fixtures liegen in `tests/fixtures/` (`vrs/` ist eine aufgezeichnete Teilmenge der VRS standing-data vom 2026-10-27, Details in `vrs/README.txt`; `adsblol-point-frankfurt.json` ist eine echte Antwort vom 2026-10-27; `adsbfi-v3-point-oberweyer.json` ist eine echte adsb.fi-v3-Antwort vom 2026-10-27 (`/api/v3/lat/50.45/lon/8.09/dist/17`, keyless, 3 Flugzeuge); die uebrigen sind konstruiert, siehe Kommentare in den Tests).
 
+## Typquelle und Korrekturtabelle
+
+Der Flugzeugtyp je Hex wird in dieser Reihenfolge bestimmt: (1) **Korrekturtabelle** `src/server/modules/airspace/tables/type-overrides.json` (Hex, 6 Zeichen klein, auf ICAO-Typcode; von Hand gepflegt, beim Start validiert; hexdb wird fuer diese Hexe nicht gefragt), (2) **hexdb** (`GET hexdb.io/api/v1/aircraft/{hex}`, ohne Key; weicht `ICAOTypeCode` von dem der Flugquelle ab, gewinnt hexdb), (3) der Typ der **Flugquelle**. Das Ergebnis geht durch die Typtabelle (Typklasse). hexdb-Antworten liegen nur im Arbeitsspeicher (`sources.aircraftType.hexdb.cacheTtlHours`, Default 24) und werden **nie gespeichert**; die Sichtung behaelt den `type_code` der Flugquelle, dazu `type_source` (`flight|override|hexdb`) und die eigene Typklasse (ADR 0026). Timeout (`sources.aircraftType.hexdb.timeoutMs`, Default 2000), Netzfehler und 429 werden nicht gecacht (Backoff nach 429: `sources.route.hexdb.backoffMinutes`); dann gilt der Typ der Flugquelle und der naechste Takt fragt erneut. Abschalten mit `sources.aircraftType.hexdb.enabled: false`; im Mock-Modus wird hexdb nie gefragt. Jede Korrektur steht einmal als Logzeile `aircraft type corrected` (`hex`, `flightType`, `correctedType`, `source`) im Log.
+
+```
+npm run stats:types -- --db data/planesabove.db --days 30 [--json]   # Sichtungen je type_source plus Hex-Codes mit override/hexdb
+```
+
 ## Lackierungs-Statistik
 
 Welche Airlines fliegen ueber dem Haus, werden aber mit der Standard-Lackierung (weiss) gezeigt? Das beantwortet

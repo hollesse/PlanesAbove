@@ -46,6 +46,13 @@ export interface FlightSource {
   fetchAircraft(center: LatLon, radiusKm: number): Promise<Flugzeug[]>;
 }
 
+/** Live cross-check of the ICAO type code per hex (airspace-t4x9k). Results are memory-only, never persisted (ADR 0016 amendment). */
+export interface AircraftTypeSource {
+  readonly name: string;
+  /** null = genuinely unknown (404 / no type). Throws SourceError when unavailable (timeout, network, 429, 5xx): unavailable is not unknown. */
+  lookup(hex: string): Promise<string | null>;
+}
+
 export interface RouteSource {
   readonly name: string;
   /** null = genuinely unknown ("unknown"). Throws SourceError when the source is unavailable (no snapshot, network, 429, ...): unavailable is not unknown (ADR 0016). */

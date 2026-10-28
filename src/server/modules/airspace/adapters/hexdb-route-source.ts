@@ -3,6 +3,7 @@
 import type { Clock } from '../../../clock';
 import type { Logger } from '../../../logger';
 import { SourceError, type Airport, type Route, type RouteSource } from '../model';
+import { HexdbBackoff } from './hexdb-backoff';
 import { guardedFetch, type Fetch } from './http';
 
 const BASE = 'https://hexdb.io/api/v2/routes/';
@@ -25,19 +26,19 @@ function toAirport(v: unknown): Airport {
 
 export class HexdbRouteSource implements RouteSource {
   readonly name = 'hexdb';
-  private blockedUntil = 0;
-  constructor(private readonly o: { fetch: Fetch; userAgent: string; timeoutMs: number; backoffMs: number; clock: Clock; log: Logger; baseUrl?: string }) {}
+  private readonly backoff: HexdbBackoff;
+  constructor(private readonly o: { fetch: Fetch; userAgent: string; timeoutMs: number; backoffMs: number; clock: Clock; log: Logger; baseUrl?: string; /** Shared with the aircraft-type adapter: same host, one 429 window. */ backoff?: HexdbBackoff }) { this.backoff = o.backoff ?? new HexdbBackoff(); }
 
   async lookup(callsign: string): Promise<Route | null> {
     const now = this.o.clock.now();
-    if (now < this.blockedUntil) throw new SourceError('unavailable', 'hexdb backoff after HTTP 429');
+    if (this.backoff.blocked(now)) throw new SourceError('unavailable', 'hexdb backoff after HTTP 429');
     let res: Awaited<ReturnType<Fetch>>;
     try {
       res = await guardedFetch(this.o.fetch, (this.o.baseUrl ?? BASE) + encodeURIComponent(callsign.trim()), { headers: { 'User-Agent': this.o.userAgent, Accept: 'application/json' } }, this.o.timeoutMs);
     } catch (e) {
       if (e instanceof SourceError && e.errorClass === 'http-4xx' && e.message === 'HTTP 404') return null; // {"error":{"code":"route_not_found"}}
       if (e instanceof SourceError && e.errorClass === 'http-429') {
-        this.blockedUntil = now + this.o.backoffMs;
+        this.backoff.block(now, this.o.backoffMs);
         this.o.log.warn('hexdb rate limited (429), skipping hexdb for the backoff window', { backoffMinutes: this.o.backoffMs / 60_000 });
       }
       throw e;

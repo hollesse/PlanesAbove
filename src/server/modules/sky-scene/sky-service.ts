@@ -6,6 +6,7 @@ import type { SceneState, ScenePlane } from '../../../shared/state';
 import type { FlightPhase } from '../airspace/model';
 import { SourceError, type FlightSource, type Flugzeug } from '../airspace/model';
 import type { RouteInfo, RouteLookup, RouteService } from '../airspace/route-service';
+import { AircraftTypeResolver, type CorrectedType } from '../airspace/aircraft-type';
 import { selectNearest } from '../airspace/selection';
 import { resolveAirline, resolveLivery, resolveTypeClass, type Tables } from '../airspace/typeclass';
 import type { SightingRepository } from '../sighting-log/repository';
@@ -26,7 +27,14 @@ export class SkyService {
   constructor(private readonly d: {
     config: Config; clock: Clock; log: Logger; flight: FlightSource; routes: RouteService; tables: Tables;
     sightings: SightingRepository; audio: AudioService; buildId: string; timeZone?: string;
-  }) { this.bootAt = d.clock.now(); }
+    /** Type code correction (override table > hexdb > flight source). Default: override table only, hexdb is never asked. */
+    types?: AircraftTypeResolver;
+  }) {
+    this.bootAt = d.clock.now();
+    this.types = d.types ?? new AircraftTypeResolver({ overrides: d.tables.typeOverrides ?? {}, clock: d.clock, log: d.log });
+  }
+  private readonly types: AircraftTypeResolver;
+  private readonly shownClass = new Map<string, string>();
 
   /** One 30 s Takt. Never throws: a failed source keeps the last good scene; it only counts as stale once the last success is older than flightMaxAge. */
   async tick(): Promise<void> {
@@ -56,25 +64,32 @@ export class SkyService {
     const slotOf = new Map<string, number>();
     this.slots.forEach((h, i) => { if (h) slotOf.set(h.icao24, i + 1); });
     const chosen = this.slots.flatMap((h) => (h ? [byId.get(h.icao24)!] : []));
+    // Type cross-check before anything is shown: bounded by the hexdb timeout, a failure falls back to the flight source's type (retried next Takt).
+    await Promise.all(chosen.map((c) => this.types.resolve(c.aircraft.icao24, c.aircraft.typeCode)));
     const planes: ScenePlane[] = [];
     const routeById = new Map<string, RouteLookup | null>();
     for (const c of chosen) {
       const a = c.aircraft;
       const { tc, airline } = this.identify(a);
+      const before = this.shownClass.get(a.icao24);
+      if (before !== undefined && before !== tc.typklasse) log.info('shown aircraft changed type class', { hex: a.icao24, from: before, to: tc.typklasse });
+      this.shownClass.set(a.icao24, tc.typklasse);
       const lookup = await this.d.routes.lookupFor(a.callsign, a, { typklasse: tc.typklasse, airlineKnown: Boolean(airline?.name), altitudeM: a.altitudeM, verticalRateMs: a.verticalRateMs, trackDeg: a.trackDeg });
       routeById.set(a.icao24, lookup);
       planes.push(this.toScenePlane(a, lookup?.info ?? null));
     }
     inRadius.forEach((c) => this.recordSighting(c.aircraft, c.distanceKm, routeById.get(c.aircraft.icao24) ?? null, slotOf.get(c.aircraft.icao24) ?? null, now));
     this.planes = planes;
+    if (this.shownClass.size > 200) for (const k of this.shownClass.keys()) if (!byId.has(k)) this.shownClass.delete(k);
   }
 
   private identify(a: Flugzeug) {
     const t = this.d.tables;
-    const tc = resolveTypeClass(t, a.typeCode, a.emitterCategory);
+    const type: CorrectedType = this.types.peek(a.icao24, a.typeCode);
+    const tc = resolveTypeClass(t, type.typeCode, a.emitterCategory);
     const airline = resolveAirline(t, a.callsign);
     const livery = resolveLivery(t, airline?.prefix, tc.typklasse, this.d.config.liveries.enabled);
-    return { tc, airline, livery };
+    return { tc, airline, livery, typeSource: type.source };
   }
 
   private toScenePlane(a: Flugzeug, info: RouteInfo | null): ScenePlane {
@@ -103,13 +118,13 @@ export class SkyService {
 
   private recordSighting(a: Flugzeug, distanceKm: number, lookup: RouteLookup | null, slot: number | null, now: number): void {
     const routeInfo = lookup?.info ?? null;
-    const { tc, airline, livery } = this.identify(a);
+    const { tc, airline, livery, typeSource } = this.identify(a);
     // adsbdb/hexdb text must never reach SQLite (its terms, ADR 0016): only the source is recorded for it. VRS and FlightAware text may be stored (ADR 0018).
     const route = routeInfo?.source === 'vrs' || routeInfo?.source === 'flightaware' ? routeInfo.text : null;
-    const verdict = this.d.sightings.observe({ icao24: a.icao24, callsign: a.callsign, airline: airline?.name, typeCode: a.typeCode, typklasse: tc.typklasse, liveryPresent: livery.present, distanceKm, route, routeSource: routeInfo?.source ?? null, slot }, now);
+    const verdict = this.d.sightings.observe({ icao24: a.icao24, callsign: a.callsign, airline: airline?.name, typeCode: a.typeCode, typklasse: tc.typklasse, typeSource, liveryPresent: livery.present, distanceKm, route, routeSource: routeInfo?.source ?? null, slot }, now);
     if (lookup?.fresh && lookup.attempts.length) this.d.sightings.recordLookup(a.icao24, lookup.attempts, lookup.conflict, lookup.chosen, now);
     if (verdict === 'new') {
-      if (tc.unmapped && a.typeCode) this.d.sightings.reportUnmapped('type', a.typeCode);
+      if (tc.unmapped && a.typeCode && typeSource === 'flight') this.d.sightings.reportUnmapped('type', a.typeCode);
       if (airline && !airline.name) this.d.sightings.reportUnmapped('airline', airline.prefix);
     }
   }

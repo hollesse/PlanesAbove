@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 16:05 -- Task verified and completed: airspace-t4x9k - Flugzeugtyp je Hex bei hexdb gegenprüfen (nur im Speicher gecacht) und eine eigene Korrekturtabelle Hex → Typ als Vorrang, damit falsche Typcodes der Flugquelle (OE-FML DA42 als C525) nicht als falsche Silhouette erscheinen
+
+**Type:** Work / Task completion
+**Task:** airspace-t4x9k - Flugzeugtyp je Hex bei hexdb gegenprüfen (nur im Speicher gecacht) und eine eigene Korrekturtabelle Hex → Typ als Vorrang, damit falsche Typcodes der Flugquelle (OE-FML DA42 als C525) nicht als falsche Silhouette erscheinen
+**Summary:** Flugzeugtyp: Korrekturtabelle > hexdb-Gegenprüfung (nur im Speicher) > Flugquelle; OE-FML wird DA42
+**Duration:** 35m
+**Verification:** PASS (iteration 2)
+**Files changed:** 20
+**Tests added:** 17
+**ADRs written:** 0026
+
+---
+
+## 2026-10-28 16:01 -- Verification failed: airspace-t4x9k - Flugzeugtyp per hexdb gegenprüfen und Korrekturtabelle
+
+**Type:** Work / Verification failure
+**Task:** airspace-t4x9k - Flugzeugtyp per hexdb gegenprüfen und Korrekturtabelle
+**Iteration:** 1 of 3
+**Reasons:** enabled:false/mock wiring untested, hexdb 429 backoff not shared between route and type lookups (same host)
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-28 15:59 -- Task verified and completed: sighting-log-r3m8x - Routen- und Lackierungs-Statistik als API-Endpunkt des Dienstes, damit die Auswertung auf dem Heimserver ohne Node und ohne DB-Kopie im Browser abrufbar ist
 
 **Type:** Work / Task completion

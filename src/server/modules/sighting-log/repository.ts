@@ -8,6 +8,8 @@ export interface SightingInput {
   airline?: string;
   typeCode?: string;
   typklasse: string;
+  /** Where the displayed type came from; typeCode above is always the flight source's own value. Default 'flight'. */
+  typeSource?: 'flight' | 'override' | 'hexdb';
   liveryPresent: boolean;
   distanceKm: number;
   /** Route text; only ever set for VRS and FlightAware routes (adsbdb/hexdb text is never persisted, ADR 0016; FlightAware Personal terms allow it, ADR 0018). */
@@ -25,6 +27,7 @@ export interface Sighting {
   airline: string | null;
   typeCode: string | null;
   typklasse: string;
+  typeSource: string;
   liveryPresent: boolean;
   route: string | null;
   routeSource: string | null;
@@ -35,8 +38,8 @@ export interface Sighting {
   lastSeenAtMs: number;
 }
 
-interface Row { id: number; icao24: string; callsign: string | null; airline: string | null; type_code: string | null; typklasse: string; livery_present: number; route: string | null; route_source: string | null; slot: number | null; closest_distance_km: number; first_seen_at: string; last_seen_at: string; last_seen_ms: number }
-const toSighting = (r: Row): Sighting => ({ id: r.id, icao24: r.icao24, callsign: r.callsign, airline: r.airline, typeCode: r.type_code, typklasse: r.typklasse, liveryPresent: r.livery_present === 1, route: r.route, routeSource: r.route_source, slot: r.slot, closestDistanceKm: r.closest_distance_km, firstSeenAt: r.first_seen_at, lastSeenAt: r.last_seen_at, lastSeenAtMs: r.last_seen_ms });
+interface Row { id: number; icao24: string; callsign: string | null; airline: string | null; type_code: string | null; typklasse: string; type_source: string; livery_present: number; route: string | null; route_source: string | null; slot: number | null; closest_distance_km: number; first_seen_at: string; last_seen_at: string; last_seen_ms: number }
+const toSighting = (r: Row): Sighting => ({ id: r.id, icao24: r.icao24, callsign: r.callsign, airline: r.airline, typeCode: r.type_code, typklasse: r.typklasse, typeSource: r.type_source, liveryPresent: r.livery_present === 1, route: r.route, routeSource: r.route_source, slot: r.slot, closestDistanceKm: r.closest_distance_km, firstSeenAt: r.first_seen_at, lastSeenAt: r.last_seen_at, lastSeenAtMs: r.last_seen_ms });
 
 function findOrCreatePoint(db: Db, p: ObservationPoint): number {
   const lat = round4(p.lat), lon = round4(p.lon);
@@ -73,11 +76,11 @@ export class SightingRepository {
     const route = routeSource === 'vrs' || routeSource === 'flightaware' ? s.route : null;
     const iso = new Date(nowMs).toISOString();
     if (verdict === 'new') {
-      this.db.prepare('INSERT INTO sightings (icao24, callsign, airline, type_code, typklasse, livery_present, route, route_source, slot, closest_distance_km, first_seen_at, last_seen_at, last_seen_ms, observation_point_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)')
-        .run(s.icao24, s.callsign ?? null, s.airline ?? null, s.typeCode ?? null, s.typklasse, s.liveryPresent ? 1 : 0, route, routeSource, s.slot ?? null, s.distanceKm, iso, iso, nowMs, this.pointId);
+      this.db.prepare('INSERT INTO sightings (icao24, callsign, airline, type_code, typklasse, type_source, livery_present, route, route_source, slot, closest_distance_km, first_seen_at, last_seen_at, last_seen_ms, observation_point_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)')
+        .run(s.icao24, s.callsign ?? null, s.airline ?? null, s.typeCode ?? null, s.typklasse, s.typeSource ?? 'flight', s.liveryPresent ? 1 : 0, route, routeSource, s.slot ?? null, s.distanceKm, iso, iso, nowMs, this.pointId);
     } else {
-      this.db.prepare(`UPDATE sightings SET last_seen_at = ?, last_seen_ms = ?, closest_distance_km = MIN(closest_distance_km, ?), route = CASE WHEN route_source IS NULL OR (route_source IN ('adsbdb', 'hexdb') AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route) ELSE route END, route_source = CASE WHEN route_source IS NULL OR (route_source IN ('adsbdb', 'hexdb') AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route_source) ELSE route_source END, slot = COALESCE(slot, ?) WHERE id = (SELECT id FROM sightings WHERE icao24 = ? AND observation_point_id = ? ORDER BY last_seen_ms DESC, id DESC LIMIT 1)`)
-        .run(iso, nowMs, s.distanceKm, routeSource, route, routeSource, routeSource, s.slot ?? null, s.icao24, this.pointId);
+      this.db.prepare(`UPDATE sightings SET typklasse = ?, type_source = ?, last_seen_at = ?, last_seen_ms = ?, closest_distance_km = MIN(closest_distance_km, ?), route = CASE WHEN route_source IS NULL OR (route_source IN ('adsbdb', 'hexdb') AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route) ELSE route END, route_source = CASE WHEN route_source IS NULL OR (route_source IN ('adsbdb', 'hexdb') AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route_source) ELSE route_source END, slot = COALESCE(slot, ?) WHERE id = (SELECT id FROM sightings WHERE icao24 = ? AND observation_point_id = ? ORDER BY last_seen_ms DESC, id DESC LIMIT 1)`)
+        .run(s.typklasse, s.typeSource ?? 'flight', iso, nowMs, s.distanceKm, routeSource, route, routeSource, routeSource, s.slot ?? null, s.icao24, this.pointId);
     }
     return verdict;
   }

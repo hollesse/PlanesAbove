@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 20
+- **Doing:** 0
+- **Done:** 21
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **airspace-t4x9k** — Flugzeugtyp je Hex bei hexdb gegenprüfen (nur im Speicher gecacht) und eine eigene Korrekturtabelle Hex → Typ als Vorrang, damit falsche Typcodes der Flugquelle (OE-FML DA42 als C525) nicht als falsche Silhouette erscheinen (feature) — `doing/airspace-t4x9k-flugzeugtyp-per-hexdb-gegenpruefen-und-eigene-korrekturtabelle.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **airspace-t4x9k** — Flugzeugtyp je Hex bei hexdb gegenprüfen (nur im Speicher gecacht) und eine eigene Korrekturtabelle Hex → Typ als Vorrang, damit falsche Typcodes der Flugquelle (OE-FML DA42 als C525) nicht als falsche Silhouette erscheinen (feature) — `done/airspace-t4x9k-flugzeugtyp-per-hexdb-gegenpruefen-und-eigene-korrekturtabelle.md`
 - **airspace-cn6t7** — Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen (bug) — `done/airspace-cn6t7-routenanzeige-bei-langen-flughafennamen-ganze-route-sichtbar.md`
 - **airspace-w1q3x** — hexdb und VRS immer beide fragen; eine VRS-Mehrleg-Route, deren Endstück zur hexdb-Route passt, gewinnt (Startflughafen bei Zwischenlandungen) (feature) — `done/airspace-w1q3x-hexdb-und-vrs-immer-beide-fragen-mehrleg-route-bevorzugen.md`
 - **airspace-b7kx2** — Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen (feature) — `done/airspace-b7kx2-eigene-flughafenliste-einheitliche-routen-namen.md`

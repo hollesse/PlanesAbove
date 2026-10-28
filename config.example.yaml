@@ -37,6 +37,11 @@ sources:
     order: [adsb-fi, adsb-lol]   # failover order (ADR 0019); names without an adapter are skipped with a warning
     adsbLol:
       dailyRequestCap: 400     # adsb.lol allows 500 requests per UTC day; stay below it. Cap reached -> adsb-lol is skipped until 00:00 UTC (persisted, survives restarts)
+  aircraftType:                # type code cross-check per hex (results in memory only, never stored); own table: src/server/modules/airspace/tables/type-overrides.json
+    hexdb:
+      enabled: true            # false = flight source type (plus override table) only; always off in mock mode
+      timeoutMs: 2000          # runs inside the Takt before the selection is shown, so keep it short
+      cacheTtlHours: 24
   route:
     enabled: true
     order: [hexdb, adsbdb, vrs]  # first plausible route wins. hexdb, adsbdb = live lookups (never persisted), vrs = offline VRS standing-data snapshot (CC0) as fallback

@@ -13,6 +13,9 @@ import { AdsbFiFlightSource } from './modules/airspace/adapters/adsb-fi';
 import { DailyRequestBudget } from './modules/airspace/flight-source-budget';
 import { buildFlightSourceChain, type FlightSourceChain } from './modules/airspace/flight-source-chain';
 import type { Fetch } from './modules/airspace/adapters/http';
+import { HexdbBackoff } from './modules/airspace/adapters/hexdb-backoff';
+import { buildAircraftTypeSource } from './modules/airspace/adapters/hexdb-aircraft-type-source';
+import { AircraftTypeResolver } from './modules/airspace/aircraft-type';
 import { HexdbRouteSource } from './modules/airspace/adapters/hexdb-route-source';
 import { AdsbdbRouteSource } from './modules/airspace/adapters/adsbdb-route-source';
 import { FlightAwareRouteSource } from './modules/airspace/adapters/flightaware-route-source';
@@ -78,6 +81,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   let flight: FlightSource;
   let flightChain: FlightSourceChain | undefined;
   let lolBudget: DailyRequestBudget | undefined;
+  const hexdbBackoff = new HexdbBackoff(); // one 429 window for hexdb routes and hexdb type lookups (same host)
   let routeSources: RouteSource[];
   let stopSnapshot: (() => void) | undefined;
   let flightaware: FlightAwareRouteSource | undefined;
@@ -103,7 +107,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
         routeSources.push(flightaware);
       } else if (name === 'hexdb') {
         const r = config.sources.route.hexdb;
-        routeSources.push(new HexdbRouteSource({ fetch: fetchFn, userAgent: ua, timeoutMs: r.timeoutMs, backoffMs: r.backoffMinutes * 60_000, clock, log }));
+        routeSources.push(new HexdbRouteSource({ fetch: fetchFn, userAgent: ua, timeoutMs: r.timeoutMs, backoffMs: r.backoffMinutes * 60_000, clock, log, backoff: hexdbBackoff }));
       } else if (name === 'adsbdb') {
         const r = config.sources.route.adsbdb;
         routeSources.push(new AdsbdbRouteSource({ fetch: fetchFn, userAgent: ua, timeoutMs: r.timeoutMs, backoffMs: r.backoffMinutes * 60_000, clock, log }));
@@ -118,7 +122,12 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   const noRoutes: RouteSource = { name: 'none', lookup: async () => null };
   const routes = new RouteService(config.sources.route.enabled ? routeSources : [noRoutes], clock, { ttlMs: config.sources.route.cacheTtlHours * 3_600_000, negativeTtlMs: config.sources.route.negativeTtlMinutes * 60_000, compareAll: config.sources.route.compareAll, airports: defaultTables().airports, plausibility: config.sources.route.plausibility, log });
   const audio = new AudioService(speech, { voice: config.speech.voice, render: mock ? 'lazy' : config.speech.render, cacheDir: path.join(config.dataDir, 'audio'), log });
-  const sky = new SkyService({ config, clock, log, flight, routes, tables: defaultTables(), sightings, audio, buildId, timeZone: o.timeZone });
+  const tables = defaultTables();
+  // hexdb type cross-check: off in mock mode (no network) and when disabled; the override table always applies.
+  const hx = config.sources.aircraftType.hexdb;
+  const typeSource = buildAircraftTypeSource({ mock, enabled: hx.enabled, fetch: fetchFn, userAgent: ua, timeoutMs: hx.timeoutMs, backoffMs: config.sources.route.hexdb.backoffMinutes * 60_000, clock, log, backoff: hexdbBackoff });
+  const types = new AircraftTypeResolver({ overrides: tables.typeOverrides ?? {}, source: typeSource, clock, log, ttlMs: hx.cacheTtlHours * 3_600_000 });
+  const sky = new SkyService({ config, clock, log, flight, routes, tables, types, sightings, audio, buildId, timeZone: o.timeZone });
 
   const stopFlightAwareSync = config.sources.route.enabled ? await flightaware?.start() : undefined; // usage sync before the first paid lookup (ADR 0018)
 
