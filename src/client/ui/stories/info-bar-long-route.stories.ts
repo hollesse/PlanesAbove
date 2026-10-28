@@ -9,7 +9,7 @@ import { renderInfoBar } from '../organisms/info-bar';
 import type { ScreenAspect } from '../templates/screen';
 import { ASPECTS, skyStage } from './helpers';
 
-type Variant = 'A' | 'B' | 'C';
+type Variant = 'A' | 'B' | 'C' | 'D';
 
 const LONG_1: FlightInfo = { ...SAMPLE_FLIGHTS.A, operator: 'Iberia', callsign: 'IB1234', route: 'Santiago de Compostela (SCQ) → Jerez de la Frontera (XRY)', phase: 'climb' };
 const LONG_2: FlightInfo = { ...SAMPLE_FLIGHTS.D, route: 'Santiago de Compostela (SCQ) → Jerez de la Frontera (XRY)' };
@@ -34,6 +34,17 @@ const tier = (route: string): number => {
 };
 const B_THRESHOLD = { single: 30, double: 40 }; // B: break before the arrow once the route is longer than this (the low two-plane row needs a higher threshold)
 const C_MIN = 0.5; // C: smallest allowed scale
+// D (operator's pick, 2026-10-28): single view shrinks first (down to D_MIN_SINGLE) and breaks before the arrow only if that is still not enough;
+// two-plane view behaves like C (one line, shrink only). Short routes shrink a little instead of wrapping.
+const D_MIN_SINGLE = 0.6;
+
+/** Shrinks in 2 % steps until the text fits or the minimum is reached; returns the final scale. */
+const shrinkUntilFits = (el: HTMLElement, min: number, start = 1): number => {
+  let s = start;
+  setScale(el, s);
+  while (!fits(el) && s > min) setScale(el, (s = Math.round((s - 0.02) * 100) / 100));
+  return s;
+};
 
 const routeEls = (stage: HTMLElement): HTMLElement[] => [...stage.querySelectorAll<HTMLElement>('.pa-route-large')];
 const baseSize = (el: HTMLElement): number => (el.closest('.pa-bar-single') ? 5 : 3.3);
@@ -85,10 +96,17 @@ function applyVariant(variant: Variant, stage: HTMLElement): void {
     } else if (variant === 'B') {
       setScale(el, t);
       if (route.length > B_THRESHOLD[el.closest('.pa-bar-single') ? 'single' : 'double']) breakBeforeArrow(el);
+    } else if (variant === 'C') {
+      shrinkUntilFits(el, C_MIN);
+    } else if (el.closest('.pa-bar-single')) {
+      shrinkUntilFits(el, D_MIN_SINGLE);
+      if (!fits(el)) {
+        breakBeforeArrow(el); // two lines at the name tier (like A), smaller only if even that does not fit
+        setScale(el, t);
+        if (!fits(el)) shrinkUntilFits(el, Math.min(t, D_MIN_SINGLE), t);
+      }
     } else {
-      let s = 1;
-      setScale(el, s);
-      while (!fits(el) && s > C_MIN) setScale(el, (s = Math.round((s - 0.02) * 100) / 100));
+      shrinkUntilFits(el, C_MIN);
     }
   }
   const ok = routeEls(stage).every(fits);
@@ -154,3 +172,7 @@ export const CEinzel = story('C', [LONG_1], 'C · Einzelansicht lange Route');
 export const CZwei = story('C', [LONG_1, LONG_2], 'C · Zwei Flugzeuge lange Route');
 export const CNormal = story('C', [SHORT_1], 'C · Normalfall Einzelansicht');
 export const CNormalZwei = story('C', [SHORT_1, SHORT_2], 'C · Normalfall Zwei Flugzeuge');
+export const DEinzel = story('D', [LONG_1], 'D · Kombination · Einzelansicht lange Route');
+export const DZwei = story('D', [LONG_1, LONG_2], 'D · Kombination · Zwei Flugzeuge lange Route');
+export const DNormal = story('D', [SHORT_1], 'D · Kombination · Normalfall Einzelansicht');
+export const DNormalZwei = story('D', [SHORT_1, SHORT_2], 'D · Kombination · Normalfall Zwei Flugzeuge');

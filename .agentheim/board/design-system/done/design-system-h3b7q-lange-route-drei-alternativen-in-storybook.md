@@ -32,12 +32,13 @@ Jede Variante bekommt zusätzlich einen Normalfall („Frankfurt (FRA) → New Y
 - [ ] Storybook enthält die Entwurfs-Stories (Variante A, B, C je Einzel- und Zwei-Flugzeuge-Ansicht plus Normalfall); `npm run e2e:chromium` (alle Stories rendern fehlerfrei) ist grün.
 - [ ] Komponenten (`info-bar.ts`, `info-row.ts`) und `ui.css` sind unverändert (Diff berührt nur `src/client/ui/stories/`).
 - [ ] In jeder Variante liegt der gesamte Routentext innerhalb des Info-Leisten-Containers (kein Überlauf), nachweisbar per Bounding-Box in der Story bei 4:3 und 5:3.
-- [ ] Der Betreiber hat eine Variante gewählt; die Wahl steht in den Notes dieses Tasks und im Task design-system-grp94. [human-eye]
+- [x] Der Betreiber hat eine Variante gewählt; die Wahl steht in den Notes dieses Tasks und im Task design-system-grp94. [human-eye]
 
 ## Notes
 - Betreiber-Wunsch 2026-10-27: „erstmal nur extra Designs in Storybook anlegen, ohne die Implementierung zu ändern, dann drei Alternativen designen und entscheiden."
 - Einstiegspunkte: `src/client/ui/stories/info-bar.stories.ts`, `info-row.stories.ts`, `src/client/ui/domain/samples.ts`, `src/client/ui/styles/ui.css` (nur lesen).
 - Nachfolger: design-system-grp94 setzt die gewählte Variante um und bringt den Playwright-Test mit den zwei längsten Namen.
+- **Betreiberwahl 2026-10-28: Variante D (Kombination aus A und C)**, als vierte Story „D · Kombination" in `info-bar-long-route.stories.ts` angelegt und gemessen (alle vier D-Stories „passt" in 4:3 und 5:3). Regel: **Einzelansicht** erst verkleinern (in Stufen bis mindestens 60 % von 5cqw), Umbruch vor dem Pfeil nur wenn das immer noch nicht reicht; bei Umbruch Größe der Namensstufe (lange Namen 65 % = 3,25cqw, wie A lang). Normalfall „Frankfurt (FRA) → New York (JFK)" bleibt dadurch einzeilig bei 4,5cqw statt zweizeilig bei 5cqw (A-Normal wirkte bei 5:3 zu eng für die kleinen Texte). **Zwei-Flugzeuge-Ansicht** wie C: immer eine Zeile, nur verkleinern (Minimum 50 %, lange Route 2,05cqw).
 
 ## Verifier note (iteration 1)
 **REASONS:**
