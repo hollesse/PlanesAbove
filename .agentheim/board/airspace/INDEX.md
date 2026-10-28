@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 1
-- **Doing:** 1
-- **Done:** 18
+- **Doing:** 0
+- **Done:** 19
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **airspace-w1q3x** — hexdb und VRS immer beide fragen; eine VRS-Mehrleg-Route, deren Endstück zur hexdb-Route passt, gewinnt (Startflughafen bei Zwischenlandungen) (feature) — `doing/airspace-w1q3x-hexdb-und-vrs-immer-beide-fragen-mehrleg-route-bevorzugen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **airspace-w1q3x** — hexdb und VRS immer beide fragen; eine VRS-Mehrleg-Route, deren Endstück zur hexdb-Route passt, gewinnt (Startflughafen bei Zwischenlandungen) (feature) — `done/airspace-w1q3x-hexdb-und-vrs-immer-beide-fragen-mehrleg-route-bevorzugen.md`
 - **airspace-b7kx2** — Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen (feature) — `done/airspace-b7kx2-eigene-flughafenliste-einheitliche-routen-namen.md`
 - **airspace-v4kqz** — Gesperrte Lufträume in der Plausibilitätsprüfung: schneidet der Großkreis einen gesperrten Luftraum, entfällt die Korridorprüfung und die erlaubte Kursabweichung steigt (Befund KAL908 London–Seoul) (bug) — `done/airspace-v4kqz-luftraumsperrungen-korridor-aus-bei-umleitung.md`
 - **airspace-f9cjz** — Airline-Lackierungszuordnung für alle Katalog-Lackierungen vervollständigen (Emirates, Qatar, United, Jet2, KLM Cityhopper …) und Lackierungen standardmäßig einschalten (bug) — `done/airspace-f9cjz-lackierungszuordnung-vervollstaendigen-und-lackierungen-einschalten.md`

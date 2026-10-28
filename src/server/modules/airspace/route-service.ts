@@ -61,6 +61,16 @@ export function isPlausibleRoute(route: Route, position: LatLon, obs: Observatio
   return route.vendorPlausible !== false;
 }
 
+/** The two sources always asked together (both cheap: hexdb live, vrs local snapshot). */
+const PAIR: Record<string, string | undefined> = { hexdb: 'vrs', vrs: 'hexdb' };
+const legIcaos = (r: Route): string[] | null => { const l = r.legs && r.legs.length > 2 ? r.legs : [r.from, r.to]; return l.every((a) => a.icao) ? l.map((a) => a.icao!.toUpperCase()) : null; };
+/** `short` is a proper tail of `long` (same destination, short's start is an intermediate stop of long, order kept), by ICAO code. */
+export function isLegTail(short: Route, long: Route): boolean {
+  const a = legIcaos(short), b = legIcaos(long);
+  if (!a || !b || a.length < 2 || a.length >= b.length) return false;
+  return a.every((c, i) => c === b[b.length - a.length + i]);
+}
+
 export interface RouteInfo { text: string; source: RouteOrigin }
 
 /** What one source said in one lookup: hit (plausible route), unknown (null), unavailable (threw), rejected (implausible). Findings only, no route data. */
@@ -111,29 +121,52 @@ export class RouteService {
       }
       return { info: hit.info, attempts: [], conflict: false, chosen: hit.info?.source ?? null, fresh: false };
     }
-    let info: RouteInfo | null = null;
-    let chosen: string | null = null;
     const attempts: RouteAttempt[] = [];
-    const texts = new Set<string>();
+    const hits: { route: Route; src: RouteSource; origin: RouteOrigin }[] = [];
     let unavailable = false;
+    let wanted: string | undefined; // without compareAll: after a hexdb/vrs hit only the partner of that pair is still asked (airspace-w1q3x)
     const rejected: { route: Route; source: string; origin: RouteOrigin }[] = [];
     const originOf = (r: Route, src: RouteSource): RouteOrigin => r.source ?? (src.name === 'hexdb' ? 'hexdb' : src.name === 'adsbdb' ? 'adsbdb' : src.name === 'flightaware' ? 'flightaware' : 'vrs');
-    for (const src of this.sources) {
-      if (src.lastResort && info) continue; // never pay when a free source already answered (also with compareAll)
+    // Configured order is kept, except: a hexdb/vrs source without a plausible hit (unknown/unavailable/rejected/not eligible) pulls its partner to the front of the remaining queue, so adsbdb is asked only when both have nothing.
+    const queue = [...this.sources];
+    const pullPartner = (name: string): void => {
+      if (this.o.compareAll) return;
+      const partner = PAIR[name];
+      if (!partner || attempts.some((x) => x.source === partner)) return;
+      const i = queue.findIndex((x) => x.name === partner);
+      if (i > 0) queue.unshift(...queue.splice(i, 1));
+    };
+    while (queue.length) {
+      const src = queue.shift()!;
+      if (wanted && src.name !== wanted) continue;
+      if (src.lastResort && hits.length) continue; // never pay when a free source already answered (also with compareAll)
       if (src.eligible && !src.eligible(ctx)) continue; // filtered/budget-stopped/disabled: not asked, nothing recorded
       try {
         const r = await src.lookup(callsign, position, ctx);
-        if (!r) { attempts.push({ source: src.name, outcome: 'unknown' }); continue; }
-        if (!isPlausibleRoute(r, position, { trackDeg: ctx?.trackDeg, verticalRateMs: ctx?.verticalRateMs, altitudeM: ctx?.altitudeM }, this.o.plausibility, this.o.log)) { attempts.push({ source: src.name, outcome: 'rejected' }); rejected.push({ route: r, source: src.name, origin: originOf(r, src) }); continue; }
+        if (!r) { attempts.push({ source: src.name, outcome: 'unknown' }); pullPartner(src.name); continue; }
+        if (!isPlausibleRoute(r, position, { trackDeg: ctx?.trackDeg, verticalRateMs: ctx?.verticalRateMs, altitudeM: ctx?.altitudeM }, this.o.plausibility, this.o.log)) { attempts.push({ source: src.name, outcome: 'rejected' }); rejected.push({ route: r, source: src.name, origin: originOf(r, src) }); pullPartner(src.name); continue; }
         attempts.push({ source: src.name, outcome: 'hit' });
-        texts.add(this.format(r));
-        if (!info) { info = { text: this.format(r), source: originOf(r, src) }; chosen = src.name; }
-        if (!this.o.compareAll) break;
+        hits.push({ route: r, src, origin: originOf(r, src) });
+        if (!this.o.compareAll) {
+          const partner = PAIR[src.name];
+          if (partner && !wanted && this.sources.some((x) => x.name === partner) && !attempts.some((a) => a.source === partner)) wanted = partner;
+          else break;
+        }
       } catch {
         attempts.push({ source: src.name, outcome: 'unavailable' });
+        pullPartner(src.name);
         unavailable = true; // unavailable is not unknown: try the next source, and do not cache a miss
       }
+      if (wanted && src.name === wanted) break;
     }
+    // Choice: first hit in order, except that a VRS multi-leg route whose tail is the hexdb route wins (hexdb knows only the current segment).
+    let pick = hits[0];
+    const hx = hits.find((h) => h.src.name === 'hexdb'), vr = hits.find((h) => h.src.name === 'vrs');
+    const supplement = !!(hx && vr && isLegTail(hx.route, vr.route));
+    if (supplement) pick = vr!;
+    const info: RouteInfo | null = pick ? { text: this.format(pick.route), source: pick.origin } : null;
+    const chosen: string | null = pick ? pick.src.name : null;
+    const texts = new Set(hits.filter((h) => !(supplement && h.src.name === 'hexdb')).map((h) => this.format(h.route)));
     const conflict = texts.size > 1;
     if (!info && unavailable) return { info: null, attempts, conflict: false, chosen: null, fresh: true };
     // only a genuine "no source knows it" is cached short; a rejected route is remembered for the positive TTL and re-judged per tick

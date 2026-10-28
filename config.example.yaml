@@ -81,7 +81,9 @@ sources:
       #     since: 2022-02-28
       #     note: optional free text
       #     polygon: [[69.5, 28.5], [82, 60], [82, 180], [64, 180], [43, 135], [50, 120], [50, 87], [42, 48], [46, 38], [52, 31], [56, 28], [60, 28]]  # [lat, lon], >= 3 corners
-    compareAll: false          # true = ask every source and record conflicts (differing plausible routes) for stats:routes; costs extra requests
+    # hexdb and vrs are always both asked (vrs is a local snapshot, no request). If the hexdb route is the tail of a VRS multi-leg route
+    # (same destination, hexdb start = an intermediate stop), the VRS route wins; a real contradiction keeps the first source in `order` and is flagged as conflict.
+    compareAll: false          # true = additionally always ask adsbdb and record conflicts for stats:routes; costs extra requests
 
 # German speech (ADR 0012). piper = the `tts` sidecar container; fake = silent clip (mock/testing only).
 speech:

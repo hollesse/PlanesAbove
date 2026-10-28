@@ -11,7 +11,7 @@ import { HexdbRouteSource } from '../src/server/modules/airspace/adapters/hexdb-
 import { AdsbdbRouteSource } from '../src/server/modules/airspace/adapters/adsbdb-route-source.ts';
 import { loadIndex } from '../src/server/modules/airspace/adapters/vrs-route-source.ts';
 import { snapshotPaths } from '../src/server/modules/airspace/adapters/vrs-snapshot.ts';
-import { DEFAULT_PLAUSIBILITY, formatRoute, isPlausibleRoute } from '../src/server/modules/airspace/route-service.ts';
+import { DEFAULT_PLAUSIBILITY, formatRoute, isLegTail, isPlausibleRoute } from '../src/server/modules/airspace/route-service.ts';
 import { angleDiffDeg, bearingDeg, crossTrackKm } from '../src/server/modules/airspace/geo.ts';
 import { distanceKm } from '../src/server/modules/airspace/selection.ts';
 import { closedAirspaceHit } from '../src/server/modules/airspace/closed-airspace.ts';
@@ -72,6 +72,7 @@ const sources = {
   adsbdb: new AdsbdbRouteSource({ fetch, userAgent, timeoutMs: 8000, backoffMs: 0, clock, log: silentLogger }),
   vrs: { lookup: async (cs) => { const idx = loadIndex(snapshotPaths(dataDir).root); if (!idx) throw new Error('no VRS snapshot'); const codes = idx.routes.get(cs); if (!codes) return null; const legs = codes.map((c) => idx.airports.get(c)); if (legs.some((l) => !l)) return null; return { from: legs[0], to: legs.at(-1), legs, source: 'vrs' }; } },
 };
+const routesByName = {};
 const position = obs ? { lat: obs.lat, lon: obs.lon } : home;
 for (const name of order) {
   const src = sources[name];
@@ -79,10 +80,14 @@ for (const name of order) {
   try {
     const r = await src.lookup(callsign, position);
     out.sources[name] = r ? { outcome: 'hit', route: formatRoute(r), legs: r.legs.map((l) => ({ city: l.city, lat: l.lat, lon: l.lon })) } : { outcome: 'unknown' };
+    if (r) routesByName[name] = r;
     if (r) out.verdicts.push({ source: name, route: formatRoute(r), plausible: isPlausibleRoute(r, position, obs ?? {}, plaus), legs: r.legs.slice(1).map((to, i) => legBreakdown(r.legs[i], to)) });
   } catch (e) { out.sources[name] = { outcome: 'unavailable', detail: e.message }; }
 }
 
+// Merge rule hexdb/VRS (airspace-w1q3x): a VRS multi-leg route whose tail is the hexdb route wins.
+const hx = out.verdicts.find((v) => v.source === 'hexdb'), vr = out.verdicts.find((v) => v.source === 'vrs');
+if (hx?.plausible && vr?.plausible && isLegTail(routesByName.hexdb, routesByName.vrs)) out.merge = 'VRS-Mehrleg-Route gewählt, hexdb-Leg ist Endstück';
 // 5. Replay each check of legPlausible with numbers (mirrors route-service.ts; the verdict above is the authoritative one).
 function legBreakdown(a, b) {
   const len = distanceKm(a, b);
@@ -118,6 +123,7 @@ L.push('');
 L.push('Sources now:');
 for (const [n, s] of Object.entries(out.sources)) L.push(`  ${n}: ${s.outcome}${s.route ? ' ' + s.route : ''}${s.detail ? ' (' + s.detail + ')' : ''}`);
 L.push('');
+if (out.merge) L.push(`Zusammenführung: ${out.merge} (${hx.route} ⊂ ${vr.route})`);
 if (!out.verdicts.length) L.push('No source knows this callsign → "Route unbekannt" is correct for the free sources. Alphanumeric callsigns (THY8EF, EXS75F) often only resolve via FlightAware (never called here).');
 for (const v of out.verdicts) {
   L.push(`Plausibility ${v.source} ${v.route}: ${v.plausible ? 'PLAUSIBLE' : 'REJECTED'} (isPlausibleRoute)`);

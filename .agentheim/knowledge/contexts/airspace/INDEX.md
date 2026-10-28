@@ -10,6 +10,7 @@ Catalog of ADRs, research, and concept synthesis pages scoped to this bounded co
 ## ADRs scoped to this BC
 
 <!-- adr-local:start -->
+- **0023** — hexdb/VRS merge rule: both always asked (partner-first ahead of adsbdb); a VRS multi-leg route whose tail is the hexdb route wins without conflict, otherwise configured order wins and the conflict is recorded; amends ADR 0016 — 2026-10-28 — `../../decisions/0023-hexdb-vrs-merge-rule.md`
 - **0021** — Own airport table for a source-independent route display — 2026-10-27 — `../../decisions/0021-own-airport-table-uniform-route-display.md` — Eigene Flughafentabelle (ICAO zu Stadt + IATA): Routen heißen quellenunabhängig Stadt (IATA), Fallback Anbietername mit einmaliger Warnung, Seed aus VRS, kein Backfill.
 - **0019** — Flight source chain: adsb.fi primary, failover to airplanes.live and adsb.lol in the same Takt, per-source backoff after Retry-After/x-ratelimit-reset and circuit breaker (adsb.lol keyless limit 500/day measured) — 2026-10-27 — `../../decisions/0019-flight-source-chain-adsb-fi-primary-with-failover-and-backoff.md`
 - **0018** — FlightAware AeroAPI as a budgeted, opt-in, last-resort route source (explicit exception to ADR 0001; own call log + usage sync; key via env) — 2026-10-27 — `../../decisions/0018-flightaware-aeroapi-budgeted-last-resort-route-source.md`

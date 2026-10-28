@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 09:20 -- Task verified and completed: airspace-w1q3x - hexdb und VRS immer beide fragen; eine VRS-Mehrleg-Route, deren Endstück zur hexdb-Route passt, gewinnt (Startflughafen bei Zwischenlandungen)
+
+**Type:** Work / Task completion
+**Task:** airspace-w1q3x - hexdb und VRS immer beide fragen; eine VRS-Mehrleg-Route, deren Endstück zur hexdb-Route passt, gewinnt (Startflughafen bei Zwischenlandungen)
+**Summary:** hexdb und VRS werden immer beide gefragt (Partner zuerst, vor adsbdb); eine VRS-Mehrleg-Route, deren Endstück die hexdb-Route ist, gewinnt ohne Konflikt; UPS1 zeigt wieder Hongkong als Start
+**Duration:** 38m
+**Verification:** PASS (iteration 3)
+**Files changed:** 5
+**Tests added:** 9
+**ADRs written:** 0023-hexdb-vrs-merge-rule.md
+
+---
+
 ## 2026-10-28 09:17 -- Batch started: [design-system-h3b7q, sky-scene-n0sfy]
 
 **Type:** Work / Batch start

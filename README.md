@@ -107,7 +107,9 @@ Mit `--json` erscheint dasselbe als ein JSON-Objekt mit den Top-Level-Schluessel
 
 **Lizenz.** Die Tabelle `route_lookups` speichert nur Befunde (Quelle, Ergebnis, Konflikt-/Gewaehlt-Flag), nie Flughafencodes oder Routentext von adsbdb/hexdb. Routentext der VRS standing-data (CC0) steht nur in `sightings.route` (ADR 0016).
 
-**Konflikte** werden nur erfasst, wenn `sources.route.compareAll: true` gesetzt ist (Default `false`): Dann werden alle Quellen gefragt, nicht nur bis zum ersten plausiblen Treffer, was zusaetzliche Anfragen kostet. Ohne `compareAll` ist die Konflikt-Tabelle leer.
+**Zusammenfuehrung hexdb/VRS.** hexdb und VRS werden bei jedem Lookup beide gefragt (VRS ist ein lokaler Snapshot, kostet keine Anfrage); adsbdb nur, wenn beide nichts liefern (liefert eine der beiden nichts Plausibles, wird ihr Partner vor adsbdb gefragt, unabhaengig von der konfigurierten Reihenfolge). Ist die hexdb-Route ein Endstueck der VRS-Mehrleg-Route (gleiches Ziel, hexdb-Start ist ein Zwischenstopp, Legs-Reihenfolge stimmt, verglichen ueber ICAO-Codes), gewinnt die VRS-Route (z. B. UPS1: hexdb nur Sharjah → Koeln, VRS Hongkong → Sharjah → Koeln); das ist kein Konflikt, und der VRS-Routentext (CC0) darf persistiert werden. Widersprechen sich beide, bleibt die erste Quelle der Reihenfolge vorn und der Konflikt wird erfasst. `npm run why:route` nennt die Zusammenfuehrung.
+
+**Konflikte** werden ausserdem erfasst, wenn `sources.route.compareAll: true` gesetzt ist (Default `false`): Dann werden alle Quellen inklusive adsbdb gefragt, was zusaetzliche Anfragen kostet. Ohne `compareAll` werden Konflikte nur zwischen hexdb und VRS erkannt.
 
 ## Betrieb auf dem Heimserver (ZimaOS) und iPad-Pruefung
 
