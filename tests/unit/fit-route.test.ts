@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { breakBeforeArrow, nameTier } from '../../src/client/ui/organisms/fit-route';
+import { breakBeforeArrow, fitRoutes, nameTier } from '../../src/client/ui/organisms/fit-route';
 
 describe('Lange Route (Variante D)', () => {
   it('picks the name tier by the longest label', () => {
@@ -17,5 +17,13 @@ describe('Lange Route (Variante D)', () => {
     const none = document.createElement('div');
     none.textContent = 'Route unbekannt';
     expect(breakBeforeArrow(none)).toBe(false);
+  });
+
+  it('marks the root once the routes are fitted', () => {
+    const root = document.createElement('div');
+    root.innerHTML = '<div class="pa-route-large">Köln (CGN) → Palma (PMI)</div>';
+    expect(root.dataset.routesFitted).toBeUndefined();
+    fitRoutes(root);
+    expect(root.dataset.routesFitted).toBe('true');
   });
 });

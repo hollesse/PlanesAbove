@@ -61,7 +61,8 @@ function shrinkUntilFits(el: HTMLElement, min: number, start = 1): void {
   while (!routeFits(el) && s > min) setScale(el, (s = Math.round((s - STEP) * 100) / 100));
 }
 
-/** Fits every route line inside `root` (idempotent: starts from the untouched organism output each time). */
+/** Fits every route line inside `root` (idempotent: starts from the untouched organism output each time).
+ *  Marks `root` with data-routes-fitted once done, so tests wait for the fit instead of a fixed delay. */
 export function fitRoutes(root: HTMLElement): void {
   for (const el of root.querySelectorAll<HTMLElement>('.pa-route-large')) {
     el.dataset.route ??= el.textContent ?? '';
@@ -79,6 +80,7 @@ export function fitRoutes(root: HTMLElement): void {
       shrinkUntilFits(el, ROW_MIN);
     }
   }
+  root.dataset.routesFitted = 'true';
 }
 
 /** Fits the routes once `root` is in the document and its webfonts are loaded, and again whenever it is resized. Call after every render. */

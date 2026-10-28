@@ -1,7 +1,7 @@
 ---
 id: design-system-w5n2k
 title: Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil)
-status: backlog
+status: done
 type: bug
 context: design-system
 created: 2026-10-28
@@ -23,8 +23,12 @@ Ursache finden. Verdacht: Das Layout wird gemessen, bevor die Schrift (IBM Plex)
 Wenn mitten im Spike die Ursache schon bekannt ist und sich billig beheben lässt: Behebung festhalten und aufhören.
 
 ## Acceptance criteria
-- [ ] `npx playwright test tests/e2e/long-route.spec.ts --project=webkit --repeat-each=10` ist grün.
-- [ ] Die Ursache steht im Outcome. Falls das Problem in der Komponente lag, deckt ein Unit- oder E2E-Test es ab.
+- [x] `npx playwright test tests/e2e/long-route.spec.ts --project=webkit --repeat-each=10` ist grün.
+- [x] Die Ursache steht im Outcome. Falls das Problem in der Komponente lag, deckt ein Unit- oder E2E-Test es ab.
 
 ## Notes
 - Gefunden in der Modeling-Session „auf das Homelab deployen“ beim ersten grünen Deploy-Lauf. Der e2e-Job blockiert das Deployment nicht.
+
+## Outcome
+Ursache: ein Race im Test, nicht in der Komponente. `measure()` hat nach festen 600 ms gemessen. `fitRoutesWhenMounted` passt erst nach `document.fonts.load`, `fonts.ready` und rAF ein, und das dauert in WebKit manchmal länger. Belegt mit `--repeat-each=10`: Mit 600 ms scheiterten 10 von 60 Läufen, mit 3000 ms keiner.
+Fix: `fitRoutes` setzt am Ende `data-routes-fitted` auf den Root (Unit-Test in `tests/unit/fit-route.test.ts`). Die E2E-Tests warten auf diesen Marker statt auf eine feste Zeit. Das Einpassen läuft synchron, sobald der Marker steht, ist der Zustand also fertig. Ergebnis: `tests/e2e/long-route.spec.ts --repeat-each=10` 120/120 grün (WebKit + Chromium), voller E2E-Lauf 36/36, Unit-Tests 528.

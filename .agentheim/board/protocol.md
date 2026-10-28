@@ -5,6 +5,35 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 12:53 -- Task verified and completed: design-system-w5n2k - Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil)
+
+**Type:** Work / Task completion
+**Task:** design-system-w5n2k - Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil)
+**Summary:** (no summary provided)
+**Duration:** (unknown)
+**Verification:** PASS (iteration 1)
+**Files changed:** 0
+**Tests added:** 0
+**ADRs written:** none
+
+---
+
+## 2026-10-28 12:53 -- Batch started: [design-system-w5n2k]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-w5n2k - Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil)
+**Parallel:** no (1 worker)
+
+---
+
+## 2026-10-28 12:53 -- Modeling / Promoted: design-system-w5n2k - Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil)
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-28 12:39 -- Modeling / Captured: design-system-w5n2k - Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil)
 
 **Type:** Modeling / Capture

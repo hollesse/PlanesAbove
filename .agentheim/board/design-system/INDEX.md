@@ -10,10 +10,10 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 3
+- **Backlog:** 2
 - **Todo:** 0
 - **Doing:** 0
-- **Done:** 11
+- **Done:** 12
 <!-- task-counts:end -->
 
 ### Todo
@@ -27,6 +27,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **design-system-w5n2k** — Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil) (bug) — `done/design-system-w5n2k-long-route-webkit-tests-instabil.md`
 - **design-system-grp94** — Lange Route: gewählte Variante in der Info-Leiste umsetzen; Playwright-Test (WebKit) mit den zwei längsten Flughafennamen (feature) — `done/design-system-grp94-lange-route-gewaehlte-variante-umsetzen-playwright-test.md`
 - **design-system-h3b7q** — Lange Route in der Info-Leiste: drei Alternativen als Storybook-Entwürfe, Betreiber wählt eine (spike) — `done/design-system-h3b7q-lange-route-drei-alternativen-in-storybook.md`
 - **design-system-z9rzp** — Flugphase als Pfeil vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen mehr Platz haben (feature) — `done/design-system-z9rzp-flugphase-als-pfeil-vor-der-hoehe-hoehe-und-tempo-eigene-zeilen.md`
@@ -42,7 +43,6 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
-- **design-system-w5n2k** — Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil) (bug) — `backlog/design-system-w5n2k-long-route-webkit-tests-instabil.md`
 - **design-system-m4r7v** — Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei (feature) — `backlog/design-system-m4r7v-realistische-beispieldaten-info-leiste-stories.md`
 - **design-system-t6wz4** — Flugzeuge je Airline in eigener Lackierung zeichnen, fehlende Airline-Designs in der Statistik ausweisen (feature) — `backlog/design-system-t6wz4-flugzeuge-je-airline-in-eigener-lackierung-statistik-standard-fallback.md`
 <!-- backlog-list:end -->

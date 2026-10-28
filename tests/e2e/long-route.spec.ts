@@ -13,8 +13,7 @@ interface Measure { aspect: string; text: string; lines: number; fontPx: number;
 async function measure(page: Page, id: string): Promise<Measure[]> {
   await page.goto(`/iframe.html?id=${id}&viewMode=story`);
   await page.waitForSelector('.pa-longest-route .pa-route-large');
-  await page.evaluate(async () => { await document.fonts.ready; });
-  await page.waitForTimeout(600); // fit runs after fonts + rAF
+  await page.waitForSelector('[data-routes-fitted]'); // fit runs after fonts + rAF; a fixed delay raced it in WebKit
   return page.evaluate(() => {
     const inside = (r: DOMRect, b: DOMRect) => r.left >= b.left - 1 && r.right <= b.right + 1 && r.top >= b.top - 1 && r.bottom <= b.bottom + 1;
     return [...document.querySelectorAll<HTMLElement>('.pa-longest-route > [data-aspect]')].flatMap((cell) => {
@@ -72,16 +71,14 @@ test('single view: the longest route breaks before the arrow at a smaller size',
 
 test('short routes (two-plane sample) keep their normal size and one line', async ({ page }) => {
   await page.goto('/iframe.html?id=organisms-info-leiste--zwei-flugzeuge&viewMode=story');
-  await page.waitForSelector('.pa-route-large');
-  await page.waitForTimeout(600);
+  await page.waitForSelector('[data-routes-fitted] .pa-route-large');
   const styles = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>('.pa-route-large')].map((e) => ({ inline: e.style.fontSize, lines: e.querySelectorAll('.pa-route-line').length })));
   for (const s of styles) { expect(s.inline).toBe(''); expect(s.lines).toBe(0); }
 });
 
 test('short single route stays on one line', async ({ page }) => {
   await page.goto('/iframe.html?id=organisms-info-leiste--ein-flugzeug-route-bekannt&viewMode=story');
-  await page.waitForSelector('.pa-route-large');
-  await page.waitForTimeout(600);
+  await page.waitForSelector('[data-routes-fitted] .pa-route-large');
   const r = await page.evaluate(() => { const e = document.querySelector<HTMLElement>('.pa-route-large')!; return { text: e.textContent, lines: e.querySelectorAll('.pa-route-line').length }; });
   expect(r.text).toBe('Frankfurt → New York');
   expect(r.lines).toBe(0);
