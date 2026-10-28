@@ -55,8 +55,8 @@ export const Typografie: StoryObj = {
       h('div', { class: 'pa-eyebrow', text: `${FONTS.display.family} ${FONTS.display.weights.join('/')} · ${FONTS.display.role}` }),
       h('div', { style: "font-family:var(--pa-font-display);font-weight:900;font-size:48px;text-transform:uppercase", text: 'Frankfurt → New York' }),
       h('div', { class: 'pa-eyebrow', text: `${FONTS.mono.family} ${FONTS.mono.weights.join('/')} · ${FONTS.mono.role}` }),
-      h('div', { style: 'font-family:var(--pa-font-mono);font-weight:400;font-size:20px', text: '11 300 m hoch · 870 km/h · im Horizontalflug (400)' }),
-      h('div', { style: 'font-family:var(--pa-font-mono);font-weight:500;font-size:20px', text: '11 300 m hoch · 870 km/h · im Horizontalflug (500)' }),
+      h('div', { style: 'font-family:var(--pa-font-mono);font-weight:400;font-size:20px', text: '→ 11 300 m · 870 km/h (400)' }),
+      h('div', { style: 'font-family:var(--pa-font-mono);font-weight:500;font-size:20px', text: '→ 11 300 m · 870 km/h (500)' }),
     ),
 };
 

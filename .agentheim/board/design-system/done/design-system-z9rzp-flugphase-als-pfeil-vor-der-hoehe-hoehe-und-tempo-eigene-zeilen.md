@@ -1,7 +1,7 @@
 ---
 id: design-system-z9rzp
 title: Flugphase als Pfeil vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen mehr Platz haben
-status: doing
+status: done
 type: feature
 context: design-system
 created: 2026-10-27
@@ -41,3 +41,8 @@ Nicht Teil des Tasks: Umgang mit Routen, die trotzdem noch zu lang sind (airspac
 - Hängt inhaltlich mit airspace-cn6t7 (Routenanzeige bei langen Flughafennamen) zusammen: dieser Task schafft Platz, cn6t7 regelt den Rest (Umbruch/Verkleinerung). Sinnvoll ist, z9rzp zuerst zu bauen; cn6t7 ist noch im Backlog und wird beim Refinement darauf gesetzt.
 - Einstiegspunkte: `src/client/ui/domain/flight.ts` (`PHASE_LABEL`, `formatMeta`, `formatStats`), `src/client/ui/molecules/info-row.ts`, `src/client/ui/organisms/info-bar.ts`, `src/client/ui/stories/tokens.stories.ts`.
 - Pfeilwahl: Unicode ↗ ↘ → (U+2197, U+2198, U+2192) liegt in IBM Plex Mono vor; falls die Glyphen auf Safari 16 uneinheitlich ausfallen, Inline-SVG im selben Element wie die Zahl.
+
+
+## Outcome
+
+Phase word replaced by Unicode arrows (U+2197/2198/2192) before the altitude; chosen over inline SVG because the glyphs exist in IBM Plex Mono and a nowrap `.pa-alt` span keeps arrow and number together (Safari 16 eyeball check still open: [human-eye] criteria). New atom `src/client/ui/atoms/altitude.ts` (arrow span with role=img, aria-label and title = phase word). `formatMeta` -> "-> 11 300 m · 870 km/h"; `formatStats` -> [altitude with arrow, speed]; the two-plane row renders them on two lines. Stories: Tokens sample line updated, new story "Lange Route (dreilegig)" in Molecules/Info-Zeile. Transition snapshot hashes in tests/unit/fixtures/transition-stages.json regenerated (markup changed intentionally). Spoken narration untouched. npm test, typecheck, build green; Storybook e2e chromium: 10 passed, 1 failed (tests/e2e/skeleton.spec.ts one-plane test expects data-livery "def" but gets "lh", unrelated to this change; the adjusted "10 973 m" assertion is later in that test).

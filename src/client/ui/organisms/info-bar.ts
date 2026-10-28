@@ -1,5 +1,6 @@
+import { renderAltitude } from '../atoms/altitude';
 import { h } from '../dom';
-import { formatEyebrow, formatMeta, ROUTE_UNKNOWN, type FlightInfo } from '../domain/flight';
+import { formatEyebrow, formatSpeed, ROUTE_UNKNOWN, type FlightInfo } from '../domain/flight';
 import { renderInfoRow } from '../molecules/info-row';
 
 /** The four Info-Leisten-Zustände. */
@@ -30,7 +31,7 @@ export function renderInfoBar(props: InfoBarProps): HTMLElement {
       { class: 'pa-bar-text' },
       h('div', { class: 'pa-eyebrow', text: formatEyebrow(f) }),
       h('div', { class: `pa-route-large${f.route ? '' : ' pa-route-unknown'}`, text: f.route ?? ROUTE_UNKNOWN }),
-      h('div', { class: 'pa-meta-small', text: formatMeta(f) }),
+      h('div', { class: 'pa-meta-small' }, renderAltitude(f), ` · ${formatSpeed(f)}`),
     ),
   );
 }

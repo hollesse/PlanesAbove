@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 2
 - **Todo:** 1
-- **Doing:** 1
-- **Done:** 8
+- **Doing:** 0
+- **Done:** 9
 <!-- task-counts:end -->
 
 ### Todo
@@ -24,11 +24,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **design-system-z9rzp** — Flugphase als Pfeil vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen mehr Platz haben (feature) — `doing/design-system-z9rzp-flugphase-als-pfeil-vor-der-hoehe-hoehe-und-tempo-eigene-zeilen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **design-system-z9rzp** — Flugphase als Pfeil vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen mehr Platz haben (feature) — `done/design-system-z9rzp-flugphase-als-pfeil-vor-der-hoehe-hoehe-und-tempo-eigene-zeilen.md`
 - **design-system-kcpnw** — Übergangs-Player und -Katalog datengetrieben machen (Slot-Referenzen statt Beispiel-Keys), Storybook-Bilder bleiben identisch (refactor) — `done/design-system-kcpnw-uebergangs-player-datengetrieben-echte-flugzeuge-statt-beispieldaten.md`
 - **design-system-r5d7v** — Veralteter Stand in der Kopfzeile statt eigenem Stale-Hinweis („Letzter Stand · HH:MM“ statt „Live · HH:MM“) (feature) — `done/design-system-r5d7v-stale-hinweis-neuer-baustein-vom-betreiber-abnehmen.md`
 - **design-system-q7m3k** — Fehlende Logo-PNGs ergänzen, Logo-Beschnitt beheben und fehlende Logo-Dateien per Test verhindern (chore) — `done/design-system-q7m3k-fehlende-logo-pngs-f-r-13-logos-erg-nzen.md`

@@ -23,11 +23,19 @@ export const formatNumber = (n: number): string => String(Math.round(n)).replace
 /** Eyebrow line above the route: "Lufthansa · LH400 · Airbus A320neo · D-AIBI". */
 export const formatEyebrow = (f: FlightInfo): string => [f.operator, f.callsign, f.aircraft, f.registration].filter(Boolean).join(' · ');
 
-/** Single-plane meta line: "11 300 m hoch · 870 km/h · im Horizontalflug". */
-export const formatMeta = (f: FlightInfo): string => `${formatNumber(f.altitudeM)} m hoch · ${formatNumber(f.speedKmh)} km/h · im ${phaseLabel(f.phase)}`;
+/** Phase arrow shown before the altitude: climb up, descent down, level straight on (Unicode, IBM Plex Mono has the glyphs). */
+const PHASE_ARROW: Record<FlightPhase, string> = { level: '\u2192', climb: '\u2197', descent: '\u2198' };
+export const phaseArrow = (p: FlightPhase): string => PHASE_ARROW[p];
 
-/** Two-plane row stats: ["11 300 m · 870 km/h", "Horizontalflug"]. */
-export const formatStats = (f: FlightInfo): [string, string] => [`${formatNumber(f.altitudeM)} m · ${formatNumber(f.speedKmh)} km/h`, phaseLabel(f.phase)];
+/** "↗ 11 300 m" - arrow and number belong together. */
+export const formatAltitude = (f: FlightInfo): string => `${phaseArrow(f.phase)} ${formatNumber(f.altitudeM)} m`;
+export const formatSpeed = (f: FlightInfo): string => `${formatNumber(f.speedKmh)} km/h`;
+
+/** Single-plane meta line: "→ 11 300 m · 870 km/h". */
+export const formatMeta = (f: FlightInfo): string => `${formatAltitude(f)} · ${formatSpeed(f)}`;
+
+/** Two-plane row stats, one line each: ["→ 11 300 m", "870 km/h"]. */
+export const formatStats = (f: FlightInfo): [string, string] => [formatAltitude(f), formatSpeed(f)];
 
 export const ROUTE_UNKNOWN = 'Route unbekannt';
 export const routeOf = (f: FlightInfo): string => f.route ?? ROUTE_UNKNOWN;

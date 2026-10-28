@@ -6,6 +6,7 @@
 /* Text styles (atoms) */
 .pa-eyebrow { font-family: var(--pa-font-mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
 .pa-route-large { font-family: var(--pa-font-display); font-weight: 900; line-height: 1; text-transform: uppercase; white-space: nowrap; }
+.pa-alt { white-space: nowrap; }
 .pa-meta-small { font-family: var(--pa-font-mono); letter-spacing: 0.04em; white-space: nowrap; }
 
 /* Number badge (Nummern-Plakette) */

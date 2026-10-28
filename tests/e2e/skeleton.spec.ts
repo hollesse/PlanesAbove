@@ -24,7 +24,7 @@ test('ein Flugzeug: Silhouette in Standard-Lackierung, Callsign, Typ und Hoehe i
   await expect(page.locator('.pa-plane')).toHaveAttribute('data-livery', 'def');
   const bar = page.locator('.pa-bar-single');
   await expect(bar).toContainText('Lufthansa · DLH400 · Airbus A320neo');
-  await expect(bar).toContainText('10 973 m hoch');
+  await expect(bar).toContainText('10 973 m');
   await expect(bar).toContainText('Frankfurt → New York');
   for (let i = 0; i < 3; i++) await svc.advance(30); // wiederholte Takte aendern die Anzahl der Sichtungen nicht
   expect(await svc.sightings()).toHaveLength(1);

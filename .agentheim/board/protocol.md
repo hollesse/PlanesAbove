@@ -5,6 +5,41 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 09:13 -- Task verified and completed: design-system-z9rzp - Flugphase als Pfeil vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen mehr Platz haben
+
+**Type:** Work / Task completion
+**Task:** design-system-z9rzp - Flugphase als Pfeil vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen mehr Platz haben
+**Summary:** Flight phase is now a Unicode arrow (↗ ↘ →) before the altitude, with the phase word only in aria-label/title; the two-plane row stacks altitude and speed on two lines. Unit tests, typecheck, build and 10 of 11 Storybook/e2e chromium tests pass; one skeleton e2e fails on an unrelated livery assertion.
+**Duration:** 7m50s
+**Verification:** PASS (iteration 1)
+**Files changed:** 10
+**Tests added:** 1
+**ADRs written:** none
+
+---
+
+## 2026-10-28 09:10 -- Verification failed: airspace-w1q3x - hexdb und VRS immer beide fragen
+
+**Type:** Work / Verification failure
+**Task:** airspace-w1q3x - hexdb und VRS immer beide fragen; VRS-Mehrleg-Route gewinnt bei passendem Endstück
+**Iteration:** 1 of 3
+**Reasons:** Paar-Logik greift nur nach einem Treffer: bei hexdb unknown fragt die Kette adsbdb vor VRS (Default-Reihenfolge); Test versteckt das mit Reihenfolge [hexdb, vrs]; kein Test über route_lookups/stats:routes; Anzeigenamen/Sinkflug im UPS1-Test nicht wie im Kriterium
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
+## 2026-10-28 09:10 -- Verification failed: infrastructure-agdax - Continuous Deployment per GitHub Action, GHCR und Watchtower
+
+**Type:** Work / Verification failure
+**Task:** infrastructure-agdax - Continuous Deployment: GitHub Action testet und baut Images nach GHCR; Watchtower auf ZimaOS zieht sie
+**Iteration:** 1 of 3
+**Reasons:** Piper-Änderungserkennung prüft nur den letzten Commit des Pushes (fetch-depth 2, HEAD^..HEAD) statt der ganzen Push-Range; kein Test für die TTS-Bedingung
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-28 09:04 -- Batch started: [infrastructure-agdax, airspace-w1q3x, design-system-z9rzp]
 
 **Type:** Work / Batch start
