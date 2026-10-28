@@ -59,8 +59,9 @@ describe('docker-compose.yml (ADR 0022)', () => {
     expect(w.image).toContain('watchtower');
     expect(w.image).not.toContain('containrrr');
     expect(w.image).toMatch(/^nickfedor\/watchtower:\d+\.\d+\.\d+$/); // pinned, updated deliberately (e.g. Renovate), never :latest
-    expect(w.command).toContain('--label-enable');
-    expect(w.command).toContain('--interval 60'); // ADR 0025: a green CI run reaches the device within ~1 min
+    // Env, not `command:` - a UI import passed the command string as one argument (ADR 0025).
+    expect(w.command).toBeUndefined();
+    expect(w.environment).toEqual({ WATCHTOWER_LABEL_ENABLE: 'true', WATCHTOWER_CLEANUP: 'true', WATCHTOWER_POLL_INTERVAL: '60' });
     expect(w.volumes).toContain('/var/run/docker.sock:/var/run/docker.sock');
   });
 });
@@ -95,8 +96,9 @@ describe('docker-compose.zimaos.yml (UI import on ZimaOS)', () => {
   it('uses the maintained watchtower fork, not containrrr', () => {
     const w = c.services.watchtower;
     expect(w.image).toMatch(/^nickfedor\/watchtower:\d+\.\d+\.\d+$/); // pinned, updated deliberately (e.g. Renovate), never :latest
-    expect(w.command).toContain('--label-enable');
-    expect(w.command).toContain('--interval 60'); // ADR 0025: a green CI run reaches the device within ~1 min
+    // Env, not `command:` - a UI import passed the command string as one argument (ADR 0025).
+    expect(w.command).toBeUndefined();
+    expect(w.environment).toEqual({ WATCHTOWER_LABEL_ENABLE: 'true', WATCHTOWER_CLEANUP: 'true', WATCHTOWER_POLL_INTERVAL: '60' });
     expect(w.volumes).toContain('/var/run/docker.sock:/var/run/docker.sock');
   });
 });

@@ -50,7 +50,12 @@ services:
     image: nickfedor/watchtower:1.23.2   # pinned; bump deliberately (e.g. via Renovate), Watchtower does not update itself
     container_name: planesabove-watchtower
     restart: unless-stopped
-    command: --label-enable --cleanup --interval 60
+    # Configured via environment, not `command:`: the ZimaOS/Portainer import passed the command string as ONE argument
+    # ("unknown flag: --label-enable --cleanup --interval 60"). Env vars arrive unchanged in every UI (ADR 0025).
+    environment:
+      WATCHTOWER_LABEL_ENABLE: "true"   # only containers with com.centurylinklabs.watchtower.enable=true
+      WATCHTOWER_CLEANUP: "true"        # remove the old image after an update
+      WATCHTOWER_POLL_INTERVAL: "60"    # seconds
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     logging:
