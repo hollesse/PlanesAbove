@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 09:20 -- Batch started: [airspace-cn6t7, infrastructure-d3v7k]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-cn6t7 - Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen, infrastructure-d3v7k - Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
+**Parallel:** yes (2 workers joining design-system-h3b7q and sky-scene-n0sfy still running — 4 live briefly; w1q3x integrated so cn6t7 is unblocked; d3v7k unblocked by agdax)
+
+---
+
 ## 2026-10-28 09:20 -- Task verified and completed: airspace-w1q3x - hexdb und VRS immer beide fragen; eine VRS-Mehrleg-Route, deren Endstück zur hexdb-Route passt, gewinnt (Startflughafen bei Zwischenlandungen)
 
 **Type:** Work / Task completion

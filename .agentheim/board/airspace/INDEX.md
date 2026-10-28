@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 19
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **airspace-cn6t7** — Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen (bug) — `todo/airspace-cn6t7-routenanzeige-bei-langen-flughafennamen-ganze-route-sichtbar.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **airspace-cn6t7** — Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen (bug) — `doing/airspace-cn6t7-routenanzeige-bei-langen-flughafennamen-ganze-route-sichtbar.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

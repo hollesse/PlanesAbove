@@ -1,7 +1,7 @@
 ---
 id: airspace-cn6t7
 title: Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen
-status: todo
+status: doing
 type: bug
 context: airspace
 created: 2026-10-27

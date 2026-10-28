@@ -1,7 +1,7 @@
 ---
 id: infrastructure-d3v7k
 title: Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
-status: todo
+status: doing
 type: chore
 context: infrastructure
 created: 2026-10-27
