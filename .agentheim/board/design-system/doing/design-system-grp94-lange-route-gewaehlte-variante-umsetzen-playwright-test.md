@@ -1,7 +1,7 @@
 ---
 id: design-system-grp94
 title: Lange Route: gewählte Variante in der Info-Leiste umsetzen; Playwright-Test (WebKit) mit den zwei längsten Flughafennamen
-status: todo
+status: doing
 type: feature
 context: design-system
 created: 2026-10-27

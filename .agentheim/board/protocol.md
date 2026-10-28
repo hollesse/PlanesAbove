@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 11:11 -- Batch started: [design-system-grp94]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-grp94 - Lange Route: gewählte Variante in der Info-Leiste umsetzen; Playwright-Test (WebKit) mit den zwei längsten Flughafennamen
+**Parallel:** scoped — builder named design-system-grp94 (Variante D abgenommen 2026-10-28); 4 other ready tasks (airspace-w1q3x, sky-scene-n0sfy, infrastructure-d3v7k?, …) not dispatched this run
+
+---
+
 ## 2026-10-28 11:10 -- Modeling / Promoted: design-system-grp94 - Lange Route: gewählte Variante in der Info-Leiste umsetzen; Playwright-Test (WebKit) mit den zwei längsten Flughafennamen
 
 **Type:** Modeling / Promote
