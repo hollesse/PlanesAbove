@@ -12,7 +12,14 @@ export interface MockService { url: string; advance(seconds: number): Promise<vo
 
 const freePort = (): Promise<number> => new Promise((res, rej) => { const s = net.createServer(); s.listen(0, '127.0.0.1', () => { const p = (s.address() as net.AddressInfo).port; s.close(() => res(p)); }); s.on('error', rej); });
 
+// freePort() releases the port before the service binds it, so parallel workers can collide (EADDRINUSE); retry on early exit.
 export async function startMockService(scenario: string): Promise<MockService> {
+  for (let attempt = 1; ; attempt++) {
+    try { return await startOnce(scenario); } catch (e) { if (attempt >= 4) throw e; }
+  }
+}
+
+async function startOnce(scenario: string): Promise<MockService> {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pa-e2e-'));
   const port = await freePort();
   const cfg = path.join(dir, 'config.yaml');
@@ -25,13 +32,13 @@ export async function startMockService(scenario: string): Promise<MockService> {
   const url = `http://127.0.0.1:${port}`;
   for (let i = 0; i < 100; i++) {
     try { if ((await fetch(url + '/healthz')).status < 500) break; } catch { /* not up yet */ }
-    if (child.exitCode !== null) throw new Error(`service exited with ${child.exitCode}`);
+    if (child.exitCode !== null) { fs.rmSync(dir, { recursive: true, force: true }); throw new Error(`service exited with ${child.exitCode}`); }
     await new Promise((r) => setTimeout(r, 100));
   }
   return {
     url,
     advance: async (seconds) => { await fetch(url + '/mock/advance', { method: 'POST', body: JSON.stringify({ seconds }) }); },
     sightings: async () => (await fetch(url + '/mock/sightings')).json(),
-    stop: async () => { child.kill('SIGTERM'); await new Promise((r) => child.once('exit', r)); fs.rmSync(dir, { recursive: true, force: true }); },
+    stop: async () => { if (child.exitCode === null) { child.kill('SIGTERM'); const t = setTimeout(() => child.kill('SIGKILL'), 3000); await new Promise((r) => child.once('exit', r)); clearTimeout(t); } fs.rmSync(dir, { recursive: true, force: true }); },
   };
 }

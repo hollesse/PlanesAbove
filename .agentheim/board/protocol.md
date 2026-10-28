@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 16:07 -- Task verified and completed: design-system-h7w2q - Szene füllt den iPad-Bildschirm als Home-Bildschirm-Web-App nicht ganz aus; iPadOS rechnet die Höhe ohne die transparente Statusleiste, unten bleibt ein schwarzer Streifen
+
+**Type:** Work / Task completion
+**Task:** design-system-h7w2q - Szene füllt den iPad-Bildschirm als Home-Bildschirm-Web-App nicht ganz aus; iPadOS rechnet die Höhe ohne die transparente Statusleiste, unten bleibt ein schwarzer Streifen
+**Summary:** Szene füllt den iPad-Bildschirm bis zum Rand (dvh/dvw statt 100%/vh)
+**Duration:** 25m
+**Verification:** PASS (iteration 1)
+**Files changed:** 3
+**Tests added:** 2
+**ADRs written:** none
+
+---
+
 ## 2026-10-28 16:05 -- Task verified and completed: airspace-t4x9k - Flugzeugtyp je Hex bei hexdb gegenprüfen (nur im Speicher gecacht) und eine eigene Korrekturtabelle Hex → Typ als Vorrang, damit falsche Typcodes der Flugquelle (OE-FML DA42 als C525) nicht als falsche Silhouette erscheinen
 
 **Type:** Work / Task completion

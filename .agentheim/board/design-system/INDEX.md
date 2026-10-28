@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 2
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 12
+- **Doing:** 0
+- **Done:** 13
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **design-system-h7w2q** — Szene füllt den iPad-Bildschirm als Home-Bildschirm-Web-App nicht ganz aus; iPadOS rechnet die Höhe ohne die transparente Statusleiste, unten bleibt ein schwarzer Streifen (bug) — `doing/design-system-h7w2q-untere-statusleiste-auf-dem-ipad-ist-transparent-und-zeigt-den-himmel.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **design-system-h7w2q** — Szene füllt den iPad-Bildschirm als Home-Bildschirm-Web-App nicht ganz aus; iPadOS rechnet die Höhe ohne die transparente Statusleiste, unten bleibt ein schwarzer Streifen (bug) — `done/design-system-h7w2q-untere-statusleiste-auf-dem-ipad-ist-transparent-und-zeigt-den-himmel.md`
 - **design-system-w5n2k** — Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil) (bug) — `done/design-system-w5n2k-long-route-webkit-tests-instabil.md`
 - **design-system-grp94** — Lange Route: gewählte Variante in der Info-Leiste umsetzen; Playwright-Test (WebKit) mit den zwei längsten Flughafennamen (feature) — `done/design-system-grp94-lange-route-gewaehlte-variante-umsetzen-playwright-test.md`
 - **design-system-h3b7q** — Lange Route in der Info-Leiste: drei Alternativen als Storybook-Entwürfe, Betreiber wählt eine (spike) — `done/design-system-h3b7q-lange-route-drei-alternativen-in-storybook.md`

@@ -1,5 +1,8 @@
-html, body { margin: 0; height: 100%; background: #0d0f12; overflow: hidden; -webkit-text-size-adjust: 100%; }
+/* iPadOS home-screen web app with black-translucent status bar: 100% / 100vh exclude the 20 pt status bar,
+   leaving a black strip at the bottom and side margins. dvh/dvw (Safari >= 15.4) count the full screen, so the
+   sky reaches every edge. The plain vh/% declarations stay first as a fallback for engines without dvh. */
+html, body { margin: 0; height: 100%; height: 100dvh; background: #0d0f12; overflow: hidden; -webkit-text-size-adjust: 100%; }
 body { display: flex; align-items: center; justify-content: center; }
 /* The 4:3 screen fills the iPad; on other displays it is letterboxed. */
-#app { width: min(100vw, calc(100vh * 4 / 3)); }
+#app { width: min(100vw, calc(100vh * 4 / 3)); width: min(100dvw, calc(100dvh * 4 / 3)); }
 #app .pa-screen { border: none; }
