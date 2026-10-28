@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 15:09 -- Modeling / Refined: infrastructure-fbpd5 - Commit-SHA als eigenes Feld commit in /healthz
+
+**Type:** Modeling / Refine
+**BC:** infrastructure
+**Status after:** todo
+**Summary:** Statt buildId aus der SHA abzuleiten: eigenes Feld commit in /healthz und Startlog, GIT_SHA per CI-Build-Arg ins Image; buildId bleibt Client-Hash (kein iPad-Reload bei Doku-Push). Akzeptanzkriterien ergänzt.
+
+---
+
 ## 2026-10-28 14:48 -- Modeling / Captured: airspace-t4x9k - Flugzeugtyp je Hex bei hexdb gegenprüfen (nur im Speicher gecacht) und eine eigene Korrekturtabelle Hex → Typ als Vorrang, damit falsche Typcodes der Flugquelle (OE-FML DA42 als C525) nicht als falsche Silhouette erscheinen
 
 **Type:** Modeling / Capture
