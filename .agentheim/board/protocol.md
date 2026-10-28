@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 15:09 -- Batch started: [infrastructure-fbpd5]
+
+**Type:** Work / Batch start
+**Tasks:** infrastructure-fbpd5 - Commit-SHA als eigenes Feld `commit` in /healthz und im Startlog, per CI-Build-Arg ins Image; buildId bleibt der Client-Asset-Hash und steuert weiter den iPad-Reload
+**Parallel:** scoped — builder asked for infrastructure-fbpd5; 3 other ready tasks (sighting-log-r3m8x, airspace-t4x9k) not dispatched
+
+---
+
 ## 2026-10-28 15:09 -- Modeling / Promoted: infrastructure-fbpd5 - Commit-SHA als eigenes Feld `commit` in /healthz und im Startlog, per CI-Build-Arg ins Image; buildId bleibt der Client-Asset-Hash und steuert weiter den iPad-Reload
 
 **Type:** Modeling / Promote
