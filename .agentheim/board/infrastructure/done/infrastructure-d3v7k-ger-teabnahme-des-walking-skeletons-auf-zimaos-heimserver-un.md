@@ -1,7 +1,7 @@
 ---
 id: infrastructure-d3v7k
 title: Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
-status: doing
+status: done
 type: chore
 context: infrastructure
 created: 2026-10-27
@@ -9,7 +9,7 @@ completed:
 depends_on: [infrastructure-001-walking-skeleton, airspace-w3k8d, sighting-log-k4m7q, infrastructure-agdax]
 blocks: []
 tags: [walking-skeleton, operator, device, piper, podman, webkit]
-related_adrs: [0004, 0005, 0008, 0011, 0012, 0013, 0016, 0019]
+related_adrs: [0004, 0005, 0008, 0011, 0012, 0013, 0016, 0019, 0024]
 related_research: [free-flight-weather-tts-apis-2026-10-26]
 prior_art: [infrastructure-001-walking-skeleton]
 ---
@@ -54,3 +54,29 @@ Der Task hat deshalb zwei Hälften. Alles ohne Hardware erledigt ein Worker auf 
 - (b) Sprachausgabe deutsch über Server-Audio: _ja / nein, Piper-Anfrageform:_
 - (c) Routenanteil (1 h, `stats:routes`): _Anteil mit Route / je Quelle / Unbekannte / Konflikte:_
 - WebKit-Version im lokalen Playwright-Lauf: _
+
+## Verifier note (iteration 1)
+**REASONS:**
+- Check 6 (ADR frontmatter): the ADR 0024 body (0024-piper-contract-verified.md) has id/title/status/date but no `scope` field; every existing ADR has one (0013 uses `scope: infrastructure`).
+- Only defect found. Verified independently: npm test 493, typecheck, build; playwright webkit 11 passed (chromium 11); `podman build docker/piper` ok and live POST /synthesize returns 200 RIFF/WAVE (Content-Type text/html, adapter checks bytes — accepted); `podman build .` ok with `npm ci --ignore-scripts`, better-sqlite3 works in the image; no UNVERIFIED left; README_DELTA anchors match infrastructure README lines 44/52 and both sections exist; livery def → lh legitimately stale; `podman compose config -q` clean; root README names both chains, stats:routes, Podman vs Compose/GHCR. Five [human-eye] criteria: builder eye-check pending.
+
+**SUGGESTED_FIX:** Add `scope: infrastructure` (and `related_tasks`/`related_adrs: [0013]`) to the ADR 0024 frontmatter in the ADRS block. Change nothing else.
+
+**ITERATION_HINT:** likely-fixable
+
+
+## Outcome
+Worker-Hälfte abgeschlossen (Betreiber-Hälfte, [human-eye]-Kriterien, bleibt offen).
+
+- Piper: `podman build docker/piper` gelingt; piper-tts 1.8.0. Echte Anfrageform ermittelt, `PiperSpeechSynthesizer` postet jetzt an `<endpoint>/synthesize`; `tests/fixtures/piper-sample.wav` ist vom Server aufgezeichnet (Herkunft in `piper-sample.wav.origin.txt`). Alle UNVERIFIED-Hinweise entfernt; Dockerfile-`|| true` beim Voice-Download entfernt. Config-Default `speech.voice` auf `de_DE-thorsten-medium` korrigiert (der alte Name existiert im Image nicht, der Server wich still auf die Startstimme aus).
+- Dienst-Image: `podman build .` scheiterte zunächst (npm 10 aus node:22 will better-sqlite3 per node-gyp bauen, kein Python im Slim-Image). Behoben mit `npm ci --ignore-scripts` in beiden Stufen; das betrifft auch den CI-Build (agdax). Live-Lauf lokal (Port 8089, Live-Konfiguration mit echtem Standort Oberweyer, Radius 30, `speech.adapter: piper`, Kopie des Datenverzeichnisses): `/healthz` `"status":"ok"` nach unter 10 s, zwei echte Flugzeuge, `/audio/<id>.wav` liefert `audio/wav`, Log `speech synthesized` (adapter piper, voice de_DE-thorsten-medium, durationMs 5840/6769), kein `speech synthesis failed`. Neu: `speech synthesized`-Infozeile im AudioService. Tipp in Chromium nicht eigens per Browser geprüft; der Audiopfad (state -> audioUrl -> WAV) wurde per HTTP gegen den echten Piper belegt.
+- WebKit: `npx playwright test --project=webkit` 11 passed. Die veraltete Erwartung in `tests/e2e/skeleton.spec.ts` (`data-livery` `def` -> `lh`, DLH-Lackierung seit 9c206c5) wurde korrigiert, sonst keine WebKit-spezifischen Fehler.
+- Root-README: WebKit-Zeile, Quellketten, Schritt 6 (Piper ohne Vorbehalt), Schritt 7 (`stats:routes`), Schritt 11 (Podman build/run, Hinweis `--ignore-scripts`). `podman compose config -q` fehlerfrei.
+- Tests: npm test 493 passed / 1 skipped, typecheck, build, playwright webkit 11 passed. Neue Tests (3): Endpoint-Trailing-Slash, Erfolgs-Logzeile, Fixture-Contract mit /synthesize; Fixture ersetzt.
+- README_DELTA: beide infrastructure-README-Änderungen (Entwickler-Befehle-Bullet, Piper-Open-Question) als `replace` mit Anker auf die Bullet-Zeile; falls die Grammatik die Open-Questions-Sektion nicht trägt, bitte die Zeile von Hand streichen/umformulieren.
+- ADR 0024 (provisorisch, Frontmatter in Iteration 2 um `scope: infrastructure` ergänzt): Ergänzung zu 0013 mit dem verifizierten Vertrag.
+
+### Befunde (lokal)
+- (b) Sprachausgabe deutsch über Server-Audio: ja, lokal belegt (Server-seitig, Gerätehörprobe auf dem iPad steht aus). Piper-Anfrageform: `POST <endpoint>/synthesize`, `Content-Type: application/json`, Body `{"text": "...", "voice": "de_DE-thorsten-medium"}` (optional weiter `speaker`, `speaker_id`, `length_scale`, `noise_scale`, `noise_w_scale`); Antwort 200 mit WAV-Körper, Header `text/html`; leerer Text oder Fehler -> 500; `/` nur GET.
+- WebKit-Version im lokalen Playwright-Lauf: 27.2 (Playwright WebKit, Desktop Safari-Profil).
+- (a) iPad und (c) Routenanteil: Betreiber, offen.

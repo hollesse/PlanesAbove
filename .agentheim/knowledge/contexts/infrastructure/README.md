@@ -41,7 +41,7 @@ _Noch offen._
 
 ## Key commands
 _Noch offen._
-- **Entwickler-Befehle** — `npm test` (Unit + Contract, offline), `npm run typecheck`, `npm run build` (dist/client + dist/server), `npm start` (mit `CONFIG_PATH`), `npm run e2e` / `npm run e2e:chromium` (Playwright gegen den echten Dienst im Mock-Modus; WebKit ist Pflichtziel, läuft in Containern ohne Systembibliotheken nicht). Details und Betriebsanleitung: Root-`README.md`.
+- **Entwickler-Befehle** — `npm test` (Unit + Contract, offline), `npm run typecheck`, `npm run build` (dist/client + dist/server), `npm start` (mit `CONFIG_PATH`), `npm run e2e` / `npm run e2e:chromium` (Playwright gegen den echten Dienst im Mock-Modus; WebKit ist Pflichtziel und lokal grün: `npx playwright install webkit && npx playwright test --project=webkit`; nur in Cloud-Containern ohne Systembibliotheken startet es nicht). Details und Betriebsanleitung: Root-`README.md`.
 
 ## Relationships with other contexts
 - Supports every BC.
@@ -49,5 +49,5 @@ See `../../context-map.md`.
 
 ## Open questions
 _Siehe `../../vision.md` → Open questions._
-- Piper-HTTP-Anfrageform (`POST {text, voice}` → WAV), Voice-Name und Pip-Extras (`docker/piper/Dockerfile`) sind gegen Fixtures, nicht gegen einen laufenden Server gebaut — Prüfung auf dem Heimserver in infrastructure-d3v7k.
+- ~~Piper-HTTP-Anfrageform, Voice-Name und Pip-Extras ungeprüft~~ — geklärt in infrastructure-d3v7k (ADR 0024): `POST <endpoint>/synthesize` mit `{text, voice}` → WAV, Voice `de_DE-thorsten-medium`, Extra `piper-tts[http]`, gegen den laufenden Container geprüft.
 - adsb.lol `routeset`: ein Live-Test lieferte HTTP 201 mit leerem Body (→ Route unbekannt); das Antwortschema ist weiter unverifiziert. Bevorzugte Routenquelle bleibt VRS standing-data (Folge-Task).

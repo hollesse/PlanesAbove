@@ -1,0 +1,5 @@
+Herkunft von piper-sample.wav: aufgezeichnet am 2026-10-28 vom laufenden Piper-Sidecar
+(podman build docker/piper; piper-tts 1.8.0, Voice de_DE-thorsten-medium) per
+  curl -X POST http://localhost:5001/synthesize -H 'content-type: application/json' \
+       -d '{"text":"Hallo Welt.","voice":"de_DE-thorsten-medium"}'
+Antwort: HTTP 200, Koerper = WAV (RIFF, 16 bit mono). Hinweis: der Server sendet Content-Type text/html; der Adapter prueft deshalb nur die WAV-Bytes.

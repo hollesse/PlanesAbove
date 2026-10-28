@@ -41,6 +41,7 @@ export class AudioService {
         const bytes = Buffer.from(r.audio);
         this.durations.set(key, r.durationMs);
         if (file) fs.writeFileSync(file, bytes);
+        this.o.log.info('speech synthesized', { source: 'tts', adapter: this.synth.name, voice: this.o.voice, durationMs: r.durationMs });
         return bytes;
       } catch (e) {
         this.o.log.warn('speech synthesis failed', { source: 'tts', errorClass: (e as { kind?: string }).kind ?? 'unavailable' });

@@ -88,8 +88,8 @@ sources:
 # German speech (ADR 0012). piper = the `tts` sidecar container; fake = silent clip (mock/testing only).
 speech:
   adapter: piper
-  voice: de_DE-thorsten
-  endpoint: http://tts:5000
+  voice: de_DE-thorsten-medium   # must match a voice installed in the tts image (docker/piper)
+  endpoint: http://tts:5000   # base URL; the adapter POSTs to <endpoint>/synthesize
   render: eager            # eager | lazy
   timeoutMs: 15000
 

@@ -5,6 +5,31 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 09:37 -- Task verified and completed: infrastructure-d3v7k - Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
+
+**Type:** Work / Task completion
+**Task:** infrastructure-d3v7k - Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
+**Summary:** Worker-Hälfte der Geräteabnahme: Piper-Vertrag am laufenden Container geklärt (POST /synthesize), echte WAV-Fixture, Dienst-Image-Build repariert (npm ci --ignore-scripts), Live-Lauf mit Piper lokal ok, WebKit grün, README-Betriebsabschnitt aktuell; Betreiber-Hälfte (human-eye) offen
+**Duration:** 62m
+**Verification:** PASS (iteration 2)
+**Files changed:** 12
+**Tests added:** 3
+**ADRs written:** 0024-piper-contract-verified.md
+**README delta:** README.md §Key commands anchor "- **Entwickler-Befehle**": anchor-missing (leading "- " in anchor; conductor replaced the bullet by hand); README.md §Open questions anchor "- Piper-HTTP-Anfrageform": anchor-missing (non-bold bullet; conductor replaced the line by hand)
+
+---
+
+## 2026-10-28 09:34 -- Verification failed: infrastructure-d3v7k - Geräteabnahme des Walking Skeletons (Worker-Hälfte)
+
+**Type:** Work / Verification failure
+**Task:** infrastructure-d3v7k - Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad
+**Iteration:** 1 of 3
+**Reasons:** ADR-0024-Frontmatter ohne scope-Feld; Code, Tests, Fixture, Images, WebKit und README-Delta in Ordnung
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-28 09:31 -- Task verified and completed: design-system-h3b7q - Lange Route in der Info-Leiste: drei Alternativen als Storybook-Entwürfe, Betreiber wählt eine
 
 **Type:** Work / Task completion

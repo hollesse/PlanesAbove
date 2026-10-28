@@ -21,7 +21,7 @@ test('ein Flugzeug: Silhouette in Standard-Lackierung, Callsign, Typ und Hoehe i
   await page.goto(svc.url);
   await expect(app(page)).toHaveAttribute('data-state', 'one');
   await expect(page.locator('.pa-plane')).toHaveAttribute('data-plane-type', 'narrowbody');
-  await expect(page.locator('.pa-plane')).toHaveAttribute('data-livery', 'def');
+  await expect(page.locator('.pa-plane')).toHaveAttribute('data-livery', 'lh');
   const bar = page.locator('.pa-bar-single');
   await expect(bar).toContainText('Lufthansa · DLH400 · Airbus A320neo');
   await expect(bar).toContainText('10 973 m');

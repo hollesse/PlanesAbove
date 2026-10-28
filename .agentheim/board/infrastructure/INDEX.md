@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 2
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 7
+- **Doing:** 0
+- **Done:** 8
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **infrastructure-d3v7k** — Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad (chore) — `doing/infrastructure-d3v7k-ger-teabnahme-des-walking-skeletons-auf-zimaos-heimserver-un.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **infrastructure-d3v7k** — Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad (chore) — `done/infrastructure-d3v7k-ger-teabnahme-des-walking-skeletons-auf-zimaos-heimserver-un.md`
 - **infrastructure-agdax** — Continuous Deployment: GitHub Action testet und baut Images nach GHCR bei jedem Push auf main; Watchtower auf ZimaOS zieht sie, das iPad lädt sich über die buildId selbst neu (feature) — `done/infrastructure-agdax-continuous-deployment-github-action-ghcr-watchtower-zimaos.md`
 - **infrastructure-q2w8h** — Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind (chore) — `done/infrastructure-q2w8h-test-sichert-ab-dass-die-mock-endpunkte-im-live-modus-nicht.md`
 - **infrastructure-001** — Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert (spike) — `done/infrastructure-001-walking-skeleton.md`

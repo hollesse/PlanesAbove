@@ -12,7 +12,7 @@ describe('flightMaxAgeMs (shared by scene and /healthz, ADR 0011)', () => {
 describe('parseConfig (ADR 0007)', () => {
   it('applies defaults to a minimal config', () => {
     const c = parseConfig(MIN);
-    expect(c).toMatchObject({ mode: 'live', radiusKm: 30, pollIntervalSeconds: 30, speech: { adapter: 'piper', voice: 'de_DE-thorsten' }, sky: { time: 'day', weather: 'clear' }, liveries: { enabled: true } });
+    expect(c).toMatchObject({ mode: 'live', radiusKm: 30, pollIntervalSeconds: 30, speech: { adapter: 'piper', voice: 'de_DE-thorsten-medium' }, sky: { time: 'day', weather: 'clear' }, liveries: { enabled: true } });
   });
   it('reports every problem at once with the key path', () => {
     try {

@@ -11,6 +11,7 @@ import { makeSilentWav, wavDurationMs } from '../../../src/server/modules/sky-sc
 import { silentLogger } from '../../../src/server/logger';
 import type { Fetch } from '../../../src/server/modules/airspace/adapters/http';
 
+// Fixture recorded from the running Piper sidecar (piper-tts 1.8.0, de_DE-thorsten-medium) - see tests/fixtures/piper-sample.wav.origin.txt
 const wavFixture = new Uint8Array(fs.readFileSync(new URL('../../fixtures/piper-sample.wav', import.meta.url)));
 const reply = (status: number, bytes: Uint8Array): Fetch => async () => ({ ok: status < 300, status, text: async () => '', arrayBuffer: async () => bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer });
 const piper = (f: Fetch, t = 1000) => new PiperSpeechSynthesizer({ fetch: f, endpoint: 'http://tts:5000', timeoutMs: t });
@@ -25,10 +26,18 @@ describe('PiperSpeechSynthesizer contract', () => {
   it('POSTs text and voice and returns audio with its duration', async () => {
     let seen: { url?: string; body?: string } = {};
     const f: Fetch = async (url, init) => { seen = { url, body: init?.body }; return reply(200, wavFixture)(url, init); };
-    const r = await piper(f).synthesize('Hallo Welt', 'de_DE-thorsten');
-    expect(seen.url).toBe('http://tts:5000');
-    expect(JSON.parse(seen.body!)).toEqual({ text: 'Hallo Welt', voice: 'de_DE-thorsten' });
-    expect(r).toMatchObject({ mimeType: 'audio/wav', durationMs: 1000 });
+    const r = await piper(f).synthesize('Hallo Welt.', 'de_DE-thorsten-medium');
+    expect(seen.url).toBe('http://tts:5000/synthesize');
+    expect(JSON.parse(seen.body!)).toEqual({ text: 'Hallo Welt.', voice: 'de_DE-thorsten-medium' });
+    expect(r).toMatchObject({ mimeType: 'audio/wav' });
+    expect(r.durationMs).toBeGreaterThan(500);
+    expect(r.durationMs).toBeLessThan(3000);
+  });
+  it('tolerates a trailing slash on the endpoint', async () => {
+    let url = '';
+    const f: Fetch = async (u, init) => { url = u; return reply(200, wavFixture)(u, init); };
+    await new PiperSpeechSynthesizer({ fetch: f, endpoint: 'http://tts:5000/', timeoutMs: 1000 }).synthesize('x', 'v');
+    expect(url).toBe('http://tts:5000/synthesize');
   });
   it('maps failures to typed errors: 5xx/network/garbage unavailable, 404 bad-voice, 429 quota-exceeded', async () => {
     expect(await kind(piper(reply(500, new Uint8Array())).synthesize('x', 'v'))).toBe('unavailable');
@@ -63,6 +72,13 @@ describe('AudioService', () => {
     await svc.get(key);
     expect(c.calls()).toBe(1);
     expect(svc.register('Hallo').durationMs).toBe(500);
+  });
+  it('logs a successful synthesis (adapter, voice, duration) so the operator can verify the sidecar', async () => {
+    const lines: Array<{ msg: string; f?: Record<string, unknown> }> = [];
+    const log = { ...silentLogger, info: (msg: string, f?: Record<string, unknown>) => { lines.push({ msg, f }); } };
+    const svc = new AudioService(new FakeSpeechSynthesizer(() => ({ durationMs: 700 })), { voice: 'v', render: 'lazy', log });
+    await svc.get(svc.register('Hallo').audioUrl.replace('/audio/', '').replace('.wav', ''));
+    expect(lines).toEqual([{ msg: 'speech synthesized', f: { source: 'tts', adapter: 'fake', voice: 'v', durationMs: 700 } }]);
   });
   it('eager mode starts rendering at registration', async () => {
     const c = counting();

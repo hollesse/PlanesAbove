@@ -100,11 +100,11 @@ const schema = z.object({
   }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES], adsbLol: { dailyRequestCap: 400 } }, route: ROUTE_DEFAULTS }),
   speech: z.object({
     adapter: z.enum(['piper', 'fake']).default('piper'),
-    voice: z.string().default('de_DE-thorsten'),
+    voice: z.string().default('de_DE-thorsten-medium'),
     endpoint: z.string().default('http://tts:5000'),
     render: z.enum(['eager', 'lazy']).default('eager'),
     timeoutMs: z.number().int().positive().default(15000),
-  }).default({ adapter: 'piper', voice: 'de_DE-thorsten', endpoint: 'http://tts:5000', render: 'eager', timeoutMs: 15000 }),
+  }).default({ adapter: 'piper', voice: 'de_DE-thorsten-medium', endpoint: 'http://tts:5000', render: 'eager', timeoutMs: 15000 }),
   client: z.object({
     pollIntervalSeconds: z.number().positive().default(10),
     staleAfterMinutes: z.number().positive().default(5),
