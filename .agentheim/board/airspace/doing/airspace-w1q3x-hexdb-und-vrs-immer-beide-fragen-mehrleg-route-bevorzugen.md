@@ -1,7 +1,7 @@
 ---
 id: airspace-w1q3x
 title: hexdb und VRS immer beide fragen; eine VRS-Mehrleg-Route, deren Endstück zur hexdb-Route passt, gewinnt (Startflughafen bei Zwischenlandungen)
-status: todo
+status: doing
 type: feature
 context: airspace
 created: 2026-10-27

@@ -1,7 +1,7 @@
 ---
 id: infrastructure-agdax
 title: Continuous Deployment: GitHub Action testet und baut Images nach GHCR bei jedem Push auf main; Watchtower auf ZimaOS zieht sie, das iPad lädt sich über die buildId selbst neu
-status: todo
+status: doing
 type: feature
 context: infrastructure
 created: 2026-10-28

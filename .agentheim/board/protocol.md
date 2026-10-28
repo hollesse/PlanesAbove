@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 09:04 -- Batch started: [infrastructure-agdax, airspace-w1q3x, design-system-z9rzp]
+
+**Type:** Work / Batch start
+**Tasks:** infrastructure-agdax - Continuous Deployment: GitHub Action testet und baut Images nach GHCR bei jedem Push auf main; Watchtower auf ZimaOS zieht sie, das iPad lädt sich über die buildId selbst neu, airspace-w1q3x - hexdb und VRS immer beide fragen; eine VRS-Mehrleg-Route, deren Endstück zur hexdb-Route passt, gewinnt (Startflughafen bei Zwischenlandungen), design-system-z9rzp - Flugphase als Pfeil vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen mehr Platz haben
+**Parallel:** yes (3 workers — airspace-cn6t7 held to next wave: shares route-service.ts with w1q3x and flight.ts with z9rzp; sky-scene-n0sfy held by cap 3)
+**Planning advisory:** whats-next 2026-10-27 12:49 (stale — background): refine airspace-h9x4p / sky-scene-g3r8w; both since done
+
+---
+
 ## 2026-10-28 09:03 -- Modeling / Refined: infrastructure-agdax - Continuous Deployment vor die Geräteabnahme gezogen
 
 **Type:** Modeling / Refine

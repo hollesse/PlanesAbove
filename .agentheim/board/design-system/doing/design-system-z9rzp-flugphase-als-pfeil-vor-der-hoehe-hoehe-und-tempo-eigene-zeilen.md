@@ -1,7 +1,7 @@
 ---
 id: design-system-z9rzp
 title: Flugphase als Pfeil vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen mehr Platz haben
-status: todo
+status: doing
 type: feature
 context: design-system
 created: 2026-10-27
