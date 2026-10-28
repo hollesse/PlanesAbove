@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 15:45 -- Capture / Captured: design-system-h7w2q - Untere Statusleiste auf dem iPad ist transparent und zeigt den Himmel, wirkt aber wie ein schwarzer Balken (Datum und Uhrzeit)
+
+**Type:** Capture
+**BC:** design-system
+**Filed to:** backlog
+**Summary:** Untere Statusleiste auf dem iPad ist transparent (zeigt den Himmel), wirkt aber wie ein schwarzer Balken.
+
+---
+
 ## 2026-10-28 15:13 -- Task verified and completed: infrastructure-fbpd5 - Commit-SHA als eigenes Feld `commit` in /healthz und im Startlog, per CI-Build-Arg ins Image; buildId bleibt der Client-Asset-Hash und steuert weiter den iPad-Reload
 
 **Type:** Work / Task completion
