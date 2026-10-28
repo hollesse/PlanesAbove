@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 15:09 -- Modeling / Promoted: infrastructure-fbpd5 - Commit-SHA als eigenes Feld `commit` in /healthz und im Startlog, per CI-Build-Arg ins Image; buildId bleibt der Client-Asset-Hash und steuert weiter den iPad-Reload
+
+**Type:** Modeling / Promote
+**BC:** infrastructure
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-28 15:09 -- Modeling / Refined: infrastructure-fbpd5 - Commit-SHA als eigenes Feld commit in /healthz
 
 **Type:** Modeling / Refine

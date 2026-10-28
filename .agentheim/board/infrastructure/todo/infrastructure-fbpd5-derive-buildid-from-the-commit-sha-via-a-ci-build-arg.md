@@ -1,7 +1,7 @@
 ---
 id: infrastructure-fbpd5
 title: Commit-SHA als eigenes Feld `commit` in /healthz und im Startlog, per CI-Build-Arg ins Image; buildId bleibt der Client-Asset-Hash und steuert weiter den iPad-Reload
-status: backlog
+status: todo
 type: chore
 context: infrastructure
 created: 2026-10-28
