@@ -57,6 +57,42 @@ describe('docker-compose.yml (ADR 0022)', () => {
   it('has a label-filtered watchtower with the docker socket', () => {
     const w = c.services.watchtower;
     expect(w.image).toContain('watchtower');
+    expect(w.image).not.toContain('containrrr');
+    expect(w.command).toContain('--label-enable');
+    expect(w.volumes).toContain('/var/run/docker.sock:/var/run/docker.sock');
+  });
+});
+
+describe('docker-compose.zimaos.yml (UI import on ZimaOS)', () => {
+  const c = load('docker-compose.zimaos.yml');
+  const label = 'com.centurylinklabs.watchtower.enable=true';
+  const volumes = (Object.values(c.services) as { volumes?: string[] }[]).flatMap((s) => s.volumes ?? []);
+
+  it('has no build, no profiles, no relative bind mount and no storybook', () => {
+    for (const svc of Object.values(c.services) as Record<string, unknown>[]) {
+      expect(svc.build).toBeUndefined();
+      expect(svc.profiles).toBeUndefined();
+    }
+    expect(c.services.storybook).toBeUndefined();
+    expect(volumes.length).toBeGreaterThan(0);
+    for (const v of volumes) expect(v.split(':')[0].startsWith('/')).toBe(true);
+  });
+
+  it('runs planesabove and tts from GHCR with the watchtower label', () => {
+    expect(c.services.planesabove.image).toBe('ghcr.io/hollesse/planesabove:main');
+    expect(c.services.tts.image).toBe('ghcr.io/hollesse/planesabove-tts:main');
+    expect(c.services.planesabove.labels).toContain(label);
+    expect(c.services.tts.labels).toContain(label);
+    const p = c.services.planesabove;
+    expect(p.healthcheck).toBeDefined();
+    expect(p.ports).toContain('8080:8080');
+    expect(p.environment.CONFIG_PATH).toBe('/config/config.yaml');
+    expect(p.environment.TZ).toBeDefined();
+  });
+
+  it('uses the maintained watchtower fork, not containrrr', () => {
+    const w = c.services.watchtower;
+    expect(w.image).toContain('nickfedor/watchtower');
     expect(w.command).toContain('--label-enable');
     expect(w.volumes).toContain('/var/run/docker.sock:/var/run/docker.sock');
   });

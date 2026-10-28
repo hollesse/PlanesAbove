@@ -44,8 +44,10 @@ services:
       options: { max-size: "10m", max-file: "3" }
 
   # Pulls new images from GHCR and recreates labelled containers (ADR 0022). Needs the Docker socket (LAN-only trade-off).
+  # Image nickfedor/watchtower: maintained fork of containrrr/watchtower (unmaintained, fails against Docker Engine >= 29 with
+  # "client version ... is too old"); same CLI flags, image checked 2026-10-28 (published 2026-10-22).
   watchtower:
-    image: containrrr/watchtower:latest
+    image: nickfedor/watchtower:latest
     container_name: planesabove-watchtower
     restart: unless-stopped
     command: --label-enable --cleanup --interval 300

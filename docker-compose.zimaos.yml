@@ -1,0 +1,54 @@
+# PlanesAbove for the ZimaOS home server: import via the UI ("Eigene App installieren" / custom app), no checkout, no build.
+# Differences to docker-compose.yml: GHCR images only (no build:), no profiles (tts always runs), no storybook, absolute paths only.
+# Before importing, create /DATA/AppData/planesabove/{config,data} and put config.yaml into config/ (see README, "Betrieb auf dem Heimserver").
+# In config.yaml: dataDir: /data ; speech: { adapter: piper, endpoint: "http://tts:5000" }
+# Watchtower image nickfedor/watchtower: maintained fork of containrrr/watchtower, which is unmaintained and fails against
+# Docker Engine >= 29 ("client version ... is too old"); same CLI flags. (ADR 0008, ADR 0022)
+# No x-casaos metadata on purpose: an unverified extension block is a risk for the import; the app is reached at http://<server>:8080/.
+services:
+  planesabove:
+    image: ghcr.io/hollesse/planesabove:main   # built by .github/workflows/deploy.yml; rollback = sha-<commit> tag
+    container_name: planesabove
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    ports:
+      - "8080:8080"            # plain HTTP on the LAN only; the iPad opens http://<server>:8080/
+    environment:
+      CONFIG_PATH: /config/config.yaml
+      TZ: Europe/Berlin        # household time zone: nightly reload, clock label
+    volumes:
+      - /DATA/AppData/planesabove/data:/data      # SQLite file (sighting log), audio cache
+      - /DATA/AppData/planesabove/config:/config:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  # Piper TTS sidecar; config.yaml: speech: { adapter: piper, endpoint: "http://tts:5000" }
+  tts:
+    image: ghcr.io/hollesse/planesabove-tts:main
+    container_name: planesabove-tts
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  # Pulls new images from GHCR every 5 minutes and recreates labelled containers only. Needs the Docker socket (LAN-only trade-off).
+  watchtower:
+    image: nickfedor/watchtower:latest
+    container_name: planesabove-watchtower
+    restart: unless-stopped
+    command: --label-enable --cleanup --interval 300
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
