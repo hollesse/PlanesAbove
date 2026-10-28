@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 16:08 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 49m (14:52–15:41 UTC)
+**Completed:** 3 (first-try PASS: 1, re-dispatched: 2, skipped: 0)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** design-system-h7w2q: 1, sighting-log-r3m8x: 2, airspace-t4x9k: 2
+**Commits:** 4 (batch start, 3 integrations)
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (3 tasks)
+**Carry-over:** .agentheim/.dashboard/: left behind (owner: dashboard tool, local state predating this session); left behind (user WIP, 2 files: config.yaml, data/)
+
+---
+
 ## 2026-10-28 16:07 -- Task verified and completed: design-system-h7w2q - Szene füllt den iPad-Bildschirm als Home-Bildschirm-Web-App nicht ganz aus; iPadOS rechnet die Höhe ohne die transparente Statusleiste, unten bleibt ein schwarzer Streifen
 
 **Type:** Work / Task completion
