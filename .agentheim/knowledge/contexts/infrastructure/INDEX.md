@@ -10,6 +10,7 @@ Catalog of ADRs, research, and concept synthesis pages scoped to this bounded co
 ## ADRs scoped to this BC
 
 <!-- adr-local:start -->
+- **0022** — CI-built images in GHCR and Watchtower pull replace the build on the home server: GitHub Action (test gates publish) pushes planesabove and planesabove-tts images; Watchtower on ZimaOS pulls them; amends ADR 0008 update path — 2026-10-28 — `../../decisions/0022-ci-built-images-watchtower-pull.md`
 - **0013** — Walking skeleton - mock-mode control surface, real-service E2E and explicitly unverified adapter contracts — 2026-10-27 — `../../decisions/0013-walking-skeleton-mock-control-and-unverified-adapter-contracts.md`
 <!-- adr-local:end -->
 

@@ -10,10 +10,10 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 1
+- **Backlog:** 2
 - **Todo:** 1
-- **Doing:** 1
-- **Done:** 6
+- **Doing:** 0
+- **Done:** 7
 <!-- task-counts:end -->
 
 ### Todo
@@ -24,11 +24,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **infrastructure-agdax** — Continuous Deployment: GitHub Action testet und baut Images nach GHCR bei jedem Push auf main; Watchtower auf ZimaOS zieht sie, das iPad lädt sich über die buildId selbst neu (feature) — `doing/infrastructure-agdax-continuous-deployment-github-action-ghcr-watchtower-zimaos.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **infrastructure-agdax** — Continuous Deployment: GitHub Action testet und baut Images nach GHCR bei jedem Push auf main; Watchtower auf ZimaOS zieht sie, das iPad lädt sich über die buildId selbst neu (feature) — `done/infrastructure-agdax-continuous-deployment-github-action-ghcr-watchtower-zimaos.md`
 - **infrastructure-q2w8h** — Test sichert ab, dass die Mock-Endpunkte im Live-Modus nicht erreichbar sind (chore) — `done/infrastructure-q2w8h-test-sichert-ab-dass-die-mock-endpunkte-im-live-modus-nicht.md`
 - **infrastructure-001** — Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert (spike) — `done/infrastructure-001-walking-skeleton.md`
 - **infrastructure-p6s30** — Decide observability: health endpoint, dead-man's-switch heartbeat and structured logs (decision) — `done/infrastructure-p6s30-health-and-alerting.md`
@@ -39,6 +39,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **infrastructure-fbpd5** — Derive buildId from the commit SHA via a CI build arg (chore) — `backlog/infrastructure-fbpd5-derive-buildid-from-the-commit-sha-via-a-ci-build-arg.md`
 - **infrastructure-b4k8n** — Heartbeat (Dead-Man's-Switch) und Log-Erinnerungen nach ADR 0011 nachziehen (feature) — `backlog/infrastructure-b4k8n-heartbeat-dead-man-s-switch-und-log-erinnerungen-nach-adr-00.md`
 <!-- backlog-list:end -->
 

@@ -1,11 +1,15 @@
-# PlanesAbove on ZimaOS (custom app) or any Docker host: `docker compose up -d --build` (ADR 0008).
+# PlanesAbove on ZimaOS (custom app) or any Docker host (ADR 0008, ADR 0022).
+# Home server: `docker compose --profile tts pull && docker compose --profile tts up -d`; Watchtower then pulls every new CI build.
+# Dev machine: `docker compose up -d --build` builds locally from `build:`.
 # Before the first start: copy config.example.yaml to /DATA/AppData/planesabove/config/config.yaml and set your location.
 services:
   planesabove:
     build: .
-    image: planesabove:local
+    image: ghcr.io/hollesse/planesabove:main   # built by .github/workflows/deploy.yml; rollback = sha-<commit> tag
     container_name: planesabove
     restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
     ports:
       - "8080:8080"            # plain HTTP on the LAN only; the iPad opens http://<server>:8080/
     environment:
@@ -30,9 +34,23 @@ services:
   tts:
     profiles: ["tts"]
     build: ./docker/piper
-    image: planesabove-tts:local
+    image: ghcr.io/hollesse/planesabove-tts:main
     container_name: planesabove-tts
     restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  # Pulls new images from GHCR and recreates labelled containers (ADR 0022). Needs the Docker socket (LAN-only trade-off).
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: planesabove-watchtower
+    restart: unless-stopped
+    command: --label-enable --cleanup --interval 300
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     logging:
       driver: json-file
       options: { max-size: "10m", max-file: "3" }

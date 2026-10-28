@@ -1,7 +1,7 @@
 ---
 id: infrastructure-agdax
 title: Continuous Deployment: GitHub Action testet und baut Images nach GHCR bei jedem Push auf main; Watchtower auf ZimaOS zieht sie, das iPad lädt sich über die buildId selbst neu
-status: doing
+status: done
 type: feature
 context: infrastructure
 created: 2026-10-28
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: [infrastructure-d3v7k]
 tags: [deployment, ci, ghcr, watchtower, compose, zimaos]
-related_adrs: [0008, 0011]
+related_adrs: [0008, 0011, 0022]
 related_research: []
 prior_art: [infrastructure-001-walking-skeleton]
 ---
@@ -45,3 +45,27 @@ Nicht Teil des Tasks: Benachrichtigung bei fehlgeschlagenem Deployment (gehört 
 - Watchtower hat Zugriff auf den Docker-Socket des Heimservers; das ist im LAN-only-Setup akzeptiert, aber im ADR als Trade-off nennen. Alternative ohne Socket: ein Cron auf ZimaOS mit `docker compose pull && up -d`; Watchtower ist gewählt, weil ZimaOS Container bequemer verwaltet als Cron-Jobs.
 - Multi-Arch ist nicht nötig: ThinkCentre ist amd64. Falls der Entwicklungsrechner (Apple Silicon) die GHCR-Images laufen lassen soll, `platforms: linux/amd64,linux/arm64` per buildx ergänzen; das kostet CI-Zeit und ist optional.
 - Piper-Image-Build dauert wegen Voice-Download lange; Docker-Layer-Cache in der Action (`cache-from: type=gha`) nutzen.
+
+## Verifier note (iteration 1)
+**REASONS:**
+- Criterion 1 ("bei Änderung unter `docker/piper/`"): the Piper rebuild decision in `.github/workflows/deploy.yml` runs `git diff --quiet HEAD^ HEAD -- docker/piper` after a checkout with `fetch-depth: 2`. That only looks at the last commit of the push. A push carrying several commits where only an earlier one touches `docker/piper/**` skips the TTS build and deploys a stale `planesabove-tts:main`.
+- No test covers the Piper conditional in `tests/unit/deploy-workflow.test.ts`.
+- Everything else passed (npm test 480 passed, typecheck, compose config, needs: test, packages: write, tags, e2e isolated, Watchtower wiring, README, ADR 0022 block, scope clean).
+- Noted, not a FAIL reason: `buildId` hashes only `app.js`/`app.css`; a server-only commit does not change it, so README step 9 and the human-eye criterion only hold for client-changing pushes. Consider a backlog item: derive `buildId` from the commit SHA (build arg in CI).
+
+**SUGGESTED_FIX:** Base the Piper-change check on the whole push: diff `${{ github.event.before }}..${{ github.sha }}` with `fetch-depth: 0`, falling back to building when `before` is all zeros or missing (or use a paths-filter action). Add a unit test pinning the TTS build as conditional on that push-range check plus the `force_tts` dispatch input.
+
+**ITERATION_HINT:** likely-fixable
+
+
+## Outcome
+
+CD path built. `.github/workflows/deploy.yml` triggers on push to `main` (plus manual dispatch with `force_tts`). Job `test` runs npm ci, typecheck, npm test, build; job `publish` has `needs: test`, so a failing test publishes no image. It pushes `ghcr.io/hollesse/planesabove:{main,sha-<commit>}` and `planesabove-tts` with the same tags; layer cache via `type=gha`. The Piper build runs only when `docker/piper/**` changed anywhere in the pushed range (`github.event.before..github.sha`, `fetch-depth: 0`; missing or all-zero `before` forces a build), when the image is missing in GHCR, or on manual dispatch. E2E is a separate `continue-on-error` job outside the publish path.
+
+`docker-compose.yml`: `planesabove` and `tts` use the GHCR images with the Watchtower label and keep `build:`; new `watchtower` service (socket mount, `--label-enable --cleanup --interval 300`). `docker compose --profile tts config` is clean. README operations section updated. ADR 0022 (reported) amends the ADR 0008 update path and names the Docker-socket trade-off.
+
+Iteration 2 fixed the verifier finding: the Piper decision no longer diffs only `HEAD^..HEAD`, so a multi-commit push that touched `docker/piper/**` in an earlier commit still builds the TTS image.
+
+Proof: `tests/unit/deploy-workflow.test.ts` parses the workflow and compose YAML and asserts the trigger, the `publish needs test` edge, the gate steps, e2e isolation, the Piper build being conditional on the push-range check (`fetch-depth: 0`, `github.event.before`..`github.sha`, no `HEAD^`, `force_tts`, manifest inspect), GHCR images, labels and the Watchtower service. Tests (481 passed) and typecheck pass. Not provable here: a real Actions run, a GHCR pull.
+
+Operator must do once: (1) after the first workflow run, set both GHCR packages to public, then verify with `podman pull ghcr.io/hollesse/planesabove:main`; (2) on ZimaOS place `docker-compose.yml`, run `docker compose --profile tts pull && docker compose --profile tts up -d`; (3) push to `main` and check that `/healthz` shows a new `buildId` within 10 minutes and the iPad reloads. Note: `buildId` changes only when client assets change (see backlog item).

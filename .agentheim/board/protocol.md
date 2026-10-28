@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 09:14 -- Task verified and completed: infrastructure-agdax - Continuous Deployment: GitHub Action testet und baut Images nach GHCR bei jedem Push auf main; Watchtower auf ZimaOS zieht sie, das iPad lädt sich über die buildId selbst neu
+
+**Type:** Work / Task completion
+**Task:** infrastructure-agdax - Continuous Deployment: GitHub Action testet und baut Images nach GHCR bei jedem Push auf main; Watchtower auf ZimaOS zieht sie, das iPad lädt sich über die buildId selbst neu
+**Summary:** Added the deploy workflow (a test job gates a publish job that pushes to GHCR), switched the compose file to GHCR images plus a label-filtered Watchtower, and updated the README operations section. Iteration 2 bases the Piper rebuild decision on the whole push range and pins it in a unit test.
+**Duration:** 22m
+**Verification:** PASS (iteration 2)
+**Files changed:** 4
+**Tests added:** 6
+**ADRs written:** 0022-ci-built-images-watchtower-pull.md
+
+---
+
 ## 2026-10-28 09:13 -- Task verified and completed: design-system-z9rzp - Flugphase als Pfeil vor der Höhe statt als Wort; in der Zwei-Flugzeuge-Ansicht Höhe und Geschwindigkeit je auf eigener Zeile, damit lange Routen mehr Platz haben
 
 **Type:** Work / Task completion

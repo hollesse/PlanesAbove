@@ -1,0 +1,62 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { describe, expect, it } from 'vitest';
+import { parse } from 'yaml';
+
+const root = resolve(__dirname, '../..');
+const load = (f: string) => parse(readFileSync(resolve(root, f), 'utf8'));
+
+describe('deploy workflow (ADR 0022)', () => {
+  const wf = load('.github/workflows/deploy.yml');
+
+  it('triggers on push to main', () => {
+    expect(wf.on.push.branches).toEqual(['main']);
+  });
+
+  it('publishes only after the test job (failing test publishes no image)', () => {
+    expect(wf.jobs.publish.needs).toBe('test');
+    const steps = wf.jobs.test.steps.map((s: { run?: string }) => s.run).filter(Boolean);
+    expect(steps).toEqual(['npm ci', 'npm run typecheck', 'npm test', 'npm run build']);
+    expect(wf.jobs.publish.permissions.packages).toBe('write');
+  });
+
+  it('keeps e2e out of the publish path', () => {
+    expect(wf.jobs.publish.needs).not.toContain('e2e');
+    expect(wf.jobs.e2e['continue-on-error']).toBe(true);
+  });
+
+  it('builds Piper only on a push-range change, force_tts or a missing image', () => {
+    const steps = wf.jobs.publish.steps as { uses?: string; with?: Record<string, unknown>; id?: string; run?: string; if?: string }[];
+    const checkout = steps.find((s) => s.uses?.startsWith('actions/checkout'));
+    expect(checkout?.with?.['fetch-depth']).toBe(0);
+    const decide = steps.find((s) => s.id === 'tts');
+    expect(decide?.run).toContain('github.event.before');
+    expect(decide?.run).toContain('github.sha');
+    expect(decide?.run).toContain('docker/piper');
+    expect(decide?.run).not.toContain('HEAD^');
+    expect(decide?.run).toContain('force_tts');
+    expect(decide?.run).toContain('docker manifest inspect');
+    const build = steps.find((s) => s.uses?.startsWith('docker/build-push-action') && s.with?.context === 'docker/piper');
+    expect(build?.if).toBe("steps.tts.outputs.build == 'true'");
+  });
+});
+
+describe('docker-compose.yml (ADR 0022)', () => {
+  const c = load('docker-compose.yml');
+  const label = 'com.centurylinklabs.watchtower.enable=true';
+
+  it('points planesabove and tts at GHCR with the watchtower label', () => {
+    expect(c.services.planesabove.image).toBe('ghcr.io/hollesse/planesabove:main');
+    expect(c.services.tts.image).toBe('ghcr.io/hollesse/planesabove-tts:main');
+    expect(c.services.planesabove.labels).toContain(label);
+    expect(c.services.tts.labels).toContain(label);
+    expect(c.services.planesabove.build).toBeDefined();
+  });
+
+  it('has a label-filtered watchtower with the docker socket', () => {
+    const w = c.services.watchtower;
+    expect(w.image).toContain('watchtower');
+    expect(w.command).toContain('--label-enable');
+    expect(w.volumes).toContain('/var/run/docker.sock:/var/run/docker.sock');
+  });
+});
