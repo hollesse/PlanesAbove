@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 15:52 -- Batch started: [design-system-h7w2q, sighting-log-r3m8x, airspace-t4x9k]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-h7w2q - Szene füllt den iPad-Bildschirm als Home-Bildschirm-Web-App nicht ganz aus; iPadOS rechnet die Höhe ohne die transparente Statusleiste, unten bleibt ein schwarzer Streifen, sighting-log-r3m8x - Routen- und Lackierungs-Statistik als API-Endpunkt des Dienstes, damit die Auswertung auf dem Heimserver ohne Node und ohne DB-Kopie im Browser abrufbar ist, airspace-t4x9k - Flugzeugtyp je Hex bei hexdb gegenprüfen (nur im Speicher gecacht) und eine eigene Korrekturtabelle Hex → Typ als Vorrang, damit falsche Typcodes der Flugquelle (OE-FML DA42 als C525) nicht als falsche Silhouette erscheinen
+**Parallel:** yes (3 workers; sighting-log-r3m8x and airspace-t4x9k both touch src/server/app.ts, sighting-log stats and README — merge r3m8x first, then t4x9k)
+
+---
+
 ## 2026-10-28 15:49 -- Modeling / Promoted: design-system-h7w2q - Szene füllt den iPad-Bildschirm als Home-Bildschirm-Web-App nicht ganz aus; iPadOS rechnet die Höhe ohne die transparente Statusleiste, unten bleibt ein schwarzer Streifen
 
 **Type:** Modeling / Promote

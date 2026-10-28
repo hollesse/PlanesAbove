@@ -1,7 +1,7 @@
 ---
 id: design-system-h7w2q
 title: Szene füllt den iPad-Bildschirm als Home-Bildschirm-Web-App nicht ganz aus; iPadOS rechnet die Höhe ohne die transparente Statusleiste, unten bleibt ein schwarzer Streifen
-status: todo
+status: doing
 type: bug
 context: design-system
 created: 2026-10-28

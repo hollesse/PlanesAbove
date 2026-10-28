@@ -1,7 +1,7 @@
 ---
 id: airspace-t4x9k
 title: Flugzeugtyp je Hex bei hexdb gegenprüfen (nur im Speicher gecacht) und eine eigene Korrekturtabelle Hex → Typ als Vorrang, damit falsche Typcodes der Flugquelle (OE-FML DA42 als C525) nicht als falsche Silhouette erscheinen
-status: todo
+status: doing
 type: feature
 context: airspace
 created: 2026-10-28

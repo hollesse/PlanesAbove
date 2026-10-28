@@ -1,7 +1,7 @@
 ---
 id: sighting-log-r3m8x
 title: Routen- und Lackierungs-Statistik als API-Endpunkt des Dienstes, damit die Auswertung auf dem Heimserver ohne Node und ohne DB-Kopie im Browser abrufbar ist
-status: todo
+status: doing
 type: feature
 context: sighting-log
 created: 2026-10-28
