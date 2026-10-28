@@ -47,7 +47,7 @@ services:
   # Image nickfedor/watchtower: maintained fork of containrrr/watchtower (unmaintained, fails against Docker Engine >= 29 with
   # "client version ... is too old"); same CLI flags, image checked 2026-10-28 (published 2026-10-22).
   watchtower:
-    image: nickfedor/watchtower:latest
+    image: nickfedor/watchtower:1.23.2   # pinned; bump deliberately (e.g. via Renovate), Watchtower does not update itself
     container_name: planesabove-watchtower
     restart: unless-stopped
     command: --label-enable --cleanup --interval 300

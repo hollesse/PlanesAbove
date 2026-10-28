@@ -43,7 +43,7 @@ services:
 
   # Pulls new images from GHCR every 5 minutes and recreates labelled containers only. Needs the Docker socket (LAN-only trade-off).
   watchtower:
-    image: nickfedor/watchtower:latest
+    image: nickfedor/watchtower:1.23.2   # pinned; bump deliberately (e.g. via Renovate), Watchtower does not update itself
     container_name: planesabove-watchtower
     restart: unless-stopped
     command: --label-enable --cleanup --interval 300

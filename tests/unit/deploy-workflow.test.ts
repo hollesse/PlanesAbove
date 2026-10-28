@@ -58,6 +58,7 @@ describe('docker-compose.yml (ADR 0022)', () => {
     const w = c.services.watchtower;
     expect(w.image).toContain('watchtower');
     expect(w.image).not.toContain('containrrr');
+    expect(w.image).toMatch(/^nickfedor\/watchtower:\d+\.\d+\.\d+$/); // pinned, updated deliberately (e.g. Renovate), never :latest
     expect(w.command).toContain('--label-enable');
     expect(w.volumes).toContain('/var/run/docker.sock:/var/run/docker.sock');
   });
@@ -92,7 +93,7 @@ describe('docker-compose.zimaos.yml (UI import on ZimaOS)', () => {
 
   it('uses the maintained watchtower fork, not containrrr', () => {
     const w = c.services.watchtower;
-    expect(w.image).toContain('nickfedor/watchtower');
+    expect(w.image).toMatch(/^nickfedor\/watchtower:\d+\.\d+\.\d+$/); // pinned, updated deliberately (e.g. Renovate), never :latest
     expect(w.command).toContain('--label-enable');
     expect(w.volumes).toContain('/var/run/docker.sock:/var/run/docker.sock');
   });

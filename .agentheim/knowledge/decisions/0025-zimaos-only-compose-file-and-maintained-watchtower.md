@@ -22,6 +22,7 @@ The operator decided on 2026-10-28 to install PlanesAbove through the ZimaOS UI 
 - Add `docker-compose.zimaos.yml` for the home server: GHCR images only (`:main`), no `build:`, no `profiles:`, only absolute bind mounts under `/DATA/AppData/planesabove`, no storybook. `tts` always runs, so speech works after a plain import.
 - `docker-compose.yml` stays for the dev machine and the SSH route (build, profiles).
 - Both files use `nickfedor/watchtower` (maintained fork, same CLI flags, image published 2026-10-22) instead of `containrrr/watchtower`.
+- The Watchtower image is pinned to a fixed version (`nickfedor/watchtower:1.23.2`), never `:latest`. Watchtower does not update itself (it carries no watchtower label), so a moving tag would only drift silently between installs. Version bumps are deliberate, e.g. via Renovate (its docker-compose manager matches both compose files). `planesabove` and `tts` stay on the moving `:main` tag on purpose: that is the continuous-deployment path of ADR 0022.
 - No `x-casaos` metadata: it cannot be verified without a real ZimaOS import and is a risk for the import; the app is reached at `http://<server>:8080/`.
 
 ## Consequences
