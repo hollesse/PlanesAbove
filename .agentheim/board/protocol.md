@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 13:42 -- Batch started: [infrastructure-z7kq4]
+
+**Type:** Work / Batch start
+**Tasks:** infrastructure-z7kq4 - Eigene Compose-Datei für den Import über die ZimaOS-Oberfläche (ohne build, Piper fest dabei, gepflegter Watchtower)
+**Parallel:** scoped — builder named infrastructure-z7kq4; 1 other ready task (sighting-log-r3m8x) not dispatched
+
+---
+
 ## 2026-10-28 12:53 -- Task verified and completed: design-system-w5n2k - Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil)
 
 **Type:** Work / Task completion

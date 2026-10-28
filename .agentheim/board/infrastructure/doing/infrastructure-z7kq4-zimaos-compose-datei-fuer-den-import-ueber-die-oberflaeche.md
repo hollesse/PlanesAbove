@@ -1,7 +1,7 @@
 ---
 id: infrastructure-z7kq4
 title: Eigene Compose-Datei für den Import über die ZimaOS-Oberfläche (ohne build, Piper fest dabei, gepflegter Watchtower)
-status: todo
+status: doing
 type: feature
 context: infrastructure
 created: 2026-10-28
