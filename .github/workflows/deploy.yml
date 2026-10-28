@@ -30,8 +30,8 @@ jobs:
       - run: npm run build
 
   publish:
-    # Gate: nothing is published unless typecheck, unit tests and build are green.
-    needs: test
+    # Gate: nothing is published unless typecheck, unit tests, build and the Playwright E2E run are green.
+    needs: [test, e2e]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -88,11 +88,10 @@ jobs:
           cache-from: type=gha,scope=tts
           cache-to: type=gha,scope=tts,mode=max
 
-  # Playwright E2E stays out of the deploy path (a WebKit problem must not block deployment).
+  # Playwright E2E (WebKit + Chromium) gates publish: a visibly broken scene must not reach the iPad (ADR 0022 amendment).
   e2e:
     needs: test
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
