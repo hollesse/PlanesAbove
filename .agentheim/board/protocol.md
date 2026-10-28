@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 15:49 -- Modeling / Promoted: design-system-h7w2q - Szene füllt den iPad-Bildschirm als Home-Bildschirm-Web-App nicht ganz aus; iPadOS rechnet die Höhe ohne die transparente Statusleiste, unten bleibt ein schwarzer Streifen
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-28 15:49 -- Modeling / Refined: design-system-h7w2q - Szene füllt den iPad-Bildschirm als Web-App nicht ganz aus
 
 **Type:** Modeling / Refine
