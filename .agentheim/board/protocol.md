@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 11:10 -- Modeling / Promoted: design-system-grp94 - Lange Route: gewählte Variante in der Info-Leiste umsetzen; Playwright-Test (WebKit) mit den zwei längsten Flughafennamen
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-28 09:38 -- Work session ended
 
 **Type:** Work / Session end
