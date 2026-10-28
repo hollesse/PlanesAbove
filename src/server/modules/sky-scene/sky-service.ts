@@ -5,7 +5,7 @@ import type { Logger } from '../../logger';
 import type { SceneState, ScenePlane } from '../../../shared/state';
 import type { FlightPhase } from '../airspace/model';
 import { SourceError, type FlightSource, type Flugzeug } from '../airspace/model';
-import type { RouteLookup, RouteService } from '../airspace/route-service';
+import type { RouteInfo, RouteLookup, RouteService } from '../airspace/route-service';
 import { selectNearest } from '../airspace/selection';
 import { resolveAirline, resolveLivery, resolveTypeClass, type Tables } from '../airspace/typeclass';
 import type { SightingRepository } from '../sighting-log/repository';
@@ -63,7 +63,7 @@ export class SkyService {
       const { tc, airline } = this.identify(a);
       const lookup = await this.d.routes.lookupFor(a.callsign, a, { typklasse: tc.typklasse, airlineKnown: Boolean(airline?.name), altitudeM: a.altitudeM, verticalRateMs: a.verticalRateMs, trackDeg: a.trackDeg });
       routeById.set(a.icao24, lookup);
-      planes.push(this.toScenePlane(a, lookup?.info?.text ?? null));
+      planes.push(this.toScenePlane(a, lookup?.info ?? null));
     }
     inRadius.forEach((c) => this.recordSighting(c.aircraft, c.distanceKm, routeById.get(c.aircraft.icao24) ?? null, slotOf.get(c.aircraft.icao24) ?? null, now));
     this.planes = planes;
@@ -77,7 +77,9 @@ export class SkyService {
     return { tc, airline, livery };
   }
 
-  private toScenePlane(a: Flugzeug, route: string | null): ScenePlane {
+  private toScenePlane(a: Flugzeug, info: RouteInfo | null): ScenePlane {
+    // Display: first → last only, intermediate stops go to `via` (the persisted text stays the full chain).
+    const route = !info ? null : info.legs.length > 2 ? `${info.legs[0]} → ${info.legs[info.legs.length - 1]}` : info.text;
     const { tc, airline, livery } = this.identify(a);
     const altitudeM = a.altitudeM ?? 0;
     const text = composeSpeech({ airlineName: airline?.name, callsign: a.callsign, typeName: tc.typeName, altitudeM: a.altitudeM });
@@ -90,6 +92,7 @@ export class SkyService {
         aircraft: tc.typeName ?? a.typeCode ?? 'Flugzeug',
         registration: a.registration ?? '',
         route,
+        via: info?.via ?? [],
         altitudeM,
         speedKmh: a.speedKmh ?? 0,
         phase: climbOrDescent(a.verticalRateMs),

@@ -1,7 +1,7 @@
 ---
 id: airspace-cn6t7
 title: Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen
-status: doing
+status: done
 type: bug
 context: airspace
 created: 2026-10-27
@@ -39,3 +39,7 @@ Refinement 2026-10-27 mit dem Betreiber, zwei Entscheidungen sind gefallen:
 - Captured via `quick-capture` 2026-10-27; refined 2026-10-27 (Betreiber-Entscheidungen oben). Layout-Frage und Playwright-Test gehen in design-system-h3b7q und design-system-grp94.
 - Einstiegspunkte: `src/server/modules/airspace/route-service.ts` (`RouteInfo`, `formatRoute`, `airportLabel`), `src/server/modules/sky-scene/sky-service.ts` (`toScenePlane`), `src/shared/state.ts`, `src/client/ui/domain/flight.ts` (`formatEyebrow`), `src/client/ui/styles/ui.css` (`.pa-route-large`).
 - Zusammenhang: design-system-z9rzp schafft Platz in der Zwei-Flugzeuge-Ansicht; airspace-w1q3x liefert die Mehrleg-Route, deren Startflughafen hier sichtbar wird.
+
+
+## Outcome
+`RouteInfo` (route-service.ts) gained `legs` (display label per leg) and `via` (plain city names of intermediate stops) via new `routeParts`; `text`/`formatRoute` unchanged (persisted chain stays "A → B → C"). `SkyService.toScenePlane` now takes the RouteInfo: for >2 legs `route` = first → last label, `via` = stops; direct routes keep `text`, `via = []`. `FlightInfo.via?: string[]` added (optional, additive); `formatEyebrow` appends "über Sharjah, Dubai". Real table names are "Hong Kong (HKG) → Cologne (CGN)" (not Hongkong/Köln); the test uses these. Speech never contained the route, test asserts no stop in the text. Three assertions in adsbdb-route-source.test.ts moved from toEqual to toMatchObject because RouteInfo has more fields. New: tests/unit/server/sky-via.test.ts. npm test (494), typecheck, build green.

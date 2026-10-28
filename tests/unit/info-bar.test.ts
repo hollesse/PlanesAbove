@@ -82,3 +82,10 @@ describe('Info-Leiste', () => {
     expect(renderInfoRow({ n: 1, flight: SAMPLE_FLIGHTS.D }).outerHTML).not.toContain('pa-glow');
   });
 });
+
+describe('formatEyebrow via', () => {
+  it('appends "über X" for stops, comma for several', () => {
+    expect(formatEyebrow({ ...SAMPLE_FLIGHTS.A, via: ['Sharjah'] })).toBe('Lufthansa · LH400 · Airbus A320neo · D-AIBI · über Sharjah');
+    expect(formatEyebrow({ ...SAMPLE_FLIGHTS.A, via: ['Sharjah', 'Dubai'] })).toMatch(/über Sharjah, Dubai$/);
+  });
+});

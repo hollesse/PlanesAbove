@@ -8,6 +8,8 @@ export interface FlightInfo {
   registration: string;
   /** null = Route unbekannt. */
   route: string | null;
+  /** Intermediate stop cities of a multi-leg route (route shows start → end only). */
+  via?: string[];
   altitudeM: number;
   speedKmh: number;
   phase: FlightPhase;
@@ -21,7 +23,7 @@ export const phaseLabel = (p: FlightPhase): string => PHASE_LABEL[p];
 export const formatNumber = (n: number): string => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
 /** Eyebrow line above the route: "Lufthansa · LH400 · Airbus A320neo · D-AIBI". */
-export const formatEyebrow = (f: FlightInfo): string => [f.operator, f.callsign, f.aircraft, f.registration].filter(Boolean).join(' · ');
+export const formatEyebrow = (f: FlightInfo): string => [f.operator, f.callsign, f.aircraft, f.registration, f.via?.length ? `über ${f.via.join(', ')}` : ''].filter(Boolean).join(' · ');
 
 /** Phase arrow shown before the altitude: climb up, descent down, level straight on (Unicode, IBM Plex Mono has the glyphs). */
 const PHASE_ARROW: Record<FlightPhase, string> = { level: '\u2192', climb: '\u2197', descent: '\u2198' };

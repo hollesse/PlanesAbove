@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 09:25 -- Task verified and completed: airspace-cn6t7 - Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen
+
+**Type:** Work / Task completion
+**Task:** airspace-cn6t7 - Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen
+**Summary:** Mehrleg-Routen zeigen im Steckbrief nur Start → Ende, Zwischenstopps wandern als „über X“ in die Eyebrow; persistierter Routentext und Sprachausgabe unverändert
+**Duration:** 6m
+**Verification:** PASS (iteration 1)
+**Files changed:** 6
+**Tests added:** 3
+**ADRs written:** none
+
+---
+
 ## 2026-10-28 09:20 -- Batch started: [airspace-cn6t7, infrastructure-d3v7k]
 
 **Type:** Work / Batch start

@@ -14,7 +14,13 @@ const airportLabel = (a: Airport, table?: Record<string, AirportEntry>, onMissin
   if (!e) { if (table && a.icao) onMissing?.(a.icao.toUpperCase()); return a.city; }
   return e.iata ? `${e.city} (${e.iata})` : e.city;
 };
-export const formatRoute = (r: Route, airports?: Record<string, AirportEntry>, onMissing?: (icao: string) => void): string => (r.legs && r.legs.length > 2 ? r.legs : [r.from, r.to]).map((a) => airportLabel(a, airports, onMissing)).join(' → ');
+const routeLegs = (r: Route): Airport[] => (r.legs && r.legs.length > 2 ? r.legs : [r.from, r.to]);
+export const formatRoute = (r: Route, airports?: Record<string, AirportEntry>, onMissing?: (icao: string) => void): string => routeLegs(r).map((a) => airportLabel(a, airports, onMissing)).join(' → ');
+/** Display split of a route: every leg label in order, plus the plain city names of the intermediate stops (no IATA). `text` stays the full chain. */
+export const routeParts = (r: Route, airports?: Record<string, AirportEntry>, onMissing?: (icao: string) => void): { legs: string[]; via: string[] } => {
+  const legs = routeLegs(r);
+  return { legs: legs.map((a) => airportLabel(a, airports, onMissing)), via: legs.slice(1, -1).map((a) => { const e = airports && a.icao ? airports[a.icao.toUpperCase()] : undefined; return e ? e.city : a.city; }) };
+};
 
 /** Thresholds of the plausibility check (config `sources.route.plausibility`, airspace-p8w2k). */
 export interface PlausibilityConfig {
@@ -71,7 +77,8 @@ export function isLegTail(short: Route, long: Route): boolean {
   return a.every((c, i) => c === b[b.length - a.length + i]);
 }
 
-export interface RouteInfo { text: string; source: RouteOrigin }
+/** `text` = full persisted chain "A → B → C"; `legs` = the display label of every leg in order; `via` = city names of the intermediate stops (empty for a direct route). */
+export interface RouteInfo { text: string; source: RouteOrigin; legs: string[]; via: string[] }
 
 /** What one source said in one lookup: hit (plausible route), unknown (null), unavailable (threw), rejected (implausible). Findings only, no route data. */
 export type LookupOutcome = 'hit' | 'unknown' | 'unavailable' | 'rejected';
@@ -89,9 +96,9 @@ export class RouteService {
   }
 
   private readonly warnedIcao = new Set<string>();
-  private format(r: Route): string {
-    return formatRoute(r, this.o.airports, (icao) => { if (this.warnedIcao.has(icao)) return; this.warnedIcao.add(icao); this.o.log?.warn('airport missing in tables/airports.json, showing the source name', { icao }); });
-  }
+  private readonly onMissing = (icao: string): void => { if (this.warnedIcao.has(icao)) return; this.warnedIcao.add(icao); this.o.log?.warn('airport missing in tables/airports.json, showing the source name', { icao }); };
+  private format(r: Route): string { return formatRoute(r, this.o.airports, this.onMissing); }
+  private infoOf(r: Route, source: RouteOrigin): RouteInfo { return { text: this.format(r), source, ...routeParts(r, this.o.airports) }; }
 
   /** "Frankfurt (FRA) → New York (JFK)" or null (Route unbekannt). Never throws. */
   async routeFor(callsign: string | undefined, position: LatLon, ctx?: LookupContext): Promise<string | null> {
@@ -113,7 +120,7 @@ export class RouteService {
         const obs = { trackDeg: ctx?.trackDeg, verticalRateMs: ctx?.verticalRateMs, altitudeM: ctx?.altitudeM };
         const ok = hit.rejected.find((x) => isPlausibleRoute(x.route, position, obs, this.o.plausibility, this.o.log));
         if (ok) { // became plausible with the plane's new position: show it, no source is asked again
-          const info: RouteInfo = { text: this.format(ok.route), source: ok.origin };
+          const info: RouteInfo = this.infoOf(ok.route, ok.origin);
           this.cache.set(callsign, { until: hit.until, info });
           this.o.log?.info('route lookup', { callsign, source: info.source });
           return { info, attempts: [{ source: ok.source, outcome: 'hit' }], conflict: false, chosen: ok.source, fresh: true };
@@ -164,7 +171,7 @@ export class RouteService {
     const hx = hits.find((h) => h.src.name === 'hexdb'), vr = hits.find((h) => h.src.name === 'vrs');
     const supplement = !!(hx && vr && isLegTail(hx.route, vr.route));
     if (supplement) pick = vr!;
-    const info: RouteInfo | null = pick ? { text: this.format(pick.route), source: pick.origin } : null;
+    const info: RouteInfo | null = pick ? this.infoOf(pick.route, pick.origin) : null;
     const chosen: string | null = pick ? pick.src.name : null;
     const texts = new Set(hits.filter((h) => !(supplement && h.src.name === 'hexdb')).map((h) => this.format(h.route)));
     const conflict = texts.size > 1;

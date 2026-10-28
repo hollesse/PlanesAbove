@@ -85,14 +85,14 @@ describe('route chain [adsbdb, vrs] (ADR 0016)', () => {
   it('adsbdb wins before VRS (QTR56H regression: Doha-London beats VRS Doha-Dubai)', async () => {
     const vrs = fake('vrs', DOH_DXB);
     const { svc } = svcOf([fake('adsbdb', DOH_LON), vrs]);
-    expect(await svc.routeInfoFor('QTR56H', POS)).toEqual({ text: 'Doha → London', source: 'adsbdb' });
+    expect(await svc.routeInfoFor('QTR56H', POS)).toMatchObject({ text: 'Doha → London', source: 'adsbdb' });
     expect(vrs.calls).toBe(0);
   });
   it('falls back to VRS on unknown, unavailable and on a corridor-rejected adsbdb route', async () => {
     const FRA_JFK: Route = { from: airport('Frankfurt', 50, 8.5), to: airport('New York', 40.6, -73.8), source: 'adsbdb' };
     for (const first of [null, 'throw', FRA_JFK] as const) {
       const { svc } = svcOf([fake('adsbdb', first), fake('vrs', DOH_LON.source ? { ...DOH_LON, source: 'vrs' } : null)]);
-      expect(await svc.routeInfoFor('X1', POS)).toEqual({ text: 'Doha → London', source: 'vrs' });
+      expect(await svc.routeInfoFor('X1', POS)).toMatchObject({ text: 'Doha → London', source: 'vrs' });
     }
   });
   it('a VRS route outside the corridor means unknown', async () => {
@@ -214,10 +214,10 @@ describe('licence boundary on the live path and chain behaviour (ADR 0016)', () 
     const src = new AdsbdbRouteSource({ fetch: async () => { calls++; return { ok: status === 200, status, text: async () => (status === 200 ? fixture('QTR56H') : ''), arrayBuffer: async () => new ArrayBuffer(0) }; }, userAgent: 'UA', timeoutMs: 1000, backoffMs: 300_000, clock, log: createLogger(clock, 'debug', () => {}) });
     const vrs = fake('vrs', { ...DOH_LON, source: 'vrs' });
     const svc = new RouteService([src, vrs], clock, { ttlMs: H, negativeTtlMs: 1000 });
-    expect(await svc.routeInfoFor('QTR56H', POS)).toEqual({ text: 'Doha → London', source: 'vrs' });
+    expect(await svc.routeInfoFor('QTR56H', POS)).toMatchObject({ text: 'Doha → London', source: 'vrs' });
     expect(calls).toBe(1);
     await clock.advance(100_000);
-    expect(await svc.routeInfoFor('OTHER1', POS)).toEqual({ text: 'Doha → London', source: 'vrs' });
+    expect(await svc.routeInfoFor('OTHER1', POS)).toMatchObject({ text: 'Doha → London', source: 'vrs' });
     expect(calls).toBe(1);
     await clock.advance(301_000 - clock.now()); status = 200;
     expect((await svc.routeInfoFor('THIRD1', POS))?.source).toBe('adsbdb');
