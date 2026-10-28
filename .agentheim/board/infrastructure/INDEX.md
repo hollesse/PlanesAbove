@@ -11,13 +11,14 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 2
-- **Todo:** 0
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 8
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **infrastructure-z7kq4** — Eigene Compose-Datei für den Import über die ZimaOS-Oberfläche (ohne build, Piper fest dabei, gepflegter Watchtower) (feature) — `todo/infrastructure-z7kq4-zimaos-compose-datei-fuer-den-import-ueber-die-oberflaeche.md`
 - **infrastructure-001-walking-skeleton** — Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert (spike) — depends_on: [design-system-001-styleguide, infrastructure-pn3w4, infrastructure-y8epz, airspace-jy8hz, airspace-h76v2, weather-yttgx, sky-scene-xczgm, infrastructure-w7qbc, infrastructure-p6s30] — `todo/infrastructure-001-walking-skeleton.md`
 <!-- todo-list:end -->
 

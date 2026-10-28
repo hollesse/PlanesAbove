@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 12:34 -- Modeling / Captured: sighting-log-r3m8x - Routen- und Lackierungs-Statistik als API-Endpunkt des Dienstes, damit die Auswertung auf dem Heimserver ohne Node und ohne DB-Kopie im Browser abrufbar ist
+
+**Type:** Modeling / Capture
+**BC:** sighting-log
+**Filed to:** todo
+**Summary:** Routen-/Lackierungs-Statistik als API, damit Befund (c) auf dem Heimserver ohne Node abrufbar ist.
+
+---
+
+## 2026-10-28 12:34 -- Modeling / Captured: infrastructure-z7kq4 - Eigene Compose-Datei für den Import über die ZimaOS-Oberfläche (ohne build, Piper fest dabei, gepflegter Watchtower)
+
+**Type:** Modeling / Capture
+**BC:** infrastructure
+**Filed to:** todo
+**Summary:** ZimaOS-Compose-Datei für den Import über die Oberfläche, gepflegter Watchtower; Betreiber installiert per UI.
+
+---
+
 ## 2026-10-28 11:22 -- Capture / Captured: design-system-m4r7v - Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei
 
 **Type:** Capture

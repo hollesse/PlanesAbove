@@ -11,13 +11,14 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 0
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 3
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **sighting-log-r3m8x** — Routen- und Lackierungs-Statistik als API-Endpunkt des Dienstes, damit die Auswertung auf dem Heimserver ohne Node und ohne DB-Kopie im Browser abrufbar ist (feature) — `todo/sighting-log-r3m8x-routen-und-lackierungs-statistik-als-api-endpunkt.md`
 <!-- todo-list:end -->
 
 ### Doing
