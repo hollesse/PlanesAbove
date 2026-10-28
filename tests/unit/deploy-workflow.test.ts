@@ -13,16 +13,17 @@ describe('deploy workflow (ADR 0022)', () => {
     expect(wf.on.push.branches).toEqual(['main']);
   });
 
-  it('publishes only after the test job (failing test publishes no image)', () => {
-    expect(wf.jobs.publish.needs).toBe('test');
+  it('publishes only after the test and e2e jobs (a failing test publishes no image)', () => {
+    expect(wf.jobs.publish.needs).toEqual(['test', 'e2e']);
     const steps = wf.jobs.test.steps.map((s: { run?: string }) => s.run).filter(Boolean);
     expect(steps).toEqual(['npm ci', 'npm run typecheck', 'npm test', 'npm run build']);
     expect(wf.jobs.publish.permissions.packages).toBe('write');
   });
 
-  it('keeps e2e out of the publish path', () => {
-    expect(wf.jobs.publish.needs).not.toContain('e2e');
-    expect(wf.jobs.e2e['continue-on-error']).toBe(true);
+  it('makes e2e a blocking gate before publish (ADR 0022 amendment 2026-10-28)', () => {
+    expect(wf.jobs.e2e.needs).toBe('test');
+    expect(wf.jobs.e2e['continue-on-error']).toBeUndefined();
+    expect(wf.jobs.e2e.steps.map((s: { run?: string }) => s.run).filter(Boolean)).toContain('npm run e2e');
   });
 
   it('builds Piper only on a push-range change, force_tts or a missing image', () => {
