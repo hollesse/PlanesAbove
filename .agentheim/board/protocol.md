@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 14:48 -- Modeling / Captured: airspace-t4x9k - Flugzeugtyp je Hex bei hexdb gegenprüfen (nur im Speicher gecacht) und eine eigene Korrekturtabelle Hex → Typ als Vorrang, damit falsche Typcodes der Flugquelle (OE-FML DA42 als C525) nicht als falsche Silhouette erscheinen
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** todo
+**Summary:** Typcode je Hex: eigene Korrekturtabelle > hexdb-Gegenprüfung (nur im Speicher) > Flugquelle; Anlass OE-FML DA42 als C525.
+
+---
+
 ## 2026-10-28 13:48 -- Work session ended
 
 **Type:** Work / Session end
