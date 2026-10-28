@@ -35,6 +35,8 @@
 .pa-bar-single .pa-bar-text { display: flex; flex-direction: column; gap: 0.9cqw; min-width: 0; }
 .pa-bar-single .pa-eyebrow { font-size: 2.2cqw; letter-spacing: 0.16em; white-space: nowrap; }
 .pa-bar-single .pa-route-large { font-size: 5cqw; }
+.pa-route-wrap { white-space: normal; line-height: 1.05; }
+.pa-route-line { display: block; white-space: nowrap; }
 .pa-bar-single .pa-route-unknown { color: var(--pa-muted); }
 .pa-bar-single .pa-meta-small { font-size: 2.2cqw; }
 .pa-bar-double { height: 31%; display: grid; grid-template-rows: 1fr 1fr; }

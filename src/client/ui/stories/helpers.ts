@@ -1,5 +1,6 @@
 import { h } from '../dom';
 import { ALL_SKIES, SKY_TIMES, SKY_WEATHERS, skyId, type SkyKey, type SkyTime, type SkyWeather } from '../domain/catalog';
+import { fitRoutesWhenMounted } from '../organisms/fit-route';
 import { renderSkyLayer, renderStage, type ScreenAspect } from '../templates/screen';
 
 export const ASPECTS: ScreenAspect[] = ['4:3', '5:3'];
@@ -25,6 +26,7 @@ export function grid(items: { caption: string; el: HTMLElement }[], minWidth = 2
 export function skyStage(sky: SkyKey, aspect: ScreenAspect, ...children: HTMLElement[]): HTMLElement {
   const stage = renderStage(aspect);
   stage.append(renderSkyLayer(sky), ...children);
+  fitRoutesWhenMounted(stage);
   return stage;
 }
 

@@ -1,7 +1,7 @@
 // The thin kiosk client (ADR 0004/0008): polls /api/state, renders the approved design-system screen, narrates on tap,
 // holds the Vorlese-Sperre, recovers by itself. Imports UI only from the design-system barrel (ADR 0002).
 import type { SceneState } from '../../shared/state';
-import { TRANSITIONS, TRANSITION_MS, playTransition, renderScreen, renderTransitionStage, type ScreenPlane } from '../ui';
+import { TRANSITIONS, TRANSITION_MS, fitRoutesWhenMounted, playTransition, renderScreen, renderTransitionStage, type ScreenPlane } from '../ui';
 import { pickTransition } from './transition-plan';
 import { backoffMs, dayKey, reloadDue, staleSince, tapTarget, toScreenProps } from './logic';
 import { Narrator, type AudioLike } from './narrator';
@@ -38,6 +38,7 @@ export function startApp(d: AppDeps): App {
     const stale = staleNow(current);
     const stage = renderScreen(toScreenProps(current, stale));
     d.root.replaceChildren(stage);
+    fitRoutesWhenMounted(stage);
     d.root.dataset.stale = stale ? 'true' : 'false';
     d.root.dataset.planes = current.planes.map((p) => p.icao24).join(',');
     d.root.dataset.state = stage.dataset.state ?? '';
@@ -57,6 +58,7 @@ export function startApp(d: AppDeps): App {
     const stale = staleNow(s);
     const stage = renderTransitionStage(spec, { from: toScreen(prev.planes), to: toScreen(s.planes), sky: s.sky, place: s.place, clock: s.clock, stale, recent: { from: prev.recent, to: s.recent } });
     d.root.replaceChildren(stage);
+    fitRoutesWhenMounted(stage);
     playTransition(stage);
     d.root.dataset.stale = stale ? 'true' : 'false';
     d.root.dataset.planes = s.planes.map((p) => p.icao24).join(',');

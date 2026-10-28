@@ -5,6 +5,20 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 11:18 -- Task verified and completed: design-system-grp94 - Lange Route: gewählte Variante in der Info-Leiste umsetzen; Playwright-Test (WebKit) mit den zwei längsten Flughafennamen
+
+**Type:** Work / Task completion
+**Task:** design-system-grp94 - Lange Route: gewählte Variante in der Info-Leiste umsetzen; Playwright-Test (WebKit) mit den zwei längsten Flughafennamen
+**Summary:** Lange Route Variante D in der Info-Leiste: Einzelansicht erst kleiner, Umbruch vor dem Pfeil nur wenn nötig; Zwei-Flugzeuge-Zeile nur kleiner; Playwright-WebKit-Test liest die zwei längsten Flughafennamen aus der Tabelle; Verifier PASS it.1 (526 Tests)
+**Duration:** 5m50s
+**Verification:** PASS (iteration 1)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 10
+**Tests added:** 8
+**ADRs written:** none
+
+---
+
 ## 2026-10-28 11:11 -- Batch started: [design-system-grp94]
 
 **Type:** Work / Batch start

@@ -22,7 +22,7 @@ describe('Atomic Design Story-Hierarchie', () => {
 
   it('has the story sets the acceptance criteria name', () => {
     const exports = (title: string) => Object.keys(Object.values(modules).find((m) => m.default.title === title)!).filter((k) => k !== 'default');
-    expect(exports('Organisms/Info-Leiste')).toHaveLength(4); // four info bar states
+    expect(exports('Organisms/Info-Leiste')).toHaveLength(6); // four info bar states + the two longest-route stories (design-system-grp94)
     expect(exports('Templates/Bildschirm').length).toBeGreaterThanOrEqual(3); // leer, eins, zwei
     expect(exports('Pages/Übergänge')).toEqual(expect.arrayContaining(['FlugzeugKommt', 'FlugzeugGeht', 'FlugzeugWechselt', 'WetterWechselt', 'TageszeitWechselt']));
   });

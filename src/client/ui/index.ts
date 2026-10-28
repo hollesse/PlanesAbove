@@ -14,6 +14,7 @@ export * from './atoms/text';
 export * from './molecules/info-row';
 export * from './molecules/painted-plane';
 export * from './molecules/scene-header';
+export * from './organisms/fit-route';
 export * from './organisms/info-bar';
 export * from './organisms/scene-layer';
 export * from './templates/screen';
