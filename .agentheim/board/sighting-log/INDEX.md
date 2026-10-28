@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 3
+- **Doing:** 0
+- **Done:** 4
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **sighting-log-r3m8x** — Routen- und Lackierungs-Statistik als API-Endpunkt des Dienstes, damit die Auswertung auf dem Heimserver ohne Node und ohne DB-Kopie im Browser abrufbar ist (feature) — `doing/sighting-log-r3m8x-routen-und-lackierungs-statistik-als-api-endpunkt.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **sighting-log-r3m8x** — Routen- und Lackierungs-Statistik als API-Endpunkt des Dienstes, damit die Auswertung auf dem Heimserver ohne Node und ohne DB-Kopie im Browser abrufbar ist (feature) — `done/sighting-log-r3m8x-routen-und-lackierungs-statistik-als-api-endpunkt.md`
 - **sighting-log-t8tfb** — Lackierungs-Statistik „npm run stats:liveries“: welche Airlines wie oft mit der Standard-Lackierung gezeigt wurden, weil kein Design oder keine Zuordnung vorlag (feature) — `done/sighting-log-t8tfb-lackierungs-statistik-airlines-mit-standard-lackierung.md`
 - **sighting-log-k4m7q** — Beobachtungsstandort je Sichtung mitloggen (Tabelle observation_points, Standortwechsel beendet den Besuch, Statistik je Standort) (feature) — `done/sighting-log-k4m7q-beobachtungsstandort-je-sichtung-mitloggen.md`
 - **sighting-log-m7p2v** — Routen-Statistik per CLI je Tag und Quelle, Liste der Unbekannten, Konflikte (nur Befunde, nie Routentext) (feature) — `done/sighting-log-m7p2v-routen-statistik-je-quelle-und-liste-der-unbekannten.md`

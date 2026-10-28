@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 15:59 -- Task verified and completed: sighting-log-r3m8x - Routen- und Lackierungs-Statistik als API-Endpunkt des Dienstes, damit die Auswertung auf dem Heimserver ohne Node und ohne DB-Kopie im Browser abrufbar ist
+
+**Type:** Work / Task completion
+**Task:** sighting-log-r3m8x - Routen- und Lackierungs-Statistik als API-Endpunkt des Dienstes, damit die Auswertung auf dem Heimserver ohne Node und ohne DB-Kopie im Browser abrufbar ist
+**Summary:** Routen- und Lackierungs-Statistik als API /api/stats/routes und /api/stats/liveries (JSON oder Text)
+**Duration:** 9m
+**Verification:** PASS (iteration 2)
+**Files changed:** 7
+**Tests added:** 5
+**ADRs written:** none
+
+---
+
+## 2026-10-28 15:56 -- Verification failed: sighting-log-r3m8x - Routen- und Lackierungs-Statistik als API-Endpunkt
+
+**Type:** Work / Verification failure
+**Task:** sighting-log-r3m8x - Routen- und Lackierungs-Statistik als API-Endpunkt
+**Iteration:** 1 of 3
+**Reasons:** test fixture has no route_lookups rows and no observation_point_id, so JSON-equality and standort tests compare empty sections
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-28 15:52 -- Batch started: [design-system-h7w2q, sighting-log-r3m8x, airspace-t4x9k]
 
 **Type:** Work / Batch start

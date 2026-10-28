@@ -22,6 +22,7 @@ import type { FlightSource, RouteSource } from './modules/airspace/model';
 import { RouteService } from './modules/airspace/route-service';
 import { defaultTables } from './modules/airspace/typeclass';
 import { SightingRepository } from './modules/sighting-log/repository';
+import { handleStatsRequest } from './modules/sighting-log/stats-api';
 import { AudioService } from './modules/sky-scene/audio-service';
 import { FakeSpeechSynthesizer } from './modules/sky-scene/fake-speech';
 import { PiperSpeechSynthesizer } from './modules/sky-scene/piper-speech';
@@ -140,6 +141,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     const url = new URL(req.url ?? '/', 'http://x');
     try {
       if (req.method === 'GET' && url.pathname === '/api/state') { lastClientPollAt = clock.now(); return json(res, 200, sky.state()); }
+      if (handleStatsRequest(db, clock.now(), req, res, url)) return;
       if (req.method === 'GET' && url.pathname === '/healthz') {
         const report = evaluateHealth({ now: clock.now(), bootAt, pollIntervalMs: pollMs, flight: sky.health, dbWritable: dbWritable(), lastClientPollAt, clientSilenceMs: config.health.clientSilenceMinutes * 60_000, flightMaxAgeMs: flightMaxAgeMs(config), flightChain: flightChain && { ...flightChain.status(), sources: flightChain.status().sources.map((s) => (s.name === 'adsb-lol' && lolBudget ? { ...s, budget: lolBudget.status() } : s)) } });
         return json(res, report.status === 'failing' ? 503 : 200, { ...report, buildId, commit, uptimeSeconds: Math.round((clock.now() - bootAt) / 1000) });
