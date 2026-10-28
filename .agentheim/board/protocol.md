@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 09:03 -- Modeling / Refined: infrastructure-agdax - Continuous Deployment vor die Geräteabnahme gezogen
+
+**Type:** Modeling / Refine
+**BC:** infrastructure
+**Status after:** todo
+**Summary:** Betreiber will keinen manuellen Erstlauf: agdax hängt nicht mehr an d3v7k, sondern umgekehrt — d3v7k nimmt über den automatischen Deploy-Pfad (GHCR + Watchtower) ab. Betreiber-Hälfte und Compose-Kriterium in d3v7k entsprechend umformuliert; Worker-Hälfte von d3v7k unverändert.
+**Split into:** none
+**ADRs written:** none
+
+---
+
 ## 2026-10-28 08:21 -- Modeling / Captured: infrastructure-agdax - Continuous Deployment: GitHub Action testet und baut Images nach GHCR bei jedem Push auf main; Watchtower auf ZimaOS zieht sie, das iPad lädt sich über die buildId selbst neu
 
 **Type:** Modeling / Capture

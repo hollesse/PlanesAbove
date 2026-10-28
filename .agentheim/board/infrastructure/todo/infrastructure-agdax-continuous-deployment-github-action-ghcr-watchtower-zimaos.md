@@ -6,8 +6,8 @@ type: feature
 context: infrastructure
 created: 2026-10-28
 completed:
-depends_on: [infrastructure-d3v7k]
-blocks: []
+depends_on: []
+blocks: [infrastructure-d3v7k]
 tags: [deployment, ci, ghcr, watchtower, compose, zimaos]
 related_adrs: [0008, 0011]
 related_research: []
@@ -40,7 +40,7 @@ Nicht Teil des Tasks: Benachrichtigung bei fehlgeschlagenem Deployment (gehört 
 - [ ] Auf dem ZimaOS-Heimserver: nach einem Push auf `main` zeigt `/healthz` innerhalb von 10 Minuten die neue `buildId`, und das iPad hat sich ohne Zutun neu geladen. [human-eye]
 
 ## Notes
-- Abhängig von infrastructure-d3v7k: Die erste Abnahme auf dem Heimserver beweist Compose, Piper-Image und iPad-Reload von Hand; erst dann lohnt der Automatismus. Die Piper-Anfrageform, die d3v7k klärt, muss im Image stimmen, bevor es aus CI kommt.
+- Betreiber-Entscheidung 2026-10-28: kein manueller Erstlauf. Dieser Task kommt VOR der Geräteabnahme infrastructure-d3v7k und ist deren Deploy-Pfad: Der Heimserver wird einmal mit der Compose-Datei (GHCR-Images + Watchtower) eingerichtet, danach kommt jeder Stand automatisch. d3v7k nimmt dann über genau diesen Weg ab. Die Piper-Anfrageform klärt d3v7k's Worker-Hälfte lokal mit Podman; wenn sich daraus eine Dockerfile-Änderung ergibt, baut CI das Piper-Image einfach neu.
 - GHCR für ein öffentliches Repo: Pakete sind nach dem ersten Push standardmäßig privat und müssen einmalig auf „public" gestellt werden (GitHub-Paketeinstellungen), sonst braucht ZimaOS ein Login. Im README festhalten.
 - Watchtower hat Zugriff auf den Docker-Socket des Heimservers; das ist im LAN-only-Setup akzeptiert, aber im ADR als Trade-off nennen. Alternative ohne Socket: ein Cron auf ZimaOS mit `docker compose pull && up -d`; Watchtower ist gewählt, weil ZimaOS Container bequemer verwaltet als Cron-Jobs.
 - Multi-Arch ist nicht nötig: ThinkCentre ist amd64. Falls der Entwicklungsrechner (Apple Silicon) die GHCR-Images laufen lassen soll, `platforms: linux/amd64,linux/arm64` per buildx ergänzen; das kostet CI-Zeit und ist optional.
