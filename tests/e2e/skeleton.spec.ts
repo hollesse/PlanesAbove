@@ -82,7 +82,7 @@ test('Ausfall der Quelle: ein Takt Ausfall bleibt „Live“, erst nach > 90 s �
   await expect(app(page)).toHaveAttribute('data-stale', 'false');
   await expect(header).toContainText('Live · ');
   await svc.advance(30); // 120 s > 90 s
-  await expect(app(page)).toHaveAttribute('data-stale', 'true');
+  await expect(app(page)).toHaveAttribute('data-stale', 'true', { timeout: 10_000 }); // ein laufender Uebergang (5 s) haelt den Stand zurueck
   await expect(app(page)).toHaveAttribute('data-planes', 'bbbbbb');
   await expect(header).toContainText('Letzter Stand · ');
   await expect(header).not.toContainText('Live');
@@ -90,4 +90,21 @@ test('Ausfall der Quelle: ein Takt Ausfall bleibt „Live“, erst nach > 90 s �
   await expect(app(page)).toHaveAttribute('data-stale', 'false');
   await expect(header).toContainText('Live · ');
   await expect(app(page)).toHaveAttribute('data-planes', 'cccccc');
+});
+
+test('Flugzeug-Uebergaenge: kommt/geht werden 5 s abgespielt, ein Takt mitten im Uebergang wird zurueckgehalten (ADR 0020)', async ({ page }) => {
+  svc = await startMockService('plane-transition');
+  await page.goto(svc.url);
+  await expect(app(page)).toHaveAttribute('data-planes', 'aaaaaa');
+  await expect(app(page)).toHaveAttribute('data-transition', '');
+  await svc.advance(30); // Takt 2: zweites Flugzeug kommt
+  await expect(app(page)).toHaveAttribute('data-transition', 'one-to-two');
+  await expect(app(page)).toHaveAttribute('data-planes', 'aaaaaa,bbbbbb');
+  await svc.advance(30); // Takt 3 mitten im Uebergang: gepuffert
+  await page.waitForTimeout(800); // mehrere Client-Polls
+  await expect(app(page)).toHaveAttribute('data-transition', 'one-to-two');
+  await expect(app(page)).toHaveAttribute('data-planes', 'aaaaaa,bbbbbb');
+  await expect(app(page)).toHaveAttribute('data-transition', 'two-to-one-b', { timeout: 10_000 });
+  await expect(app(page)).toHaveAttribute('data-planes', 'aaaaaa');
+  await expect(app(page)).toHaveAttribute('data-transition', '', { timeout: 10_000 });
 });

@@ -78,4 +78,80 @@ describe('startApp (client composition)', () => {
     await r.advance(18 * 3600_000 + 30_000); // 10:00 -> 04:00 next day (+30 s check tick)
     expect(r.reloads()).toBeGreaterThanOrEqual(1);
   });
+
+  describe('Übergang-Sperre (ADR 0020)', () => {
+    const TR = 5000 + 300;
+    it('first poll renders without transition; [a]->[a,b] starts one-to-two with data-planes at once', async () => {
+      const r = rig(state(['a'])); await r.flush();
+      expect(r.root.dataset.transition ?? '').toBe('');
+      expect(r.root.dataset.planes).toBe('a');
+      r.set(state(['a', 'b'])); await r.app.pollNow();
+      expect(r.root.dataset.transition).toBe('one-to-two');
+      expect(r.root.dataset.planes).toBe('a,b');
+      expect(r.root.dataset.speaking).toBe('false');
+    });
+    it('buffers polls during a transition and shows only the newest at TRANSITION_MS + 300', async () => {
+      const r = rig(state(['a'])); await r.flush();
+      r.set(state(['a', 'b'])); await r.app.pollNow();
+      r.set(state(['a'])); await r.app.pollNow();
+      r.set(state(['x'])); await r.app.pollNow();
+      r.set(state(['a', 'b'], { clock: '10:05' })); await r.app.pollNow();
+      expect(r.root.dataset.planes).toBe('a,b');
+      expect(r.root.dataset.transition).toBe('one-to-two');
+      await r.advance(TR - 100);
+      expect(r.root.dataset.planes).toBe('a,b');
+      r.set(state(['b', 'q'])); await r.app.pollNow();
+      await r.advance(100);
+      expect(r.root.dataset.planes).toBe('b,q'); // newest only; [a,b] with clock 10:05 and [a]/[x] never shown
+      expect(r.root.dataset.transition).toBe(''); // cut
+      expect(r.root.querySelector('.pa-scene-header')?.textContent).toContain('10:00');
+    });
+    it('after the transition ends the end screen is rendered and data-transition cleared', async () => {
+      const r = rig(state(['a'])); await r.flush();
+      r.set(state(['a', 'b'])); await r.app.pollNow();
+      expect(r.root.querySelector('[data-transition]')).toBeTruthy();
+      await r.advance(TR);
+      expect(r.root.dataset.transition).toBe('');
+      expect(r.root.querySelector('.pa-screen')).toBeTruthy();
+    });
+    it('a narration starting mid-transition holds a buffered state past the transition timer; the reverse waits for the transition', async () => {
+      const r = rig(state(['a'])); await r.flush();
+      r.set(state(['a', 'b'])); await r.app.pollNow();
+      r.app.speak(1);
+      expect(r.root.dataset.speaking).toBe('true');
+      r.set(state(['b'])); await r.app.pollNow(); // buffered by the Vorlese-Sperre
+      await r.advance(TR);
+      expect(r.root.dataset.planes).toBe('a,b');
+      r.audio.listeners.get('ended')!();
+      expect(r.root.dataset.planes).toBe('b');
+      expect(r.root.dataset.speaking).toBe('false');
+      expect(r.root.dataset.transition).toBe('two-to-one-a'); // the released state starts its own transition
+      // reverse: a state polled after narration end waits for the transition end
+      r.set(state(['b', 'z'])); await r.app.pollNow();
+      r.set(state(['z'])); await r.app.pollNow();
+      expect(r.root.dataset.planes).toBe('b');
+      await r.advance(TR);
+      expect(r.root.dataset.planes).toBe('z');
+      expect(r.root.dataset.transition).toBe('switch-one');
+    });
+    it('a failed poll during a transition does not replace the stage', async () => {
+      const r = rig(state(['a'])); await r.flush();
+      r.set(state(['a', 'b'])); await r.app.pollNow();
+      const stage = r.root.firstElementChild;
+      r.set(new Error('offline')); await r.app.pollNow();
+      expect(r.root.firstElementChild).toBe(stage);
+    });
+    it('tapping the arriving plane during the transition speaks its audio (data-side=to)', async () => {
+      const r = rig(state(['a'])); await r.flush();
+      r.set(state(['a', 'b'])); await r.app.pollNow();
+      const box = (left: number) => ({ left, top: 0, right: left + 10, bottom: 10, x: left, y: 0, width: 10, height: 10, toJSON() {} }) as DOMRect;
+      r.root.querySelectorAll<HTMLElement>('.pa-slot').forEach((el) => {
+        const side = el.dataset.side; const idx = Number(el.dataset.index);
+        el.getBoundingClientRect = () => (side === 'to' ? box(idx * 100) : box(500));
+      });
+      r.root.querySelectorAll<HTMLElement>('.pa-bar, .pa-info-row').forEach((el) => { el.getBoundingClientRect = () => box(900); });
+      r.root.dispatchEvent(new MouseEvent('click', { clientX: 105, clientY: 5, bubbles: true }));
+      expect(r.audio.src).toBe('/audio/b.wav');
+    });
+  });
 });

@@ -26,6 +26,9 @@ core — hier entsteht das Erlebnis, um das es geht.
 - **Slot** — eine der zwei stabilen Positionen der Szene (Slot 1, Slot 2); die Slot-Nummer ist die Identität in der Szene und die Spalte `slot` im Sichtungslog. Ein freigewordener Slot wird neu besetzt, belegte Slots tauschen nie die Position (ADR 0017).
 - **Slot-Haltezeit** — ein Flugzeug behält seinen Slot mindestens `scene.slotHoldTakte` Takte (Default 3), auch wenn ein anderes näher ist; sie endet sofort, wenn es den Radius verlässt oder aus den Flugdaten verschwindet. Danach gilt wieder die Nächste-Regel (horizontale Distanz). Server-seitig; die Vorlese-Sperre (Client) verzögert nur die Anzeige, nicht den Haltezähler (ADR 0017).
 
+**Umsetzung (sky-scene-n0sfy):** `pickTransition(prev, next)` (`src/client/app/transition-plan.ts`) vergleicht nur icao24 und Array-Position und liefert eine Spec-Id, 'same' oder 'cut' (Fallback immer Schnitt). Die Übergang-Sperre ist eine zweite `VorleseSperre<SceneState>`-Instanz, innerhalb der Vorlese-Sperre verkettet; ihr Watchdog (TRANSITION_MS + 300) ist der Ende-Timer. Während eines Übergangs wird nur der neueste Stand gepuffert; bei Freigabe wird er angewandt (ggf. nächster Übergang) oder der Endbildschirm gerendert. `data-planes` = angewandter Stand, `data-transition` = laufende Spec-Id (leer sonst). Tippen in der Übergangs-Bühne löst nur über `[data-side="to"]`-Ebenen auf. Erster Render und Himmel-/Stale-/Uhr-only-Änderungen bleiben harter Voll-Render.
+
+
 ## Aggregates
 _Noch nicht modelliert — entsteht in `modeling` / bei der Arbeit an Tasks._
 

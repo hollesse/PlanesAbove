@@ -1,0 +1,8 @@
+{
+  "name": "plane-transition", "startTime": "2026-10-27T10:00:00Z",
+  "steps": [
+    { "at": 0, "planes": [ { "icao24": "aaaaaa", "callsign": "DLH400", "typeCode": "A20N", "distanceKm": 5, "bearingDeg": 90, "altitudeFt": 36000, "speedKt": 470 } ], "tts": { "durationMs": 1200 } },
+    { "at": 30, "planes": [ { "icao24": "aaaaaa", "callsign": "DLH400", "typeCode": "A20N", "distanceKm": 5, "bearingDeg": 90, "altitudeFt": 36000, "speedKt": 470 }, { "icao24": "bbbbbb", "callsign": "RYR1724", "typeCode": "B738", "distanceKm": 8, "bearingDeg": 180, "altitudeFt": 31000, "speedKt": 440 } ] },
+    { "at": 60, "planes": [ { "icao24": "aaaaaa", "callsign": "DLH400", "typeCode": "A20N", "distanceKm": 5, "bearingDeg": 90, "altitudeFt": 36000, "speedKt": 470 } ] }
+  ]
+}

@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 09:28 -- Task verified and completed: sky-scene-n0sfy - Flugzeug-Übergänge (kommt / geht / wechselt) in der Live-Szene abspielen statt hart zu schneiden; Diff per icao24, Übergang-Sperre puffert den neuesten Stand
+
+**Type:** Work / Task completion
+**Task:** sky-scene-n0sfy - Flugzeug-Übergänge (kommt / geht / wechselt) in der Live-Szene abspielen statt hart zu schneiden; Diff per icao24, Übergang-Sperre puffert den neuesten Stand
+**Summary:** Flugzeug-Übergänge (kommt / geht / wechselt) laufen in der Live-Szene: pickTransition per icao24-Diff, Übergang-Sperre als zweite VorleseSperre hinter der Vorlese-Sperre, nur der neueste gepufferte Stand wird angewandt
+**Duration:** 29m
+**Verification:** PASS (iteration 1)
+**Files changed:** 6
+**Tests added:** 29
+**ADRs written:** none
+
+---
+
+## 2026-10-28 09:27 -- Verification failed: design-system-h3b7q - Lange Route: drei Alternativen in Storybook
+
+**Type:** Work / Verification failure
+**Task:** design-system-h3b7q - Lange Route in der Info-Leiste: drei Alternativen als Storybook-Entwürfe
+**Iteration:** 1 of 3
+**Reasons:** Variante B läuft im Normalfall Zwei Flugzeuge bei 5:3 über (Umbruchschwelle 30 Zeichen für beide Ansichten); alles andere grün
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-28 09:25 -- Task verified and completed: airspace-cn6t7 - Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen
 
 **Type:** Work / Task completion

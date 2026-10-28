@@ -1,7 +1,8 @@
 // The thin kiosk client (ADR 0004/0008): polls /api/state, renders the approved design-system screen, narrates on tap,
 // holds the Vorlese-Sperre, recovers by itself. Imports UI only from the design-system barrel (ADR 0002).
 import type { SceneState } from '../../shared/state';
-import { renderScreen } from '../ui';
+import { TRANSITIONS, TRANSITION_MS, playTransition, renderScreen, renderTransitionStage, type ScreenPlane } from '../ui';
+import { pickTransition } from './transition-plan';
 import { backoffMs, dayKey, reloadDue, staleSince, tapTarget, toScreenProps } from './logic';
 import { Narrator, type AudioLike } from './narrator';
 import { VorleseSperre, type Timers } from './sperre';
@@ -19,7 +20,7 @@ export interface AppDeps {
   events?: { onOnline(fn: () => void): void; onVisible(fn: () => void): void };
 }
 
-export interface App { speak(index: number): void; pollNow(): Promise<void>; readonly sperre: VorleseSperre<SceneState> }
+export interface App { speak(index: number): void; pollNow(): Promise<void>; readonly sperre: VorleseSperre<SceneState>; readonly uebergangSperre: VorleseSperre<SceneState> }
 
 export function startApp(d: AppDeps): App {
   let current: SceneState | undefined;
@@ -29,17 +30,52 @@ export function startApp(d: AppDeps): App {
   let lastReloadDay: string = dayKey(d.now());
   let settings = { pollIntervalSeconds: 10, staleAfterMinutes: 5, reloadAt: '04:00', speechWatchdogSeconds: 60 };
 
+  const stageIsTransition = (): boolean => d.root.firstElementChild?.hasAttribute('data-transition') ?? false;
+  const staleNow = (s: SceneState) => staleSince(s, d.now().getTime() - lastOkMs, settings.staleAfterMinutes * 60_000);
+
   const render = (): void => {
     if (!current) return;
-    const stale = staleSince(current, d.now().getTime() - lastOkMs, settings.staleAfterMinutes * 60_000);
+    const stale = staleNow(current);
     const stage = renderScreen(toScreenProps(current, stale));
     d.root.replaceChildren(stage);
     d.root.dataset.stale = stale ? 'true' : 'false';
     d.root.dataset.planes = current.planes.map((p) => p.icao24).join(',');
     d.root.dataset.state = stage.dataset.state ?? '';
+    d.root.dataset.transition = '';
   };
 
-  const sperre = new VorleseSperre<SceneState>((s) => { current = s; render(); }, d.timers);
+  // Übergang-Sperre (ADR 0020): a plane transition is never interrupted; the newest state is buffered until it ends.
+  let shows = 0;
+  const show = (s: SceneState): void => {
+    shows++;
+    const prev = current;
+    current = s;
+    const id = pickTransition(prev?.planes, s.planes);
+    const spec = TRANSITIONS.find((t) => t.id === id);
+    if (!prev || !spec) { render(); return; }
+    const toScreen = (planes: SceneState['planes']): ScreenPlane[] => planes.map((p) => ({ plane: { type: p.plane.type, livery: p.plane.livery }, flight: p.flight }));
+    const stale = staleNow(s);
+    const stage = renderTransitionStage(spec, { from: toScreen(prev.planes), to: toScreen(s.planes), sky: s.sky, place: s.place, clock: s.clock, stale, recent: { from: prev.recent, to: s.recent } });
+    d.root.replaceChildren(stage);
+    playTransition(stage);
+    d.root.dataset.stale = stale ? 'true' : 'false';
+    d.root.dataset.planes = s.planes.map((p) => p.icao24).join(',');
+    d.root.dataset.state = stage.dataset.state ?? '';
+    d.root.dataset.transition = spec.id;
+    uebergangSperre.lock(TRANSITION_MS + 300);
+  };
+  const uebergangSperre = new VorleseSperre<SceneState>(show, d.timers);
+  { // The lock's watchdog is the end timer. On release: show the newest buffered state, or the settled end screen.
+    const releaseOrig = uebergangSperre.release.bind(uebergangSperre);
+    uebergangSperre.release = () => {
+      if (!uebergangSperre.locked) return;
+      const before = shows;
+      releaseOrig();
+      if (shows === before) render();
+    };
+  }
+
+  const sperre = new VorleseSperre<SceneState>((s) => uebergangSperre.submit(s), d.timers);
   const syncSpeaking = (): void => { d.root.dataset.speaking = String(sperre.locked); };
   // Wrap lock/release so the DOM reflects the Vorlese-Sperre (also observable by E2E).
   const lockOrig = sperre.lock.bind(sperre); const releaseOrig = sperre.release.bind(sperre);
@@ -59,13 +95,19 @@ export function startApp(d: AppDeps): App {
     const stage = d.root.firstElementChild;
     if (!stage) return;
     const box = (el: Element): { left: number; top: number; right: number; bottom: number } => { const r = el.getBoundingClientRect(); return { left: r.left, top: r.top, right: r.right, bottom: r.bottom }; };
-    const planeBoxes = [...stage.querySelectorAll('.pa-slot')].map(box);
-    const textBoxes = current.planes.length === 1 ? [...stage.querySelectorAll('.pa-bar-single')].map(box) : [...stage.querySelectorAll('.pa-info-row')].map(box);
+    const inTransition = stageIsTransition();
+    // In a transition stage, leaving and arriving layers are stacked: only the arriving ("to") ones map to the current planes.
+    const byIndex = (els: Element[]): Element[] => { const out: Element[] = []; for (const el of els) out[Number((el as HTMLElement).dataset.index ?? out.length)] = el; return out; };
+    const planeEls = inTransition ? byIndex([...stage.querySelectorAll('.pa-slot[data-side="to"]')]) : [...stage.querySelectorAll('.pa-slot')];
+    const planeBoxes = planeEls.map((el) => (el ? box(el) : { left: 0, top: 0, right: -1, bottom: -1 }));
+    const textSel = current.planes.length === 1 ? '.pa-bar-single' : '.pa-info-row';
+    const textEls = inTransition ? [...stage.querySelectorAll(`[data-side="to"]${textSel}, [data-side="to"] ${textSel}`)] : [...stage.querySelectorAll(textSel)];
+    const textBoxes = textEls.map(box);
     const i = tapTarget(current.planes.length, { x: e.clientX, y: e.clientY }, planeBoxes, textBoxes);
     if (i !== undefined) speak(i);
   });
 
-  const reloadWhenFree = (): void => sperre.whenFree(d.reload);
+  const reloadWhenFree = (): void => sperre.whenFree(() => uebergangSperre.whenFree(d.reload));
 
   async function pollNow(): Promise<void> {
     try {
@@ -74,10 +116,10 @@ export function startApp(d: AppDeps): App {
       lastOkMs = d.now().getTime();
       settings = state.client;
       if (state.buildId !== d.buildId) { reloadWhenFree(); return; }
-      if (sperre.locked) sperre.submit(state); else { current = state; render(); }
+      sperre.submit(state);
     } catch {
       failures++;
-      render(); // refreshes the stale indicator after N minutes without a successful poll
+      if (!uebergangSperre.locked) render(); // refreshes the stale indicator after N minutes without a successful poll
     }
   }
 
@@ -102,5 +144,5 @@ export function startApp(d: AppDeps): App {
     if (away > settings.staleAfterMinutes * 60_000) reloadWhenFree(); else void pollNow();
   });
 
-  return { speak, pollNow, sperre };
+  return { speak, pollNow, sperre, uebergangSperre };
 }

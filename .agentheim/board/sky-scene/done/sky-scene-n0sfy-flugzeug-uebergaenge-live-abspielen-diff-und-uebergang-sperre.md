@@ -1,7 +1,7 @@
 ---
 id: sky-scene-n0sfy
 title: Flugzeug-Übergänge (kommt / geht / wechselt) in der Live-Szene abspielen statt hart zu schneiden; Diff per icao24, Übergang-Sperre puffert den neuesten Stand
-status: doing
+status: done
 type: feature
 context: sky-scene
 created: 2026-10-27
@@ -81,3 +81,7 @@ Nur die 11 Flugzeug-Übergänge (Gruppen kommt / geht / wechselt). Ein Himmel- o
 - Eine Spiegel-Spec „one-to-two, Überlebender rechts“ fehlt im Katalog; falls der Schnitt dort im Betrieb stört, ist das ein design-system-Capture (neue Story + Abnahme), nicht Teil dieses Tasks.
 - Refinement 2026-10-27 (zweiter Durchgang): Voraussetzungen gegengeprüft – ADR 0020 liegt vor, alle 11 Spec-Ids existieren in `src/client/ui`, Kompaktierung in `sky-service.ts` bestätigt. `TRANSITION_MS` und `data-side` kommen aus design-system-kcpnw (in Arbeit); `work` hält diesen Task, bis kcpnw integriert ist.
 - Refinement 2026-10-27 (dritter Durchgang): design-system-kcpnw ist integriert (Commit 80699ff) – `TRANSITION_MS` (5000) in `src/client/ui/transitions/catalog.ts`, `renderTransitionStage` / `playTransition` / `data-side` in `src/client/ui/transitions/player.ts`, `VorleseSperre.whenFree` in `src/client/app/sperre.ts` liegen vor. Kein offener Blocker mehr; die verbleibende Sky-bei-Frame-0-Wahl bleibt wie oben notiert reversibel.
+
+
+## Outcome
+Flugzeug-Übergänge laufen in der Live-Szene. `src/client/app/transition-plan.ts` (`pickTransition`, Entscheidungstabelle des Tasks); `src/client/app/app.ts`: `show()` rendert per `renderTransitionStage`/`playTransition`, sperrt via `uebergangSperre.lock(TRANSITION_MS + 300)`, release rendert Endbild oder wendet den neuesten gepufferten Stand an; Vorlese-Sperre wendet via `uebergangSperre.submit` an; `reloadWhenFree` wartet auf beide Sperren; fehlgeschlagener Poll rendert während eines Übergangs nicht; Tipp-Auflösung in der Übergangs-Bühne nur über `data-side="to"`. Himmel/Stale kommen im selben Takt aus `next` (Himmel springt bei Frame 0). Tests: `tests/unit/pick-transition.test.ts` (22), 7 neue in `tests/unit/app.test.ts`-Block "Übergang-Sperre" (5 Tests), E2E in `tests/e2e/skeleton.spec.ts` mit `scenarios/plane-transition.json`. Der bestehende E2E-Test "Ausfall der Quelle" bekam ein 10-s-Timeout für `data-stale=true`, weil ein laufender Übergang den Stale-Stand bis zu 5,3 s puffert (gewolltes Verhalten). Vorbestehender, unabhängiger E2E-Fehler: `data-livery` "def" vs "lh" (skeleton.spec.ts:24) – nicht angefasst. Die [human-eye]-Kriterien (iPad/Kiosk) stehen noch aus. E2E lief in Chromium über eine temporäre Config auf Port 6317, weil 6007 von einem anderen Prozess belegt war.
