@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 15:49 -- Modeling / Refined: design-system-h7w2q - Szene füllt den iPad-Bildschirm als Web-App nicht ganz aus
+
+**Type:** Modeling / Refine
+**BC:** design-system
+**Status after:** todo
+**Summary:** Ursache geklärt: iPadOS rechnet in der Web-App mit black-translucent die Höhe 100%/100vh ohne die Statusleiste (20 pt), auf dem iPad Pro 10,5" (4:3) bleibt unten ein Streifen. Ziel Himmel bis zum Rand; Akzeptanzkriterien mit Playwright-Viewports 1112×834 und 1180×820 plus Abnahme am Gerät.
+
+---
+
 ## 2026-10-28 15:45 -- Capture / Captured: design-system-h7w2q - Untere Statusleiste auf dem iPad ist transparent und zeigt den Himmel, wirkt aber wie ein schwarzer Balken (Datum und Uhrzeit)
 
 **Type:** Capture
