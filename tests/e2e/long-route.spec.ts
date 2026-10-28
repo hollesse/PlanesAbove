@@ -14,6 +14,8 @@ async function measure(page: Page, id: string): Promise<Measure[]> {
   await page.goto(`/iframe.html?id=${id}&viewMode=story`);
   await page.waitForSelector('.pa-longest-route .pa-route-large');
   await page.waitForSelector('[data-routes-fitted]'); // fit runs after fonts + rAF; a fixed delay raced it in WebKit
+  // Under load WebKit settles in a later frame (a refit after the first one); measure the settled layout, a route that never fits times out.
+  await page.waitForFunction(() => [...document.querySelectorAll<HTMLElement>('.pa-route-large')].every((el) => el.scrollWidth <= el.clientWidth + 1 && el.parentElement!.scrollWidth <= el.parentElement!.clientWidth + 1), undefined, { timeout: 5000 });
   return page.evaluate(() => {
     const inside = (r: DOMRect, b: DOMRect) => r.left >= b.left - 1 && r.right <= b.right + 1 && r.top >= b.top - 1 && r.bottom <= b.bottom + 1;
     return [...document.querySelectorAll<HTMLElement>('.pa-longest-route > [data-aspect]')].flatMap((cell) => {
