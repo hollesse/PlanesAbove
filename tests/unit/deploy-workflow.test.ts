@@ -40,6 +40,21 @@ describe('deploy workflow (ADR 0022)', () => {
     const build = steps.find((s) => s.uses?.startsWith('docker/build-push-action') && s.with?.context === 'docker/piper');
     expect(build?.if).toBe("steps.tts.outputs.build == 'true'");
   });
+
+  it('passes GIT_SHA=github.sha as build-arg to the service image only', () => {
+    const steps = wf.jobs.publish.steps as { uses?: string; with?: Record<string, unknown> }[];
+    const svc = steps.find((s) => s.uses?.startsWith('docker/build-push-action') && s.with?.context === '.');
+    const piper = steps.find((s) => s.uses?.startsWith('docker/build-push-action') && s.with?.context === 'docker/piper');
+    expect(String(svc?.with?.['build-args'])).toContain('GIT_SHA=${{ github.sha }}');
+    expect(piper?.with?.['build-args']).toBeUndefined();
+  });
+
+  it('Dockerfile declares ARG GIT_SHA and ENV GIT_SHA in the runtime stage', () => {
+    const df = readFileSync(resolve(root, 'Dockerfile'), 'utf8');
+    const runtime = df.slice(df.lastIndexOf('FROM '));
+    expect(runtime).toMatch(/^ARG GIT_SHA/m);
+    expect(runtime).toMatch(/^ENV GIT_SHA=\$GIT_SHA/m);
+  });
 });
 
 describe('docker-compose.yml (ADR 0022)', () => {

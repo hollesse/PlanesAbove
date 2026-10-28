@@ -37,7 +37,7 @@ export interface ServiceOptions {
   /** Logging sink (default stdout). */
   write?: (line: string) => void;
   timeZone?: string;
-  /** Environment for secrets (default process.env); FLIGHTAWARE_API_KEY is read only from here, never from config (ADR 0007/0018). */
+  /** Environment for secrets (default process.env); FLIGHTAWARE_API_KEY and GIT_SHA are read only from here, never from config (ADR 0007/0018). */
   env?: Record<string, string | undefined>;
 }
 
@@ -51,6 +51,8 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   const clientDir = path.resolve(o.clientDir ?? 'dist/client');
   const buildIdFile = path.join(clientDir, 'build-id.txt');
   const buildId = fs.existsSync(buildIdFile) ? fs.readFileSync(buildIdFile, 'utf8').trim() : 'dev';
+  // Deployed commit (CI build-arg -> image ENV GIT_SHA); separate from buildId, which only tracks client assets and drives the iPad reload (ADR 0008).
+  const commit = (o.env ?? process.env).GIT_SHA?.trim() || 'dev';
 
   // Clock: fake and manually advanced in mock mode (ADR 0004), system clock otherwise.
   let fake: FakeClock | undefined;
@@ -140,7 +142,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
       if (req.method === 'GET' && url.pathname === '/api/state') { lastClientPollAt = clock.now(); return json(res, 200, sky.state()); }
       if (req.method === 'GET' && url.pathname === '/healthz') {
         const report = evaluateHealth({ now: clock.now(), bootAt, pollIntervalMs: pollMs, flight: sky.health, dbWritable: dbWritable(), lastClientPollAt, clientSilenceMs: config.health.clientSilenceMinutes * 60_000, flightMaxAgeMs: flightMaxAgeMs(config), flightChain: flightChain && { ...flightChain.status(), sources: flightChain.status().sources.map((s) => (s.name === 'adsb-lol' && lolBudget ? { ...s, budget: lolBudget.status() } : s)) } });
-        return json(res, report.status === 'failing' ? 503 : 200, { ...report, buildId, uptimeSeconds: Math.round((clock.now() - bootAt) / 1000) });
+        return json(res, report.status === 'failing' ? 503 : 200, { ...report, buildId, commit, uptimeSeconds: Math.round((clock.now() - bootAt) / 1000) });
       }
       const audioMatch = /^\/audio\/([0-9a-f]+)\.wav$/.exec(url.pathname);
       if (req.method === 'GET' && audioMatch) {
@@ -170,7 +172,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
 
   await sky.tick(); // first Takt right away, then every pollIntervalSeconds
   const cancel = scheduler.every(pollMs, () => sky.tick());
-  log.info('service started', { port, mode: config.mode, buildId, radiusKm: config.radiusKm });
+  log.info('service started', { port, mode: config.mode, buildId, commit, radiusKm: config.radiusKm });
 
   return {
     port,

@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-28 15:13 -- Task verified and completed: infrastructure-fbpd5 - Commit-SHA als eigenes Feld `commit` in /healthz und im Startlog, per CI-Build-Arg ins Image; buildId bleibt der Client-Asset-Hash und steuert weiter den iPad-Reload
+
+**Type:** Work / Task completion
+**Task:** infrastructure-fbpd5 - Commit-SHA als eigenes Feld `commit` in /healthz und im Startlog, per CI-Build-Arg ins Image; buildId bleibt der Client-Asset-Hash und steuert weiter den iPad-Reload
+**Summary:** Commit-SHA als Feld commit in /healthz und Startlog (GIT_SHA per CI-Build-Arg); buildId unverändert
+**Duration:** 6m
+**Verification:** PASS (iteration 1)
+**Files changed:** 6
+**Tests added:** 5
+**ADRs written:** none
+
+---
+
 ## 2026-10-28 15:09 -- Batch started: [infrastructure-fbpd5]
 
 **Type:** Work / Batch start
