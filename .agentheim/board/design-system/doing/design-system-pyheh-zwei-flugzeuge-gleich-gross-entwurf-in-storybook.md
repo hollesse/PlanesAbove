@@ -1,7 +1,7 @@
 ---
 id: design-system-pyheh
 title: Entwurf in Storybook: Zwei-Flugzeuge-Ansicht mit beiden Flugzeugen gleich groß, Typklasse je Slot per Control unten wählbar, passende Übergänge dazu
-status: todo
+status: doing
 type: feature
 context: design-system
 created: 2026-10-30

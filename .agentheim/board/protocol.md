@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-30 17:37 -- Batch started: [design-system-pyheh]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-pyheh - Entwurf in Storybook: Zwei-Flugzeuge-Ansicht mit beiden Flugzeugen gleich groß, Typklasse je Slot per Control unten wählbar, passende Übergänge dazu
+**Parallel:** no (1 worker — only ready task after re-scan; promoted mid-run by a concurrent modeling session)
+
+---
+
 ## 2026-10-30 17:35 -- Task verified and completed: sky-scene-t6h2p - ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback
 
 **Type:** Work / Task completion
