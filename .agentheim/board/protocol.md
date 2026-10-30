@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-30 17:14 -- Modeling / Refined: sky-scene-t6h2p - ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback
+
+**Type:** Modeling / Refine
+**BC:** sky-scene
+**Status after:** todo
+**Summary:** Betreiber-Entscheidungen festgehalten (Free-Tier ohne Bezahlplan, Piper-Fallback bei leerem Budget, Steckbrief-Text bleibt unverändert, Stimme/Modell konfigurierbar mit Defaults). Konkretisiert: PCM-Ausgabe mit WAV-Header statt MP3, Budgetzähler in SQLite, Fallback-Audio unter dem Fallback-Cache-Key, Boot-Verhalten ohne Key, Schema-Regeln, Doku/Compose-Delta, 13 Akzeptanzkriterien (eines human-eye).
+
+---
+
 ## 2026-10-30 17:10 -- Capture / Captured: airspace-rrazj - Lokale Vereinsflieger per Hex-Code erfassen und den Verein statt der Airline anzeigen
 
 **Type:** Capture
