@@ -522,5 +522,173 @@
  "TUA": {
   "name": "Turkmenistan Airlines",
   "country": "TM"
+ },
+ "NGN": {
+  "name": "LEAV Aviation",
+  "country": "DE"
+ },
+ "SAR": {
+  "name": "Sprintair",
+  "country": "PL"
+ },
+ "MGH": {
+  "name": "Mavi Gök Airlines",
+  "country": "TR"
+ },
+ "CHX": {
+  "name": "Luftrettung (Christoph)",
+  "country": "DE"
+ },
+ "EFW": {
+  "name": "BA Euroflyer",
+  "country": "GB"
+ },
+ "NMA": {
+  "name": "Nesma Airlines",
+  "country": "EG"
+ },
+ "UNI": {
+  "name": "Unicair",
+  "country": "DE"
+ },
+ "GAC": {
+  "name": "GlobeAir",
+  "country": "AT"
+ },
+ "GPX": {
+  "name": "GP Aviation",
+  "country": "BG"
+ },
+ "HGO": {
+  "name": "One Air",
+  "country": "GB"
+ },
+ "IFA": {
+  "name": "FAI Air Ambulance",
+  "country": "DE"
+ },
+ "MBU": {
+  "name": "Marabu Airlines",
+  "country": "DE"
+ },
+ "NJU": {
+  "name": "NetJets UK",
+  "country": "GB"
+ },
+ "PVD": {
+  "name": "PAD Aviation",
+  "country": "DE"
+ },
+ "VJH": {
+  "name": "Air Hamburg",
+  "country": "DE"
+ },
+ "AAB": {
+  "name": "Abelag Aviation",
+  "country": "BE"
+ },
+ "ADZ": {
+  "name": "Compass Cargo Airlines",
+  "country": "BG"
+ },
+ "BAH": {
+  "name": "Bahrain Amiri Flight",
+  "country": "BH"
+ },
+ "BOH": {
+  "name": "AirBohemia",
+  "country": "CZ"
+ },
+ "CVK": {
+  "name": "Cavok Air",
+  "country": "UA"
+ },
+ "DFC": {
+  "name": "Aeropartner",
+  "country": "CZ"
+ },
+ "DMS": {
+  "name": "Diamond Sky",
+  "country": "EE"
+ },
+ "EIS": {
+  "name": "EIS Aircraft",
+  "country": "DE"
+ },
+ "ELJ": {
+  "name": "Delta Private Jets",
+  "country": "US"
+ },
+ "FNF": {
+  "name": "Finnische Luftwaffe",
+  "country": "FI"
+ },
+ "FSF": {
+  "name": "Fly7 Executive Aviation",
+  "country": "FI"
+ },
+ "FXT": {
+  "name": "Flexflight",
+  "country": "DK"
+ },
+ "GFD": {
+  "name": "GFD Gesellschaft für Flugzieldarstellung",
+  "country": "DE"
+ },
+ "HUE": {
+  "name": "Haute Aviation",
+  "country": "CH"
+ },
+ "HYS": {
+  "name": "HiSky Europe",
+  "country": "RO"
+ },
+ "JCB": {
+  "name": "JCB (Firmenflug)",
+  "country": "GB"
+ },
+ "JEI": {
+  "name": "Jet Executive",
+  "country": "DE"
+ },
+ "LEJ": {
+  "name": "FSH Luftfahrtunternehmen",
+  "country": "DE"
+ },
+ "LHB": {
+  "name": "Liebherr Aviation",
+  "country": "DE"
+ },
+ "MJE": {
+  "name": "Empire Aviation",
+  "country": "AE"
+ },
+ "QAJ": {
+  "name": "Quick Air Jet Charter",
+  "country": "DE"
+ },
+ "RHH": {
+  "name": "Redstar Aviation",
+  "country": "TR"
+ },
+ "RSX": {
+  "name": "Red Sea Airlines",
+  "country": "EG"
+ },
+ "SCQ": {
+  "name": "Scandinavian Aviation Academy",
+  "country": "SE"
+ },
+ "TDR": {
+  "name": "Trade Air",
+  "country": "HR"
+ },
+ "UBT": {
+  "name": "Norse Atlantic UK",
+  "country": "GB"
+ },
+ "VCJ": {
+  "name": "Avcon Jet Malta",
+  "country": "MT"
  }
 }

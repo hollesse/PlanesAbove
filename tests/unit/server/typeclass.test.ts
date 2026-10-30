@@ -67,7 +67,7 @@ describe('resolveAirline', () => {
   });
   it('ignores callsigns that do not look like airline callsigns (GA registrations)', () => {
     expect(resolveAirline(T, 'DHYAV')).toBeUndefined();
-    expect(resolveAirline(T, 'CHX77')?.name).toBeUndefined();
+    expect(resolveAirline(T, 'DEABC')).toBeUndefined();
     expect(resolveAirline(T, undefined)).toBeUndefined();
   });
   it('reports an unknown but well-formed prefix as unmapped without a name', () => {
@@ -156,5 +156,18 @@ describe('curation round 2 (airspace-z5r8n)', () => {
     for (const [code, klass] of [['A306', 'widebody'], ['C17', 'widebody'], ['AS32', 'helicopter'], ['WT9', 'light-aircraft']] as const) {
       expect(resolveTypeClass(T, code, undefined), code).toMatchObject({ typklasse: klass, fallback: false, unmapped: false });
     }
+  });
+});
+
+describe('curation round 3 from adsbdb airline lookup', () => {
+  it('has the prefixes looked up at adsbdb', () => {
+    for (const prefix of ['NGN', 'SAR', 'MGH', 'CHX', 'EFW', 'NMA', 'UNI', 'IFA', 'MBU', 'VJH', 'CVK', 'UBT']) {
+      expect(T.airlines[prefix]?.name, prefix).toBeTruthy();
+      expect(T.airlines[prefix].country, prefix).toMatch(/^[A-Z]{2}$/);
+    }
+  });
+  it('resolves looked-up airline names', () => {
+    expect(resolveAirline(T, 'NGN12')?.name).toBe('LEAV Aviation');
+    expect(resolveAirline(T, 'CHX33')?.name).toBe('Luftrettung (Christoph)');
   });
 });

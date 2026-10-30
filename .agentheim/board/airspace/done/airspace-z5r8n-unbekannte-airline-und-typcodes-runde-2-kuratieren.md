@@ -72,3 +72,16 @@ airline-liveries.json: TVF -> transavia (existing design-system id). Tests in te
 Omitted airline prefixes (61 of 119; not certain of designator/operator, no web access): NGN, MGH, SAR, CHX, CHZ, EFW, NMA, SCR, UNI, BRK, GAC, GPX, HGO, IFA, MBU, NJU, PVD, VJH, AAB, ADZ, AXY, BAH, BEJ, BOH, CVK, DFC, DMS, ECC, EIS, ELJ, FLD, FNF, FSF, FUU, FXT, GFD, HUE, HYM, HYS, JCB, JEI, LEJ, LHB, MJE, PEX, PIZ, PNC, QAJ, RHH, RJB, RSX, SAH, SCQ, SVI, SWU, TDR, TOY, UBD, UBT, UGJ, VCJ, VIO. Of these, NGN, MGH, SAR, CHX, CHZ, EFW, NMA, SCR, UNI have >=3 sightings (CHX: Christoph designator not certain; NGN/MGH: operator unclear).
 Omitted type codes (6 of 39; not certain of meaning): CLON, GOLF, DAL4, G70, NG5, P28S.
 Verifier: iteration 1 FAIL (AUH), iteration 2 fixes checked by conductor; vitest unit 395 passed, typecheck green.
+
+## Nachtrag 2026-10-30 (Conductor, auf Wunsch des Betreibers): Abgleich mit adsbdb
+Alle 119 Präfixe wurden über `GET https://api.adsbdb.com/v0/airline/<ICAO>` abgefragt.
+
+**42 der zuvor weggelassenen Präfixe sind jetzt aufgenommen:** NGN, SAR, MGH, CHX, EFW, NMA, UNI, GAC, GPX, HGO, IFA, MBU, NJU, PVD, VJH, AAB, ADZ, BAH, BOH, CVK, DFC, DMS, EIS, ELJ, FNF, FSF, FXT, GFD, HUE, HYS, JCB, JEI, LEJ, LHB, MJE, QAJ, RHH, RSX, SCQ, TDR, UBT, VCJ. Die Tabelle hat damit 173 Einträge.
+
+**Weiter weggelassen (19):**
+- Unbekannt bei adsbdb: BEJ, FUU, PIZ, UGJ, VIO.
+- Laut adsbdb ein Betreiber, der hier nicht plausibel ist oder nicht mehr existiert: CHZ, SCR, BRK, AXY, ECC, FLD, HYM, PEX, PNC, RJB, SAH, SVI, SWU, TOY, UBD.
+
+**Bewusst nicht übernommen, weil der Eintrag bei adsbdb veraltet ist:** ASL (dort Spurling Aviation, tatsächlich Air Serbia), OCN (O Air, tatsächlich Discover), CND (Aero Continente Dominicana, tatsächlich Corendon Dutch), ENT (DAT Enterprise, tatsächlich Enter Air), ABB (Business Aviation CD, tatsächlich Air Belgium). TFL (Arkefly) und FPO (Europe Airpost) sind nur alte Namen von TUI fly Niederlande und ASL Airlines France.
+
+**Tests:** Neuer describe-Block „curation round 3“. Ein bestehender Test nutzte CHX77 als Beispiel für einen unbekannten Präfix und wurde auf `DEABC` umgestellt. `npm test` (541 bestanden), Typecheck grün.
