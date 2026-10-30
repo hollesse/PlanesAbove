@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-30 17:14 -- Modeling / Promoted: sky-scene-t6h2p - ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback
+
+**Type:** Modeling / Promote
+**BC:** sky-scene
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-30 17:14 -- Modeling / Refined: sky-scene-t6h2p - ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback
 
 **Type:** Modeling / Refine
