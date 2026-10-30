@@ -5,6 +5,10 @@
 # Watchtower image nickfedor/watchtower: maintained fork of containrrr/watchtower, which is unmaintained and fails against
 # Docker Engine >= 29 ("client version ... is too old"); same CLI flags. (ADR 0008, ADR 0022)
 # No x-casaos metadata on purpose: an unverified extension block is a risk for the import; the app is reached at http://<server>:8080/.
+# Explicit network `planesabove`: the ZimaOS import does not always create the Compose project network and then puts the
+# containers on Docker's default bridge (172.17.0.x), where container names do NOT resolve. `http://tts:5000` fails with a
+# DNS error (`speech synthesis failed`, errorClass network -> HTTP 503 on /audio/*.wav, no sound on tap). A declared,
+# user-defined bridge network gives both containers name resolution; no published port is needed for container-to-container traffic.
 services:
   planesabove:
     image: ghcr.io/hollesse/planesabove:main   # built by .github/workflows/deploy.yml; rollback = sha-<commit> tag
@@ -14,6 +18,8 @@ services:
       - com.centurylinklabs.watchtower.enable=true
     ports:
       - "8080:8080"            # plain HTTP on the LAN only; the iPad opens http://<server>:8080/
+    networks: [planesabove]
+    depends_on: [tts]
     environment:
       CONFIG_PATH: /config/config.yaml
       TZ: Europe/Berlin        # household time zone: nightly reload, clock label
@@ -35,6 +41,7 @@ services:
     image: ghcr.io/hollesse/planesabove-tts:main
     container_name: planesabove-tts
     restart: unless-stopped
+    networks: [planesabove]      # reached only as http://tts:5000 from the service container; no port published to the LAN
     labels:
       - com.centurylinklabs.watchtower.enable=true
     logging:
@@ -57,3 +64,8 @@ services:
     logging:
       driver: json-file
       options: { max-size: "10m", max-file: "3" }
+
+networks:
+  planesabove:
+    name: planesabove
+    driver: bridge
