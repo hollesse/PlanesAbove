@@ -12,6 +12,7 @@ Newest entries on top.
 **Summary:** ElevenLabs failures are now classified and logged with HTTP status and detail.code (bad-config for 402/401/403, quota-exceeded only for 429), and the monthly budget is charged only for delivered audio or a timeout; speech.voice is required for elevenlabs.
 **Duration:** 41m
 **Verification:** PASS (iteration 3)
+**Result source:** sidecar · layout both+sentinel · sidecar present
 **Files changed:** 9
 **Tests added:** 7
 **ADRs written:** 0027
