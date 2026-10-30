@@ -51,7 +51,7 @@ export class ElevenLabsSpeechSynthesizer implements SpeechSynthesizer {
     const s = res.status;
     if (s === 429 || code === 'quota_exceeded') return new SpeechError('quota-exceeded', full);
     if (s === 401 || s === 402 || s === 403) {
-      this.o.log?.warn(`ElevenLabs rejected the request (${info}); check speech.voice (a library voice must first be added to "My Voices"), the permissions of ELEVENLABS_API_KEY and the plan; using the fallback voice`, { source: 'tts' });
+      this.o.log?.warn(`ElevenLabs rejected the request (${info}); check speech.voice (on the free plan only the premade voices work via the API; library voices are blocked even after "Add to My Voices"), the permissions of ELEVENLABS_API_KEY and the plan; using the fallback voice`, { source: 'tts' });
       return new SpeechError('bad-config', full);
     }
     if (s === 404 || s === 422) {
