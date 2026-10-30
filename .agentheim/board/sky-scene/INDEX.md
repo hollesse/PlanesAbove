@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 4
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **sky-scene-t6h2p** — ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback (feature) — `todo/sky-scene-t6h2p-elevenlabs-adapter-opt-in-mit-zeichenbudget-und-piper-fallba.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **sky-scene-t6h2p** — ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback (feature) — `doing/sky-scene-t6h2p-elevenlabs-adapter-opt-in-mit-zeichenbudget-und-piper-fallba.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

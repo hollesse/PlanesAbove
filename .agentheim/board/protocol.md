@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-30 17:27 -- Batch started: [sky-scene-t6h2p]
+
+**Type:** Work / Batch start
+**Tasks:** sky-scene-t6h2p - ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback
+**Parallel:** no (1 worker — single ready task; todo/ otherwise empty)
+
+---
+
 ## 2026-10-30 17:22 -- Work session ended
 
 **Type:** Work / Session end

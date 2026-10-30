@@ -1,7 +1,7 @@
 ---
 id: sky-scene-t6h2p
 title: ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback
-status: todo
+status: doing
 type: feature
 context: sky-scene
 created: 2026-10-27
