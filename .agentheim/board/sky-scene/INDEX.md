@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 5
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **sky-scene-k3f8d** — ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten (402 ist kein Kontingentfehler) (bug) — `todo/sky-scene-k3f8d-elevenlabs-fehler-sichtbar-machen-und-budget-bei-fehlern-nic.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **sky-scene-k3f8d** — ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten (402 ist kein Kontingentfehler) (bug) — `doing/sky-scene-k3f8d-elevenlabs-fehler-sichtbar-machen-und-budget-bei-fehlern-nic.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

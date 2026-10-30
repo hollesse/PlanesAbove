@@ -1,7 +1,7 @@
 ---
 id: sky-scene-k3f8d
 title: ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten (402 ist kein Kontingentfehler)
-status: todo
+status: doing
 type: bug
 context: sky-scene
 created: 2026-10-30
