@@ -1,7 +1,7 @@
 ---
 id: airspace-z5r8n
 title: Unbekannte Airline- und Typcodes aus dem Betrieb (Runde 2) kuratieren: 119 Airline-Präfixe und 39 Typcodes prüfen und belegte in die Tabellen aufnehmen
-status: doing
+status: done
 type: chore
 context: airspace
 created: 2026-10-30
@@ -64,3 +64,11 @@ SUGGESTED_FIX:
 - CH60 als Zenair CH 601 Zodiac aufnehmen (light-aircraft, Allgemeine Luftfahrt).
 - Die Zahlen im Outcome korrigieren.
 ITERATION_HINT: likely-fixable
+
+## Outcome
+Round 2 curation. airlines.json +58 prefixes (73 -> 131): UPS, SRR, TVS, ABR, ASL, BPO, OCN, ANA, FHY, RCH, SWT, QFA, CGF, CND, JAL, TAY, CTN, LGL, FHM, GAF, KAC, MAS, MSR, BTI, EVA, FDX, ITY, MNB, TVF, VJT, AAR, ABB, AIZ, AUH (Präsidentenflugstaffel der VAE), CAL, CKK, ENT, HVN, ISR, MEA, NCA, PIA, RBA, ROT, RUK, TFL, TSC, AHY, BAF, BBC, CHH, CTM, FPO, LZB, OMA, QAF, TAR, TUA.
+type-classes.json +33 codes (162 -> 195): A306, C17, A400, C30J, AN12, R135, LJ35, GL7T, GL5T (Bombardier Global 5000/5500), BE40, HDJT, GA6C, GA7C, AS32, H60, AT73, PAY1, P46T, WT9, FK9 (FK-Lightplanes FK9), S22T, ULAC, C210, CH60 (Zenair CH 601 Zodiac), M20P, BE33, DA50, P149, PA24, PA38, PIVI, SKRA, RF3.
+airline-liveries.json: TVF -> transavia (existing design-system id). Tests in tests/unit/server/typeclass.test.ts (describe "curation round 2").
+Omitted airline prefixes (61 of 119; not certain of designator/operator, no web access): NGN, MGH, SAR, CHX, CHZ, EFW, NMA, SCR, UNI, BRK, GAC, GPX, HGO, IFA, MBU, NJU, PVD, VJH, AAB, ADZ, AXY, BAH, BEJ, BOH, CVK, DFC, DMS, ECC, EIS, ELJ, FLD, FNF, FSF, FUU, FXT, GFD, HUE, HYM, HYS, JCB, JEI, LEJ, LHB, MJE, PEX, PIZ, PNC, QAJ, RHH, RJB, RSX, SAH, SCQ, SVI, SWU, TDR, TOY, UBD, UBT, UGJ, VCJ, VIO. Of these, NGN, MGH, SAR, CHX, CHZ, EFW, NMA, SCR, UNI have >=3 sightings (CHX: Christoph designator not certain; NGN/MGH: operator unclear).
+Omitted type codes (6 of 39; not certain of meaning): CLON, GOLF, DAL4, G70, NG5, P28S.
+Verifier: iteration 1 FAIL (AUH), iteration 2 fixes checked by conductor; vitest unit 395 passed, typecheck green.

@@ -290,5 +290,237 @@
  "AEA": {
   "name": "Air Europa",
   "country": "ES"
+ },
+ "UPS": {
+  "name": "UPS Airlines",
+  "country": "US"
+ },
+ "SRR": {
+  "name": "Star Air",
+  "country": "DK"
+ },
+ "TVS": {
+  "name": "Smartwings",
+  "country": "CZ"
+ },
+ "ABR": {
+  "name": "ASL Airlines Ireland",
+  "country": "IE"
+ },
+ "ASL": {
+  "name": "Air Serbia",
+  "country": "RS"
+ },
+ "BPO": {
+  "name": "Bundespolizei",
+  "country": "DE"
+ },
+ "OCN": {
+  "name": "Discover Airlines",
+  "country": "DE"
+ },
+ "ANA": {
+  "name": "All Nippon Airways",
+  "country": "JP"
+ },
+ "FHY": {
+  "name": "Freebird Airlines",
+  "country": "TR"
+ },
+ "RCH": {
+  "name": "US Air Force (Reach)",
+  "country": "US"
+ },
+ "SWT": {
+  "name": "Swiftair",
+  "country": "ES"
+ },
+ "QFA": {
+  "name": "Qantas",
+  "country": "AU"
+ },
+ "CGF": {
+  "name": "Cargo Air",
+  "country": "BG"
+ },
+ "CND": {
+  "name": "Corendon Dutch Airlines",
+  "country": "NL"
+ },
+ "JAL": {
+  "name": "Japan Airlines",
+  "country": "JP"
+ },
+ "TAY": {
+  "name": "ASL Airlines Belgium",
+  "country": "BE"
+ },
+ "CTN": {
+  "name": "Croatia Airlines",
+  "country": "HR"
+ },
+ "LGL": {
+  "name": "Luxair",
+  "country": "LU"
+ },
+ "FHM": {
+  "name": "Freebird Airlines Europe",
+  "country": "MT"
+ },
+ "GAF": {
+  "name": "Luftwaffe",
+  "country": "DE"
+ },
+ "KAC": {
+  "name": "Kuwait Airways",
+  "country": "KW"
+ },
+ "MAS": {
+  "name": "Malaysia Airlines",
+  "country": "MY"
+ },
+ "MSR": {
+  "name": "EgyptAir",
+  "country": "EG"
+ },
+ "BTI": {
+  "name": "airBaltic",
+  "country": "LV"
+ },
+ "EVA": {
+  "name": "EVA Air",
+  "country": "TW"
+ },
+ "FDX": {
+  "name": "FedEx Express",
+  "country": "US"
+ },
+ "ITY": {
+  "name": "ITA Airways",
+  "country": "IT"
+ },
+ "MNB": {
+  "name": "MNG Airlines",
+  "country": "TR"
+ },
+ "TVF": {
+  "name": "Transavia France",
+  "country": "FR"
+ },
+ "VJT": {
+  "name": "VistaJet",
+  "country": "MT"
+ },
+ "AAR": {
+  "name": "Asiana Airlines",
+  "country": "KR"
+ },
+ "ABB": {
+  "name": "Air Belgium",
+  "country": "BE"
+ },
+ "AIZ": {
+  "name": "Arkia",
+  "country": "IL"
+ },
+ "AUH": {
+  "name": "Präsidentenflugstaffel der VAE",
+  "country": "AE"
+ },
+ "CAL": {
+  "name": "China Airlines",
+  "country": "TW"
+ },
+ "CKK": {
+  "name": "China Cargo Airlines",
+  "country": "CN"
+ },
+ "ENT": {
+  "name": "Enter Air",
+  "country": "PL"
+ },
+ "HVN": {
+  "name": "Vietnam Airlines",
+  "country": "VN"
+ },
+ "ISR": {
+  "name": "Israir",
+  "country": "IL"
+ },
+ "MEA": {
+  "name": "Middle East Airlines",
+  "country": "LB"
+ },
+ "NCA": {
+  "name": "Nippon Cargo Airlines",
+  "country": "JP"
+ },
+ "PIA": {
+  "name": "Pakistan International Airlines",
+  "country": "PK"
+ },
+ "RBA": {
+  "name": "Royal Brunei Airlines",
+  "country": "BN"
+ },
+ "ROT": {
+  "name": "TAROM",
+  "country": "RO"
+ },
+ "RUK": {
+  "name": "Ryanair UK",
+  "country": "GB"
+ },
+ "TFL": {
+  "name": "TUI fly Niederlande",
+  "country": "NL"
+ },
+ "TSC": {
+  "name": "Air Transat",
+  "country": "CA"
+ },
+ "AHY": {
+  "name": "Azerbaijan Airlines",
+  "country": "AZ"
+ },
+ "BAF": {
+  "name": "Belgische Luftwaffe",
+  "country": "BE"
+ },
+ "BBC": {
+  "name": "Biman Bangladesh Airlines",
+  "country": "BD"
+ },
+ "CHH": {
+  "name": "Hainan Airlines",
+  "country": "CN"
+ },
+ "CTM": {
+  "name": "Französische Luftwaffe (COTAM)",
+  "country": "FR"
+ },
+ "FPO": {
+  "name": "ASL Airlines France",
+  "country": "FR"
+ },
+ "LZB": {
+  "name": "Bulgaria Air",
+  "country": "BG"
+ },
+ "OMA": {
+  "name": "Oman Air",
+  "country": "OM"
+ },
+ "QAF": {
+  "name": "Qatar Amiri Flight",
+  "country": "QA"
+ },
+ "TAR": {
+  "name": "Tunisair",
+  "country": "TN"
+ },
+ "TUA": {
+  "name": "Turkmenistan Airlines",
+  "country": "TM"
  }
 }
