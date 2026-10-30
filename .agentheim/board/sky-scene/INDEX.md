@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 1
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 5
+- **Doing:** 0
+- **Done:** 6
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **sky-scene-k3f8d** — ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten (402 ist kein Kontingentfehler) (bug) — `doing/sky-scene-k3f8d-elevenlabs-fehler-sichtbar-machen-und-budget-bei-fehlern-nic.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **sky-scene-k3f8d** — ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten (402 ist kein Kontingentfehler) (bug) — `done/sky-scene-k3f8d-elevenlabs-fehler-sichtbar-machen-und-budget-bei-fehlern-nic.md`
 - **sky-scene-t6h2p** — ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback (feature) — `done/sky-scene-t6h2p-elevenlabs-adapter-opt-in-mit-zeichenbudget-und-piper-fallba.md`
 - **sky-scene-n0sfy** — Flugzeug-Übergänge (kommt / geht / wechselt) in der Live-Szene abspielen statt hart zu schneiden; Diff per icao24, Übergang-Sperre puffert den neuesten Stand (feature) — `done/sky-scene-n0sfy-flugzeug-uebergaenge-live-abspielen-diff-und-uebergang-sperre.md`
 - **sky-scene-g3r8w** — Mindesthaltezeit pro Slot gegen Flackern beim Flugzeugwechsel (feature) — `done/sky-scene-g3r8w-mindesthaltezeit-pro-slot-gegen-flackern-beim-flugzeugwechsel.md`

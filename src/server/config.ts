@@ -11,8 +11,6 @@ const ROUTE_DEFAULTS = { enabled: true, order: ['hexdb' as const, 'adsbdb' as co
 
 /** Piper model in the tts image. */
 const PIPER_VOICE = 'de_DE-thorsten-medium';
-/** ElevenLabs premade library voice "Rachel" (multilingual models speak German with it). Unverified without an API key: the operator confirms by listening. */
-export const ELEVENLABS_DEFAULT_VOICE = '21m00Tcm4TlvDq8ikWAM';
 
 const schema = z.object({
   mode: z.enum(['live', 'mock']).default('live'),
@@ -114,7 +112,7 @@ const schema = z.object({
   }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES], adsbLol: { dailyRequestCap: 400 } }, aircraftType: { hexdb: { enabled: true, timeoutMs: 2000, cacheTtlHours: 24 } }, route: ROUTE_DEFAULTS }),
   speech: z.object({
     adapter: z.enum(['piper', 'elevenlabs', 'fake']).default('piper'),
-    /** Voice of the primary adapter: Piper model name or ElevenLabs voice_id. Default depends on the adapter. */
+    /** Voice of the primary adapter: Piper model name (default) or ElevenLabs voice_id (required for adapter elevenlabs, no default: library voices are unusable on the free plan). */
     voice: z.string().optional(),
     endpoint: z.string().default('http://tts:5000'),
     /** Default: lazy for elevenlabs (every render costs credits), eager otherwise (ADR 0012). */
@@ -132,8 +130,8 @@ const schema = z.object({
       monthlyCharacterBudget: z.number().int().positive().default(9000),
       timeoutMs: z.number().int().positive().default(15000),
     }).default({ modelId: 'eleven_flash_v2_5', outputFormat: 'pcm_22050', monthlyCharacterBudget: 9000, timeoutMs: 15000 }),
-  }).default({ adapter: 'piper', endpoint: 'http://tts:5000', timeoutMs: 15000, fallback: 'piper', fallbackVoice: PIPER_VOICE, elevenlabs: { modelId: 'eleven_flash_v2_5', outputFormat: 'pcm_22050', monthlyCharacterBudget: 9000, timeoutMs: 15000 } })
-    .transform((s) => ({ ...s, voice: s.voice ?? (s.adapter === 'elevenlabs' ? ELEVENLABS_DEFAULT_VOICE : PIPER_VOICE), render: s.render ?? (s.adapter === 'elevenlabs' ? 'lazy' as const : 'eager' as const) })),
+  }).refine((s) => s.adapter !== 'elevenlabs' || (s.voice !== undefined && s.voice.trim() !== ''), { path: ['voice'], message: 'is required for adapter elevenlabs: add a voice to "My Voices" in your ElevenLabs account first (library voices are not usable via the API on the free plan), then set its voice_id here' }).default({ adapter: 'piper', endpoint: 'http://tts:5000', timeoutMs: 15000, fallback: 'piper', fallbackVoice: PIPER_VOICE, elevenlabs: { modelId: 'eleven_flash_v2_5', outputFormat: 'pcm_22050', monthlyCharacterBudget: 9000, timeoutMs: 15000 } })
+    .transform((s) => ({ ...s, voice: s.voice ?? PIPER_VOICE, render: s.render ?? (s.adapter === 'elevenlabs' ? 'lazy' as const : 'eager' as const) })),
   client: z.object({
     pollIntervalSeconds: z.number().positive().default(10),
     staleAfterMinutes: z.number().positive().default(5),

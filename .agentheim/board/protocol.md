@@ -5,6 +5,41 @@ Newest entries on top.
 
 ---
 
+## 2026-10-30 19:59 -- Task verified and completed: sky-scene-k3f8d - ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten (402 ist kein Kontingentfehler)
+
+**Type:** Work / Task completion
+**Task:** sky-scene-k3f8d - ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten (402 ist kein Kontingentfehler)
+**Summary:** ElevenLabs failures are now classified and logged with HTTP status and detail.code (bad-config for 402/401/403, quota-exceeded only for 429), and the monthly budget is charged only for delivered audio or a timeout; speech.voice is required for elevenlabs.
+**Duration:** 41m
+**Verification:** PASS (iteration 3)
+**Files changed:** 9
+**Tests added:** 7
+**ADRs written:** 0027
+
+---
+
+## 2026-10-30 19:56 -- Verification failed: sky-scene-k3f8d - ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten
+
+**Type:** Work / Verification failure
+**Task:** sky-scene-k3f8d - ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten (402 ist kein Kontingentfehler)
+**Iteration:** 2 of 3
+**Reasons:** README_DELTA leaves the Speech budget bullet with the old count-before-request rule and without bad-config/bad-voice as fallback triggers; code, tests, ADR all pass
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
+## 2026-10-30 19:53 -- Verification failed: sky-scene-k3f8d - ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten
+
+**Type:** Work / Verification failure
+**Task:** sky-scene-k3f8d - ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten (402 ist kein Kontingentfehler)
+**Iteration:** 1 of 3
+**Reasons:** port contract (bad-config kind, timedOut flag) and budget-accounting/required-voice decisions lack an ADR amending 0012; README_DELTA expected text does not match current bullet
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-30 19:45 -- Batch started: [sky-scene-k3f8d]
 
 **Type:** Work / Batch start

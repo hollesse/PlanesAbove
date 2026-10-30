@@ -124,30 +124,52 @@ describe('ElevenLabsSpeechSynthesizer contract', () => {
     expect(r.durationMs).toBe(2000);
     expect(wavDurationMs(r.audio)).toBe((pcm.length / (2 * 22050)) * 1000);
   });
-  it('maps errors: 401 unavailable (key warning), 429/402 quota-exceeded, 404/422 bad-voice, 5xx/network/empty unavailable', async () => {
-    const warns: string[] = [];
-    const log = { ...silentLogger, warn: (m: string) => { warns.push(m); } };
-    const withLog = new ElevenLabsSpeechSynthesizer({ fetch: reply(401, new Uint8Array()), apiKey: 'k', modelId: 'm', outputFormat: 'pcm_22050', timeoutMs: 1000, log });
-    expect(await kind(withLog.synthesize('x', 'v'))).toBe('unavailable');
-    expect(warns.join()).toContain('ELEVENLABS_API_KEY');
-    expect(await kind(el(reply(429, new Uint8Array())).synthesize('x', 'v'))).toBe('quota-exceeded');
-    expect(await kind(el(reply(402, new Uint8Array())).synthesize('x', 'v'))).toBe('quota-exceeded');
-    expect(await kind(el(reply(422, new Uint8Array())).synthesize('x', 'v'))).toBe('bad-voice');
-    expect(await kind(el(reply(404, new Uint8Array())).synthesize('x', 'v'))).toBe('bad-voice');
+  const body = (status: number, json: unknown): Fetch => async () => ({ ok: false, status, text: async () => typeof json === 'string' ? json : JSON.stringify(json), arrayBuffer: async () => new ArrayBuffer(0) });
+  const detail = (code: string, message = 'msg') => ({ detail: { code, message, status: code } });
+  it('402 paid_plan_required -> bad-config; message carries status and detail.code; warn line carries status, code and the ElevenLabs message', async () => {
+    const warns: Array<[string, Record<string, unknown> | undefined]> = [];
+    const log = { ...silentLogger, warn: (m: string, f?: Record<string, unknown>) => { warns.push([m, f]); } };
+    const s = new ElevenLabsSpeechSynthesizer({ fetch: body(402, detail('paid_plan_required', 'Free users cannot use library voices via the API.')), apiKey: 'k', modelId: 'm', outputFormat: 'pcm_22050', timeoutMs: 1000, log });
+    const err = await s.synthesize('x', 'v').catch((e: SpeechError) => e);
+    expect((err as SpeechError).kind).toBe('bad-config');
+    expect((err as SpeechError).message).toContain('402');
+    expect((err as SpeechError).message).toContain('paid_plan_required');
+    expect(warns).toHaveLength(1);
+    expect(warns[0][0]).toContain('status=402');
+    expect(warns[0][0]).toContain('code=paid_plan_required');
+    expect(warns[0][0]).toContain('Free users cannot use library voices via the API.');
+    expect(warns[0][0]).toContain('speech.voice');
+  });
+  it('maps errors: 401/403 bad-config, 401 quota_exceeded and 429 quota-exceeded (status in message), 404/422 bad-voice, 5xx/network/empty unavailable', async () => {
+    expect(await kind(el(body(401, detail('invalid_api_key'))).synthesize('x', 'v'))).toBe('bad-config');
+    expect(await kind(el(body(403, detail('missing_permissions'))).synthesize('x', 'v'))).toBe('bad-config');
+    expect(await kind(el(body(401, detail('quota_exceeded'))).synthesize('x', 'v'))).toBe('quota-exceeded');
+    const e429 = await el(body(429, detail('too_many_concurrent_requests'))).synthesize('x', 'v').catch((e: SpeechError) => e);
+    expect((e429 as SpeechError).kind).toBe('quota-exceeded');
+    expect((e429 as SpeechError).message).toContain('status=429');
+    expect(await kind(el(body(422, 'not json')).synthesize('x', 'v'))).toBe('bad-voice');
+    expect(await kind(el(body(404, detail('voice_not_found'))).synthesize('x', 'v'))).toBe('bad-voice');
     expect(await kind(el(reply(503, new Uint8Array())).synthesize('x', 'v'))).toBe('unavailable');
     expect(await kind(el(reply(200, new Uint8Array())).synthesize('x', 'v'))).toBe('unavailable');
     expect(await kind(el(async () => { throw new TypeError('fetch failed'); }).synthesize('x', 'v'))).toBe('unavailable');
   });
+  it('non-JSON body: first 300 characters end up in the error message', async () => {
+    const err = await el(body(402, 'x'.repeat(500))).synthesize('x', 'v').catch((e: SpeechError) => e);
+    expect((err as SpeechError).message).toContain('x'.repeat(300));
+    expect((err as SpeechError).message).not.toContain('x'.repeat(301));
+  });
   it('maps a hanging API to unavailable (timeout)', async () => {
     const hang: Fetch = (_u, i) => new Promise((_r, rej) => i?.signal?.addEventListener('abort', () => rej(i.signal!.reason)));
     expect(await kind(el(hang, 20).synthesize('x', 'v'))).toBe('unavailable');
+    const err = await el(hang, 20).synthesize('x', 'v').catch((e) => e);
+    expect((err as SpeechError).timedOut).toBe(true);
   });
 });
 
 describe('AudioService with primary budget and fallback (sky-scene-t6h2p)', () => {
   const dir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'pa-audio-'));
   const keyOf = (url: string) => url.replace('/audio/', '').replace('.wav', '');
-  const named = (name: string, behaviour: () => { durationMs: number; failure?: 'unavailable' | 'quota-exceeded' | 'bad-voice' } = () => ({ durationMs: 500 })) => {
+  const named = (name: string, behaviour: () => { durationMs: number; failure?: 'unavailable' | 'quota-exceeded' | 'bad-voice' | 'bad-config'; timedOut?: boolean } = () => ({ durationMs: 500 })) => {
     const inner = new FakeSpeechSynthesizer(behaviour); let calls = 0;
     return { name, calls: () => calls, synthesize: async (t: string, v: string) => { calls++; return inner.synthesize(); } } as import('../../../src/server/modules/sky-scene/speech').SpeechSynthesizer & { calls(): number };
   };
@@ -178,6 +200,22 @@ describe('AudioService with primary budget and fallback (sky-scene-t6h2p)', () =
     expect(await svc.get(keyOf(svc.register('Hallo').audioUrl))).toBeDefined();
     expect(fallback.calls()).toBe(1);
   });
+  it('bad-config from the primary with 60 chars: fallback delivers audio, counter stays 0', async () => {
+    const { svc, fallback, usage } = setup(1000, named('elevenlabs', () => ({ durationMs: 1, failure: 'bad-config' })));
+    expect(await svc.get(keyOf(svc.register('a'.repeat(60)).audioUrl))).toBeDefined();
+    expect(fallback.calls()).toBe(1); expect(usage.characters()).toBe(0);
+  });
+  it('quota-exceeded leaves the counter at 0, success adds the text length, timeout adds the text length', async () => {
+    const q = setup(1000, named('elevenlabs', () => ({ durationMs: 1, failure: 'quota-exceeded' })));
+    await q.svc.get(keyOf(q.svc.register('a'.repeat(60)).audioUrl));
+    expect(q.usage.characters()).toBe(0);
+    const ok = setup(1000);
+    await ok.svc.get(keyOf(ok.svc.register('a'.repeat(60)).audioUrl));
+    expect(ok.usage.characters()).toBe(60);
+    const t = setup(1000, named('elevenlabs', () => ({ durationMs: 1, failure: 'unavailable', timedOut: true })));
+    await t.svc.get(keyOf(t.svc.register('a'.repeat(60)).audioUrl));
+    expect(t.usage.characters()).toBe(60);
+  });
   it('the month counter survives a restart (new AudioService over the same SQLite) and resets next month', async () => {
     const a = setup(100);
     await a.svc.get(keyOf(a.svc.register('x'.repeat(60)).audioUrl));
@@ -207,13 +245,36 @@ describe('AudioService with primary budget and fallback (sky-scene-t6h2p)', () =
   });
 });
 
+describe('ElevenLabs failure log lines (sky-scene-k3f8d)', () => {
+  it('402: a warn line with status=402, code=paid_plan_required and the message; 429: the fallback line carries status=429', async () => {
+    const lines: Array<[string, string]> = [];
+    const log = { ...silentLogger, info: (m: string) => { lines.push(['info', m]); }, warn: (m: string) => { lines.push(['warn', m]); } };
+    const mk = (status: number, code: string) => {
+      const f: Fetch = async (url) => url.includes('elevenlabs') ? { ok: false, status, text: async () => JSON.stringify({ detail: { code, message: 'Free users cannot use library voices' } }), arrayBuffer: async () => new ArrayBuffer(0) } : reply(200, wavFixture)(url);
+      const primary = new ElevenLabsSpeechSynthesizer({ fetch: f, apiKey: 'k', modelId: 'm', outputFormat: 'pcm_22050', timeoutMs: 1000, log });
+      const fb = new PiperSpeechSynthesizer({ fetch: f, endpoint: 'http://tts:5000', timeoutMs: 1000 });
+      return new AudioService(primary, { voice: 'EV', render: 'lazy', log, fallback: { synth: fb, voice: 'PV' } });
+    };
+    const a = mk(402, 'paid_plan_required');
+    expect(await a.get(a.keyFor('t') && a.register('t').audioUrl.replace('/audio/', '').replace('.wav', ''))).toBeDefined();
+    const warn = lines.find((l) => l[0] === 'warn' && l[1].includes('status=402'))!;
+    expect(warn[1]).toContain('code=paid_plan_required');
+    expect(warn[1]).toContain('Free users cannot use library voices');
+    lines.length = 0;
+    const b = mk(429, 'too_many_requests');
+    await b.get(b.register('t').audioUrl.replace('/audio/', '').replace('.wav', ''));
+    expect(lines.some((l) => l[1].includes('status=429'))).toBe(true);
+  });
+});
+
 describe('buildSpeechSetup (ELEVENLABS_API_KEY from env only)', () => {
   const MIN = 'location: { lat: 50, lon: 8 }\n';
+  const VOICE = 'MYVOICE';
   const base = { fetch: reply(200, new Uint8Array()), db: openDatabase(':memory:'), clock: new FakeClock(0) };
   it('adapter elevenlabs without key: warn mentioning ELEVENLABS_API_KEY and the fallback serves audio', async () => {
     const warns: string[] = [];
     const log = { ...silentLogger, warn: (m: string) => { warns.push(m); } };
-    const setup = buildSpeechSetup({ ...base, config: parseConfig(MIN + 'speech: { adapter: elevenlabs }\n'), env: {}, log, fetch: reply(200, wavFixture) });
+    const setup = buildSpeechSetup({ ...base, config: parseConfig(MIN + 'speech: { adapter: elevenlabs, voice: VOICE }\n'), env: {}, log, fetch: reply(200, wavFixture) });
     expect(warns.join()).toContain('ELEVENLABS_API_KEY');
     expect(setup.synth.name).toBe('piper');
     expect(setup.voice).toBe('de_DE-thorsten-medium');
@@ -221,7 +282,7 @@ describe('buildSpeechSetup (ELEVENLABS_API_KEY from env only)', () => {
     expect((await setup.synth.synthesize('x', setup.voice)).durationMs).toBeGreaterThan(0);
   });
   it('with a key: elevenlabs primary, piper fallback, budget from config', () => {
-    const setup = buildSpeechSetup({ ...base, config: parseConfig(MIN + 'speech: { adapter: elevenlabs }\n'), env: { ELEVENLABS_API_KEY: 'k' }, log: silentLogger });
+    const setup = buildSpeechSetup({ ...base, config: parseConfig(MIN + 'speech: { adapter: elevenlabs, voice: VOICE }\n'), env: { ELEVENLABS_API_KEY: 'k' }, log: silentLogger });
     expect(setup.synth.name).toBe('elevenlabs');
     expect(setup.fallback?.synth.name).toBe('piper');
     expect(setup.budget?.monthlyCharacterBudget).toBe(9000);

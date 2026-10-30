@@ -71,14 +71,18 @@ describe('scene.slotHoldTakte (ADR 0017)', () => {
 });
 
 describe('speech config (sky-scene-t6h2p)', () => {
+  it('adapter elevenlabs requires speech.voice (no default) and the message points to My Voices (sky-scene-k3f8d)', () => {
+    expect(() => parseConfig(MIN + 'speech: { adapter: elevenlabs }\n')).toThrow(/speech\.voice.*My Voices/s);
+    expect(parseConfig(MIN + 'speech: { adapter: elevenlabs, voice: abc }\n').speech.voice).toBe('abc');
+  });
   it('render defaults to lazy for elevenlabs and eager for piper; voice default follows the adapter', () => {
-    expect(parseConfig(MIN + 'speech: { adapter: elevenlabs }\n').speech).toMatchObject({ render: 'lazy', fallback: 'piper', elevenlabs: { outputFormat: 'pcm_22050', monthlyCharacterBudget: 9000 } });
+    expect(parseConfig(MIN + 'speech: { adapter: elevenlabs, voice: MYVOICE }\n').speech).toMatchObject({ render: 'lazy', fallback: 'piper', elevenlabs: { outputFormat: 'pcm_22050', monthlyCharacterBudget: 9000 } });
     expect(parseConfig(MIN + 'speech: { adapter: piper }\n').speech).toMatchObject({ render: 'eager', voice: 'de_DE-thorsten-medium' });
-    expect(parseConfig(MIN + 'speech: { adapter: elevenlabs, render: eager }\n').speech.render).toBe('eager');
+    expect(parseConfig(MIN + 'speech: { adapter: elevenlabs, voice: MYVOICE, render: eager }\n').speech.render).toBe('eager');
   });
   it('rejects fallback elevenlabs, mp3 output formats and unknown adapters with readable messages', () => {
-    expect(() => parseConfig(MIN + 'speech: { adapter: elevenlabs, fallback: elevenlabs }\n')).toThrow(/speech\.fallback/);
-    expect(() => parseConfig(MIN + 'speech: { adapter: elevenlabs, elevenlabs: { outputFormat: mp3_44100_128 } }\n')).toThrow(/speech\.elevenlabs\.outputFormat: must be a PCM format/);
+    expect(() => parseConfig(MIN + 'speech: { adapter: elevenlabs, voice: MYVOICE, fallback: elevenlabs }\n')).toThrow(/speech\.fallback/);
+    expect(() => parseConfig(MIN + 'speech: { adapter: elevenlabs, voice: MYVOICE, elevenlabs: { outputFormat: mp3_44100_128 } }\n')).toThrow(/speech\.elevenlabs\.outputFormat: must be a PCM format/);
     expect(() => parseConfig(MIN + 'speech: { adapter: espeak }\n')).toThrow(/speech\.adapter/);
   });
 });

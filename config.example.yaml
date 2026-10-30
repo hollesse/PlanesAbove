@@ -94,7 +94,7 @@ sources:
 # ELEVENLABS_API_KEY environment variable, never from this file); fake = silent clip (mock/testing only).
 speech:
   adapter: piper                 # piper | elevenlabs | fake
-  voice: de_DE-thorsten-medium   # piper: model installed in the tts image (docker/piper). elevenlabs: a voice_id (default 21m00Tcm4TlvDq8ikWAM, "Rachel")
+  voice: de_DE-thorsten-medium   # piper: model installed in the tts image (docker/piper). elevenlabs: REQUIRED voice_id, no default. Library voices do not work on the free plan: add one to "My Voices" in your ElevenLabs account first, then use its voice_id
   endpoint: http://tts:5000      # piper base URL; the adapter POSTs to <endpoint>/synthesize
   render: eager                  # eager | lazy; default: lazy for elevenlabs (every render costs credits), eager otherwise
   timeoutMs: 15000

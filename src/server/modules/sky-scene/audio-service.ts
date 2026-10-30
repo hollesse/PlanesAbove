@@ -69,24 +69,30 @@ export class AudioService {
     const fb = this.o.fallback;
     const budget = this.o.budget;
     if (!fb) return this.synthesizeWith(this.synth, this.o.voice, text, key);
-    let reason: string;
+    let reason: string; let detail: string | undefined;
     if (budget && budget.usage.characters() + text.length > budget.monthlyCharacterBudget) reason = 'budget exhausted';
     else {
-      if (budget) budget.usage.add(text.length); // counted before the request: a failed or timed-out call may still have cost credits
-      try { return await this.synthesizeWith(this.synth, this.o.voice, text, key); } catch (e) { reason = (e as { kind?: string }).kind ?? 'unavailable'; }
+      // charged only for delivered audio (inside synthesizeWith) or a timeout after the request went out (the one grey area); HTTP errors cost nothing
+      try { return await this.synthesizeWith(this.synth, this.o.voice, text, key, true); } catch (e) {
+        reason = (e as { kind?: string }).kind ?? 'unavailable';
+        if (budget && (e as { timedOut?: boolean }).timedOut) budget.usage.add(text.length);
+        detail = (e as Error).message;
+      }
     }
-    const msg = `speech ${reason}, falling back to ${fb.synth.name}`;
-    if (this.fallbackNoticed) this.o.log.info(msg, { source: 'tts' }); else { this.fallbackNoticed = true; this.o.log.warn(msg, { source: 'tts' }); }
+    const msg = `speech ${reason}${detail && detail !== reason ? ` (${detail})` : ''}, falling back to ${fb.synth.name}`;
+    // bad-config / bad-voice were already logged as warn by the adapter on every request; do not repeat as warn
+    if (this.fallbackNoticed || reason === 'bad-config' || reason === 'bad-voice') this.o.log.info(msg, { source: 'tts' }); else { this.fallbackNoticed = true; this.o.log.warn(msg, { source: 'tts' }); }
     return this.synthesizeWith(fb.synth, fb.voice, text, this.hash(fb.synth.name, fb.voice, text));
   }
 
-  private async synthesizeWith(synth: SpeechSynthesizer, voice: string, text: string, key: string): Promise<{ bytes: Buffer; durationMs: number }> {
+  private async synthesizeWith(synth: SpeechSynthesizer, voice: string, text: string, key: string, charge = false): Promise<{ bytes: Buffer; durationMs: number }> {
     const file = this.o.cacheDir && path.join(this.o.cacheDir, `${key}.wav`);
     if (file && synth !== this.synth && fs.existsSync(file)) {
       const bytes = fs.readFileSync(file);
       return { bytes, durationMs: wavDurationMs(bytes) ?? 0 };
     }
     const r = await synth.synthesize(text, voice);
+    if (charge && this.o.budget) this.o.budget.usage.add(text.length);
     const bytes = Buffer.from(r.audio);
     if (file) fs.writeFileSync(file, bytes);
     const fields: Record<string, unknown> = { source: 'tts', adapter: synth.name, voice, durationMs: r.durationMs };
