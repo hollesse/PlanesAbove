@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-30 20:01 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 1h05m (second run this evening, operator-reported production bug)
+**Completed:** 1 (first-try PASS: 0, re-dispatched: 1 — PASS at iteration 3; iterations 1 and 2 failed on bookkeeping only: missing ADR, README delta)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** sky-scene-k3f8d: 3
+**Commits:** 5 (capture+promote, batch start, integration, ADR/index follow-up, this entry)
+**Vision-conformance:** none — batch aligns with vision (keeps the free Piper default working; makes the opt-in ElevenLabs path diagnosable)
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (1 task)
+**Carry-over:** none — working tree clean (untracked .agentheim/.dashboard/ is a git-ignored advisory artifact)
+
+---
+
 ## 2026-10-30 19:59 -- Task verified and completed: sky-scene-k3f8d - ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten (402 ist kein Kontingentfehler)
 
 **Type:** Work / Task completion
