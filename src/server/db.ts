@@ -7,11 +7,12 @@ import migration0004 from './migrations/0004-flightaware-calls';
 import migration0005 from './migrations/0005-flight-source-calls';
 import migration0006 from './migrations/0006-observation-points';
 import migration0007 from './migrations/0007-type-source';
+import migration0008 from './migrations/0008-speech-usage';
 
 export type Db = Database.Database;
 
 /** Ordered by number; index + 1 is the schema version. Add new files at the end only. */
-const MIGRATIONS: string[] = [migration0001, migration0002, migration0003, migration0004, migration0005, migration0006, migration0007];
+const MIGRATIONS: string[] = [migration0001, migration0002, migration0003, migration0004, migration0005, migration0006, migration0007, migration0008];
 export const LATEST_SCHEMA_VERSION = MIGRATIONS.length;
 
 export function openDatabase(file: string): Db {

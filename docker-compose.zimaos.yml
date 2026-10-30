@@ -22,7 +22,8 @@ services:
     depends_on: [tts]
     environment:
       CONFIG_PATH: /config/config.yaml
-      TZ: Europe/Berlin        # household time zone: nightly reload, clock label
+      TZ: Europe/Berlin        # household time zone: nightly reload, clock label, month of the speech budget
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}   # optional, only for speech.adapter: elevenlabs; set it in the ZimaOS environment UI, never write the key into this file
     volumes:
       - /DATA/AppData/planesabove/data:/data      # SQLite file (sighting log), audio cache
       - /DATA/AppData/planesabove/config:/config:ro

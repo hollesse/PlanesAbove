@@ -69,3 +69,16 @@ describe('scene.slotHoldTakte (ADR 0017)', () => {
     for (const bad of ['0', '-2', '2.5', '"x"']) expect(() => parseConfig(MIN + `scene: { slotHoldTakte: ${bad} }\n`)).toThrow(/scene\.slotHoldTakte/);
   });
 });
+
+describe('speech config (sky-scene-t6h2p)', () => {
+  it('render defaults to lazy for elevenlabs and eager for piper; voice default follows the adapter', () => {
+    expect(parseConfig(MIN + 'speech: { adapter: elevenlabs }\n').speech).toMatchObject({ render: 'lazy', fallback: 'piper', elevenlabs: { outputFormat: 'pcm_22050', monthlyCharacterBudget: 9000 } });
+    expect(parseConfig(MIN + 'speech: { adapter: piper }\n').speech).toMatchObject({ render: 'eager', voice: 'de_DE-thorsten-medium' });
+    expect(parseConfig(MIN + 'speech: { adapter: elevenlabs, render: eager }\n').speech.render).toBe('eager');
+  });
+  it('rejects fallback elevenlabs, mp3 output formats and unknown adapters with readable messages', () => {
+    expect(() => parseConfig(MIN + 'speech: { adapter: elevenlabs, fallback: elevenlabs }\n')).toThrow(/speech\.fallback/);
+    expect(() => parseConfig(MIN + 'speech: { adapter: elevenlabs, elevenlabs: { outputFormat: mp3_44100_128 } }\n')).toThrow(/speech\.elevenlabs\.outputFormat: must be a PCM format/);
+    expect(() => parseConfig(MIN + 'speech: { adapter: espeak }\n')).toThrow(/speech\.adapter/);
+  });
+});

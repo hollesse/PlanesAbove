@@ -4,19 +4,33 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { Logger } from '../../logger';
 import type { SpeechSynthesizer } from './speech';
+import type { SpeechUsage } from './speech-usage';
+import { wavDurationMs } from './wav';
 
 export class AudioService {
   private texts = new Map<string, string>();
   private durations = new Map<string, number>();
   private inflight = new Map<string, Promise<Buffer | undefined>>();
 
-  constructor(private readonly synth: SpeechSynthesizer, private readonly o: { voice: string; render: 'eager' | 'lazy'; cacheDir?: string; log: Logger }) {
+  private fallbackNoticed = false;
+
+  /**
+   * `fallback`: adapter used when the primary is out of budget, over quota or unavailable; its audio is cached under ITS OWN key
+   * (never the primary key), so the primary renders again once the budget is back. `budget`: monthly character cap for the primary.
+   */
+  constructor(private readonly synth: SpeechSynthesizer, private readonly o: {
+    voice: string; render: 'eager' | 'lazy'; cacheDir?: string; log: Logger;
+    fallback?: { synth: SpeechSynthesizer; voice: string };
+    budget?: { usage: SpeechUsage; monthlyCharacterBudget: number };
+  }) {
     if (o.cacheDir) fs.mkdirSync(o.cacheDir, { recursive: true });
   }
 
   /** Cache key (adapter, voice, text) so switching adapter or voice never serves stale audio. */
-  keyFor(text: string): string {
-    return crypto.createHash('sha256').update(`${this.synth.name}\0${this.o.voice}\0${text}`).digest('hex').slice(0, 24);
+  keyFor(text: string): string { return this.hash(this.synth.name, this.o.voice, text); }
+
+  private hash(adapter: string, voice: string, text: string): string {
+    return crypto.createHash('sha256').update(`${adapter}\0${voice}\0${text}`).digest('hex').slice(0, 24);
   }
 
   /** Register a Steckbrief text; returns its URL (and duration when already rendered). Eager mode starts rendering. */
@@ -37,12 +51,9 @@ export class AudioService {
     if (running) return running;
     const p = (async () => {
       try {
-        const r = await this.synth.synthesize(text, this.o.voice);
-        const bytes = Buffer.from(r.audio);
+        const r = await this.render(key, text);
         this.durations.set(key, r.durationMs);
-        if (file) fs.writeFileSync(file, bytes);
-        this.o.log.info('speech synthesized', { source: 'tts', adapter: this.synth.name, voice: this.o.voice, durationMs: r.durationMs });
-        return bytes;
+        return r.bytes;
       } catch (e) {
         this.o.log.warn('speech synthesis failed', { source: 'tts', errorClass: (e as { kind?: string }).kind ?? 'unavailable' });
         return undefined;
@@ -52,5 +63,35 @@ export class AudioService {
     })();
     this.inflight.set(key, p);
     return p;
+  }
+
+  private async render(key: string, text: string): Promise<{ bytes: Buffer; durationMs: number }> {
+    const fb = this.o.fallback;
+    const budget = this.o.budget;
+    if (!fb) return this.synthesizeWith(this.synth, this.o.voice, text, key);
+    let reason: string;
+    if (budget && budget.usage.characters() + text.length > budget.monthlyCharacterBudget) reason = 'budget exhausted';
+    else {
+      if (budget) budget.usage.add(text.length); // counted before the request: a failed or timed-out call may still have cost credits
+      try { return await this.synthesizeWith(this.synth, this.o.voice, text, key); } catch (e) { reason = (e as { kind?: string }).kind ?? 'unavailable'; }
+    }
+    const msg = `speech ${reason}, falling back to ${fb.synth.name}`;
+    if (this.fallbackNoticed) this.o.log.info(msg, { source: 'tts' }); else { this.fallbackNoticed = true; this.o.log.warn(msg, { source: 'tts' }); }
+    return this.synthesizeWith(fb.synth, fb.voice, text, this.hash(fb.synth.name, fb.voice, text));
+  }
+
+  private async synthesizeWith(synth: SpeechSynthesizer, voice: string, text: string, key: string): Promise<{ bytes: Buffer; durationMs: number }> {
+    const file = this.o.cacheDir && path.join(this.o.cacheDir, `${key}.wav`);
+    if (file && synth !== this.synth && fs.existsSync(file)) {
+      const bytes = fs.readFileSync(file);
+      return { bytes, durationMs: wavDurationMs(bytes) ?? 0 };
+    }
+    const r = await synth.synthesize(text, voice);
+    const bytes = Buffer.from(r.audio);
+    if (file) fs.writeFileSync(file, bytes);
+    const fields: Record<string, unknown> = { source: 'tts', adapter: synth.name, voice, durationMs: r.durationMs };
+    if (this.o.budget) fields.charactersUsedThisMonth = this.o.budget.usage.characters();
+    this.o.log.info('speech synthesized', fields);
+    return { bytes, durationMs: r.durationMs };
   }
 }

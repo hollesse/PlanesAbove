@@ -90,13 +90,22 @@ sources:
     # (same destination, hexdb start = an intermediate stop), the VRS route wins; a real contradiction keeps the first source in `order` and is flagged as conflict.
     compareAll: false          # true = additionally always ask adsbdb and record conflicts for stats:routes; costs extra requests
 
-# German speech (ADR 0012). piper = the `tts` sidecar container; fake = silent clip (mock/testing only).
+# German speech (ADR 0012). piper = the `tts` sidecar container; elevenlabs = opt-in cloud voice (free plan, key from the
+# ELEVENLABS_API_KEY environment variable, never from this file); fake = silent clip (mock/testing only).
 speech:
-  adapter: piper
-  voice: de_DE-thorsten-medium   # must match a voice installed in the tts image (docker/piper)
-  endpoint: http://tts:5000   # base URL; the adapter POSTs to <endpoint>/synthesize
-  render: eager            # eager | lazy
+  adapter: piper                 # piper | elevenlabs | fake
+  voice: de_DE-thorsten-medium   # piper: model installed in the tts image (docker/piper). elevenlabs: a voice_id (default 21m00Tcm4TlvDq8ikWAM, "Rachel")
+  endpoint: http://tts:5000      # piper base URL; the adapter POSTs to <endpoint>/synthesize
+  render: eager                  # eager | lazy; default: lazy for elevenlabs (every render costs credits), eager otherwise
   timeoutMs: 15000
+  # Only for adapter: elevenlabs. Used when the monthly budget is spent, the quota is exceeded, ElevenLabs is unreachable or the key is missing.
+  # fallback: piper              # piper | fake (elevenlabs is not allowed here)
+  # fallbackVoice: de_DE-thorsten-medium
+  # elevenlabs:
+  #   modelId: eleven_flash_v2_5     # German, half credits per character
+  #   outputFormat: pcm_22050        # PCM only (wrapped into WAV); the free plan allows pcm up to 24 kHz
+  #   monthlyCharacterBudget: 9000   # free plan: 10000 credits/month, 1 credit ~ 1 character; the counter is kept in SQLite
+  #   timeoutMs: 15000
 
 # Settings handed to the iPad client with every state.
 client:

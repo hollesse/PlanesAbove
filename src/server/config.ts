@@ -9,6 +9,11 @@ const FLIGHTAWARE_DEFAULTS = { timeoutMs: 8000, monthlyBudgetUsd: 4.5, monthlyRe
 const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5, detourHeadingDeviationDeg: 90, closedAirspaceSampleKm: 100, closedAirspaces: DEFAULT_CLOSED_AIRSPACES };
 const ROUTE_DEFAULTS = { enabled: true, order: ['hexdb' as const, 'adsbdb' as const, 'vrs' as const], hexdb: { timeoutMs: 5000, backoffMinutes: 5 }, adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS, plausibility: PLAUSIBILITY_DEFAULTS };
 
+/** Piper model in the tts image. */
+const PIPER_VOICE = 'de_DE-thorsten-medium';
+/** ElevenLabs premade library voice "Rachel" (multilingual models speak German with it). Unverified without an API key: the operator confirms by listening. */
+export const ELEVENLABS_DEFAULT_VOICE = '21m00Tcm4TlvDq8ikWAM';
+
 const schema = z.object({
   mode: z.enum(['live', 'mock']).default('live'),
   scenario: z.string().optional(),
@@ -108,12 +113,27 @@ const schema = z.object({
     }).default(ROUTE_DEFAULTS),
   }).default({ userAgent: 'PlanesAbove/0.1 (self-hosted, single household)', flight: { timeoutMs: 5000, order: [...FLIGHT_SOURCE_NAMES], adsbLol: { dailyRequestCap: 400 } }, aircraftType: { hexdb: { enabled: true, timeoutMs: 2000, cacheTtlHours: 24 } }, route: ROUTE_DEFAULTS }),
   speech: z.object({
-    adapter: z.enum(['piper', 'fake']).default('piper'),
-    voice: z.string().default('de_DE-thorsten-medium'),
+    adapter: z.enum(['piper', 'elevenlabs', 'fake']).default('piper'),
+    /** Voice of the primary adapter: Piper model name or ElevenLabs voice_id. Default depends on the adapter. */
+    voice: z.string().optional(),
     endpoint: z.string().default('http://tts:5000'),
-    render: z.enum(['eager', 'lazy']).default('eager'),
+    /** Default: lazy for elevenlabs (every render costs credits), eager otherwise (ADR 0012). */
+    render: z.enum(['eager', 'lazy']).optional(),
     timeoutMs: z.number().int().positive().default(15000),
-  }).default({ adapter: 'piper', voice: 'de_DE-thorsten-medium', endpoint: 'http://tts:5000', render: 'eager', timeoutMs: 15000 }),
+    /** Adapter used when the primary is out of budget, over quota, unreachable or has no key. elevenlabs is not allowed here. */
+    fallback: z.enum(['piper', 'fake'], { error: 'must be "piper" or "fake" (elevenlabs cannot be its own fallback)' }).default('piper'),
+    /** Voice used with the fallback adapter. */
+    fallbackVoice: z.string().default(PIPER_VOICE),
+    elevenlabs: z.object({
+      modelId: z.string().min(1).default('eleven_flash_v2_5'),
+      /** PCM only (wrapped into a WAV; the free plan allows pcm up to 24 kHz). */
+      outputFormat: z.string().regex(/^pcm_\d+$/, 'must be a PCM format such as pcm_22050 (mp3 is not supported)').default('pcm_22050'),
+      /** Free plan: 10000 credits/month, 1 credit ~ 1 character; keep a reserve. */
+      monthlyCharacterBudget: z.number().int().positive().default(9000),
+      timeoutMs: z.number().int().positive().default(15000),
+    }).default({ modelId: 'eleven_flash_v2_5', outputFormat: 'pcm_22050', monthlyCharacterBudget: 9000, timeoutMs: 15000 }),
+  }).default({ adapter: 'piper', endpoint: 'http://tts:5000', timeoutMs: 15000, fallback: 'piper', fallbackVoice: PIPER_VOICE, elevenlabs: { modelId: 'eleven_flash_v2_5', outputFormat: 'pcm_22050', monthlyCharacterBudget: 9000, timeoutMs: 15000 } })
+    .transform((s) => ({ ...s, voice: s.voice ?? (s.adapter === 'elevenlabs' ? ELEVENLABS_DEFAULT_VOICE : PIPER_VOICE), render: s.render ?? (s.adapter === 'elevenlabs' ? 'lazy' as const : 'eager' as const) })),
   client: z.object({
     pollIntervalSeconds: z.number().positive().default(10),
     staleAfterMinutes: z.number().positive().default(5),

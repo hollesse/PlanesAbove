@@ -23,3 +23,14 @@ export function wavDurationMs(bytes: Uint8Array): number | undefined {
   }
   return undefined;
 }
+
+/** Wraps raw 16-bit mono little-endian PCM (e.g. ElevenLabs `pcm_22050`) into a WAV so the cache, route and client stay WAV-only. */
+export function pcmToWav(pcm: Uint8Array, sampleRate: number): Uint8Array {
+  const buf = Buffer.alloc(44 + pcm.length);
+  buf.write('RIFF', 0); buf.writeUInt32LE(36 + pcm.length, 4); buf.write('WAVE', 8);
+  buf.write('fmt ', 12); buf.writeUInt32LE(16, 16); buf.writeUInt16LE(1, 20); buf.writeUInt16LE(1, 22);
+  buf.writeUInt32LE(sampleRate, 24); buf.writeUInt32LE(sampleRate * 2, 28); buf.writeUInt16LE(2, 32); buf.writeUInt16LE(16, 34);
+  buf.write('data', 36); buf.writeUInt32LE(pcm.length, 40);
+  Buffer.from(pcm).copy(buf, 44);
+  return buf;
+}

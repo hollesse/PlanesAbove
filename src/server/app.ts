@@ -28,9 +28,8 @@ import { SightingRepository } from './modules/sighting-log/repository';
 import { handleStatsRequest } from './modules/sighting-log/stats-api';
 import { AudioService } from './modules/sky-scene/audio-service';
 import { FakeSpeechSynthesizer } from './modules/sky-scene/fake-speech';
-import { PiperSpeechSynthesizer } from './modules/sky-scene/piper-speech';
+import { buildSpeechSetup, type SpeechSetup } from './modules/sky-scene/speech-setup';
 import { SkyService } from './modules/sky-scene/sky-service';
-import type { SpeechSynthesizer } from './modules/sky-scene/speech';
 
 export interface ServiceOptions {
   config: Config;
@@ -85,11 +84,11 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   let routeSources: RouteSource[];
   let stopSnapshot: (() => void) | undefined;
   let flightaware: FlightAwareRouteSource | undefined;
-  let speech: SpeechSynthesizer;
+  let setup: SpeechSetup;
   if (driver) {
     flight = new ScenarioFlightSource(driver);
     routeSources = [new ScenarioRouteSource(driver)];
-    speech = new FakeSpeechSynthesizer(() => (driver as ScenarioDriver).current().tts);
+    setup = { synth: new FakeSpeechSynthesizer(() => (driver as ScenarioDriver).current().tts), voice: config.speech.voice };
   } else {
     const fo = { fetch: fetchFn, userAgent: ua, timeoutMs: config.sources.flight.timeoutMs };
     lolBudget = new DailyRequestBudget({ db, clock, source: 'adsb-lol', cap: config.sources.flight.adsbLol.dailyRequestCap });
@@ -117,11 +116,11 @@ export async function startService(o: ServiceOptions): Promise<Service> {
         if (config.sources.route.enabled) stopSnapshot = vrs.start();
       }
     }
-    speech = config.speech.adapter === 'piper' ? new PiperSpeechSynthesizer({ fetch: fetchFn, endpoint: config.speech.endpoint, timeoutMs: config.speech.timeoutMs }) : new FakeSpeechSynthesizer();
+    setup = buildSpeechSetup({ config, env: o.env ?? process.env, fetch: fetchFn, db, clock: scheduler, log, timeZone: o.timeZone });
   }
   const noRoutes: RouteSource = { name: 'none', lookup: async () => null };
   const routes = new RouteService(config.sources.route.enabled ? routeSources : [noRoutes], clock, { ttlMs: config.sources.route.cacheTtlHours * 3_600_000, negativeTtlMs: config.sources.route.negativeTtlMinutes * 60_000, compareAll: config.sources.route.compareAll, airports: defaultTables().airports, plausibility: config.sources.route.plausibility, log });
-  const audio = new AudioService(speech, { voice: config.speech.voice, render: mock ? 'lazy' : config.speech.render, cacheDir: path.join(config.dataDir, 'audio'), log });
+  const audio = new AudioService(setup.synth, { voice: setup.voice, fallback: setup.fallback, budget: setup.budget, render: mock ? 'lazy' : config.speech.render, cacheDir: path.join(config.dataDir, 'audio'), log });
   const tables = defaultTables();
   // hexdb type cross-check: off in mock mode (no network) and when disabled; the override table always applies.
   const hx = config.sources.aircraftType.hexdb;

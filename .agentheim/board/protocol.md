@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-30 17:34 -- Modeling / Captured: design-system-pyheh - Entwurf in Storybook: Zwei-Flugzeuge-Ansicht mit beiden Flugzeugen gleich groß, Typklasse je Slot per Control unten wählbar, passende Übergänge dazu
+
+**Type:** Modeling / Capture
+**BC:** design-system
+**Filed to:** todo
+**Summary:** Storybook-Entwurf der Zwei-Flugzeuge-Ansicht mit gleich großen Slots, Typklasse je Slot als Control, passende Flugzeug-Übergänge als Variante. Direkt nach todo/, da Scope und Kriterien klar sind.
+
+---
+
 ## 2026-10-30 17:27 -- Batch started: [sky-scene-t6h2p]
 
 **Type:** Work / Batch start
