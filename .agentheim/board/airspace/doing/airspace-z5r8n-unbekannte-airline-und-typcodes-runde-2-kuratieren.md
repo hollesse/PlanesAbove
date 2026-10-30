@@ -48,3 +48,19 @@ Der Betreiber hat am 2026-10-30 die aktuelle Liste unbekannter Schlüssel aus de
 
 ## Notes
 Erfasst vom Conductor am 2026-10-30 aus der Meldung des Betreibers. Vorgehen wie bei airspace-n8c4t. Der Worker hat keinen Webzugriff. Belegt heißt hier: eindeutig aus gesichertem Wissen über ICAO-Designatoren, im Zweifel weglassen.
+
+## Verifier note (iteration 1)
+REASONS:
+- `AUH` ist als „Abu Dhabi Aviation“ eingetragen. Der ICAO-Designator AUH gehört aber dem UAE Presidential Flight (Präsidentenflugstaffel der VAE, VIP-Jets mit Rufzeichen AUHxx). Damit nennen Info-Leiste und Ansage den falschen Betreiber.
+- Ohne Einfluss auf das Ergebnis:
+  - GL5T steht für Global 5000 und 5500.
+  - FK9 hat nur den Namen „FK9“.
+  - CH60 ist der Zenair CH 601 Zodiac.
+  - Die Zahlen im Outcome passen nicht zu den Listen.
+SUGGESTED_FIX:
+- AUH auf „Präsidentenflugstaffel der VAE“ / AE umbenennen.
+- GL5T heißt „Bombardier Global 5000/5500“.
+- FK9 heißt „FK-Lightplanes FK9“.
+- CH60 als Zenair CH 601 Zodiac aufnehmen (light-aircraft, Allgemeine Luftfahrt).
+- Die Zahlen im Outcome korrigieren.
+ITERATION_HINT: likely-fixable
