@@ -1,12 +1,19 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
 
-// design-system-grp94: the two longest airport labels of tables/airports.json (ADR 0021, "Stadt (IATA)") must stay fully visible
-// in the info bar (single and two-plane view, 4:3 and 5:3). The names are read from the table at test time.
-const table = JSON.parse(readFileSync('src/server/modules/airspace/tables/airports.json', 'utf8')) as Record<string, { city: string; iata: string }>;
-const labels = Object.values(table).map((a) => `${a.city} (${a.iata})`).sort((a, b) => b.length - a.length);
-const [first, second] = labels;
+// design-system-grp94: a benchmark route of two long airport labels (ADR 0021, "Stadt (IATA)") must stay fully visible
+// in the info bar (single and two-plane view, 4:3 and 5:3). Since the table holds every VRS airport (34k, incl. names like
+// "Civil Aviation Flight University of China") the benchmark is no longer the longest label of the whole table but the longest
+// realistic European pair; the test checks that both labels exist in the table exactly as the story shows them.
+const table = JSON.parse(readFileSync('src/server/modules/airspace/tables/airports.json', 'utf8')) as Record<string, { city: string; iata?: string }>;
+const label = (icao: string): string => `${table[icao].city} (${table[icao].iata})`;
+const [first, second] = [label('LEST'), label('LEJR')];
 const route = `${first} → ${second}`;
+
+test('the two benchmark airport labels come from the table', () => {
+  expect(first.length).toBeGreaterThan(20);
+  expect(route).toBe('Santiago de Compostela (SCQ) → Jerez de la Frontera (XRY)'); // keep in sync with the story text
+});
 
 interface Measure { aspect: string; text: string; lines: number; fontPx: number; baseCqw: number; inside: boolean; overflowX: boolean; parts: { text: string; inside: boolean }[] }
 

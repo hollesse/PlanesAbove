@@ -89,15 +89,13 @@ describe('airports.json', () => {
   });
 });
 
-// Same fixed cutoff as scripts/airports-seed.mjs: sightings first seen later are not part of the seed.
-const SEED_CUTOFF = '2026-10-27T20:40:00.000Z';
 const DATA = process.env.PA_DATA_DIR ?? path.resolve(import.meta.dirname, '../../../data');
 const hasData = fs.existsSync(path.join(DATA, 'planesabove.db')) && fs.existsSync(path.join(DATA, 'vrs-standing-data/routes/schema-01'));
 describe.skipIf(!hasData)('seed coverage (needs data/ with the sightings DB and the VRS snapshot)', () => {
-  it('every ICAO on a VRS route of a sighted callsign is in the table', () => {
+  it('every ICAO on a VRS route of any sighted callsign is in the table (the seed takes the whole VRS airport list)', () => {
     const files = (d: string): string[] => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? files(path.join(d, e.name)) : e.name.endsWith('.csv') ? [path.join(d, e.name)] : []));
     const db = new Database(path.join(DATA, 'planesabove.db'), { readonly: true });
-    const calls = new Set((db.prepare('SELECT DISTINCT callsign FROM sightings WHERE callsign IS NOT NULL AND first_seen_at <= ?').all(SEED_CUTOFF) as { callsign: string }[]).map((r) => r.callsign.trim().toUpperCase()));
+    const calls = new Set((db.prepare('SELECT DISTINCT callsign FROM sightings WHERE callsign IS NOT NULL').all() as { callsign: string }[]).map((r) => r.callsign.trim().toUpperCase()));
     db.close();
     const missing = new Set<string>();
     const table = defaultTables().airports;

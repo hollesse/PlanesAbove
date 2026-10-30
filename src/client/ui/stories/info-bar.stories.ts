@@ -17,7 +17,7 @@ export const EinFlugzeugRouteUnbekannt = { ...story({ variant: 'single', flight:
 export const ZweiFlugzeuge = { ...story({ variant: 'double', flights: [SAMPLE_FLIGHTS.C, SAMPLE_FLIGHTS.D] }), name: 'Zwei Flugzeuge' };
 export const Zuletzt = { ...story({ variant: 'recent', text: RECENT_TEXT }), name: 'Schmale „Zuletzt“-Leiste' };
 
-// Longest route of tables/airports.json (ADR 0021): the two longest labels. tests/e2e/long-route.spec.ts checks this text against the table.
+// Benchmark route of two long labels from tables/airports.json (ADR 0021). tests/e2e/long-route.spec.ts checks this text against the table.
 const LONGEST_ROUTE = 'Santiago de Compostela (SCQ) → Jerez de la Frontera (XRY)';
 const longest = (flights: InfoBarProps): HTMLElement =>
   h('div', { class: 'pa-longest-route', style: 'display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:24px' },
