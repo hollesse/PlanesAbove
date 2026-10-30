@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-30 17:10 -- Capture / Captured: airspace-rrazj - Lokale Vereinsflieger per Hex-Code erfassen und den Verein statt der Airline anzeigen
+
+**Type:** Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** Kuratierte Tabelle Hex-Code -> Verein/Heimatplatz; Verein statt Airline anzeigen, z. B. Sportfluggruppe Elz fuer D-EBEC
+
+---
+
+## 2026-10-30 17:10 -- Capture / Captured: airspace-fehby - Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.)
+
+**Type:** Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** Kleinflugzeuge mit Registrierung als Callsign (D-Exxx) bekommen keine Route aus adsbdb/hexdb/VRS, sondern Route unbekannt (Beispiel DEBEC)
+
+---
+
 ## 2026-10-28 16:08 -- Work session ended
 
 **Type:** Work / Session end
