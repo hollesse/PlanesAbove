@@ -5,6 +5,22 @@ Newest entries on top.
 
 ---
 
+## 2026-10-30 17:35 -- Task verified and completed: sky-scene-t6h2p - ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback
+
+**Type:** Work / Task completion
+**Task:** sky-scene-t6h2p - ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback
+**Summary:** Opt-in ElevenLabs speech adapter (PCM wrapped to WAV) behind the SpeechSynthesizer port, with a persisted monthly character budget and a silent Piper fallback cached under the fallback key; config, wiring, docs and compose updated.
+**Duration:** 8m
+**Verification:** PASS (iteration 1)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 15
+**Tests added:** 14
+**ADRs written:** none
+**README delta:** README.md: appended-fallback into ## Ubiquitous language (named section "Decisions" not found)
+**Commit note:** the squash-merged source/test files landed in ec1086a (a concurrent modeling capture committed the whole index while this integration was staged); this task's own commit carries only the bookkeeping.
+
+---
+
 ## 2026-10-30 17:34 -- Modeling / Captured: design-system-pyheh - Entwurf in Storybook: Zwei-Flugzeuge-Ansicht mit beiden Flugzeugen gleich groß, Typklasse je Slot per Control unten wählbar, passende Übergänge dazu
 
 **Type:** Modeling / Capture

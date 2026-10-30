@@ -1,7 +1,7 @@
 ---
 id: sky-scene-t6h2p
 title: ElevenLabs-Adapter (opt-in) mit Zeichenbudget und Piper-Fallback
-status: doing
+status: done
 type: feature
 context: sky-scene
 created: 2026-10-27
@@ -72,3 +72,19 @@ speech:
 - Optional für den Worker, falls billig: `GET /v1/user/subscription` beim Boot einmal abfragen und `monthlyCharacterBudget` damit plausibilisieren (Log, kein Override).
 - Mögliches Folge-Ticket (nicht Teil dieses Tasks): `/healthz` meldet den Zustand der Sprachausgabe (letzter Synthese-Fehler, Budgetstand) als `degraded`; aufgefallen am 30.10.2026, als der Piper-Sidecar im Default-Bridge-Netz unerreichbar war und nichts es anzeigte.
 - Default-Stimme: Der Worker wählt aus `GET /v1/voices` eine deutsche Stimme mit `labels.language = de` (oder eine mehrsprachige Standardstimme) und dokumentiert voice_id und Namen; der Betreiber hört sich danach durch (human-eye-Kriterium).
+
+## Outcome
+
+Implemented the opt-in ElevenLabs speech adapter per ADR 0012 and the task's refinement.
+
+- `src/server/modules/sky-scene/elevenlabs-speech.ts`: `ElevenLabsSpeechSynthesizer` via `guardedFetch`; PCM wrapped by new `pcmToWav` in `wav.ts`; error mapping 401 unavailable (+ warn mentioning ELEVENLABS_API_KEY), 429/402 quota-exceeded, 404/422 bad-voice, rest unavailable.
+- `speech-usage.ts` + migration `0008-speech-usage.ts`: persisted monthly character counter (service time zone).
+- `audio-service.ts`: optional `fallback` and `budget`; order = primary cache file, budget check, primary synth, else fallback (cached under the fallback key, primary key stays empty); first fallback of a month logs warn, later info; syntheses log `charactersUsedThisMonth`. Behaviour without fallback/budget is unchanged.
+- `speech-setup.ts` + `app.ts`: wiring; `adapter: elevenlabs` without `ELEVENLABS_API_KEY` warns and runs the fallback only. Mock mode still uses the fake adapter.
+- `config.ts`: adapter `piper|elevenlabs|fake`, `fallback` (`piper|fake`), `fallbackVoice`, `elevenlabs{modelId,outputFormat(pcm_* only),monthlyCharacterBudget,timeoutMs}`; render default lazy for elevenlabs, eager otherwise. Extra key not in the task: `fallbackVoice` (needed because the fallback Piper voice differs from the ElevenLabs voice_id).
+- Docs/config: README (ElevenLabs section after Sprachausgabe step 6), `config.example.yaml`, `docker-compose.zimaos.yml` and `docker-compose.yml` (`ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}`; `docker compose config` valid without the variable).
+- Tests (14 new, `npm test`: 571 passed): contract tests for the adapter, `pcmToWav` round trip, AudioService budget/fallback/quota/persistence/cache-key/logging, `buildSpeechSetup` without key, schema tests.
+
+Unverified (no ELEVENLABS_API_KEY in this environment, nothing was called live): (1) that the free plan has API access, (2) 1 credit = 1 character with `eleven_flash_v2_5`, (3) that the default voice_id `21m00Tcm4TlvDq8ikWAM` (Rachel) is available and sounds good in German. The operator must run once with their key: `curl -s -H "xi-api-key: $ELEVENLABS_API_KEY" https://api.elevenlabs.io/v1/user/subscription` (check `character_limit`/`character_count`; a 401/403 means the free plan has no API access) and `curl -s -H "xi-api-key: $ELEVENLABS_API_KEY" https://api.elevenlabs.io/v1/voices`. The [human-eye] criterion (voice sounds understandable and child-friendly on the iPad) stays open for the operator by design. Optional boot-time subscription plausibility log was not implemented.
+
+No new ADR; the amendment to ADR 0012 (PCM instead of MP3, fallback cached under fallback key, counter in SQLite) is in the README delta.
