@@ -11,8 +11,8 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 20
 <!-- task-counts:end -->
 
@@ -23,6 +23,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
+- **airspace-z5r8n** — Unbekannte Airline- und Typcodes aus dem Betrieb (Runde 2) kuratieren: 119 Airline-Präfixe und 39 Typcodes prüfen und belegte in die Tabellen aufnehmen (chore) — `doing/airspace-z5r8n-unbekannte-airline-und-typcodes-runde-2-kuratieren.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
