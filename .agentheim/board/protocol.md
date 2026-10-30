@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-30 19:45 -- Modeling / Promoted: sky-scene-k3f8d - ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten (402 ist kein Kontingentfehler)
+
+**Type:** Modeling / Promote
+**BC:** sky-scene
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-30 17:47 -- Work session ended
 
 **Type:** Work / Session end
