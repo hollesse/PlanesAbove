@@ -11,9 +11,9 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
+- **Todo:** 0
 - **Doing:** 0
-- **Done:** 20
+- **Done:** 21
 <!-- task-counts:end -->
 
 ### Todo
@@ -27,6 +27,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **airspace-z5r8n** — Unbekannte Airline- und Typcodes aus dem Betrieb (Runde 2) kuratieren: 119 Airline-Präfixe und 39 Typcodes prüfen und belegte in die Tabellen aufnehmen (chore) — `done/airspace-z5r8n-unbekannte-airline-und-typcodes-runde-2-kuratieren.md`
 - **airspace-cn6t7** — Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen (bug) — `done/airspace-cn6t7-routenanzeige-bei-langen-flughafennamen-ganze-route-sichtbar.md`
 - **airspace-w1q3x** — hexdb und VRS immer beide fragen; eine VRS-Mehrleg-Route, deren Endstück zur hexdb-Route passt, gewinnt (Startflughafen bei Zwischenlandungen) (feature) — `done/airspace-w1q3x-hexdb-und-vrs-immer-beide-fragen-mehrleg-route-bevorzugen.md`
 - **airspace-b7kx2** — Eigene Flughafenliste, damit Routen unabhängig vom Anbieter gleich aussehen (feature) — `done/airspace-b7kx2-eigene-flughafenliste-einheitliche-routen-namen.md`

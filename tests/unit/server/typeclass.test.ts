@@ -67,7 +67,7 @@ describe('resolveAirline', () => {
   });
   it('ignores callsigns that do not look like airline callsigns (GA registrations)', () => {
     expect(resolveAirline(T, 'DHYAV')).toBeUndefined();
-    expect(resolveAirline(T, 'CHX77')?.name).toBeUndefined();
+    expect(resolveAirline(T, 'DEABC')).toBeUndefined();
     expect(resolveAirline(T, undefined)).toBeUndefined();
   });
   it('reports an unknown but well-formed prefix as unmapped without a name', () => {
@@ -126,5 +126,53 @@ describe('curation from live operation (airspace-n8c4t)', () => {
     expect(resolveTypeClass(T, 'ZZZZ', 'A1')).toMatchObject({ typklasse: 'light-aircraft', unmapped: false });
     expect(resolveTypeClass(T, 'ZZZZ', undefined)).toMatchObject({ typklasse: 'light-aircraft', kategorie: 'unbekannt', unmapped: false });
     expect(T.typeClasses).not.toHaveProperty('ZZZZ');
+  });
+});
+
+describe('curation round 2 (airspace-z5r8n)', () => {
+  const PREFIXES = ['UPS', 'SRR', 'TVS', 'ABR', 'ASL', 'BPO', 'OCN', 'ANA', 'FHY', 'RCH', 'SWT', 'QFA', 'CGF', 'CND', 'JAL', 'TAY', 'CTN', 'LGL', 'FHM', 'GAF', 'KAC', 'MAS', 'MSR', 'BTI', 'EVA', 'FDX', 'ITY', 'MNB', 'TVF', 'VJT'];
+  it('has the curated airline prefixes with name and two-letter country', () => {
+    for (const prefix of PREFIXES) {
+      expect(T.airlines[prefix]?.name, prefix).toBeTruthy();
+      expect(T.airlines[prefix].country, prefix).toMatch(/^[A-Z]{2}$/);
+    }
+  });
+  it('resolves curated airline names', () => {
+    expect(resolveAirline(T, 'UPS123')?.name).toBe('UPS Airlines');
+    expect(resolveAirline(T, 'OCN1A')?.name).toBe('Discover Airlines');
+    expect(resolveAirline(T, 'TVS3')?.name).toBe('Smartwings');
+    expect(resolveAirline(T, 'GAF123')?.name).toBe('Luftwaffe');
+  });
+  it('has the curated type codes with valid Typklasse and Kategorie', () => {
+    const curated = ['Allgemeine Luftfahrt', 'Geschäftsreise', 'Hubschrauber', 'Kurzstrecke', 'Langstrecke', 'Mittelstrecke', 'Regional', 'Segelflug'];
+    for (const code of ['A306', 'C17', 'LJ35', 'WT9', 'FK9', 'GL7T', 'S22T', 'ULAC', 'A400', 'C30J', 'AS32', 'H60', 'AT73', 'HDJT']) {
+      const e = T.typeClasses[code];
+      expect(e, code).toBeDefined();
+      expect(PLANE_TYPE_IDS as readonly string[]).toContain(e.typklasse);
+      expect(curated).toContain(e.kategorie);
+    }
+  });
+  it('resolves type classes without fallback', () => {
+    for (const [code, klass] of [['A306', 'widebody'], ['C17', 'widebody'], ['AS32', 'helicopter'], ['WT9', 'light-aircraft']] as const) {
+      expect(resolveTypeClass(T, code, undefined), code).toMatchObject({ typklasse: klass, fallback: false, unmapped: false });
+    }
+  });
+});
+
+describe('curation round 3 from VRS standing data (CC0)', () => {
+  it('has the prefixes looked up in the VRS airline list', () => {
+    for (const prefix of ['NGN', 'SAR', 'MGH', 'CHX', 'EFW', 'NMA', 'SCR', 'MBU', 'IFA', 'VJH', 'CVK', 'SWU']) {
+      expect(T.airlines[prefix]?.name, prefix).toBeTruthy();
+      expect(T.airlines[prefix].country, prefix).toMatch(/^[A-Z]{2}$/);
+    }
+  });
+  it('resolves looked-up airline names', () => {
+    expect(resolveAirline(T, 'NGN12')?.name).toBe('LEAV Aviation');
+    expect(resolveAirline(T, 'CHX33')?.name).toBe('DRF Luftrettung');
+  });
+  it('resolves the type codes from the VRS model-type list without fallback', () => {
+    for (const [code, klass] of [['CLON', 'helicopter'], ['GOLF', 'light-aircraft'], ['DAL4', 'light-aircraft'], ['G70', 'light-aircraft'], ['NG5', 'light-aircraft'], ['P28S', 'light-aircraft']] as const) {
+      expect(resolveTypeClass(T, code, undefined), code).toMatchObject({ typklasse: klass, fallback: false, unmapped: false });
+    }
   });
 });

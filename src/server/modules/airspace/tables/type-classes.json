@@ -814,5 +814,205 @@
   "typklasse": "light-aircraft",
   "kategorie": "Allgemeine Luftfahrt",
   "besonderheit": "Militärischer Trainer"
+ },
+ "A306": {
+  "name": "Airbus A300-600",
+  "typklasse": "widebody",
+  "kategorie": "Mittelstrecke"
+ },
+ "C17": {
+  "name": "Boeing C-17 Globemaster III",
+  "typklasse": "widebody",
+  "kategorie": "Langstrecke",
+  "besonderheit": "Militärtransporter"
+ },
+ "A400": {
+  "name": "Airbus A400M",
+  "typklasse": "turboprop",
+  "kategorie": "Langstrecke",
+  "besonderheit": "Militärtransporter"
+ },
+ "C30J": {
+  "name": "Lockheed C-130J Super Hercules",
+  "typklasse": "turboprop",
+  "kategorie": "Regional",
+  "besonderheit": "Militärtransporter"
+ },
+ "AN12": {
+  "name": "Antonow An-12",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "R135": {
+  "name": "Boeing RC-135",
+  "typklasse": "narrowbody",
+  "kategorie": "Langstrecke",
+  "besonderheit": "Militärisches Aufklärungsflugzeug"
+ },
+ "LJ35": {
+  "name": "Learjet 35",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "GL7T": {
+  "name": "Bombardier Global 7500",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "GL5T": {
+  "name": "Bombardier Global 5000/5500",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "BE40": {
+  "name": "Beechcraft Beechjet 400",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "HDJT": {
+  "name": "HondaJet",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "GA6C": {
+  "name": "Gulfstream G600",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "GA7C": {
+  "name": "Gulfstream G700",
+  "typklasse": "business-jet",
+  "kategorie": "Geschäftsreise"
+ },
+ "AS32": {
+  "name": "Eurocopter AS332 Super Puma",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "H60": {
+  "name": "Sikorsky UH-60 Black Hawk",
+  "typklasse": "helicopter",
+  "kategorie": "Hubschrauber"
+ },
+ "AT73": {
+  "name": "ATR 72-300",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "PAY1": {
+  "name": "Piper PA-31T Cheyenne",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "P46T": {
+  "name": "Piper PA-46 Meridian",
+  "typklasse": "turboprop",
+  "kategorie": "Regional"
+ },
+ "WT9": {
+  "name": "Dynamic WT9",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "FK9": {
+  "name": "FK-Lightplanes FK9",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "S22T": {
+  "name": "Cirrus SR22 Turbo",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "ULAC": {
+  "name": "Ultraleichtflugzeug",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "C210": {
+  "name": "Cessna 210 Centurion",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "M20P": {
+  "name": "Mooney M20",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "BE33": {
+  "name": "Beechcraft Bonanza 33",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "DA50": {
+  "name": "Diamond DA50",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "P149": {
+  "name": "Piaggio P.149",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "PA24": {
+  "name": "Piper PA-24 Comanche",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "PA38": {
+  "name": "Piper PA-38 Tomahawk",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "PIVI": {
+  "name": "Pipistrel Virus",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "SKRA": {
+  "name": "Skyranger",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "RF3": {
+  "name": "Fournier RF-3 (Motorsegler)",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "CH60": {
+  "name": "Zenair CH 601 Zodiac",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "CLON": {
+  "name": "AutoGyro Cavalon",
+  "typklasse": "helicopter",
+  "kategorie": "Allgemeine Luftfahrt",
+  "besonderheit": "Tragschrauber"
+ },
+ "GOLF": {
+  "name": "Tecnam P96 Golf",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "DAL4": {
+  "name": "Dallach D4 Fascination",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "G70": {
+  "name": "Groppo G-70",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "NG5": {
+  "name": "BRM Aero Bristell",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "P28S": {
+  "name": "Piper PA-28R Turbo Arrow III",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
  }
 }

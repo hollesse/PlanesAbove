@@ -5,6 +5,27 @@ Newest entries on top.
 
 ---
 
+## 2026-10-30 11:17 -- Task verified and completed: airspace-z5r8n - Unbekannte Airline- und Typcodes aus dem Betrieb (Runde 2) kuratieren: 119 Airline-Präfixe und 39 Typcodes prüfen und belegte in die Tabellen aufnehmen
+
+**Type:** Work / Task completion
+**Task:** airspace-z5r8n - Unbekannte Airline- und Typcodes aus dem Betrieb (Runde 2) kuratieren: 119 Airline-Präfixe und 39 Typcodes prüfen und belegte in die Tabellen aufnehmen
+**Summary:** (no summary provided)
+**Duration:** (unknown)
+**Verification:** PASS (iteration 1)
+**Files changed:** 0
+**Tests added:** 0
+**ADRs written:** none
+
+---
+
+## 2026-10-30 11:12 -- Batch started: [airspace-z5r8n]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-z5r8n - Unbekannte Airline- und Typcodes aus dem Betrieb (Runde 2) kuratieren: 119 Airline-Präfixe und 39 Typcodes prüfen und belegte in die Tabellen aufnehmen
+**Parallel:** no (1 worker)
+
+---
+
 ## 2026-10-28 15:13 -- Task verified and completed: infrastructure-fbpd5 - Commit-SHA als eigenes Feld `commit` in /healthz und im Startlog, per CI-Build-Arg ins Image; buildId bleibt der Client-Asset-Hash und steuert weiter den iPad-Reload
 
 **Type:** Work / Task completion
