@@ -528,15 +528,15 @@
   "country": "DE"
  },
  "SAR": {
-  "name": "Sprintair",
+  "name": "SprintAir",
   "country": "PL"
  },
  "MGH": {
-  "name": "Mavi Gök Airlines",
+  "name": "Mavi Gök Aviation",
   "country": "TR"
  },
  "CHX": {
-  "name": "Luftrettung (Christoph)",
+  "name": "DRF Luftrettung",
   "country": "DE"
  },
  "EFW": {
@@ -547,8 +547,8 @@
   "name": "Nesma Airlines",
   "country": "EG"
  },
- "UNI": {
-  "name": "Unicair",
+ "SCR": {
+  "name": "Silver Cloud Air",
   "country": "DE"
  },
  "GAC": {
@@ -564,7 +564,7 @@
   "country": "GB"
  },
  "IFA": {
-  "name": "FAI Air Ambulance",
+  "name": "FAI Air Service",
   "country": "DE"
  },
  "MBU": {
@@ -576,27 +576,31 @@
   "country": "GB"
  },
  "PVD": {
-  "name": "PAD Aviation",
+  "name": "PAD Aviation Service",
   "country": "DE"
  },
  "VJH": {
-  "name": "Air Hamburg",
+  "name": "VistaJet Germany",
   "country": "DE"
  },
  "AAB": {
-  "name": "Abelag Aviation",
+  "name": "Luxaviation Belgium",
   "country": "BE"
  },
  "ADZ": {
   "name": "Compass Cargo Airlines",
   "country": "BG"
  },
+ "AXY": {
+  "name": "Air X Charter",
+  "country": "MT"
+ },
  "BAH": {
   "name": "Bahrain Amiri Flight",
   "country": "BH"
  },
  "BOH": {
-  "name": "AirBohemia",
+  "name": "Air Bohemia",
   "country": "CZ"
  },
  "CVK": {
@@ -607,16 +611,12 @@
   "name": "Aeropartner",
   "country": "CZ"
  },
- "DMS": {
-  "name": "Diamond Sky",
-  "country": "EE"
- },
  "EIS": {
   "name": "EIS Aircraft",
   "country": "DE"
  },
  "ELJ": {
-  "name": "Delta Private Jets",
+  "name": "Delta Air Elite",
   "country": "US"
  },
  "FNF": {
@@ -624,7 +624,7 @@
   "country": "FI"
  },
  "FSF": {
-  "name": "Fly7 Executive Aviation",
+  "name": "Fly7",
   "country": "FI"
  },
  "FXT": {
@@ -635,9 +635,9 @@
   "name": "GFD Gesellschaft für Flugzieldarstellung",
   "country": "DE"
  },
- "HUE": {
-  "name": "Haute Aviation",
-  "country": "CH"
+ "HYM": {
+  "name": "HiSky",
+  "country": "MD"
  },
  "HYS": {
   "name": "HiSky Europe",
@@ -659,9 +659,9 @@
   "name": "Liebherr Aviation",
   "country": "DE"
  },
- "MJE": {
-  "name": "Empire Aviation",
-  "country": "AE"
+ "PNC": {
+  "name": "Prince Aviation",
+  "country": "RS"
  },
  "QAJ": {
   "name": "Quick Air Jet Charter",
@@ -675,13 +675,29 @@
   "name": "Red Sea Airlines",
   "country": "EG"
  },
+ "SAH": {
+  "name": "Sayakhat Airlines",
+  "country": "KZ"
+ },
  "SCQ": {
-  "name": "Scandinavian Aviation Academy",
+  "name": "OSM Aviation Academy",
   "country": "SE"
+ },
+ "SVI": {
+  "name": "Sky Vision Airlines",
+  "country": "EG"
+ },
+ "SWU": {
+  "name": "SkyAlps",
+  "country": "IT"
  },
  "TDR": {
   "name": "Trade Air",
   "country": "HR"
+ },
+ "UBD": {
+  "name": "UR Airlines",
+  "country": "IQ"
  },
  "UBT": {
   "name": "Norse Atlantic UK",

@@ -159,15 +159,20 @@ describe('curation round 2 (airspace-z5r8n)', () => {
   });
 });
 
-describe('curation round 3 from adsbdb airline lookup', () => {
-  it('has the prefixes looked up at adsbdb', () => {
-    for (const prefix of ['NGN', 'SAR', 'MGH', 'CHX', 'EFW', 'NMA', 'UNI', 'IFA', 'MBU', 'VJH', 'CVK', 'UBT']) {
+describe('curation round 3 from VRS standing data (CC0)', () => {
+  it('has the prefixes looked up in the VRS airline list', () => {
+    for (const prefix of ['NGN', 'SAR', 'MGH', 'CHX', 'EFW', 'NMA', 'SCR', 'MBU', 'IFA', 'VJH', 'CVK', 'SWU']) {
       expect(T.airlines[prefix]?.name, prefix).toBeTruthy();
       expect(T.airlines[prefix].country, prefix).toMatch(/^[A-Z]{2}$/);
     }
   });
   it('resolves looked-up airline names', () => {
     expect(resolveAirline(T, 'NGN12')?.name).toBe('LEAV Aviation');
-    expect(resolveAirline(T, 'CHX33')?.name).toBe('Luftrettung (Christoph)');
+    expect(resolveAirline(T, 'CHX33')?.name).toBe('DRF Luftrettung');
+  });
+  it('resolves the type codes from the VRS model-type list without fallback', () => {
+    for (const [code, klass] of [['CLON', 'helicopter'], ['GOLF', 'light-aircraft'], ['DAL4', 'light-aircraft'], ['G70', 'light-aircraft'], ['NG5', 'light-aircraft'], ['P28S', 'light-aircraft']] as const) {
+      expect(resolveTypeClass(T, code, undefined), code).toMatchObject({ typklasse: klass, fallback: false, unmapped: false });
+    }
   });
 });

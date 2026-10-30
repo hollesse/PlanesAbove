@@ -983,5 +983,36 @@
   "name": "Zenair CH 601 Zodiac",
   "typklasse": "light-aircraft",
   "kategorie": "Allgemeine Luftfahrt"
+ },
+ "CLON": {
+  "name": "AutoGyro Cavalon",
+  "typklasse": "helicopter",
+  "kategorie": "Allgemeine Luftfahrt",
+  "besonderheit": "Tragschrauber"
+ },
+ "GOLF": {
+  "name": "Tecnam P96 Golf",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "DAL4": {
+  "name": "Dallach D4 Fascination",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "G70": {
+  "name": "Groppo G-70",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "NG5": {
+  "name": "BRM Aero Bristell",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
+ },
+ "P28S": {
+  "name": "Piper PA-28R Turbo Arrow III",
+  "typklasse": "light-aircraft",
+  "kategorie": "Allgemeine Luftfahrt"
  }
 }
