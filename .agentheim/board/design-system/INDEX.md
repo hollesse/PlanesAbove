@@ -10,10 +10,10 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 2
+- **Backlog:** 3
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 13
+- **Doing:** 0
+- **Done:** 14
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **design-system-pyheh** — Entwurf in Storybook: Zwei-Flugzeuge-Ansicht mit beiden Flugzeugen gleich groß, Typklasse je Slot per Control unten wählbar, passende Übergänge dazu (feature) — `doing/design-system-pyheh-zwei-flugzeuge-gleich-gross-entwurf-in-storybook.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **design-system-pyheh** — Entwurf in Storybook: Zwei-Flugzeuge-Ansicht mit beiden Flugzeugen gleich groß, Typklasse je Slot per Control unten wählbar, passende Übergänge dazu (feature) — `done/design-system-pyheh-zwei-flugzeuge-gleich-gross-entwurf-in-storybook.md`
 - **design-system-h7w2q** — Szene füllt den iPad-Bildschirm als Home-Bildschirm-Web-App nicht ganz aus; iPadOS rechnet die Höhe ohne die transparente Statusleiste, unten bleibt ein schwarzer Streifen (bug) — `done/design-system-h7w2q-untere-statusleiste-auf-dem-ipad-ist-transparent-und-zeigt-den-himmel.md`
 - **design-system-w5n2k** — Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil) (bug) — `done/design-system-w5n2k-long-route-webkit-tests-instabil.md`
 - **design-system-grp94** — Lange Route: gewählte Variante in der Info-Leiste umsetzen; Playwright-Test (WebKit) mit den zwei längsten Flughafennamen (feature) — `done/design-system-grp94-lange-route-gewaehlte-variante-umsetzen-playwright-test.md`
@@ -45,6 +45,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **design-system-q7mxe** — Größenfaktor je Typklasse (Länge Narrowbody/Widebody realistisch) (feature) — `backlog/design-system-q7mxe-gr-enfaktor-je-typklasse-l-nge-narrowbody-widebody-realistis.md`
 - **design-system-m4r7v** — Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei (feature) — `backlog/design-system-m4r7v-realistische-beispieldaten-info-leiste-stories.md`
 - **design-system-t6wz4** — Flugzeuge je Airline in eigener Lackierung zeichnen, fehlende Airline-Designs in der Statistik ausweisen (feature) — `backlog/design-system-t6wz4-flugzeuge-je-airline-in-eigener-lackierung-statistik-standard-fallback.md`
 <!-- backlog-list:end -->

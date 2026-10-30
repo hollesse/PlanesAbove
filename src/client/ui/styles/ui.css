@@ -70,3 +70,14 @@
 .pa-play { font: inherit; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; background: var(--pa-ink); color: var(--pa-paper); border: 2px solid var(--pa-ink); padding: 4px 12px; border-radius: 0; cursor: pointer; flex: none; white-space: nowrap; }
 .pa-play:hover { background: var(--pa-signal); border-color: var(--pa-signal); }
 
+
+/* Entwurf (design-system-pyheh): two EQUAL plane slots. Own classes; pa-slot-one/-two above stay as they are.
+   Tops are in cqw (share of the screen WIDTH), so the planes sit in the sky above the bar at 4:3 and 5:3
+   (sky height = 69 % of the screen: 51.7cqw at 4:3, 41.4cqw at 5:3; a slot is 44cqw * 0.46 = 20.2cqw high). */
+.pa-eq { --pa-eq-t1: 16cqw; --pa-eq-t2: 16cqw; }
+.pa-eq-staggered { --pa-eq-t1: 8cqw; --pa-eq-t2: 19.5cqw; }
+.pa-slot-eq-single { left: 14%; width: 72%; top: 7.5cqw; }
+.pa-slot-eq-one { left: 4%; width: 44%; top: var(--pa-eq-t1, 16cqw); }
+.pa-slot-eq-two { left: 52%; width: 44%; top: var(--pa-eq-t2, 16cqw); }
+.pa-badge-slot-eq-one { left: 2.5%; top: calc(var(--pa-eq-t1, 16cqw) - 1cqw); }
+.pa-badge-slot-eq-two { left: 50.5%; top: calc(var(--pa-eq-t2, 16cqw) - 1cqw); }

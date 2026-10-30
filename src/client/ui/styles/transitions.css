@@ -35,3 +35,10 @@
 @keyframes pa11-badge{0%,72%{opacity:0;transform:scale(.4)}82%,100%{opacity:1;transform:scale(1)}}
 @keyframes pa11-bar{0%,74%{transform:translateY(105%)}94%,100%{transform:translateY(0)}}
 @keyframes pa-big-bar{0%,77%{transform:translateY(105%)}100%{transform:translateY(0)}}
+
+/* Entwurf (design-system-pyheh): plane keyframes for equal slots (see transitions/catalog-equal.ts). cqw = screen width; single slot: left 14 %, 72 % wide, top 7.5cqw. */
+@keyframes pae-pa2-plane1{0%,22%{transform:translate(0,0) scale(1)}48%,100%{transform:translate(-10cqw,calc(var(--pa-eq-t1,16cqw) - 7.5cqw)) scale(.6111)}}
+@keyframes pae-pa5-p1{0%,44%{transform:translate(0,0) scale(1)}72%,100%{transform:translate(10cqw,calc(7.5cqw - var(--pa-eq-t1,16cqw))) scale(1.6364)}}
+@keyframes pae-pa6-p2{0%,46%{transform:translate(0,0) scale(1)}76%,100%{transform:translate(-38cqw,calc(7.5cqw - var(--pa-eq-t2,16cqw))) scale(1.6364)}}
+@keyframes pae-pa6-p1{0%,14%{transform:translateX(0)}50%,100%{transform:translateX(110cqw)}}
+@keyframes pae-pa7-pout{0%,8%{transform:translateX(0)}40%,100%{transform:translateX(110cqw)}}

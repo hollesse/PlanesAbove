@@ -1,11 +1,16 @@
 import { h } from '../dom';
-import { renderBadgeSlot, renderPlaneSlot } from '../organisms/scene-layer';
+import { renderBadgeSlot, renderPlaneSlot, type PlaneSlot } from '../organisms/scene-layer';
+import type { PaintedPlaneProps } from '../molecules/painted-plane';
 import { renderInfoBar, type InfoBarProps } from '../organisms/info-bar';
 import { renderSceneHeader } from '../molecules/scene-header';
 import { sampleTransitionData } from '../domain/transition-samples';
 import { skyInk } from '../domain/catalog';
 import { renderSkyLayer, renderStage, type ScreenAspect } from '../templates/screen';
 import { DURATION, type Anim, type BarSpec, type Layer, type PlaneRef, type TransitionData, type TransitionSpec } from './catalog';
+
+/** How plane and badge slots are rendered; default = the live layout (pa-slot-*), the equal-slot draft passes its own. */
+export interface SlotRenderers { plane: (slot: PlaneSlot, plane: PaintedPlaneProps) => HTMLElement; badge: (n: 1 | 2) => HTMLElement }
+const STANDARD_SLOTS: SlotRenderers = { plane: renderPlaneSlot, badge: renderBadgeSlot };
 
 const planeOf = (d: TransitionData, r: PlaneRef) => d[r.side][r.index];
 
@@ -30,7 +35,7 @@ export function applyAnimation(el: HTMLElement, anim: Anim): void {
   el.style.setProperty('animation', `${anim.name} ${DURATION} ${anim.timing} 1 both paused`);
 }
 
-function buildLayer(layer: Layer, data: TransitionData): HTMLElement | null {
+function buildLayer(layer: Layer, data: TransitionData, slots: SlotRenderers): HTMLElement | null {
   let el: HTMLElement;
   switch (layer.kind) {
     case 'sky': el = renderSkyLayer(layer.sky ?? data.sky); break;
@@ -38,13 +43,13 @@ function buildLayer(layer: Layer, data: TransitionData): HTMLElement | null {
     case 'plane': {
       const p = planeOf(data, layer.plane);
       if (!p) return null;
-      el = renderPlaneSlot(layer.slot, p.plane);
+      el = slots.plane(layer.slot, p.plane);
       el.dataset.side = layer.plane.side;
       el.dataset.index = String(layer.plane.index);
       break;
     }
     case 'badge': {
-      el = renderBadgeSlot(layer.n);
+      el = slots.badge(layer.n);
       // The badge belongs to the arriving state while it still has a plane there.
       el.dataset.side = data.to[layer.n - 1] ? 'to' : 'from';
       el.dataset.index = String(layer.n - 1);
@@ -63,11 +68,11 @@ function buildLayer(layer: Layer, data: TransitionData): HTMLElement | null {
 }
 
 /** The screen of a transition in its start state, all animations paused. Layers whose data is missing are skipped. */
-export function renderTransitionStage(spec: TransitionSpec, data: TransitionData, aspect: ScreenAspect = '4:3'): HTMLElement {
+export function renderTransitionStage(spec: TransitionSpec, data: TransitionData, aspect: ScreenAspect = '4:3', slots: SlotRenderers = STANDARD_SLOTS): HTMLElement {
   const stage = renderStage(aspect);
   stage.dataset.transition = spec.id;
   for (const layer of spec.layers) {
-    const el = buildLayer(layer, data);
+    const el = buildLayer(layer, data, slots);
     if (el) stage.append(el);
   }
   return stage;
@@ -93,11 +98,12 @@ export function resetTransition(stage: HTMLElement): void {
   });
 }
 
-export interface TransitionProps { spec: TransitionSpec; aspect?: ScreenAspect; autoplay?: boolean; data?: TransitionData }
+export interface TransitionProps { spec: TransitionSpec; aspect?: ScreenAspect; autoplay?: boolean; data?: TransitionData; slots?: SlotRenderers; stageClass?: string }
 
 /** Pages/Übergänge: a playable transition (label, "Start ▸" button, screen). */
-export function renderTransition({ spec, aspect = '4:3', autoplay = false, data = sampleTransitionData(spec.id) }: TransitionProps): HTMLElement {
-  const stage = renderTransitionStage(spec, data, aspect);
+export function renderTransition({ spec, aspect = '4:3', autoplay = false, data = sampleTransitionData(spec.id), slots, stageClass }: TransitionProps): HTMLElement {
+  const stage = renderTransitionStage(spec, data, aspect, slots);
+  if (stageClass) stage.className += ` ${stageClass}`;
   const btn = h('button', { class: 'pa-play', text: 'Start ▸', attrs: { type: 'button' } });
   btn.addEventListener('click', () => playTransition(stage));
   const root = h('div', { class: 'pa-transition', data: { transition: spec.id } }, h('div', { class: 'pa-transition-head' }, h('span', { class: 'pa-eyebrow', text: `${spec.label} · 5 s` }), btn), stage);

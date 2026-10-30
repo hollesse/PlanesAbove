@@ -1,7 +1,7 @@
 ---
 id: design-system-pyheh
 title: Entwurf in Storybook: Zwei-Flugzeuge-Ansicht mit beiden Flugzeugen gleich groß, Typklasse je Slot per Control unten wählbar, passende Übergänge dazu
-status: doing
+status: done
 type: feature
 context: design-system
 created: 2026-10-30
@@ -43,3 +43,21 @@ Eine **eigene Storybook-Komponente/Story** (nicht die bestehende „Organisms/Sz
 - Verwandt: design-system-kcpnw (Übergangs-Player datengetrieben) — Grundlage für die Übergangs-Variante. ADR 0020 (fester Timer statt `animationend`) gilt weiter.
 - Erst nach Abnahme folgt ein eigener Task für sky-scene (App nutzt die neue Szenen-Ebene) und ggf. das Anpassen der 22 bestehenden Übergänge.
 - Offen für die Abnahme: nebeneinander auf gleicher Höhe oder leicht versetzt? Der Worker darf beide Varianten als zwei Stories anbieten.
+
+## Outcome
+
+Entwurf (nur Storybook, App und die 22 bestehenden Übergänge unverändert) zum Vergleichen und Abnehmen:
+
+- **Template-Story** `Templates/Entwurf: Zwei Flugzeuge gleich groß` (`src/client/ui/stories/scene-equal.stories.ts`): vollständiger Screen mit Kopfzeile, Himmel, zwei Slots, zwei Plaketten und doppelter Info-Leiste (Daten aus `SAMPLE_FLIGHTS`). Controls: `aspect`, `time`, `weather`, `layout`, und zwei `select` "Typklasse Slot 1/2" mit allen 10 Typklassen. Zwei Stories: "Nebeneinander (gleiche Höhe)" und "Leicht versetzt".
+- **Übergangs-Stories** `Pages/Entwurf: Übergänge gleich groß` (`transitions-equal.stories.ts`): Flugzeug kommt / geht / wechselt (alle 11 Varianten aus dem Bestand), Start-Knopf, 5 s (`TRANSITION_MS`, fester Timer, ADR 0020), Typklasse je Slot und Layout wählbar. Ein Flugzeug behält seine Typklasse über den Wechsel, ein neu ankommendes nimmt die Typklasse seines Slot-Index (`retypeData`).
+- **Organism** `organisms/scene-layer-equal.ts` (eigene Klassen `pa-slot-eq-single/-one/-two`, `pa-badge-slot-eq-one/-two`), Template `templates/screen-equal.ts`.
+
+**Layout-Vorschlag (zur Abnahme):** beide Slots je 44 % Breite, Slot 1 bei left 4 %, Slot 2 bei left 52 %, Plaketten jeweils links oberhalb. Vertikale Position in `cqw` (Anteil der Bildschirmbreite), damit sie bei 4:3 und 5:3 im Himmel über der Info-Leiste bleiben: "nebeneinander" beide top 16cqw; "versetzt" Slot 1 top 8cqw, Slot 2 top 19,5cqw. Beide Varianten sind angeboten, der Betreiber wählt.
+
+**Entscheidung Übergänge:** kein zweiter handgeschriebener Spec-Satz. `transitions/catalog-equal.ts` leitet `EQUAL_TRANSITIONS` aus den 11 Flugzeug-Specs ab (gleiche Ids, Layer-Reihenfolge, Zeiten) und tauscht nur die fünf Plane-Keyframes aus, deren Geometrie von der Slotgröße abhängt (`pa2-plane1`, `pa5-p1`, `pa6-p2`, `pa6-p1`, `pa7-pout` -> `pae-*` in `styles/transitions.css`, in cqw und mit den Slot-Positions-Variablen). Den Slot-Klassenpräfix wählt der Renderer: der Player bekam die optionalen Parameter `slots` (SlotRenderers) und `stageClass`; Standardverhalten unverändert (bestehender Snapshot-Test grün). Die übrigen Keyframes (Prozent-Slides, Plaketten, Leisten) bleiben für 44-%-Slots gültig und werden wiederverwendet.
+
+**Befund Silhouetten (Notes-Prüfung):** gleiche viewBox (1000x460), gemessene Inhaltsbreite: narrowbody 938, widebody 973, jumbo-hump 985, double-decker 991, regional-jet 850, turboprop 860, business-jet 564, light-aircraft 306, glider 350, helicopter 914 von 1620 (ca. 56 % der Slotbreite). Kleine Klassen sind deutlich kleiner gezeichnet, aber Narrowbody vs. Widebody unterscheiden sich in der Länge nur um ca. 4 % (Höhe 283 vs. 347): nicht in realistischem Verhältnis. Folge-Item "Größenfaktor je Typklasse" liegt im Backlog.
+
+**Tests:** `tests/unit/equal-slots.test.ts` (8 Tests: gleiche Slotbreite im CSS, bestehende Klassen unverändert, zwei select-Controls mit genau den 10 Typklassen, Typklasse rendert Silhouette neu, 11 Übergänge samt Keyframes, Player mit eq-Slots, Typ-Erhalt, Übergangs-Stories) und `tests/e2e/equal-slots.spec.ts` (5 Playwright-Tests: Slotbreiten innerhalb 1 px, Slots+Plaketten im Himmel über `.pa-bar-double` ohne Beschnitt bei 4:3 und 5:3, beide Layouts; Übergangs-Stories spielbar). `npm test` (579 passed), `npm run typecheck`, `npm run build-storybook` sauber; neue E2E-Tests und der Story-Render-Test laufen grün in Chromium. 9 bereits bestehende App-E2E-Tests (`skeleton`, `stage-fill`) schlagen in Chromium fehl, weil der Mock-Service ohne `npm run build` (dist) nicht startet - unabhängig von dieser Änderung.
+
+**Offen für den Betreiber (bewusst, `[human-eye]`):** (1) Ist der Größenunterschied Narrowbody/Widebody sowie die Lesbarkeit von Business-Jet/Light Aircraft in Slot 2 erkennbar? (2) Abnahme bzw. Rückmeldung zum Entwurf (nebeneinander vs. versetzt). Diese beiden Kriterien bleiben offen.
