@@ -1,7 +1,7 @@
 ---
 id: livery-editor-rv382
 title: Entscheidung: Editor als lokaler Vite-Dev-Server mit Schreib-Plugin unter tools/, nie im Client-Bundle oder Docker-Image
-status: todo
+status: doing
 type: decision
 context: livery-editor
 created: 2026-10-31

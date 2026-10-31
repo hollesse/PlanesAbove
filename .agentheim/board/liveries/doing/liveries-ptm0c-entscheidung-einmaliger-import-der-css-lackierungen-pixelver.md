@@ -1,7 +1,7 @@
 ---
 id: liveries-ptm0c
 title: Entscheidung: Einmaliger Import der CSS-Lackierungen, Pixelvergleich als Gate, Umstellung in einem Commit
-status: todo
+status: doing
 type: decision
 context: liveries
 created: 2026-10-31

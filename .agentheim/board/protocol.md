@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 12:02 -- Batch started: [livery-editor-rv382, liveries-ptm0c]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-rv382 - Entscheidung: Editor als lokaler Vite-Dev-Server mit Schreib-Plugin unter tools/, nie im Client-Bundle oder Docker-Image, liveries-ptm0c - Entscheidung: Einmaliger Import der CSS-Lackierungen, Pixelvergleich als Gate, Umstellung in einem Commit
+**Parallel:** scoped — wave 2 of the six named decision tasks: livery-editor-rv382 and liveries-ptm0c (dep liveries-w35k0 done); infrastructure-m6nj3 queued on rv382
+
+---
+
 ## 2026-10-31 12:01 -- Task completed (verification skipped): infrastructure-nwwcq - Entscheidung: Storybook-first gilt für den Anzeigepfad, nicht für Betreiber-Werkzeuge (ergänzt ADR 0002)
 
 **Type:** Work / Task completion
