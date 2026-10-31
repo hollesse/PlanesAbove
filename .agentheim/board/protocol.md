@@ -5,6 +5,20 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:12 -- Research: Kostenlose Fotoquellen für ein konkretes Flugzeug (Foto-Overlay)
+
+**Type:** Research
+**Requested by:** model
+**Report:** knowledge/research/aircraft-photo-sources-2026-10-31.md
+**Review:** PASS (iteration 1)
+**Summary:**
+- Planespotters Photo API ist keyless (Hex und Reg), liefert genau ein Foto und verlangt Credit+Link, Bild direkt vom Anzeigegerät, kein Proxy/Rehosting, JSON ≤ 24 h (Terms nur sekundär belegt, Doku 403)
+- Wikimedia Commons ist die einzige lizenzklare Quelle (CC BY/BY-SA je Datei), mehrere Fotos, Kleinflugzeuge schlecht abgedeckt
+- Airport-Data (mehrere Fotos) und hexdb.io (ein Foto) keyless, aber ohne veröffentlichte Terms; JetPhotos/Airliners.net/airhistory.net ohne API, nicht nutzbar
+- Nicht gemessen: Trefferquote für D-Exxx; eingefaltet in airspace-gw6w9
+
+---
+
 ## 2026-10-31 09:09 -- Modeling / Captured: sky-scene-xw8jv - Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp)
 
 **Type:** Modeling / Capture

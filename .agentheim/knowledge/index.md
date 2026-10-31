@@ -38,6 +38,7 @@ Research reports relevant to more than one BC (or to the project as a whole). BC
 reports are listed in each BC's `INDEX.md`.
 
 <!-- research-global:start -->
+- **aircraft-photo-sources** — Kostenlose Fotoquellen je Flugzeug (Hex/Kennzeichen): Planespotters keyless, 1 Foto, strenge Terms (Bild vom Gerät laden, Credit+Link); Wikimedia Commons lizenzklar CC, mehrere; Airport-Data/hexdb ohne Terms; JetPhotos/Airliners.net keine API (Reviewer: PASS) — 2026-10-31 — `research/aircraft-photo-sources-2026-10-31.md`
 - **free-flight-weather-tts-apis** — Verifikation der kostenlosen Flug-, Routen-, Wetter-, Stammdaten- und TTS-Quellen (Reviewer: PASS) — 2026-10-26 — `research/free-flight-weather-tts-apis-2026-10-26.md`
 <!-- research-global:end -->
 
