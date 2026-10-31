@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 11:17 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 19m (10:58 – 11:17)
+**Completed:** 3 (first-try PASS: 2, re-dispatched: 1, skipped: 0)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 1 (sky-scene-jpjt2, iteration 1, task-under-specified: ICAO-fallback criterion contradicts the no-route-block-without-IATA rule)
+**Lost-result re-dispatches:** 1 (airspace-tzw5t: trailing header said "(see above)" for FILE_LIST → header-mismatch; same worker rewrote the sidecar)
+**Lost-result escalations:** 0
+**Dispatches:** airspace-hejpw: 1, airspace-tzw5t: 2, sky-scene-jpjt2: 1, infrastructure-rmzgt: 1
+**Commits:** 6 (2 batch-start, 3 task integrations, 1 reconcile)
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (3 tasks)
+**Carry-over:** .agentheim/board/sky-scene/doing/sky-scene-jpjt2-…md: committed (reconcile stranded verifier/salvage notes on escalated task — this session's own write); .worktrees/sky-scene-jpjt2: kept (owner: sky-scene-jpjt2, escalated at iteration 1, salvaged: .agentheim/salvage/sky-scene-jpjt2-escalated-iter1.patch + .bookkeeping.md); operator's real config.yaml moved to .agentheim/salvage/config.yaml.real-moved-2026-10-31 (git-ignored) because infrastructure-rmzgt made config.yaml a tracked file; 4 stranded RESULT sidecars removed
+
+---
+
 ## 2026-10-31 11:16 -- Task verified and completed: infrastructure-rmzgt - Drei-Schichten-Konfiguration: Defaults als config.yaml im Repo, Pflichtwerte und Secrets per Umgebungsvariable, optionale Override-Datei; README beschreibt alles
 
 **Type:** Work / Task completion
