@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:54 -- Task verified and completed: design-system-g83gh - QR-Code als Link zurück zur Fotoseite im Foto-Overlay (Planespotters-Terms: URL als Text genügt nicht, QR-Code oder Anker Pflicht)
+
+**Type:** Work / Task completion
+**Task:** design-system-g83gh - QR-Code als Link zurück zur Fotoseite im Foto-Overlay (Planespotters-Terms: URL als Text genügt nicht, QR-Code oder Anker Pflicht)
+**Summary:** Foto-Overlay zeigt pro Foto einen QR-Code (Inline-SVG, eigener abhängigkeitsfreier Encoder) zur Fotoseite; Tests dekodieren das gerenderte SVG mit jsqr.
+**Duration:** 11m
+**Verification:** PASS (iteration 2)
+**Files changed:** 7
+**Tests added:** 12
+**ADRs written:** none
+
+---
+
+## 2026-10-31 09:51 -- Verification failed: design-system-g83gh - QR-Code als Link zurück zur Fotoseite im Foto-Overlay
+
+**Type:** Work / Verification failure
+**Task:** design-system-g83gh - QR-Code als Link zurück zur Fotoseite im Foto-Overlay
+**Iteration:** 1 of 3
+**Reasons:** Overlay-Test dekodiert das gerenderte QR nicht (prüft nur data-url), keine Assertion für mindestens 10cqw, keine Assertion für die 4-Modul-Ruhezone, Lockfile-Churn über jsqr hinaus
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-31 09:46 -- Batch started: [design-system-g83gh]
 
 **Type:** Work / Batch start

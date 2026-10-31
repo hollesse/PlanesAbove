@@ -95,7 +95,11 @@
 .pa-photo-img { display: block; width: 100%; height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
 .pa-photo-status { font-size: 2cqw; letter-spacing: 0.08em; text-align: center; padding: 0 4cqw; }
 /* Feste Hoehe: Bild und Pfeile verschieben sich nicht, wenn die Attribution ein- oder dreizeilig ist */
-.pa-photo-meta { flex: none; width: 100%; max-width: 100%; height: 16cqw; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0.6cqw; text-align: center; overflow: hidden; }
+.pa-photo-meta { flex: none; width: 100%; max-width: 100%; height: 16cqw; display: flex; flex-direction: row; align-items: flex-start; justify-content: center; gap: 2cqw; overflow: hidden; }
+.pa-photo-meta-text { flex: 1 1 auto; min-width: 0; height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 0.6cqw; text-align: left; overflow: hidden; }
+/* QR-Link-back (Planespotters-Terms, ADR 0029): feste Groesse innerhalb der Meta-Zone, verschiebt weder Bild noch Pfeile */
+.pa-photo-qr-slot { flex: none; width: 15cqw; height: 15cqw; }
+.pa-qr { width: 100%; height: 100%; background: #fff; }
 .pa-photo-caption { font-size: 1.9cqw; letter-spacing: 0.1em; text-transform: uppercase; white-space: normal; }
 .pa-photo-attribution { font-size: 1.9cqw; line-height: 1.35; white-space: normal; opacity: 0.9; overflow-wrap: anywhere; }
 .pa-photo-counter { position: absolute; right: 1cqw; bottom: 1cqw; font-size: 1.5cqw; background: rgba(15, 20, 25, 0.7); padding: 0.3cqw 0.9cqw; }

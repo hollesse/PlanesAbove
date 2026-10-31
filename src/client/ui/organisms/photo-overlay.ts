@@ -1,4 +1,5 @@
 import { h } from '../dom';
+import { renderQrCode } from '../atoms/qr-code';
 import type { Photo } from '../domain/photo';
 
 export type PhotoOverlayState = 'single' | 'gallery' | 'loading' | 'empty';
@@ -53,7 +54,9 @@ export function renderPhotoOverlay(props: PhotoOverlayProps): HTMLElement {
   const arrowPrev = h('button', { class: 'pa-photo-arrow pa-photo-arrow-prev', attrs: { type: 'button', 'aria-label': 'Voriges Foto' }, html: arrowSvg('prev') });
   const arrowNext = h('button', { class: 'pa-photo-arrow pa-photo-arrow-next', attrs: { type: 'button', 'aria-label': 'Nächstes Foto' }, html: arrowSvg('next') });
   const row = h('div', { class: 'pa-photo-row' });
-  const meta = h('div', { class: 'pa-photo-meta' }, caption, attribution);
+  const text = h('div', { class: 'pa-photo-meta-text' }, caption, attribution);
+  const qrSlot = h('div', { class: 'pa-photo-qr-slot' });
+  const meta = h('div', { class: 'pa-photo-meta' }, text);
 
   if (state === 'loading') {
     frame.append(h('div', { class: 'pa-photo-status pa-photo-loading', text: LOADING_TEXT }));
@@ -69,6 +72,9 @@ export function renderPhotoOverlay(props: PhotoOverlayProps): HTMLElement {
       const p = photos[index];
       img.src = p.imageUrl;
       attribution.replaceChildren(h('span', { class: 'pa-photo-licence', text: p.licenceText }), ' · ', h('span', { class: 'pa-photo-link', text: p.pageUrl }));
+      const qr = renderQrCode(p.pageUrl, 'QR-Code zur Foto-Seite');
+      qr.classList.add('pa-photo-qr');
+      qrSlot.replaceChildren(qr);
       root.dataset.index = String(index);
       if (state === 'gallery') {
         counter.textContent = `${index + 1} / ${photos.length}`;
@@ -77,6 +83,7 @@ export function renderPhotoOverlay(props: PhotoOverlayProps): HTMLElement {
         arrowNext.disabled = index === photos.length - 1;
       }
     };
+    meta.append(qrSlot);
     update();
     if (state === 'gallery') {
       const go = (d: number): void => {
@@ -93,7 +100,7 @@ export function renderPhotoOverlay(props: PhotoOverlayProps): HTMLElement {
       arrowNext.addEventListener('click', () => go(1));
       row.classList.add('pa-photo-row-gallery');
       row.append(arrowPrev);
-      meta.insertBefore(dots, attribution); // Punkte vor der Attribution, damit eine lange Credit-Zeile sie nie verdeckt
+      text.insertBefore(dots, attribution); // Punkte vor der Attribution, damit eine lange Credit-Zeile sie nie verdeckt
       let startX: number | null = null;
       frame.addEventListener('touchstart', (e) => {
         startX = e.touches[0]?.clientX ?? null;
