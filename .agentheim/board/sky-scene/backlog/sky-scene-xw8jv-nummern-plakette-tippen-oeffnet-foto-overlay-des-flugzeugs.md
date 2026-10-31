@@ -6,7 +6,7 @@ type: feature
 context: sky-scene
 created: 2026-10-31
 completed:
-depends_on: [design-system-001-styleguide, design-system-pawdq, airspace-gw6w9]
+depends_on: [design-system-001-styleguide, design-system-pawdq, design-system-g83gh, airspace-gw6w9]
 blocks: []
 tags: [foto, overlay, plakette, tippen, prototyp]
 related_adrs: [0004, 0017, 0029]
@@ -35,6 +35,7 @@ Die Bilder lädt das iPad direkt von den Quell-Hosts (ADR 0029); der Client zeig
 - [ ] Das Overlay fühlt sich an der Wand ruhig an: Öffnen/Schließen ohne Flackern der Szene dahinter. [human-eye]
 
 ## Notes
+- Planespotters-Terms (2026-10-31, Primärtext): Link-back muss als QR-Code erfolgen, URL als Text genügt nicht → hängt zusätzlich an design-system-g83gh.
 - Prototyp-Scope laut Betreiber (2026-10-31): nur Plakette als Auslöser, nur X (und Abdunklung) zum Schließen, kein Auto-Close, Einzelansicht ohne Foto. Folge-Idee für später: Tippziel in der Einzelansicht (Plakette „1“ auch dort oder Foto-Symbol) und optional ein Auto-Close, falls ein offenes Foto die Wandszene zu lange verdeckt.
 - Datenvertrag: `Photo { id, thumbUrl, imageUrl, photographer, source, pageUrl, licenceText }`, Antwort `{ photos, status }` (airspace-gw6w9). Der Baustein design-system-pawdq bringt Galerie, Zähler, Attributionszeile und X mit; dieser Task verdrahtet nur Tippen, Laden, Montage und Schließen.
 - Spannung zur Vision: Non-Goal „Keine Interaktion über das Tippen hinaus“ und v2+-Eintrag „Foto-Knopf“ — bei Abnahme des Prototyps in `vision.md` nachziehen (Betreiber).

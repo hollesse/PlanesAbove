@@ -5,6 +5,25 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:44 -- Modeling / Refined: sky-scene-xw8jv - Abhängigkeit design-system-g83gh ergänzt
+
+**Type:** Modeling / Refine
+**BC:** sky-scene
+**Status after:** backlog
+**Summary:** Planespotters-Terms im Primärtext verifiziert (Betreiber, 2026-10-31): Link-back per QR-Code Pflicht. ADR 0029 amendiert, Research-Bericht mit Nachtrag, neuer Task design-system-g83gh als zusätzliche Abhängigkeit.
+**ADRs written:** 0029 (Amendment)
+
+---
+
+## 2026-10-31 09:44 -- Modeling / Captured: design-system-g83gh - QR-Code als Link zurück zur Fotoseite im Foto-Overlay (Planespotters-Terms: URL als Text genügt nicht, QR-Code oder Anker Pflicht)
+
+**Type:** Modeling / Capture
+**BC:** design-system
+**Filed to:** todo
+**Summary:** Planespotters-Terms (Primärtext vom Betreiber): URL als Text genügt nicht als Link-back, Kiosk braucht QR-Code; Foto-Overlay bekommt QR je Foto, blockt sky-scene-xw8jv.
+
+---
+
 ## 2026-10-31 09:42 -- Work session ended
 
 **Type:** Work / Session end

@@ -56,3 +56,15 @@ kostenlose Quellen; ADR 0004 macht das iPad zum dünnen Browser-Client.
 - **Server-Cache für Commons-Bilder** — lizenzrechtlich erlaubt, aber ein zweiter Bildweg; verschoben.
 - **Nur Planespotters** — einfachster Prototyp, aber keine Galerie.
 - **hexdb.io Image** — keyless, liefert aber keinen Fotografen, Attribution unmöglich.
+
+## Amendment 2026-10-31 — Planespotters-Terms im Primärtext verifiziert
+
+Der Betreiber hat die Photo API Terms of Use im Wortlaut vorgelegt. Bestätigt: Backend darf die API
+aufrufen und die Ergebnisse an die eigene App weiterreichen; URLs unverändert; Bild lädt das
+Anzeigegerät direkt und hält es nur im Speicher, solange es angezeigt wird; JSON-Cache ≤ 24 h;
+non-browser Clients mit User-Agent inkl. Kontakt-URL/E-Mail, sonst 403; keine ML-Nutzung; nur ein
+Foto je Abfrage. **Neu gegenüber der Research:** der Link zurück zur Fotoseite muss auf einem
+Kiosk-Display per QR-Code oder NFC erfolgen — die URL als Text genügt ausdrücklich nicht. Folge:
+das Foto-Overlay bekommt einen QR-Code je Foto (design-system-g83gh), bevor Planespotters im
+Betrieb aktiv ist. Außerdem: `thumbnail_large` ist nur 280 px hoch (Breite 360–500 px); auf dem
+iPad wird es hochskaliert.

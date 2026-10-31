@@ -2,7 +2,7 @@
 topic: Kostenlose Fotoquellen für ein konkretes Flugzeug (Lookup per Kennzeichen/Hex) für ein Foto-Overlay mit Galerie
 date: 2026-10-31
 requested_by: model
-related_tasks: [airspace-gw6w9, design-system-pawdq, sky-scene-xw8jv]
+related_tasks: [airspace-gw6w9, design-system-pawdq, sky-scene-xw8jv, design-system-g83gh]
 ---
 
 # Research: Kostenlose Fotoquellen für ein konkretes Flugzeug (Lookup per Kennzeichen/Hex)
@@ -125,3 +125,16 @@ Woher bekommen wir kostenlos echte Fotos eines *bestimmten* Flugzeugs (Lookup pe
 - **Wikimedia User-Agent-Policy** und konkrete Rate-Limits nicht geprüft.
 - **OpenSky, FlightAware, Planefinder (offizielle API):** nicht ausreichend untersucht; keine Foto-Endpunkte gefunden.
 - **tar1090-Code:** Aufrufstelle der Planespotters-API nicht verifiziert.
+
+## Nachtrag 2026-10-31: Planespotters-Terms im Primärtext verifiziert
+
+Der Betreiber hat die „Photo API Terms of Use“ und „Access Requirements“ von planespotters.net im
+Wortlaut vorgelegt (die Seite blockt automatisierte Abrufe mit 403). Damit sind die oben als
+„sekundär zitiert“ markierten Planespotters-Aussagen bestätigt: Credit-Text neben dem Bild; Link auf
+`link` ohne nofollow; Backend-Aufruf und Weitergabe an die eigene App erlaubt, URLs unverändert;
+Bildbytes nur vom Anzeigegerät, nur im Speicher solange angezeigt, nie gespeichert/re-hosted;
+JSON-Cache ≤ 24 h; User-Agent mit Kontakt-URL/E-Mail für alle Nicht-Browser-Clients (Kiosk zählt als
+Server-Client, kein Origin nötig), sonst 403; keine ML-Nutzung; ein Foto je Abfrage; Rate-Limit
+unbeziffert („reasonable limits“). **Abweichend von der Tabelle oben:** auf einem Kiosk-Display muss
+der Link zurück per QR-Code oder NFC erfolgen — „Printing or displaying the URL as text does not“
+genügen. Thumbnail-Größen: `thumbnail` 200 px breit, `thumbnail_large` 280 px hoch (360–500 px breit).
