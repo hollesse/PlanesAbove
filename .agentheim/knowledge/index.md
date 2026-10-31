@@ -23,6 +23,7 @@ For BC-scoped artifacts, see each BC's `INDEX.md`.
 ## Global ADRs (scope: global)
 
 <!-- adr-global:start -->
+- **0030** — Drei-Schichten-Konfiguration: Defaults im Repo, Pflichtwerte und Secrets per Umgebungsvariable, optionale Override-Datei — 2026-10-31 — `decisions/0030-layered-config-defaults-in-repo-env-vars-optional-override.md`
 - **0011** — Health endpoint, dead-man's-switch heartbeat and structured logs — 2026-10-26 — `decisions/0011-health-endpoint-heartbeat-and-structured-logs.md`
 - **0008** — Docker Compose app on ZimaOS; self-recovering iPad kiosk client — 2026-10-26 — `decisions/0008-compose-on-zimaos-and-self-recovering-ipad-kiosk.md`
 - **0007** — SQLite single-file storage (better-sqlite3) and validated YAML configuration — 2026-10-26 — `decisions/0007-sqlite-single-file-and-validated-yaml-config.md`

@@ -52,6 +52,14 @@ Entwickelt wird test-getrieben: Unit-Tests zuerst, Contract-Tests je externer Qu
 ### Gestaltungsregel
 Jedes UI-Element entsteht zuerst in einer eigenen **Storybook-Instanz** nach Atomic Design, wird dort einzeln abgenommen und erst dann in der App verwendet (ADR 0002).
 
+## Betrieb und Konfiguration
+Das Repository ist öffentlich. Alles, was für jede Installation gleich ist (Defaults, Timeouts,
+Schwellen), lebt versioniert im Repo und darf vom Assistenten direkt geändert werden; es erreicht
+den Heimserver über den normalen Weg Commit → Image → Watchtower. Nur das Persönliche und Geheime
+(Standort, Schlüssel) sowie die Dev/Prod-Unterschiede setzt Papa einmalig als Umgebungsvariablen
+in der ZimaOS-Oberfläche. Ein Handgriff auf dem Server soll die Ausnahme sein, nicht die Regel
+(ADR 0030).
+
 ## Non-goals
 - **Kein Flugtracker mit Karte** — keine Karte, keine Flugbahnen, kein Radar-Look. Eine illustrierte Szene.
 - **Kein Spotter-Werkzeug zuerst** — kindgerecht ist die Untergrenze; Spotter-Details nur dezent.
@@ -88,6 +96,8 @@ Jedes UI-Element entsteht zuerst in einer eigenen **Storybook-Instanz** nach Ato
 - **Info-Leiste** — Textleiste für Erwachsene unten im Bild.
 - **Übergang** — animierter Wechsel (Flugzeug kommt/geht/wechselt, Wetter, Tageszeit).
 - **Sichtung** — protokollierter Eintrag, dass ein Flugzeug (Airline, Typ) im Umkreis war.
+- **Konfigurationsschichten** — Repo-Config (Defaults, versioniert, öffentlich), Umgebungsvariablen (Standort, Dev/Prod-Unterschiede, Secrets, Feature-Aktivierung) und optionale Override-Datei (Feintuning je Installation); spätere Schicht gewinnt (ADR 0030).
+- **Opt-in-Feature** — Funktion, die ein Fremdkonto braucht (ElevenLabs, FlightAware); Schlüssel und Aktivierung sind getrennte Umgebungsvariablen.
 
 ## Open questions
 - Liefert eine kostenlose Quelle verlässlich genug die **Route** (Abflug/Ziel) zu einem Flug? Kernrisiko für den Steckbrief. (open since 2026-10-26)

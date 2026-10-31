@@ -11,13 +11,14 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 0
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 10
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **infrastructure-rmzgt** — Drei-Schichten-Konfiguration: Defaults als config.yaml im Repo, Pflichtwerte und Secrets per Umgebungsvariable, optionale Override-Datei; README beschreibt alles (decision) — `todo/infrastructure-rmzgt-drei-schichten-konfiguration-defaults-im-repo-env-vars-override.md`
 - **infrastructure-001-walking-skeleton** — Walking skeleton — echte Flugzeuge über dem Haus erscheinen auf dem iPad, Tippen spricht eine Zeile, eine Sichtung wird gespeichert (spike) — depends_on: [design-system-001-styleguide, infrastructure-pn3w4, infrastructure-y8epz, airspace-jy8hz, airspace-h76v2, weather-yttgx, sky-scene-xczgm, infrastructure-w7qbc, infrastructure-p6s30] — `todo/infrastructure-001-walking-skeleton.md`
 <!-- todo-list:end -->
 
