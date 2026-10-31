@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 08:51 -- Modeling / Refined: sky-scene-d4n9p - Boeing-Typen ziffernweise aussprechen
+
+**Type:** Modeling / Refine
+**BC:** sky-scene
+**Status after:** todo
+**Summary:** Variante nach dem Bindestrich bleibt Zahlwort: 747-10 → „sieben vier sieben zehn“, 737-800 → „sieben drei sieben achthundert“; Akzeptanzkriterien ergänzt.
+
+---
+
 ## 2026-10-31 08:51 -- Modeling / Captured: sky-scene-d4n9p - Boeing-Typen ziffernweise aussprechen („Boeing sieben vier sieben“), Airbus bleibt als Zahl („A dreihundertzwanzig“)
 
 **Type:** Modeling / Capture
