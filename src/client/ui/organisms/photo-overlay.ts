@@ -51,13 +51,15 @@ export function renderPhotoOverlay(props: PhotoOverlayProps): HTMLElement {
   const dots = h('div', { class: 'pa-photo-dots' });
   const meta = h('div', { class: 'pa-photo-meta' }, caption, attribution);
 
-  if (state !== 'single' && state !== 'gallery') frame.classList.add('pa-photo-frame-empty');
   if (state === 'loading') {
     frame.append(h('div', { class: 'pa-photo-status pa-photo-loading', text: LOADING_TEXT }));
   } else if (state === 'empty') {
     frame.append(h('div', { class: 'pa-photo-status pa-photo-empty', text: NO_PHOTO_TEXT }));
   } else {
     const img = h('img', { class: 'pa-photo-img', attrs: { alt: props.caption ?? 'Foto des Flugzeugs', draggable: 'false' } });
+    img.addEventListener('load', () => {
+      if (img.naturalWidth > 0 && img.naturalHeight > 0) frame.style.setProperty('--pa-photo-ratio', (img.naturalWidth / img.naturalHeight).toFixed(4));
+    });
     frame.append(img);
     const update = (): void => {
       const p = photos[index];

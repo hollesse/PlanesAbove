@@ -126,3 +126,20 @@ describe('Foto-Overlay', () => {
     }
   });
 });
+
+describe('Foto-Overlay: Rahmen folgt dem Bild', () => {
+  it('sets --pa-photo-ratio from the loaded image so the frame has no letterbox', async () => {
+    const { renderPhotoOverlay } = await import('../../src/client/ui/organisms/photo-overlay');
+    const { SAMPLE_PHOTOS } = await import('../../src/client/ui/domain/photo');
+    const el = renderPhotoOverlay({ photos: SAMPLE_PHOTOS, onClose: () => {} });
+    const img = el.querySelector('.pa-photo-img') as HTMLImageElement;
+    Object.defineProperty(img, 'naturalWidth', { value: 498 });
+    Object.defineProperty(img, 'naturalHeight', { value: 280 });
+    img.dispatchEvent(new Event('load'));
+    const frame = el.querySelector('.pa-photo-frame') as HTMLElement;
+    expect(frame.style.getPropertyValue('--pa-photo-ratio')).toBe((498 / 280).toFixed(4));
+    const css = (await import('node:fs')).readFileSync('src/client/ui/styles/ui.css', 'utf8');
+    expect(css).toMatch(/\.pa-photo-frame \{[^}]*var\(--pa-photo-ratio\)/);
+    expect(css).not.toMatch(/\.pa-photo-frame \{[^}]*aspect-ratio: 4 \/ 3/);
+  });
+});

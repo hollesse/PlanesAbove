@@ -12,7 +12,7 @@ export interface Photo {
 
 const svgUri = (label: string, a: string, b: string): string =>
   `data:image/svg+xml;utf8,${encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="800" height="533" fill="url(#g)"/><text x="400" y="280" font-family="sans-serif" font-size="34" text-anchor="middle" fill="#ffffff" fill-opacity="0.85">${label}</text></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="533" viewBox="0 0 800 533"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="800" height="533" fill="url(#g)"/><text x="400" y="280" font-family="sans-serif" font-size="34" text-anchor="middle" fill="#ffffff" fill-opacity="0.85">${label}</text></svg>`,
   )}`;
 
 /** Beispieldaten NUR fuer Storybook/Tests: Platzhalter-Grafiken, keine echten Fotos, keine Hotlinks. */

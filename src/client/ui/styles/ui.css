@@ -84,11 +84,10 @@
 
 /* Foto-Overlay (Organism, design-system-pawdq): liegt abgedunkelt ueber der Szene; Foto im 4:3-Rahmen, Attribution darunter */
 .pa-photo-overlay { position: absolute; inset: 0; z-index: 10; background: rgba(15, 20, 25, 0.78); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2cqw; padding: 4cqw 5cqw 3cqw; box-sizing: border-box; color: var(--pa-sky-ink-light); font-family: var(--pa-font-mono); }
-.pa-photo-frame { position: relative; flex: 0 1 auto; min-height: 0; max-width: 100%; background: var(--pa-ink); border: 2px solid var(--pa-paper); box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-.pa-photo-frame-empty { aspect-ratio: 4 / 3; width: 60%; }
-/* Rahmen schmiegt sich ans Bild: das Bild bestimmt die Groesse, der Rahmen hat keinen eigenen Seitenverhaeltnis-Zwang; Hoehe je Bildschirmformat (4:3 / 5:3) in cqw begrenzt */
-.pa-photo-img { display: block; width: auto; height: auto; max-width: 100%; max-height: 56cqw; user-select: none; -webkit-user-drag: none; }
-.pa-screen-5x3 .pa-photo-img { max-height: 42cqw; }
+.pa-photo-frame { --pa-photo-ratio: 1.3333; position: relative; flex: none; width: min(90cqw, 56cqw * var(--pa-photo-ratio)); height: min(56cqw, 90cqw / var(--pa-photo-ratio)); max-width: 100%; background: var(--pa-ink); border: 2px solid var(--pa-paper); box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+/* Rahmen folgt dem Seitenverhaeltnis des geladenen Fotos (--pa-photo-ratio, per JS aus naturalWidth/naturalHeight): fuellt Breite (90cqw) oder Hoehe (56cqw bei 4:3, 42cqw bei 5:3), nie Luft im Rahmen */
+.pa-screen-5x3 .pa-photo-frame { width: min(90cqw, 42cqw * var(--pa-photo-ratio)); height: min(42cqw, 90cqw / var(--pa-photo-ratio)); }
+.pa-photo-img { display: block; width: 100%; height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
 .pa-photo-status { font-size: 2cqw; letter-spacing: 0.08em; text-align: center; padding: 0 4cqw; }
 .pa-photo-meta { flex: none; width: 100%; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.5cqw; text-align: center; }
 .pa-photo-caption { font-size: 1.9cqw; letter-spacing: 0.1em; text-transform: uppercase; white-space: normal; }
