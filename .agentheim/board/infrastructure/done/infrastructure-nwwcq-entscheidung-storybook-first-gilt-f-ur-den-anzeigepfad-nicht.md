@@ -1,7 +1,7 @@
 ---
 id: infrastructure-nwwcq
 title: Entscheidung: Storybook-first gilt für den Anzeigepfad, nicht für Betreiber-Werkzeuge (ergänzt ADR 0002)
-status: doing
+status: done
 type: decision
 context: infrastructure
 created: 2026-10-31
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: []
 tags: [decision, foundation, storybook-gate]
-related_adrs: [0031]
+related_adrs: [0031, 0034]
 related_research: []
 prior_art: []
 ---
@@ -31,3 +31,9 @@ ADR schreiben (Vorschlag: 0036, scope global, ergänzt ADR 0002) nach dem Archit
 - Editor-eigene UI liegt außerhalb des Gates. Der Betreiber nimmt sie im laufenden Editor ab; Stories sind optional.
 - Hebt das pauschale `depends_on: [design-system-001-styleguide]` für Editor-UI-Tasks auf.
 - Verworfen: Gate für alles, Gate für nichts.
+
+## Outcome
+
+ADR (provisorisch 0034, scope global, ergänzt ADR 0002) formuliert: Storybook-first bleibt für den Anzeigepfad (renderLiverySvg, Molekül, Silhouetten, Detailschichten; je Lackierungsdatei eine generierte Story) verbindlich, Editor-eigene Betreiber-UI liegt außerhalb des Gates, der Editor konsumiert dieselben Anzeigemodule, das pauschale `depends_on: [design-system-001-styleguide]` für Editor-UI-Tasks entfällt. Zwei Punkte stehen unter "Offene Punkte" für den Betreiber. Keine Code-Änderung.
+
+Vom Conductor noch zu erledigen (nicht im Worker-Scope, da andere BC / vision): offene Frage in `vision.md` schließen (Verweis auf diesen ADR) und die Gate-Notiz in `contexts/livery-editor/README.md` (Zeilen zu Storybook-first / "Gilt Storybook-first auch für den Editor?") anpassen; ADR in INDEX eintragen. Das [human-eye]-Kriterium (Betreiber liest Entwurf) bleibt offen.

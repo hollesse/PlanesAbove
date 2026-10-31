@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 12:01 -- Task completed (verification skipped): infrastructure-nwwcq - Entscheidung: Storybook-first gilt für den Anzeigepfad, nicht für Betreiber-Werkzeuge (ergänzt ADR 0002)
+
+**Type:** Work / Task completion
+**Task:** infrastructure-nwwcq - Entscheidung: Storybook-first gilt für den Anzeigepfad, nicht für Betreiber-Werkzeuge (ergänzt ADR 0002)
+**Summary:** ADR formuliert, die Storybook-first (ADR 0002) auf den Anzeigepfad (Lackierungs-Rendering, Molekül, Silhouetten, Detailschichten) begrenzt und Betreiber-Werkzeug-UI des Lackierungs-Editors vom Gate ausnimmt.
+**Duration:** 1m45s
+**Verification:** SKIPPED — decision-only task
+**Files changed:** 0
+
+---
+
 ## 2026-10-31 12:00 -- Task completed (verification skipped): infrastructure-cc9gq - Entscheidung: Sichtungen je Airline × Typklasse und Referenzfotos über zwei lesende Endpunkte des Heimservers
 
 **Type:** Work / Task completion
