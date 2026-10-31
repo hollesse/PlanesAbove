@@ -2,6 +2,7 @@
 export * from './domain/catalog';
 export * from './domain/flight';
 export * from './domain/livery';
+export * from './domain/photo';
 export { LIVERIES, type LiveryDef } from './domain/liveries';
 export * from './domain/samples';
 export * from './domain/transition-samples';
@@ -16,6 +17,7 @@ export * from './molecules/painted-plane';
 export * from './molecules/scene-header';
 export * from './organisms/fit-route';
 export * from './organisms/info-bar';
+export * from './organisms/photo-overlay';
 export * from './organisms/scene-layer';
 export * from './templates/screen';
 export * from './pages/examples';

@@ -1,7 +1,7 @@
 ---
 id: design-system-pawdq
 title: Foto-Overlay-Baustein (Organism) in Storybook — Vollbild-Overlay mit Foto-Galerie, Attribution und X rechts oben zum Schließen
-status: doing
+status: done
 type: feature
 context: design-system
 created: 2026-10-31
@@ -33,3 +33,7 @@ Ein Organism **Foto-Overlay** im Design-System: liegt über der Himmelsszene (Sz
 - Datenmodell und Lizenz-/Attributionsregeln kommen aus `knowledge/research/aircraft-photo-sources-2026-10-31.md`; der Attributionstext ist Pflichtanzeige, nicht Deko.
 - Offen für das Ein-Flugzeug-Bild: Die Nummern-Plakette gibt es heute nur bei zwei Flugzeugen. Ob in der Einzelansicht eine Plakette (oder ein kleines Foto-Symbol) als Tippziel ergänzt wird, entscheidet der Betreiber in sky-scene-xw8jv; dieser Baustein ist davon unabhängig.
 - Kiosk-Rücksicht: Das Overlay soll optional nach einer Zeit (Prop `autoCloseMs`) von selbst schließen, damit kein offen gelassenes Foto die Wandszene stundenlang verdeckt.
+
+## Outcome
+
+Organism **Foto-Overlay** (`src/client/ui/organisms/photo-overlay.ts`) im Design-System umgesetzt: `renderPhotoOverlay({ photos, caption, startIndex, onClose, autoCloseMs })`. `photos === null` = Lädt, `[]` = Kein Foto, 1 = Ein Foto, mehrere = Galerie. Das X (`.pa-photo-close`, `max(64px, 6.5cqw)`) sitzt rechts oben und ruft `onClose`; Tippen auf die abgedunkelte Fläche schließt ebenfalls, Tippen auf das Foto nicht. Galerie: zwei Tippzonen (linke/rechte Bildhälfte) und Wischen (touchstart/touchend, 40 px), Zähler und Punkte folgen dem Index, am Anfang/Ende wird nicht weitergeblättert. Jede Ansicht zeigt `licenceText` unverändert und `pageUrl` als Text. `autoCloseMs` schließt von selbst, manuelles Schließen bricht den Timer ab. Kein `<dialog>`, kein `:has()`; nur einfaches CSS. `Photo`-Typ und `SAMPLE_PHOTOS` (data-URI-Platzhalter, keine Hotlinks) in `domain/photo.ts`; Styles in `styles/ui.css`; öffentliche Oberfläche in `index.ts`. Story `Organisms/Foto-Overlay` (Ein Foto, Galerie, Lädt, Kein Foto) mit `aspect`-Control (4:3 / 5:3) und `autoCloseMs`-Control. 10 Unit-Tests in `tests/unit/photo-overlay.test.ts`; `npm test`, `npm run typecheck` und `npm run build-storybook` sind grün. Das Human-Eye-Kriterium (ruhiger Teil der Szene) ist offen und gehört dem Betreiber.

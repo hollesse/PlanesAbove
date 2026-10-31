@@ -81,3 +81,21 @@
 .pa-slot-eq-two { left: 52%; width: 44%; top: var(--pa-eq-t2, 16cqw); }
 .pa-badge-slot-eq-one { left: 2.5%; top: calc(var(--pa-eq-t1, 16cqw) - 1cqw); }
 .pa-badge-slot-eq-two { left: 50.5%; top: calc(var(--pa-eq-t2, 16cqw) - 1cqw); }
+
+/* Foto-Overlay (Organism, design-system-pawdq): liegt abgedunkelt ueber der Szene; Foto im 4:3-Rahmen, Attribution darunter */
+.pa-photo-overlay { position: absolute; inset: 0; z-index: 10; background: rgba(15, 20, 25, 0.78); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2cqw; padding: 4cqw 5cqw 3cqw; box-sizing: border-box; color: var(--pa-sky-ink-light); font-family: var(--pa-font-mono); }
+.pa-photo-frame { position: relative; flex: 1 1 auto; min-height: 0; aspect-ratio: 4 / 3; max-width: 100%; max-height: 100%; background: var(--pa-ink); border: 2px solid var(--pa-paper); box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.pa-photo-img { width: 100%; height: 100%; object-fit: contain; display: block; user-select: none; -webkit-user-drag: none; }
+.pa-photo-status { font-size: 2cqw; letter-spacing: 0.08em; text-align: center; padding: 0 4cqw; }
+.pa-photo-meta { flex: none; width: 100%; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.5cqw; text-align: center; }
+.pa-photo-caption { font-size: 1.9cqw; letter-spacing: 0.1em; text-transform: uppercase; white-space: normal; }
+.pa-photo-attribution { font-size: 1.5cqw; white-space: normal; opacity: 0.85; word-break: break-word; }
+.pa-photo-counter { position: absolute; right: 1cqw; bottom: 1cqw; font-size: 1.5cqw; background: rgba(15, 20, 25, 0.7); padding: 0.3cqw 0.9cqw; }
+.pa-photo-dots { display: flex; gap: 0.8cqw; margin-top: 0.4cqw; }
+.pa-photo-dot { width: 1cqw; height: 1cqw; border-radius: 50%; border: 1px solid var(--pa-sky-ink-light); box-sizing: border-box; }
+.pa-photo-dot-on { background: var(--pa-sky-ink-light); }
+.pa-photo-zone { position: absolute; top: 0; bottom: 0; width: 50%; background: transparent; border: 0; padding: 0; margin: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.pa-photo-zone-prev { left: 0; }
+.pa-photo-zone-next { right: 0; }
+.pa-photo-close { position: absolute; top: 1.5cqw; right: 1.5cqw; width: max(64px, 6.5cqw); height: max(64px, 6.5cqw); display: flex; align-items: center; justify-content: center; padding: 0; background: var(--pa-ink); color: var(--pa-paper); border: 2px solid var(--pa-paper); border-radius: 50%; cursor: pointer; box-sizing: border-box; z-index: 2; }
+.pa-photo-close svg { width: 50%; height: 50%; }

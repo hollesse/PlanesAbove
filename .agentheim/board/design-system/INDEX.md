@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 3
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 14
+- **Doing:** 0
+- **Done:** 15
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **design-system-pawdq** — Foto-Overlay-Baustein (Organism) in Storybook — Vollbild-Overlay mit Foto-Galerie, Attribution und X rechts oben zum Schließen (feature) — `doing/design-system-pawdq-foto-overlay-baustein-galerie-mit-x-zum-schliessen-storybook.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **design-system-pawdq** — Foto-Overlay-Baustein (Organism) in Storybook — Vollbild-Overlay mit Foto-Galerie, Attribution und X rechts oben zum Schließen (feature) — `done/design-system-pawdq-foto-overlay-baustein-galerie-mit-x-zum-schliessen-storybook.md`
 - **design-system-pyheh** — Entwurf in Storybook: Zwei-Flugzeuge-Ansicht mit beiden Flugzeugen gleich groß, Typklasse je Slot per Control unten wählbar, passende Übergänge dazu (feature) — `done/design-system-pyheh-zwei-flugzeuge-gleich-gross-entwurf-in-storybook.md`
 - **design-system-h7w2q** — Szene füllt den iPad-Bildschirm als Home-Bildschirm-Web-App nicht ganz aus; iPadOS rechnet die Höhe ohne die transparente Statusleiste, unten bleibt ein schwarzer Streifen (bug) — `done/design-system-h7w2q-untere-statusleiste-auf-dem-ipad-ist-transparent-und-zeigt-den-himmel.md`
 - **design-system-w5n2k** — Die Long-Route-Tests in Playwright WebKit sind instabil; je Lauf scheitert eine andere der drei Varianten (Einzelansicht, Zwei-Flugzeuge, Umbruch vor dem Pfeil) (bug) — `done/design-system-w5n2k-long-route-webkit-tests-instabil.md`

@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:29 -- Task verified and completed: design-system-pawdq - Foto-Overlay-Baustein (Organism) in Storybook — Vollbild-Overlay mit Foto-Galerie, Attribution und X rechts oben zum Schließen
+
+**Type:** Work / Task completion
+**Task:** design-system-pawdq - Foto-Overlay-Baustein (Organism) in Storybook — Vollbild-Overlay mit Foto-Galerie, Attribution und X rechts oben zum Schließen
+**Summary:** Neuer Organism Foto-Overlay mit Galerie, Attribution, X rechts oben (min. 64 px), Auto-Schließen und den Zuständen Ein Foto, Galerie, Lädt, Kein Foto, samt Story und Unit-Tests.
+**Duration:** 3m50s
+**Verification:** PASS (iteration 1)
+**Files changed:** 6
+**Tests added:** 10
+**ADRs written:** none
+
+---
+
 ## 2026-10-31 09:26 -- Batch started: [airspace-gw6w9]
 
 **Type:** Work / Batch start
