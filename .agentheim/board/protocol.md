@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:18 -- Modeling / Promoted: airspace-gw6w9 - Fotoquelle (PhotoSource): echte Fotos eines konkreten Flugzeugs per Kennzeichen/Hex aus mehreren kostenlosen Plattformen, mit Attribution, als Galerie
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-31 09:18 -- Modeling / Refined: airspace-gw6w9 - Fotoquelle (PhotoSource)
 
 **Type:** Modeling / Refine

@@ -1,7 +1,7 @@
 ---
 id: airspace-gw6w9
 title: Fotoquelle (PhotoSource): echte Fotos eines konkreten Flugzeugs per Kennzeichen/Hex aus mehreren kostenlosen Plattformen, mit Attribution, als Galerie
-status: backlog
+status: todo
 type: feature
 context: airspace
 created: 2026-10-31
