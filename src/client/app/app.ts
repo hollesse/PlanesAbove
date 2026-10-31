@@ -1,9 +1,10 @@
 // The thin kiosk client (ADR 0004/0008): polls /api/state, renders the approved design-system screen, narrates on tap,
 // holds the Vorlese-Sperre, recovers by itself. Imports UI only from the design-system barrel (ADR 0002).
 import type { SceneState } from '../../shared/state';
-import { TRANSITIONS, TRANSITION_MS, fitRoutesWhenMounted, playTransition, renderScreen, renderTransitionStage, type ScreenPlane } from '../ui';
+import { TRANSITIONS, TRANSITION_MS, fitRoutesWhenMounted, playTransition, renderPhotoOverlay, renderScreen, renderTransitionStage, type ScreenPlane } from '../ui';
+import type { Photo } from '../ui/domain/photo';
 import { pickTransition } from './transition-plan';
-import { backoffMs, dayKey, reloadDue, staleSince, tapTarget, toScreenProps } from './logic';
+import { backoffMs, badgeTarget, dayKey, reloadDue, staleSince, tapTarget, toScreenProps } from './logic';
 import { Narrator, type AudioLike } from './narrator';
 import { VorleseSperre, type Timers } from './sperre';
 
@@ -13,6 +14,8 @@ export interface AppDeps {
   audio: AudioLike;
   timers: Timers;
   now: () => Date;
+  /** Photos of one aircraft (GET /api/photos/:icao24). Resolve [] for "Kein Foto"; a rejection is treated the same. Default: no photos. */
+  fetchPhotos?: (icao24: string) => Promise<Photo[]>;
   reload: () => void;
   /** build id the loaded page was built with */
   buildId: string;
@@ -20,7 +23,7 @@ export interface AppDeps {
   events?: { onOnline(fn: () => void): void; onVisible(fn: () => void): void };
 }
 
-export interface App { speak(index: number): void; pollNow(): Promise<void>; readonly sperre: VorleseSperre<SceneState>; readonly uebergangSperre: VorleseSperre<SceneState> }
+export interface App { speak(index: number): void; openPhoto(index: number): void; closePhoto(): void; pollNow(): Promise<void>; readonly sperre: VorleseSperre<SceneState>; readonly uebergangSperre: VorleseSperre<SceneState> }
 
 export function startApp(d: AppDeps): App {
   let current: SceneState | undefined;
@@ -33,11 +36,29 @@ export function startApp(d: AppDeps): App {
   const stageIsTransition = (): boolean => d.root.firstElementChild?.hasAttribute('data-transition') ?? false;
   const staleNow = (s: SceneState) => staleSince(s, d.now().getTime() - lastOkMs, settings.staleAfterMinutes * 60_000);
 
+  // Foto-Overlay: lives in its own host next to the stage (NOT inside it), re-attached after every full render so it survives Takt updates and transitions.
+  let photoHost: HTMLElement | undefined;
+  let photoToken = 0;
+  const mount = (stage: HTMLElement): void => { if (photoHost) d.root.replaceChildren(stage, photoHost); else d.root.replaceChildren(stage); };
+  const closePhoto = (): void => { photoToken++; photoHost?.remove(); photoHost = undefined; };
+  const showOverlay = (photos: Photo[] | null, caption: string): void => {
+    if (!photoHost) { photoHost = document.createElement('div'); photoHost.className = 'pa-screen pa-photo-host'; photoHost.addEventListener('click', (e) => e.stopPropagation()); /* a tap in the overlay (incl. the one that closes it) never reaches the scene */ d.root.append(photoHost); }
+    photoHost.replaceChildren(renderPhotoOverlay({ photos, caption, onClose: closePhoto }));
+  };
+  const openPhoto = (i: number): void => {
+    const p = current?.planes[i];
+    if (!p) return;
+    const caption = [p.flight.registration, p.flight.aircraft, p.flight.operator].filter(Boolean).join(' · ');
+    const token = ++photoToken;
+    showOverlay(null, caption);
+    (d.fetchPhotos ? d.fetchPhotos(p.icao24) : Promise.resolve([] as Photo[])).catch(() => [] as Photo[]).then((photos) => { if (token === photoToken) showOverlay(photos, caption); });
+  };
+
   const render = (): void => {
     if (!current) return;
     const stale = staleNow(current);
     const stage = renderScreen(toScreenProps(current, stale));
-    d.root.replaceChildren(stage);
+    mount(stage);
     fitRoutesWhenMounted(stage);
     d.root.dataset.stale = stale ? 'true' : 'false';
     d.root.dataset.planes = current.planes.map((p) => p.icao24).join(',');
@@ -57,7 +78,7 @@ export function startApp(d: AppDeps): App {
     const toScreen = (planes: SceneState['planes']): ScreenPlane[] => planes.map((p) => ({ plane: { type: p.plane.type, livery: p.plane.livery }, flight: p.flight }));
     const stale = staleNow(s);
     const stage = renderTransitionStage(spec, { from: toScreen(prev.planes), to: toScreen(s.planes), sky: s.sky, place: s.place, clock: s.clock, stale, recent: { from: prev.recent, to: s.recent } });
-    d.root.replaceChildren(stage);
+    mount(stage);
     fitRoutesWhenMounted(stage);
     playTransition(stage);
     d.root.dataset.stale = stale ? 'true' : 'false';
@@ -94,6 +115,7 @@ export function startApp(d: AppDeps): App {
 
   d.root.addEventListener('click', (e) => {
     if (!current) return;
+    if (photoHost && e.target instanceof Node && photoHost.contains(e.target)) return; // an open overlay captures its taps
     const stage = d.root.firstElementChild;
     if (!stage) return;
     const box = (el: Element): { left: number; top: number; right: number; bottom: number } => { const r = el.getBoundingClientRect(); return { left: r.left, top: r.top, right: r.right, bottom: r.bottom }; };
@@ -105,6 +127,9 @@ export function startApp(d: AppDeps): App {
     const textSel = current.planes.length === 1 ? '.pa-bar-single' : '.pa-info-row';
     const textEls = inTransition ? [...stage.querySelectorAll(`[data-side="to"]${textSel}, [data-side="to"] ${textSel}`)] : [...stage.querySelectorAll(textSel)];
     const textBoxes = textEls.map(box);
+    const badgeEls = [...stage.querySelectorAll('.pa-badge-slot, .pa-info-row .pa-badge')].filter((el) => !inTransition || el.closest('[data-side]')?.getAttribute('data-side') === 'to' || el.getAttribute('data-side') === 'to');
+    const b = badgeTarget(current.planes.length, { x: e.clientX, y: e.clientY }, badgeEls.map((el) => ({ n: Number((el as HTMLElement).dataset.badge ?? el.textContent), box: box(el) })));
+    if (b !== undefined) { openPhoto(b); return; }
     const i = tapTarget(current.planes.length, { x: e.clientX, y: e.clientY }, planeBoxes, textBoxes);
     if (i !== undefined) speak(i);
   });
@@ -146,5 +171,5 @@ export function startApp(d: AppDeps): App {
     if (away > settings.staleAfterMinutes * 60_000) reloadWhenFree(); else void pollNow();
   });
 
-  return { speak, pollNow, sperre, uebergangSperre };
+  return { speak, openPhoto, closePhoto, pollNow, sperre, uebergangSperre };
 }

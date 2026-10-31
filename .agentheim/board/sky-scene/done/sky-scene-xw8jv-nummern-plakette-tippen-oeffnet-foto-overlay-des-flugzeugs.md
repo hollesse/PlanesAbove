@@ -1,7 +1,7 @@
 ---
 id: sky-scene-xw8jv
 title: Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp)
-status: doing
+status: done
 type: feature
 context: sky-scene
 created: 2026-10-31
@@ -40,3 +40,19 @@ Die Bilder lädt das iPad direkt von den Quell-Hosts (ADR 0029); der Client zeig
 - Datenvertrag: `Photo { id, thumbUrl, imageUrl, photographer, source, pageUrl, licenceText }`, Antwort `{ photos, status }` (airspace-gw6w9). Der Baustein design-system-pawdq bringt Galerie, Zähler, Attributionszeile und X mit; dieser Task verdrahtet nur Tippen, Laden, Montage und Schließen.
 - Spannung zur Vision: Non-Goal „Keine Interaktion über das Tippen hinaus“ und v2+-Eintrag „Foto-Knopf“ — bei Abnahme des Prototyps in `vision.md` nachziehen (Betreiber).
 - Wenn das Overlay offen ist, während die Vorlese-Sperre läuft: beides unabhängig; das Overlay unterbricht kein laufendes Vorlesen.
+
+## Verifier note (iteration 1)
+
+**REASONS:**
+- Kriterien 3 und 5 nicht erfüllt: Ein Tipp, der das Overlay schließt (X oder Abdunklung), fällt in die Szene durch. In `src/client/app/app.ts` läuft `closePhoto` zuerst (setzt `photoHost = undefined`), derselbe Klick bubbelt dann zum `d.root`-Listener, dessen Guard `photoHost.contains(e.target)` jetzt false ist — die Koordinaten werden gegen Plaketten/Flugzeuge/Text geprüft. Folge: Abdunklung oder X über einem Flugzeug/einer Info-Zeile schließt UND liest vor; über einer Plakette schließt und öffnet sofort wieder.
+- Reproduziert: Kopie des Worker-Tests `the backdrop closes` mit Klick bei (5,105) (Info-Zeile 1 im Test-Layout) plus `expect(r.audio.played).toBe(0)` schlägt fehl („expected 1 to be +0“). Die Worker-Tests klicken bei (0,0) und prüfen nicht, dass der Narrator nach dem Schließen still bleibt; der Tipp-Fang-Test deckt nur Tipps ab, die nicht schließen.
+- E2E prüft es ebenfalls nicht (kein `data-speaking`-Assert nach dem X).
+- Rest in Ordnung: badgeTarget vor tapTarget, Host wird nach jedem Render/Übergang wieder angehängt, kein Timer/autoCloseMs, Sperre/Slot/Auswahl unberührt, Einzelansicht liest vor, ScenarioPhotoSource nur im Mock-Zweig ohne injizierten Fetch, 404 außerhalb der Auswahl unverändert, Design-System-Modul importiert, `npm test` grün, README-Delta passend.
+
+**SUGGESTED_FIX:** Ein Tipp, der das Overlay schließt, muss dort enden und nie die Szene erreichen — z. B. `stopPropagation` für Klicks innerhalb des Foto-Hosts oder ein Just-closed-Check im Root-Handler. Unit-Tests: Schließen per X und per Abdunklung an Koordinaten über Flugzeug, Info-Zeile und Plakette, Assert `audio.played === 0` und kein erneut geöffnetes Overlay. E2E: `data-speaking` bleibt `'false'` nach dem X.
+
+**ITERATION_HINT:** likely-fixable
+
+## Outcome
+
+Nummern-Plakette tippen (Szene oder Info-Zeile, nur Zwei-Flugzeug-Ansicht) öffnet das Foto-Overlay des Designsystems für das Flugzeug n-1 mit Fotos aus /api/photos/:icao24 (Lädt / Galerie / Kein Foto). Das Overlay liegt in einem eigenen Host neben der Bühne (src/client/app/app.ts), wird nach jedem Render/Übergang wieder angehängt, schließt nur per X oder Abdunklung. Iteration 2 behebt den Durchfall: der Foto-Host stoppt per click-Listener (stopPropagation) jeden Tipp im Overlay, so dass auch der schließende Tipp nie die Szene erreicht (kein Vorlesen, kein Wieder-Öffnen über Plakette); das Designsystem-Overlay blieb unverändert. Unit-Tests (tests/unit/app.test.ts) schließen per X und Abdunklung sowie klicken Pfeil, Bild, Rahmen, QR, Text über Flugzeug, Info-Zeile und Plakette und prüfen audio.played === 0, ein einziges Overlay/Host. E2E (tests/e2e/photo-overlay.spec.ts) prüft data-speaking 'false' nach dem X; der Helfer tapAt wartet jetzt robust auf die Bounding-Box (vorher sporadisch null bei Re-Render).

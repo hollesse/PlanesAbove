@@ -7,7 +7,7 @@ import { flightMaxAgeMs, userAgentHasContact, type Config } from './config';
 import { openDatabase } from './db';
 import { evaluateHealth } from './health';
 import { createLogger, type Logger } from './logger';
-import { loadScenario, ScenarioDriver, ScenarioFlightSource, ScenarioRouteSource } from './mock/scenario';
+import { loadScenario, ScenarioDriver, ScenarioFlightSource, ScenarioPhotoSource, ScenarioRouteSource } from './mock/scenario';
 import { AdsbLolFlightSource } from './modules/airspace/adapters/adsb-lol';
 import { AdsbFiFlightSource } from './modules/airspace/adapters/adsb-fi';
 import { DailyRequestBudget } from './modules/airspace/flight-source-budget';
@@ -132,9 +132,9 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   const hx = config.sources.aircraftType.hexdb;
   const typeSource = buildAircraftTypeSource({ mock, enabled: hx.enabled, fetch: fetchFn, userAgent: ua, timeoutMs: hx.timeoutMs, backoffMs: config.sources.route.hexdb.backoffMinutes * 60_000, clock, log, backoff: hexdbBackoff });
   const types = new AircraftTypeResolver({ overrides: tables.typeOverrides ?? {}, source: typeSource, clock, log, ttlMs: hx.cacheTtlHours * 3_600_000 });
-  // Aircraft photos (ADR 0029): metadata only, memory cache. Mock mode has no network, so no photo sources there unless a fetch seam is injected.
+  // Aircraft photos (ADR 0029): metadata only, memory cache. Mock mode has no network: the scenario's `photos` table is the only source there (unless a fetch seam is injected).
   const pc = config.sources.photo;
-  const photoSources: PhotoSource[] = mock && !o.fetch ? [] : pc.order.map((name) => {
+  const photoSources: PhotoSource[] = mock && !o.fetch ? (driver ? [new ScenarioPhotoSource(driver)] : []) : pc.order.map((name) => {
     const po = { fetch: fetchFn, userAgent: ua, timeoutMs: pc.timeoutMs };
     return name === 'planespotters' ? new PlanespottersPhotoSource(po) : name === 'commons' ? new CommonsPhotoSource(po) : new AirportDataPhotoSource(po);
   });

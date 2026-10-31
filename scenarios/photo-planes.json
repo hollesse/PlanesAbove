@@ -1,0 +1,19 @@
+{
+  "name": "photo-planes", "startTime": "2026-10-27T10:00:00Z",
+  "steps": [
+    { "at": 0,
+      "planes": [
+        { "icao24": "aaaaaa", "callsign": "DLH400", "typeCode": "A20N", "registration": "D-AINA", "distanceKm": 5, "bearingDeg": 90, "altitudeFt": 36000, "speedKt": 470 },
+        { "icao24": "bbbbbb", "callsign": "RYR1724", "typeCode": "B738", "registration": "EI-DCL", "distanceKm": 8, "bearingDeg": 180, "altitudeFt": 31000, "speedKt": 440 }
+      ],
+      "routes": { "DLH400": { "from": "Frankfurt", "to": "New York" } },
+      "tts": { "durationMs": 1200 },
+      "photos": {
+        "bbbbbb": [
+          { "id": "p1", "thumbUrl": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Crect width='8' height='5' fill='%235b87b5'/%3E%3C/svg%3E", "imageUrl": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='533'%3E%3Crect width='800' height='533' fill='%235b87b5'/%3E%3C/svg%3E", "photographer": "Test A", "source": "mock", "pageUrl": "mock.example/foto/1", "licenceText": "Foto: Test A · Mock · CC BY 4.0" },
+          { "id": "p2", "thumbUrl": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Crect width='8' height='5' fill='%23c0774a'/%3E%3C/svg%3E", "imageUrl": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='533'%3E%3Crect width='800' height='533' fill='%23c0774a'/%3E%3C/svg%3E", "photographer": "Test B", "source": "mock", "pageUrl": "mock.example/foto/2", "licenceText": "Foto: Test B · Mock · CC BY 4.0" }
+        ]
+      } },
+    { "at": 30, "planes": [ { "icao24": "aaaaaa", "callsign": "DLH400", "typeCode": "A20N", "registration": "D-AINA", "distanceKm": 5, "bearingDeg": 90, "altitudeFt": 36000, "speedKt": 470 } ] }
+  ]
+}

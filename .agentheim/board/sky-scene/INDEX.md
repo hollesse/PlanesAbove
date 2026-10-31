@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 1
 - **Todo:** 1
-- **Doing:** 1
-- **Done:** 8
+- **Doing:** 0
+- **Done:** 9
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **sky-scene-xw8jv** — Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp) (feature) — `doing/sky-scene-xw8jv-nummern-plakette-tippen-oeffnet-foto-overlay-des-flugzeugs.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **sky-scene-xw8jv** — Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp) (feature) — `done/sky-scene-xw8jv-nummern-plakette-tippen-oeffnet-foto-overlay-des-flugzeugs.md`
 - **sky-scene-d4n9p** — Boeing-Typen ziffernweise aussprechen („Boeing sieben vier sieben“), Airbus bleibt als Zahl („A dreihundertzwanzig“) (bug) — `done/sky-scene-d4n9p-boeing-typen-ziffernweise-aussprechen.md`
 - **sky-scene-b7w2n** — Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline (feature) — `done/sky-scene-b7w2n-steckbrief-aus-satzbausteinen-mit-baustein-cache.md`
 - **sky-scene-k3f8d** — ElevenLabs-Fehler sichtbar machen und Budget bei Fehlern nicht belasten (402 ist kein Kontingentfehler) (bug) — `done/sky-scene-k3f8d-elevenlabs-fehler-sichtbar-machen-und-budget-bei-fehlern-nic.md`

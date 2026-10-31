@@ -6,3 +6,6 @@ body { display: flex; align-items: center; justify-content: center; }
 /* The 4:3 screen fills the iPad; on other displays it is letterboxed. */
 #app { width: min(100vw, calc(100vh * 4 / 3)); width: min(100dvw, calc(100dvh * 4 / 3)); }
 #app .pa-screen { border: none; }
+#app { position: relative; }
+/* Foto-Overlay host: covers the whole screen, sits next to (not inside) the re-rendered stage; only present while a overlay is open. */
+#app .pa-photo-host { position: absolute; inset: 0; width: auto; height: auto; background: transparent; z-index: 30; }

@@ -43,3 +43,10 @@ export function tapTarget(planeCount: number, point: { x: number; y: number }, p
   for (let i = 0; i < planeCount; i++) if ((planeBoxes[i] && inside(point, planeBoxes[i])) || (textBoxes[i] && inside(point, textBoxes[i]))) return i;
   return undefined;
 }
+
+/** Plane index (0/1) whose Nummern-Plakette was tapped. Only the two-plane view has Plaketten; checked BEFORE plane/text so a Plakette tap never narrates. */
+export function badgeTarget(planeCount: number, point: { x: number; y: number }, badges: { n: number; box: Box }[]): number | undefined {
+  if (planeCount !== 2) return undefined;
+  for (const b of badges) if ((b.n === 1 || b.n === 2) && inside(point, b.box)) return b.n - 1;
+  return undefined;
+}

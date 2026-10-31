@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { backoffMs, reloadDue, staleSince, toScreenProps, tapTarget } from '../../src/client/app/logic';
+import { backoffMs, badgeTarget, reloadDue, staleSince, toScreenProps, tapTarget } from '../../src/client/app/logic';
 import type { SceneState } from '../../src/shared/state';
 import { renderScreen } from '../../src/client/ui';
 
@@ -73,5 +73,17 @@ describe('tapTarget (which plane was tapped)', () => {
   it('nothing for taps on the empty sky or with no planes', () => {
     expect(tapTarget(2, { x: 190, y: 10 }, [rect(0, 0, 100, 100), rect(120, 40, 80, 60)], [])).toBeUndefined();
     expect(tapTarget(0, { x: 1, y: 1 }, [], [])).toBeUndefined();
+  });
+});
+
+describe('badgeTarget (Plakette tap)', () => {
+  const r = (l: number, t: number) => ({ left: l, top: t, right: l + 10, bottom: t + 10 });
+  const badges = [{ n: 1, box: r(0, 0) }, { n: 2, box: r(50, 0) }];
+  it('maps Plakette n to plane n-1, only with two planes', () => {
+    expect(badgeTarget(2, { x: 5, y: 5 }, badges)).toBe(0);
+    expect(badgeTarget(2, { x: 55, y: 5 }, badges)).toBe(1);
+    expect(badgeTarget(2, { x: 30, y: 5 }, badges)).toBeUndefined();
+    expect(badgeTarget(1, { x: 5, y: 5 }, badges)).toBeUndefined();
+    expect(badgeTarget(0, { x: 5, y: 5 }, badges)).toBeUndefined();
   });
 });

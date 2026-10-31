@@ -4,6 +4,7 @@ import { destinationPoint } from '../modules/airspace/geo';
 import { SourceError, type FlightSource, type Flugzeug, type LatLon, type Route, type RouteSource, type SourceErrorClass } from '../modules/airspace/model';
 import type { FakeSpeechBehaviour } from '../modules/sky-scene/fake-speech';
 import type { Clock } from '../clock';
+import type { Photo, PhotoLookup, PhotoQuery, PhotoSource } from '../modules/airspace/photo-source';
 
 export interface ScenarioPlane {
   icao24: string; callsign?: string; typeCode?: string; registration?: string; category?: string;
@@ -19,11 +20,13 @@ export interface ScenarioStep {
   /** callsign -> route cities. Replaces the table. */
   routes?: Record<string, { from: string; to: string }>;
   tts?: { durationMs: number; failure?: FakeSpeechBehaviour['failure'] };
+  /** icao24 -> photos served by the mock photo source (test infrastructure for GET /api/photos/:icao24). Replaces the table; a hex without an entry has no photo ("Kein Foto"). */
+  photos?: Record<string, Photo[]>;
 }
 
 export interface Scenario { name: string; startTime: string; steps: ScenarioStep[] }
 
-export interface ScenarioState { planes: ScenarioPlane[]; failure: SourceErrorClass | null; routes: Record<string, { from: string; to: string }>; tts: { durationMs: number; failure?: FakeSpeechBehaviour['failure'] } }
+export interface ScenarioState { planes: ScenarioPlane[]; failure: SourceErrorClass | null; routes: Record<string, { from: string; to: string }>; tts: { durationMs: number; failure?: FakeSpeechBehaviour['failure'] }; photos: Record<string, Photo[]> }
 
 export const loadScenario = (file: string): Scenario => parseScenario(fs.readFileSync(file, 'utf8'));
 
@@ -40,13 +43,14 @@ export class ScenarioDriver {
   /** The merged scenario state at the current clock reading. */
   current(): ScenarioState {
     const offsetS = (this.clock.now() - this.startedAtMs) / 1000;
-    const st: ScenarioState = { planes: [], failure: null, routes: {}, tts: { durationMs: 800 } };
+    const st: ScenarioState = { planes: [], failure: null, routes: {}, tts: { durationMs: 800 }, photos: {} };
     for (const step of this.scenario.steps) {
       if (step.at > offsetS) break;
       if (step.planes) st.planes = step.planes;
       if (step.failure !== undefined) st.failure = step.failure;
       if (step.routes) st.routes = step.routes;
       if (step.tts) st.tts = step.tts;
+      if (step.photos) st.photos = step.photos;
     }
     return st;
   }
@@ -77,4 +81,11 @@ export class ScenarioRouteSource implements RouteSource {
     const r = this.driver.current().routes[callsign];
     return r ? { from: { name: r.from, city: r.from }, to: { name: r.to, city: r.to }, vendorPlausible: true } : null;
   }
+}
+
+/** Mock-mode photo source: serves the scenario's `photos` table (hex -> Photo[]). */
+export class ScenarioPhotoSource implements PhotoSource {
+  readonly name = 'scenario';
+  constructor(private readonly driver: ScenarioDriver) {}
+  async lookup(q: PhotoQuery): Promise<PhotoLookup> { return { photos: this.driver.current().photos[q.icao24.toLowerCase()] ?? [] }; }
 }

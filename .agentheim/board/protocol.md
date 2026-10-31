@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 10:21 -- Task verified and completed: sky-scene-xw8jv - Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp)
+
+**Type:** Work / Task completion
+**Task:** sky-scene-xw8jv - Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp)
+**Summary:** Nummern-Plakette tippen (Zwei-Flugzeug-Ansicht) öffnet das Foto-Overlay des Flugzeugs mit Fotos aus /api/photos; Overlay lebt neben der Szene, überlebt Updates, schließt nur per X/Abdunklung, jeder Tipp im Overlay endet dort (kein Vorlesen).
+**Duration:** 38m
+**Verification:** PASS (iteration 2)
+**Files changed:** 10
+**Tests added:** 14
+**ADRs written:** none
+
+---
+
+## 2026-10-31 10:04 -- Verification failed: sky-scene-xw8jv - Nummern-Plakette tippen öffnet das Foto-Overlay
+
+**Type:** Work / Verification failure
+**Task:** sky-scene-xw8jv - Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp)
+**Iteration:** 1 of 3
+**Reasons:** Schließender Tipp (X/Abdunklung) fällt in die Szene durch und löst Vorlesen bzw. erneutes Öffnen aus (reproduziert), Tests prüfen Narrator-Stille nach dem Schließen nicht
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-31 09:56 -- Batch started: [sky-scene-xw8jv]
 
 **Type:** Work / Batch start
