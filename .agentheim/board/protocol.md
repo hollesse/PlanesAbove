@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:17 -- Modeling / Captured: sky-scene-jpjt2 - Sprachcache lesbar ablegen — Ordner je Adapter/Stimme/Kategorie, sprechender Dateiname mit Text-Hash-Suffix; Steckbrief wird nicht mehr als Datei gespeichert
+
+**Type:** Modeling / Capture
+**BC:** sky-scene
+**Filed to:** todo
+**Summary:** Sprachcache als data/audio/<adapter>/<stimme>/<kategorie>/<schluessel>-<texthash>.wav (typ-airline, route IATA/ICAO, hoehe, phase); Steckbrief wird bei Abruf zusammengefügt statt gespeichert. Betreiber-Entscheidungen: Hash-Suffix, IATA vor ICAO.
+
+---
+
 ## 2026-10-31 09:12 -- Research: Kostenlose Fotoquellen für ein konkretes Flugzeug (Foto-Overlay)
 
 **Type:** Research

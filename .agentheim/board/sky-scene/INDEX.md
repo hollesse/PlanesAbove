@@ -11,13 +11,14 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 2
-- **Todo:** 0
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 8
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **sky-scene-jpjt2** — Sprachcache lesbar ablegen — Ordner je Adapter/Stimme/Kategorie, sprechender Dateiname mit Text-Hash-Suffix; Steckbrief wird nicht mehr als Datei gespeichert (refactor) — `todo/sky-scene-jpjt2-sprachcache-lesbar-ablegen-ordner-je-adapter-stimme-kategorie.md`
 <!-- todo-list:end -->
 
 ### Doing
