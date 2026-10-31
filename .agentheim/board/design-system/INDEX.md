@@ -11,19 +11,19 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 3
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 14
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **design-system-pawdq** — Foto-Overlay-Baustein (Organism) in Storybook — Vollbild-Overlay mit Foto-Galerie, Attribution und X rechts oben zum Schließen (feature) — `todo/design-system-pawdq-foto-overlay-baustein-galerie-mit-x-zum-schliessen-storybook.md`
 - **design-system-001-styleguide** — Storybook-Instanz nach Atomic Design mit allen vorhandenen Assets aufbauen und vom Betreiber abnehmen lassen (feature) — depends_on: [infrastructure-pn3w4] — `todo/design-system-001-styleguide.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **design-system-pawdq** — Foto-Overlay-Baustein (Organism) in Storybook — Vollbild-Overlay mit Foto-Galerie, Attribution und X rechts oben zum Schließen (feature) — `doing/design-system-pawdq-foto-overlay-baustein-galerie-mit-x-zum-schliessen-storybook.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

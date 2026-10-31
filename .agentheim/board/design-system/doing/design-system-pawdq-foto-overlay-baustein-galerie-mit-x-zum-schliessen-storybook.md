@@ -1,7 +1,7 @@
 ---
 id: design-system-pawdq
 title: Foto-Overlay-Baustein (Organism) in Storybook — Vollbild-Overlay mit Foto-Galerie, Attribution und X rechts oben zum Schließen
-status: todo
+status: doing
 type: feature
 context: design-system
 created: 2026-10-31

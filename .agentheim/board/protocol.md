@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:24 -- Batch started: [design-system-pawdq]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-pawdq - Foto-Overlay-Baustein (Organism) in Storybook — Vollbild-Overlay mit Foto-Galerie, Attribution und X rechts oben zum Schließen
+**Parallel:** scoped — builder named design-system-pawdq; 1 other ready task (airspace-gw6w9) not dispatched
+**Planning advisory:** whats-next (2026-10-27, stale — background): refine airspace-h9x4p / sky-scene-g3r8w; superseded by builder scope
+
+---
+
 ## 2026-10-31 09:22 -- Modeling / Refined: sky-scene-xw8jv - Nummern-Plakette tippen öffnet das Foto-Overlay
 
 **Type:** Modeling / Refine
