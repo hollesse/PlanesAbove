@@ -5,6 +5,33 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:09 -- Modeling / Captured: sky-scene-xw8jv - Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp)
+
+**Type:** Modeling / Capture
+**BC:** sky-scene
+**Filed to:** backlog
+**Summary:** Prototyp: Tippen auf die Nummern-Plakette öffnet das Foto-Overlay des Flugzeugs, X schließt; kein Vorlesen durch den Plakette-Tipp; auto-close wenn Flugzeug verschwindet. Offen: Tippziel in der Einzelansicht.
+
+---
+
+## 2026-10-31 09:09 -- Modeling / Captured: design-system-pawdq - Foto-Overlay-Baustein (Organism) in Storybook — Vollbild-Overlay mit Foto-Galerie, Attribution und X rechts oben zum Schließen
+
+**Type:** Modeling / Capture
+**BC:** design-system
+**Filed to:** todo
+**Summary:** Foto-Overlay-Organism in Storybook: Vollbild über der Szene, Galerie mit Zähler, Attributionszeile, X rechts oben; Zustände ein Foto / Galerie / lädt / kein Foto.
+
+---
+
+## 2026-10-31 09:09 -- Modeling / Captured: airspace-gw6w9 - Fotoquelle (PhotoSource): echte Fotos eines konkreten Flugzeugs per Kennzeichen/Hex aus mehreren kostenlosen Plattformen, mit Attribution, als Galerie
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** Fotoquelle-Port mit mehreren kostenlosen Plattformen (Lookup per Kennzeichen/Hex), Attribution, Galerie; Plattformwahl folgt der Research aircraft-photo-sources-2026-10-31.
+
+---
+
 ## 2026-10-31 08:55 -- Work session ended
 
 **Type:** Work / Session end

@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 1
+- **Backlog:** 2
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 8
@@ -50,6 +50,7 @@ prior-art matcher additionally checks `done-archive/` when present.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **sky-scene-xw8jv** — Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp) (feature) — `backlog/sky-scene-xw8jv-nummern-plakette-tippen-oeffnet-foto-overlay-des-flugzeugs.md`
 - **sky-scene-q7m3w** — /healthz meldet Zustand der Sprachausgabe (Budget, letzter Fehler) (feature) — `backlog/sky-scene-q7m3w-healthz-meldet-zustand-der-sprachausgabe-budget-letzter-fehl.md`
 <!-- backlog-list:end -->
 
