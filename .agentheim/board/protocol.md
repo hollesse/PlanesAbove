@@ -5,6 +5,16 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:22 -- Modeling / Refined: sky-scene-xw8jv - Nummern-Plakette tippen öffnet das Foto-Overlay
+
+**Type:** Modeling / Refine
+**BC:** sky-scene
+**Status after:** todo
+**Summary:** Betreiber-Entscheidungen: Einzelansicht im Prototyp ohne Foto (keine Plakette dort), Schließen nur per X/Abdunklung ohne Auto-Close, Plakette öffnet nur das Overlay (kein Vorlesen). Ergänzt: Overlay muss Voll-Renders der Szene überleben, Datenvertrag zu /api/photos, E2E-Szenarien, Tipp-Zuordnung Plakette vor Flugzeug/Text.
+**ADRs written:** none (ADR 0029 verlinkt)
+
+---
+
 ## 2026-10-31 09:19 -- Modeling / Refined: sky-scene-jpjt2 - Sprachcache lesbar ablegen
 
 **Type:** Modeling / Refine
