@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 08:41 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 58m (scoped run, sky-scene-b7w2n)
+**Completed:** 1 (first-try PASS: 0, re-dispatched: 1 — PASS at iteration 2; iteration 1 failed on one missing test assertion)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** sky-scene-b7w2n: 2
+**Commits:** 3 (batch start, integration, this entry)
+**Vision-conformance:** none — batch aligns with vision (keeps the free path; makes the opt-in ElevenLabs path affordable within the free tier)
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (1 task)
+**Carry-over:** none — working tree clean (untracked .agentheim/.dashboard/ is a git-ignored advisory artifact)
+
+---
+
 ## 2026-10-31 08:41 -- Task verified and completed: sky-scene-b7w2n - Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline
 
 **Type:** Work / Task completion
@@ -12,6 +30,7 @@ Newest entries on top.
 **Summary:** Steckbrief aus festen Satzbausteinen (Typ+Airline, Route Start→Ziel, Höhe auf 500 m, Flugphase ab 5 m/s), je Baustein gerendert und gecacht, als PCM mit 250 ms Lücke unter stabilem Key zusammengesetzt; Rufzeichen nie gesprochen, Primär- und Fallback-Bausteine nie gemischt.
 **Duration:** 52m
 **Verification:** PASS (iteration 2)
+**Result source:** sidecar · layout both+sentinel · sidecar present
 **Files changed:** 11
 **Tests added:** 13
 **ADRs written:** 0028
