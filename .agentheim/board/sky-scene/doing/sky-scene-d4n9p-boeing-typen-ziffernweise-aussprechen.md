@@ -1,7 +1,7 @@
 ---
 id: sky-scene-d4n9p
 title: Boeing-Typen ziffernweise aussprechen („Boeing sieben vier sieben“), Airbus bleibt als Zahl („A dreihundertzwanzig“)
-status: todo
+status: doing
 type: bug
 context: sky-scene
 created: 2026-10-31
