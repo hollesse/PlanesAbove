@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 10:43 -- Modeling / Captured: airspace-hejpw - Planespotters und Airport-Data als Fotoquellen ausbauen — Bildqualität zu schlecht, nur Wikimedia Commons bleibt
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** Betreiber: Planespotters (280 px) und Airport-Data (kleine Thumbnails) liefern zu schlechte Bildqualität fürs Vollbild-Overlay; nur Commons bleibt. Port/Kette/Cache bleiben für spätere Quellen.
+
+---
+
 ## 2026-10-31 10:40 -- Work session ended
 
 **Type:** Work / Session end
