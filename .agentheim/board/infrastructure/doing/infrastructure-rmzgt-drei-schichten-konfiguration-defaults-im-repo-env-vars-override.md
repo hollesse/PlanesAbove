@@ -1,7 +1,7 @@
 ---
 id: infrastructure-rmzgt
 title: Drei-Schichten-Konfiguration: Defaults als config.yaml im Repo, Pflichtwerte und Secrets per Umgebungsvariable, optionale Override-Datei; README beschreibt alles
-status: todo
+status: doing
 type: decision
 context: infrastructure
 created: 2026-10-31

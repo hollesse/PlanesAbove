@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 11:09 -- Batch started: [infrastructure-rmzgt]
+
+**Type:** Work / Batch start
+**Tasks:** infrastructure-rmzgt - Drei-Schichten-Konfiguration: Defaults als config.yaml im Repo, Pflichtwerte und Secrets per Umgebungsvariable, optionale Override-Datei; README beschreibt alles
+**Parallel:** no (1 worker — wave 2; the only remaining ready task, held from wave 1 because it reshapes src/server/config.ts after airspace-hejpw and airspace-tzw5t)
+
+---
+
 ## 2026-10-31 11:09 -- Task verified and completed: airspace-tzw5t - Korridor-Deckel (corridorMaxKm) aufweichen, wenn der Kurs zum Ziel passt und das Flugzeug weit vom Start ist (Querabstand klein gegen Strecke seit Start); TOM16Y Manchester–Heraklion wird plausibel, EWG16Y bleibt abgelehnt
 
 **Type:** Work / Task completion
