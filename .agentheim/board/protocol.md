@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 10:36 -- Batch started: [airspace-vcytm]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-vcytm - Schärfere Fotos im Overlay — Commons-Vorschau mit 1600 px anfordern und Default-Kette auf [commons, airport-data, planespotters] drehen
+**Parallel:** scoped — builder asked for this task directly; no other ready tasks
+
+---
+
 ## 2026-10-31 10:36 -- Modeling / Captured: airspace-vcytm - Schärfere Fotos im Overlay — Commons-Vorschau mit 1600 px anfordern und Default-Kette auf [commons, airport-data, planespotters] drehen
 
 **Type:** Modeling / Capture

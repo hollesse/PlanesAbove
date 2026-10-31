@@ -1,7 +1,7 @@
 ---
 id: airspace-vcytm
 title: Schärfere Fotos im Overlay — Commons-Vorschau mit 1600 px anfordern und Default-Kette auf [commons, airport-data, planespotters] drehen
-status: todo
+status: doing
 type: feature
 context: airspace
 created: 2026-10-31
