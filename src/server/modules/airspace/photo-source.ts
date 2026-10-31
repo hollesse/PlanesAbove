@@ -14,6 +14,8 @@ export interface Photo {
   pageUrl: string;
   /** Ready-made credit line shown next to the image. */
   licenceText: string;
+  /** Pixel size of `imageUrl` as the source's response states it (not measured; absent when the source gives none). */
+  size?: { width: number; height: number };
 }
 
 export interface PhotoQuery { icao24: string; registration?: string }
@@ -26,7 +28,7 @@ export interface PhotoSource {
   lookup(q: PhotoQuery): Promise<PhotoLookup>;
 }
 
-export const PHOTO_SOURCE_NAMES = ['planespotters', 'commons', 'airport-data'] as const;
+export const PHOTO_SOURCE_NAMES = ['commons', 'airport-data', 'planespotters'] as const;
 export type PhotoSourceName = (typeof PHOTO_SOURCE_NAMES)[number];
 
 /** Maps any thrown failure of a source call to the port's `unavailable` answer. */

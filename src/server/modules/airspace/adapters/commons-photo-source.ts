@@ -5,6 +5,8 @@ import { SourceError } from '../model';
 import { isNotFound, obj, str, unavailableFrom, type Photo, type PhotoLookup, type PhotoQuery, type PhotoSource } from '../photo-source';
 import { guardedFetch, type Fetch } from './http';
 
+/** Requested preview width: the iPad Pro overlay is ~1800 physical pixels wide, so 1600 px stays sharp (Commons scales on demand). */
+const PREVIEW_WIDTH_PX = 1600;
 const BASE = 'https://commons.wikimedia.org/w/api.php';
 
 const ENTITIES: Record<string, string> = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#039;': "'", '&#39;': "'", '&nbsp;': ' ' };
@@ -24,7 +26,7 @@ export class CommonsPhotoSource implements PhotoSource {
   }
 
   private async search(reg: string): Promise<Photo[]> {
-    const url = `${this.o.baseUrl ?? BASE}?action=query&generator=search&gsrsearch=${encodeURIComponent(reg)}&gsrnamespace=6&gsrlimit=8&prop=imageinfo&iiprop=url%7Cextmetadata&iiurlwidth=640&format=json`;
+    const url = `${this.o.baseUrl ?? BASE}?action=query&generator=search&gsrsearch=${encodeURIComponent(reg)}&gsrnamespace=6&gsrlimit=8&prop=imageinfo&iiprop=url%7Cextmetadata&iiurlwidth=${PREVIEW_WIDTH_PX}&format=json`;
     let res: Awaited<ReturnType<Fetch>>;
     try {
       res = await guardedFetch(this.o.fetch, url, { headers: { 'User-Agent': this.o.userAgent, Accept: 'application/json' } }, this.o.timeoutMs);
@@ -50,7 +52,9 @@ export class CommonsPhotoSource implements PhotoSource {
         if (!info || !thumb || !pageUrl) return [];
         if (!exact.test(title) && !exact.test(meta(m, 'ImageDescription'))) return []; // fuzzy-search mis-hit: another aircraft
         const artist = meta(m, 'Artist');
-        return [{ id: String(p.pageid ?? pageUrl), thumbUrl: thumb, imageUrl: thumb, photographer: artist, source: this.name, pageUrl, licenceText: [artist, meta(m, 'LicenseShortName'), 'Wikimedia Commons'].filter(Boolean).join(' · ') }];
+        const w = Number(info.thumbwidth); const h = Number(info.thumbheight);
+        const size = w > 0 && h > 0 ? { size: { width: w, height: h } } : {};
+        return [{ id: String(p.pageid ?? pageUrl), thumbUrl: thumb, imageUrl: thumb, photographer: artist, source: this.name, pageUrl, licenceText: [artist, meta(m, 'LicenseShortName'), 'Wikimedia Commons'].filter(Boolean).join(' · '), ...size }];
       });
   }
 }

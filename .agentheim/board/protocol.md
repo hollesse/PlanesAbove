@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 10:40 -- Task verified and completed: airspace-vcytm - Schärfere Fotos im Overlay — Commons-Vorschau mit 1600 px anfordern und Default-Kette auf [commons, airport-data, planespotters] drehen
+
+**Type:** Work / Task completion
+**Task:** airspace-vcytm - Schärfere Fotos im Overlay — Commons-Vorschau mit 1600 px anfordern und Default-Kette auf [commons, airport-data, planespotters] drehen
+**Summary:** Commons-Vorschauen mit 1600 px, Default-Kette commons → airport-data → planespotters, Photo.size und Bildgrößen in der Stichprobe; ADR 0029 amendiert.
+**Duration:** 6m
+**Verification:** PASS (iteration 1)
+**Files changed:** 9
+**Tests added:** 2
+**ADRs written:** 0029 (Amendment)
+
+---
+
 ## 2026-10-31 10:36 -- Batch started: [airspace-vcytm]
 
 **Type:** Work / Batch start

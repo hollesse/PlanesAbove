@@ -6,7 +6,7 @@ status: accepted
 date: 2026-10-31
 supersedes: []
 superseded_by: []
-related_tasks: [airspace-gw6w9, design-system-pawdq, sky-scene-xw8jv]
+related_tasks: [airspace-gw6w9, design-system-pawdq, sky-scene-xw8jv, airspace-vcytm]
 related_research: [aircraft-photo-sources-2026-10-31]
 related_adrs: [0001, 0004, 0005, 0016]
 ---
@@ -68,3 +68,12 @@ Kiosk-Display per QR-Code oder NFC erfolgen — die URL als Text genügt ausdrü
 das Foto-Overlay bekommt einen QR-Code je Foto (design-system-g83gh), bevor Planespotters im
 Betrieb aktiv ist. Außerdem: `thumbnail_large` ist nur 280 px hoch (Breite 360–500 px); auf dem
 iPad wird es hochskaliert.
+
+## Amendment 2026-10-31 (airspace-vcytm) — Default-Kette commons → airport-data → planespotters
+
+Punkt 4 geändert: Default `sources.photo.order: [commons, airport-data, planespotters]`. Grund: die
+Planespotters-API liefert nur `thumbnail_large` mit 280 px Höhe (vierfach hochskaliert auf dem iPad
+Pro), während Commons beliebige Vorschaubreiten erlaubt — der Adapter fordert 1600 px an. Das erste
+Foto der Galerie ist das erste Foto der ersten konfigurierten Quelle mit Treffer; einen
+Planespotters-Vorrang gab es in der Kette nie, nur über den alten Default. Reihenfolge bleibt reine
+Konfiguration. `Photo.size` trägt optional die in der Antwort genannte Bildgröße.

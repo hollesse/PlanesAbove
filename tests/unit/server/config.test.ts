@@ -96,8 +96,11 @@ describe('speech.partGapMs (sky-scene-b7w2n)', () => {
 });
 
 describe('sources.photo (ADR 0029)', () => {
-  it('defaults: Planespotters -> Commons -> Airport-Data, 6 photos, 24 h cache', () => {
-    expect(parseConfig(MIN).sources.photo).toMatchObject({ order: ['planespotters', 'commons', 'airport-data'], maxPhotos: 6, timeoutMs: 5000, cacheTtlHours: 24 });
+  it('defaults: Commons -> Airport-Data -> Planespotters, 6 photos, 24 h cache', () => {
+    expect(parseConfig(MIN).sources.photo).toMatchObject({ order: ['commons', 'airport-data', 'planespotters'], maxPhotos: 6, timeoutMs: 5000, cacheTtlHours: 24 });
+  });
+  it('an explicitly configured order wins over the default', () => {
+    expect(parseConfig(MIN + 'sources: { photo: { order: [planespotters, commons] } }\n').sources.photo.order).toEqual(['planespotters', 'commons']);
   });
   it('accepts overrides, including [] to switch photos off', () => {
     const c = parseConfig(MIN + 'sources: { photo: { order: [commons], maxPhotos: 3, timeoutMs: 2000, cacheTtlHours: 1 } }\n');

@@ -48,7 +48,7 @@ describe('PlanespottersPhotoSource', () => {
     expect(await make(reply(200, fixture('planespotters-hex-hit'))).lookup(Q)).toEqual({ photos: [{
       id: '1234567', source: 'planespotters', photographer: 'AsharkNGB',
       thumbUrl: 'https://t.plnspttrs.net/12345/1234567_abcdef_small.jpg', imageUrl: 'https://t.plnspttrs.net/12345/1234567_abcdef_280.jpg',
-      pageUrl: 'https://www.planespotters.net/photo/1234567/d-aixa-lufthansa-airbus-a350-941', licenceText: '© AsharkNGB · planespotters.net',
+      pageUrl: 'https://www.planespotters.net/photo/1234567/d-aixa-lufthansa-airbus-a350-941', licenceText: '© AsharkNGB · planespotters.net', size: { width: 498, height: 280 },
     }] });
   });
   it('empty photos[] on hex falls back to /pub/photos/reg/<REG>', async () => {
@@ -98,6 +98,14 @@ describe('CommonsPhotoSource', () => {
     await make(async (u, i) => { urls.push(u); return reply(200, fixture('commons-hit'))(u, i); }).lookup(Q);
     expect(urls[0]).toContain('https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=D-AIXA&gsrnamespace=6');
     expect(urls[0]).toContain('iiprop=url%7Cextmetadata');
+    expect(urls[0]).toContain('iiurlwidth=1600');
+  });
+  it('imageUrl is the thumburl of the response (1600 px preview), size from thumbwidth/thumbheight when given', async () => {
+    const body = JSON.stringify({ query: { pages: { 1: { pageid: 1, title: 'File:D-AIXA.jpg', index: 1, imageinfo: [{ thumburl: 'https://upload.wikimedia.org/x/1600px-D-AIXA.jpg', thumbwidth: 1600, thumbheight: 900, url: 'https://upload.wikimedia.org/x/D-AIXA.jpg', descriptionurl: 'https://commons.wikimedia.org/wiki/File:D-AIXA.jpg', extmetadata: {} }] } } } });
+    const r = await make(reply(200, body)).lookup(Q);
+    const p = 'photos' in r ? r.photos[0] : undefined;
+    expect(p?.imageUrl).toBe('https://upload.wikimedia.org/x/1600px-D-AIXA.jpg');
+    expect(p?.size).toEqual({ width: 1600, height: 900 });
   });
   it('mis-hits are dropped: only files whose title or description contains the registration exactly stay (D-AIXB, apron without reg are out)', async () => {
     const r = await make(reply(200, fixture('commons-hit'))).lookup(Q);

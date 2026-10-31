@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 2
 - **Todo:** 1
-- **Doing:** 1
-- **Done:** 22
+- **Doing:** 0
+- **Done:** 23
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **airspace-vcytm** — Schärfere Fotos im Overlay — Commons-Vorschau mit 1600 px anfordern und Default-Kette auf [commons, airport-data, planespotters] drehen (feature) — `doing/airspace-vcytm-schaerfere-fotos-commons-1600px-und-kette-commons-zuerst.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **airspace-vcytm** — Schärfere Fotos im Overlay — Commons-Vorschau mit 1600 px anfordern und Default-Kette auf [commons, airport-data, planespotters] drehen (feature) — `done/airspace-vcytm-schaerfere-fotos-commons-1600px-und-kette-commons-zuerst.md`
 - **airspace-gw6w9** — Fotoquelle (PhotoSource): echte Fotos eines konkreten Flugzeugs per Kennzeichen/Hex aus mehreren kostenlosen Plattformen, mit Attribution, als Galerie (feature) — `done/airspace-gw6w9-fotoquelle-echte-fotos-eines-flugzeugs-per-kennzeichen-hex.md`
 - **airspace-t4x9k** — Flugzeugtyp je Hex bei hexdb gegenprüfen (nur im Speicher gecacht) und eine eigene Korrekturtabelle Hex → Typ als Vorrang, damit falsche Typcodes der Flugquelle (OE-FML DA42 als C525) nicht als falsche Silhouette erscheinen (feature) — `done/airspace-t4x9k-flugzeugtyp-per-hexdb-gegenpruefen-und-eigene-korrekturtabelle.md`
 - **airspace-cn6t7** — Routenanzeige bei langen Flughafennamen: ganze Route bleibt sichtbar; Playwright-Test mit den zwei längsten Namen (bug) — `done/airspace-cn6t7-routenanzeige-bei-langen-flughafennamen-ganze-route-sichtbar.md`

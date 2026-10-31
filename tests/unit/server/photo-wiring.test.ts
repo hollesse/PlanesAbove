@@ -37,7 +37,7 @@ describe('GET /api/photos/:icao24', () => {
     expect(r.headers.get('content-type')).toContain('application/json');
     const body = (await r.json()) as { status: string; photos: { source: string; imageUrl: string }[] };
     expect(body.status).toBe('ok');
-    expect(body.photos.map((p) => p.source)).toEqual(['planespotters', 'commons', 'commons', 'airport-data', 'airport-data']);
+    expect(body.photos.map((p) => p.source)).toEqual(['commons', 'commons', 'airport-data', 'airport-data', 'planespotters']);
     expect(urls.every((u) => /planespotters|wikimedia|airport-data/.test(u) && !/\.(jpe?g|png)(\?|$)/.test(u))).toBe(true); // the server asks metadata endpoints, never an image
   });
   it('404 for a hex that is not in the current Auswahl (and no photo request is made)', async () => {
@@ -75,7 +75,7 @@ describe('/healthz and boot', () => {
     const { get } = await boot(async (url) => (url.includes('planespotters') ? res(429, '') : res(200, fixture('commons-empty'))));
     await get('/api/photos/3c6444');
     const h = (await (await get('/healthz')).json()) as { photo: { sources: { name: string; state: string }[] } };
-    expect(h.photo.sources.map((s) => `${s.name}:${s.state}`)).toEqual(['planespotters:backoff', 'commons:ok', 'airport-data:ok']);
+    expect(h.photo.sources.map((s) => `${s.name}:${s.state}`)).toEqual(['commons:ok', 'airport-data:ok', 'planespotters:backoff']);
   });
   it('warns at boot when the User-Agent has no contact and photo sources are active; not with a contact or no photo sources', async () => {
     const warn = (lines: string[]) => lines.some((l) => l.includes('"level":"warn"') && l.includes('userAgent'));

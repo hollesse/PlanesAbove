@@ -17,11 +17,11 @@ const Q = { icao24: '3c6444', registration: 'D-AIXA' };
 const mk = (sources: PhotoSource[], maxPhotos = 6, backoffMs = 300_000) => { const clock = new FakeClock(0); return { clock, chain: new PhotoSourceChain(sources, { clock, log: silentLogger, maxPhotos, backoffMs }) }; };
 
 describe('PhotoSourceChain', () => {
-  it('merges in chain order: the first source (Planespotters) comes first', async () => {
-    const { chain } = mk([src('planespotters', [{ photos: [photo('planespotters', 'a')] }]), src('commons', [{ photos: [photo('commons', 'b')] }]), src('airport-data', [{ photos: [photo('airport-data', 'c')] }])]);
+  it('merges in chain order: the first photo of the first configured source leads (no Planespotters precedence)', async () => {
+    const { chain } = mk([src('commons', [{ photos: [photo('commons', 'b')] }]), src('airport-data', [{ photos: [photo('airport-data', 'c')] }]), src('planespotters', [{ photos: [photo('planespotters', 'a')] }])]);
     const r = await chain.lookup(Q);
     expect(r.status).toBe('ok');
-    expect(r.photos.map((p) => p.source)).toEqual(['planespotters', 'commons', 'airport-data']);
+    expect(r.photos.map((p) => p.source)).toEqual(['commons', 'airport-data', 'planespotters']);
   });
   it('dedups per source + id and per source + imageUrl', async () => {
     const { chain } = mk([src('commons', [{ photos: [photo('commons', '1'), photo('commons', '1'), photo('commons', '2', 'https://commons/1.jpg'), photo('commons', '3')] }]), src('airport-data', [{ photos: [photo('airport-data', '1')] }])]);

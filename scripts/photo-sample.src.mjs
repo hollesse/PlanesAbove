@@ -42,7 +42,9 @@ if (sample.length === 0) fail('the sightings table is empty');
 
 const fetchFn = (url, init) => fetch(url, init);
 const o = { fetch: fetchFn, userAgent, timeoutMs };
-const sources = [new PlanespottersPhotoSource(o), new CommonsPhotoSource(o), new AirportDataPhotoSource(o)];
+const sources = [new CommonsPhotoSource(o), new AirportDataPhotoSource(o), new PlanespottersPhotoSource(o)];
+// Size as the response states it (no image download); "?" when the source gives none.
+const dims = (p) => (p.size ? `${p.size.width}x${p.size.height}` : '?');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function registrationOf(hex) {
@@ -66,14 +68,14 @@ const perPlane = [];
 for (const [i, r] of sample.entries()) {
   const registration = await registrationOf(r.icao24);
   await sleep(pauseMs);
-  const row = { icao24: r.icao24, typklasse: r.typklasse, registration: registration ?? null, hits: {} };
+  const row = { icao24: r.icao24, typklasse: r.typklasse, registration: registration ?? null, hits: {}, sizes: {} };
   for (const s of sources) {
     const res = await s.lookup({ icao24: r.icao24, registration });
     bump(s.name, r.typklasse, 'n');
-    if ('unavailable' in res) { bump(s.name, r.typklasse, 'unavailable'); row.hits[s.name] = `unavailable (${res.errorClass ?? '?'})`; } else { if (res.photos.length) bump(s.name, r.typklasse, 'hit'); row.hits[s.name] = res.photos.length; }
+    if ('unavailable' in res) { bump(s.name, r.typklasse, 'unavailable'); row.hits[s.name] = `unavailable (${res.errorClass ?? '?'})`; } else { if (res.photos.length) bump(s.name, r.typklasse, 'hit'); row.hits[s.name] = res.photos.length; row.sizes[s.name] = res.photos.map(dims); }
     await sleep(pauseMs);
   }
-  if (!values.json) console.error(`[${i + 1}/${sample.length}] ${r.icao24} ${r.typklasse} ${registration ?? '-'} ${JSON.stringify(row.hits)}`);
+  if (!values.json) console.error(`[${i + 1}/${sample.length}] ${r.icao24} ${r.typklasse} ${registration ?? '-'} ${JSON.stringify(row.hits)} ${JSON.stringify(row.sizes)}`);
   perPlane.push(row);
 }
 

@@ -34,7 +34,10 @@ export class PlanespottersPhotoSource implements PhotoSource {
       const link = str(o?.link);
       if (!o || !thumb || !link) return [];
       const photographer = str(o.photographer);
-      return [{ id: str(o.id) || link, thumbUrl: thumb, imageUrl: large, photographer, source: this.name, pageUrl: link, licenceText: `${photographer ? `© ${photographer} · ` : ''}planespotters.net` }];
+      const sz = obj(obj(o.thumbnail_large)?.size);
+      const w = Number(sz?.width); const h = Number(sz?.height);
+      const size = str(obj(o.thumbnail_large)?.src) && w > 0 && h > 0 ? { size: { width: w, height: h } } : {};
+      return [{ id: str(o.id) || link, thumbUrl: thumb, imageUrl: large, photographer, source: this.name, pageUrl: link, licenceText: `${photographer ? `© ${photographer} · ` : ''}planespotters.net`, ...size }];
     });
   }
 }
