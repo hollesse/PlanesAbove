@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 08:32 -- Modeling / Captured: airspace-tzw5t - Korridor-Deckel (corridorMaxKm) aufweichen, wenn der Kurs zum Ziel passt und das Flugzeug weit vom Start ist (Querabstand klein gegen Strecke seit Start); TOM16Y Manchester–Heraklion wird plausibel, EWG16Y bleibt abgelehnt
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** todo
+**Summary:** Korridor-Deckel nur aufweichen, wenn Kurs zum Ziel passt (≤20°) und das Flugzeug weit vom Start ist (Querabstand/Entfernung vom Start ≤ 0,4). Beleg TOM16Y plausibel, Gegenfall EWG16Y bleibt abgelehnt. Direkt nach todo/.
+
+---
+
 ## 2026-10-31 08:30 -- Batch started: [sky-scene-b7w2n]
 
 **Type:** Work / Batch start
