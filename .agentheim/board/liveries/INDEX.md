@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 1
+- **Doing:** 0
+- **Done:** 2
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **liveries-ptm0c** — Entscheidung: Einmaliger Import der CSS-Lackierungen, Pixelvergleich als Gate, Umstellung in einem Commit (decision) — `doing/liveries-ptm0c-entscheidung-einmaliger-import-der-css-lackierungen-pixelver.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **liveries-ptm0c** — Entscheidung: Einmaliger Import der CSS-Lackierungen, Pixelvergleich als Gate, Umstellung in einem Commit (decision) — `done/liveries-ptm0c-entscheidung-einmaliger-import-der-css-lackierungen-pixelver.md`
 - **liveries-w35k0** — Entscheidung: Lackierungsdatei als JSON-Ebenenmodell, Silhouette und Detailschicht als SVG je Typklasse, eine gemeinsame Render-Funktion (decision) — `done/liveries-w35k0-entscheidung-lackierungsdatei-als-json-ebenenmodell-silhouet.md`
 <!-- done-list:end -->
 

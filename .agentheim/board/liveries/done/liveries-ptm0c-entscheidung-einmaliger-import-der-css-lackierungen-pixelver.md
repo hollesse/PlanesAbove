@@ -1,7 +1,7 @@
 ---
 id: liveries-ptm0c
 title: Entscheidung: Einmaliger Import der CSS-Lackierungen, Pixelvergleich als Gate, Umstellung in einem Commit
-status: doing
+status: done
 type: decision
 context: liveries
 created: 2026-10-31
@@ -9,7 +9,7 @@ completed:
 depends_on: [liveries-w35k0]
 blocks: []
 tags: [decision, foundation, import]
-related_adrs: [0031]
+related_adrs: [0031, 0036]
 related_research: []
 prior_art: []
 ---
@@ -35,3 +35,7 @@ ADR schreiben (Vorschlag: 0035, scope liveries) nach dem Architekten-Entwurf in 
 - Verworfen: Laufzeit-Flag, Mischbetrieb je Lackierung, kein Import.
 
 **Offener Punkt:** Import für alle acht Typklassen je Airline oder nur die gesehenen (`--import-only-seen`)?
+
+## Outcome
+
+ADR 0036 (provisorisch) formuliert: einmaliger, deterministischer Import der 42 CSS-Lackierungen per `scripts/import-css-liveries.mjs`, Pixelvergleich als nicht blockierendes Gate, Umstellung in einem Commit ohne Laufzeit-Flag, Rückweg per git revert. Offener Punkt für den Betreiber: Import für alle Typklassen oder nur die gesehenen. Kein Code geändert.
