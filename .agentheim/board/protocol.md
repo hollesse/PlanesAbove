@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 12:04 -- Batch started: [infrastructure-m6nj3]
+
+**Type:** Work / Batch start
+**Tasks:** infrastructure-m6nj3 - Entscheidung: Teststrategie und Auslieferungsgrenze des Lackierungs-Editors
+**Parallel:** scoped — wave 3 of the six named decision tasks: infrastructure-m6nj3 (dep livery-editor-rv382 done); spike livery-editor-zc7hk not in scope
+
+---
+
 ## 2026-10-31 12:03 -- Task completed (verification skipped): livery-editor-rv382 - Entscheidung: Editor als lokaler Vite-Dev-Server mit Schreib-Plugin unter tools/, nie im Client-Bundle oder Docker-Image
 
 **Type:** Work / Task completion

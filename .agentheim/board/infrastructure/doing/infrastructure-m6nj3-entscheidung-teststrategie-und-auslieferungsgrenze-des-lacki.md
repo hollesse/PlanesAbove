@@ -1,7 +1,7 @@
 ---
 id: infrastructure-m6nj3
 title: Entscheidung: Teststrategie und Auslieferungsgrenze des Lackierungs-Editors
-status: todo
+status: doing
 type: decision
 context: infrastructure
 created: 2026-10-31
