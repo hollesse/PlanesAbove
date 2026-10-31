@@ -155,7 +155,7 @@ nur noch den einen Weg.
 - **Opt-in-Feature** — Funktion, die ein Fremdkonto braucht (ElevenLabs, FlightAware); Schlüssel und Aktivierung sind getrennte Umgebungsvariablen.
 
 ## Open questions
-- Lackierungs-Editor: Gilt Storybook-first (ADR 0002) auch für die Bausteine des Editors, oder ist er Betreiber-Werkzeug außerhalb des Gates? (open since 2026-10-31)
+- ~~Lackierungs-Editor: Gilt Storybook-first (ADR 0002) auch für die Bausteine des Editors, oder ist er Betreiber-Werkzeug außerhalb des Gates?~~ Beantwortet 2026-10-31 durch ADR 0034: Anzeigepfad bleibt Storybook-first, Editor-eigene UI liegt außerhalb des Gates.
 - Lackierungs-Editor: Was gilt als „gesehen“ für den Lücken-Filter: jede Sichtung, oder erst ab einer Mindestzahl in den letzten N Tagen? (open since 2026-10-31)
 - Liefert eine kostenlose Quelle verlässlich genug die **Route** (Abflug/Ziel) zu einem Flug? Kernrisiko für den Steckbrief. (open since 2026-10-26)
   - Research vom 2026-10-26: Kostenlose Routendaten existieren (VRS standing-data CC0, adsb.lol routeset, adsbdb), sind aber aus dem Callsign abgeleitet und daher manchmal falsch. Bei adsbdb ist die Weitergabe eingeschränkt. Wie gut die Abdeckung wirklich ist, misst der Walking Skeleton.

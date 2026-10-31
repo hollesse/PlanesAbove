@@ -39,9 +39,8 @@ _Noch offen._
 - **Conformist to liveries:** Dateiformat, Silhouetten, Detailschichten und Zuschnitt-Regel gehören liveries; der Editor erfindet nichts Eigenes.
 - **Customer of sighting-log (lesend):** Lücken aus der Lackierungs-Statistik des laufenden Heimservers, erweitert um die Typklasse.
 - **Customer of airspace-Fotokette (lesend):** Referenzfoto.
-- **design-system:** Ob Storybook-first (ADR 0002) für die Editor-Bausteine gilt, ist offen (siehe Vision, Open questions). Bis zur Entscheidung gilt: jede UI-Aufgabe hier `depends_on: [design-system-001-styleguide]`.
+- **design-system (ADR 0034):** Der Anzeigepfad (Render-Funktion, Molekül „lackiertes Flugzeug“, Silhouetten, Detailschichten) bleibt Storybook-first; der Editor konsumiert diese Module und dupliziert sie nie. Editor-eigene UI (Werkzeugleiste, Ebenenpanel, Farbpicker, Lückenliste, Fotopanel) liegt außerhalb des Gates und wird im laufenden Editor abgenommen. Nur Tasks, die Anzeigepfad-Bausteine ändern, tragen `depends_on: [design-system-001-styleguide]`.
 See `../../context-map.md`.
 
 ## Open questions
-- Gilt Storybook-first auch für den Editor?
 - Was zählt als „gesehen“ für die Lücke (jede Sichtung oder Mindestzahl in N Tagen)?
