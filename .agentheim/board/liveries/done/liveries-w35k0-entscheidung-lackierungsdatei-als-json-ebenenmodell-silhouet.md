@@ -1,7 +1,7 @@
 ---
 id: liveries-w35k0
 title: Entscheidung: Lackierungsdatei als JSON-Ebenenmodell, Silhouette und Detailschicht als SVG je Typklasse, eine gemeinsame Render-Funktion
-status: doing
+status: done
 type: decision
 context: liveries
 created: 2026-10-31
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: []
 tags: [decision, foundation, livery-format]
-related_adrs: [0031]
+related_adrs: [0031, 0032]
 related_research: []
 prior_art: []
 ---
@@ -39,3 +39,7 @@ ADR schreiben (Vorschlag: 0032, scope liveries) nach dem Architekten-Entwurf in 
 **Entschieden (Betreiber, 2026-10-31):** Triebwerkskörper, Flügel und Höhenleitwerk sind **Farbfelder** (ADR 0031 Punkt 4a): in der Lackierungsdatei genau eine Farbe je Farbfeld, keine Pfade darin; der Zuschnittbereich der Pfade ist Rumpf plus Finne. Das Dateiformat braucht dafür neben `layers` einen Eintrag wie `fields: { engines, wings, tailplane }` mit je einer Farbe, und die Silhouette markiert jedes Farbfeld als eigene Gruppe (z. B. `<g id="field-engines">`). Der frühere Befund „Flügel hinter dem Rumpf, eigener Zuschnittbereich?“ ist damit beantwortet: Flügel sind kein Zuschnittbereich für Pfade.
 
 **Offene Punkte für den Betreiber:** Wer teilt die 8 relevanten Silhouetten in Körper, Farbfelder und Details (Claude Design oder von Hand)? Behalten hochgeladene Logos die heutige SVG+PNG-Konvention unter `logos/`?
+
+## Outcome
+
+ADR 0032 (provisorisch, Datei `0032-livery-file-json-layers-svg-silhouette-shared-render.md`) schreibt das Format der Lackierungsdatei fest: JSON mit `fields` (eine Farbe je Farbfeld) und `layers` (Pfade mit optionalem `via`, Logos), Silhouette und Details als SVG je Typklasse mit `<g id="body">` und `field-*`-Gruppen, eine gemeinsame Funktion `renderLiverySvg`, Typklassen-Index beim Build. Zwei Punkte stehen unter "Offene Punkte" für den Betreiber (Aufteilung der Silhouetten; Logo-Konvention). Keine Code-Änderung.

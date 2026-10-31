@@ -19,6 +19,10 @@ supporting — Lernwert hängt an korrekten Lackierungen, aber es ist ein Katalo
 - **Standard-Lackierung** — weiß; für Airlines ohne eigene Lackierung und für Typklassen ohne Lackierung (Light Aircraft, Glider).
 - **Logo** — Airline-Emblem, an definierten Ankerpunkten der Typklasse platziert.
 - **Typklasse** — gemeinsame Sprache mit airspace.
+- **Lackierungsdatei** — JSON-Datei je Airline × Typklasse unter `assets/liveries/<liveryId>/<typklasse>.json` mit `fields` (eine Farbe je Farbfeld) und `layers` (Pfadebenen und Logos, von unten nach oben); ungeschnitten, ohne Silhouette und Details (ADR 0032).
+- **Farbfeld** — fester Teil der Silhouette (Triebwerkskörper, Flügel, Höhenleitwerk), der in der Lackierungsdatei genau eine Farbe bekommt; in der Silhouette als Gruppe `field-<name>` markiert; Pfade reichen nie hinein (ADR 0031 4a, ADR 0032).
+- **Zuschnittbereich** — `<g id="body">` der Silhouette (Rumpf plus Finne); an ihm werden Pfade und Logos beim Anzeigen abgeschnitten (ADR 0032).
+- **renderLiverySvg** — die eine reine Funktion (`domain/livery-render.ts`), die Silhouette, Lackierungsdatei und Detailschicht zum Bild setzt; gemeinsam für Himmelsszene, Storybook und Editor (ADR 0032).
 
 ## Aggregates
 _Noch nicht modelliert — entsteht in `modeling` / bei der Arbeit an Tasks._

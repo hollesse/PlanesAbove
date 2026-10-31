@@ -5,6 +5,28 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 12:00 -- Task completed (verification skipped): infrastructure-cc9gq - Entscheidung: Sichtungen je Airline × Typklasse und Referenzfotos über zwei lesende Endpunkte des Heimservers
+
+**Type:** Work / Task completion
+**Task:** infrastructure-cc9gq - Entscheidung: Sichtungen je Airline × Typklasse und Referenzfotos über zwei lesende Endpunkte des Heimservers
+**Summary:** ADR zu zwei lesenden Heimserver-Endpunkten (Sichtungen je Airline x Typklasse, Referenzfoto zu vergangenen Sichtungen) nach dem Architekten-Entwurf ausformuliert; kein Code.
+**Duration:** 1m30s
+**Verification:** SKIPPED — decision-only task
+**Files changed:** 0
+
+---
+
+## 2026-10-31 12:00 -- Task completed (verification skipped): liveries-w35k0 - Entscheidung: Lackierungsdatei als JSON-Ebenenmodell, Silhouette und Detailschicht als SVG je Typklasse, eine gemeinsame Render-Funktion
+
+**Type:** Work / Task completion
+**Task:** liveries-w35k0 - Entscheidung: Lackierungsdatei als JSON-Ebenenmodell, Silhouette und Detailschicht als SVG je Typklasse, eine gemeinsame Render-Funktion
+**Summary:** ADR 0032 beschreibt das Lackierungsdatei-Format (JSON-Ebenenmodell mit Farbfeldern), die SVG-Aufteilung je Typklasse und die eine gemeinsame Render-Funktion; zwei Punkte bleiben als offene Betreiberfragen markiert.
+**Duration:** 1m20s
+**Verification:** SKIPPED — decision-only task
+**Files changed:** 0
+
+---
+
 ## 2026-10-31 11:58 -- Batch started: [liveries-w35k0, infrastructure-cc9gq, infrastructure-nwwcq]
 
 **Type:** Work / Batch start

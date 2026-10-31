@@ -10,6 +10,7 @@ Catalog of ADRs, research, and concept synthesis pages scoped to this bounded co
 ## ADRs scoped to this BC
 
 <!-- adr-local:start -->
+- **0032** — Lackierungsdatei als JSON-Ebenenmodell mit Farbfeldern; Silhouette und Detailschicht als SVG je Typklasse; eine gemeinsame Render-Funktion — 2026-10-31 — `../../decisions/0032-livery-file-json-layers-svg-silhouette-shared-render.md`
 <!-- adr-local:end -->
 
 ## Research touching this BC
