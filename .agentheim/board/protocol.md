@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 08:51 -- Modeling / Captured: sky-scene-d4n9p - Boeing-Typen ziffernweise aussprechen („Boeing sieben vier sieben“), Airbus bleibt als Zahl („A dreihundertzwanzig“)
+
+**Type:** Modeling / Capture
+**BC:** sky-scene
+**Filed to:** todo
+**Summary:** Boeing-Modellnummern ziffernweise sprechen (sieben vier sieben), Airbus bleibt als Zahl; Artikel ein/eine je Hersteller. Direkt nach todo.
+
+---
+
 ## 2026-10-31 08:41 -- Work session ended
 
 **Type:** Work / Session end
