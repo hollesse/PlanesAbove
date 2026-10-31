@@ -35,9 +35,9 @@ data/audio/<adapter>/<stimme>/<kategorie>/<schluessel>-<texthash>.wav
 - Der zusammengesetzte Steckbrief (Verkettung mit `partGapMs` Stille, ADR 0028) wird **nicht mehr als Datei gespeichert**, sondern bei jedem `GET /audio/<key>.wav` aus den Bausteinen zusammengefügt (`concatWav` ist billig). Die Dauer wird aus dem gefügten Puffer berechnet wie bisher.
 - Nach außen bleibt die URL `/audio/<key>.wav` ein Hash (ADR 0012: der Client kennt den Adapter nicht). Der Key ist weiterhin der zusammengesetzte Key über (Adapter, Stimme, Bausteintexte); die `entries`-Map bildet ihn auf die Bausteine ab.
 - Fallback-Trennung (ADR 0027/0028) bleibt: Fallback-Bausteine liegen unter `<fallback-adapter>/<fallback-stimme>/…`, nie unter dem Primär-Ordner. Bausteine beider Adapter werden nie gemischt.
-- Migration: alte flache Hash-Dateien in `data/audio/` werden nicht umgezogen und nicht automatisch gelöscht. README-Hinweis: `data/audio` einmalig leeren, bei ElevenLabs kostet der Neuaufbau einige hundert Credits.
+- Migration (lazy, ohne Credits): Der alte Dateiname ist `hash(adapter\0voice\0text)` (24 Hex). Beim ersten Bedarf eines Bausteins berechnet der AudioService neben dem neuen Pfad auch den alten flachen Key; existiert `data/audio/<alterKey>.wav`, wird die Datei an den neuen Pfad **verschoben** (`fs.renameSync`) statt neu gerendert. So wandern alle noch gebrauchten Bausteine beim ersten Abruf von selbst ins neue Layout. Alte zusammengefügte Steckbrief-Dateien werden nicht mehr gebraucht; was nach einer Einlaufphase noch flach in `data/audio/` liegt, löscht der Betreiber von Hand (README-Hinweis). Kein Migrationsskript.
 
-Entscheidungen des Betreibers (2026-10-31): Hash-Suffix statt Versionsnummer; Steckbrief zusammenbauen statt speichern; IATA vor ICAO.
+Entscheidungen des Betreibers (2026-10-31): Hash-Suffix statt Versionsnummer; Steckbrief zusammenbauen statt speichern; IATA vor ICAO; bestehende Bausteine per Lazy-Migration wiederverwenden.
 
 ## Acceptance criteria
 - [ ] `composeSpeechParts` liefert Bausteine mit `kategorie`, `schluessel` und `text`; die Reihenfolge und der Text der Bausteine bleiben gegenüber heute unverändert (bestehende Tests in `tests/unit` für den gesprochenen Text bleiben grün).
@@ -48,6 +48,7 @@ Entscheidungen des Betreibers (2026-10-31): Hash-Suffix statt Versionsnummer; St
 - [ ] Nach `GET /audio/<key>.wav` eines mehrteiligen Steckbriefs existiert keine Datei für das gefügte Audio; die Antwort ist die PCM-Verkettung der Bausteine mit `partGapMs` Stille, Dauer wie bisher.
 - [ ] Fallback-Bausteine liegen unter dem Ordner des Fallback-Adapters und seiner Stimme; der Primär-Ordner enthält keine Fallback-Datei.
 - [ ] Schlüssel enthalten nur `[A-Za-z0-9_-]`; Airline-Namen/Codes mit Sonderzeichen werden slugifiziert.
+- [ ] Liegt für einen Baustein noch die alte flache Datei `data/audio/<hash24>.wav` (Hash über Adapter, Stimme, Text wie heute), wird sie beim ersten Bedarf an den neuen Pfad verschoben und nicht neu gerendert; der Budgetzähler bleibt unverändert, die flache Datei existiert danach nicht mehr.
 - [ ] Ohne `cacheDir` (Mock/Test) funktioniert der In-Memory-Pfad wie bisher.
 - [ ] README (Sprachausgabe-Abschnitt) und BC-README-Eintrag „Sprachcache“ beschreiben das neue Layout und den Migrationshinweis; ADR 0028 wird um die Ablage ergänzt (Amendment, kein neues ADR nötig).
 
