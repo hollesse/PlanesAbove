@@ -23,7 +23,7 @@ Im Aussprache-Wörterbuch (`spokenType`) eine Herstellerregel ergänzen: Beginnt
 Die Texte der Typ+Airline-Bausteine ändern sich dadurch für Boeing-Typen; alte Cache-Dateien bleiben liegen (anderer Baustein-Key) und verfallen über das Alter-Pruning.
 
 ## Acceptance criteria
-- [ ] `spokenType('Boeing 747')` → „Boeing sieben vier sieben“; `spokenType('Boeing 737 MAX 8')` → „Boeing sieben drei sieben Max acht“; `spokenType('Boeing 787-9')` → „Boeing sieben acht sieben neun“; `spokenType('Boeing 747-10')` → „Boeing sieben vier sieben zehn“; `spokenType('Boeing 737-800')` → „Boeing sieben drei sieben achthundert“.
+- [ ] `spokenType('Boeing 747')` → „Boeing sieben vier sieben“; `spokenType('Boeing 737 MAX 8')` → „Boeing sieben drei sieben Max acht“; `spokenType('Boeing 787-9')` → „Boeing sieben acht sieben neun“; `spokenType('Boeing 747-10')` → „Boeing sieben vier sieben zehn“; `spokenType('Boeing 737-800')` → „Boeing sieben drei sieben achthundert“; `spokenType('Boeing 747-400')` → „Boeing sieben vier sieben vierhundert“.
 - [ ] `spokenType('Airbus A320neo')` → „Airbus A dreihundertzwanzig Neo“ (unverändert); `spokenType('Embraer 190')` und `spokenType('ATR 72')` unverändert gegenüber heute (bestehende Tests bleiben grün).
 - [ ] Ein Steckbrief für eine Boeing 747 enthält den Typ+Airline-Baustein „Das ist eine Boeing sieben vier sieben der Lufthansa.“ (Artikel „eine“ für Boeing, „ein“ für Airbus; prüfen, wie der Artikel heute gebildet wird, und bei Bedarf eine Hersteller→Artikel-Tabelle ergänzen).
 - [ ] README-Delta: Aussprache-Regel im BC-README unter Steckbrief ergänzt.
