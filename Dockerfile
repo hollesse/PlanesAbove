@@ -18,6 +18,8 @@ COPY package.json package-lock.json ./
 # fall back to a node-gyp source build, which this slim image cannot do.
 RUN npm ci --omit=dev --ignore-scripts
 COPY --from=build /app/dist ./dist
+# Repo config with all defaults (ADR 0030); location and secrets come from the environment, CONFIG_PATH defaults to ./config.yaml.
+COPY config.yaml ./config.yaml
 EXPOSE 8080
 USER node
 CMD ["node", "dist/server/server.mjs"]

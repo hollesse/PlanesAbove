@@ -1,25 +1,24 @@
-# PlanesAbove configuration (ADR 0007). Copy to config.yaml (not committed), edit, restart the container.
-# Secrets (API keys, HEARTBEAT_URL) are NEVER put here - only in environment variables.
+# PlanesAbove repo config: the defaults, versioned and baked into the image (ADR 0030, layer 1 of 3).
+# Layer 2 = PLANESABOVE_* environment variables (location, place, port, dataDir, speech adapter, ...), layer 3 = optional override file
+# (PLANESABOVE_CONFIG_OVERRIDE). Later layers win; lists are replaced, not merged. See README, section "Konfiguration".
+# This file NEVER contains the location or a secret (API keys, HEARTBEAT_URL): the repository is public.
 
 # live = real flight data (adsb.fi, failover per sources.flight.order); mock = scenario file (see scenarios/), used by the E2E tests.
 mode: live
 # scenario: scenarios/one-plane.json     # required when mode is mock
 
-# REQUIRED. Sample coordinates (Frankfurt am Main) - replace with the house location.
+# REQUIRED, but never set here: PLANESABOVE_LAT, PLANESABOVE_LON and PLANESABOVE_PLACE come from the environment (ADR 0030).
+# Without them the service does not start. place is shown in the header as "Der Himmel über <place>".
 location:
-  lat: 50.05
-  lon: 8.57
-
-# Shown in the header as "Der Himmel über <place>".
-place: dem Haus
+place:
 
 radiusKm: 30               # planes within this radius are considered (30 km = 17 nm)
 pollIntervalSeconds: 30    # the Takt
 scene:
   slotHoldTakte: 3         # a plane keeps its slot at least this many Takte (3 = 90 s at 30 s) unless it leaves the radius or the data (ADR 0017)
-port: 8080
-dataDir: /data             # SQLite file + audio cache (mounted volume in Docker; default ./data)
-logLevel: info             # debug | info | warn | error
+# port, dataDir and speech.adapter/endpoint differ between dev and prod: set them via PLANESABOVE_PORT, PLANESABOVE_DATA_DIR,
+# PLANESABOVE_SPEECH_ADAPTER, PLANESABOVE_SPEECH_ENDPOINT (compose files do). Code defaults: 8080, ./data, piper, http://tts:5000.
+logLevel: info             # debug | info | warn | error (PLANESABOVE_LOG_LEVEL)
 
 # Placeholder sky until the weather module exists (ADR 0006): dawn|day|dusk|night x clear|light|overcast|fog|rain|snow|storm
 sky:
@@ -65,7 +64,7 @@ sources:
     timeoutMs: 300000          # snapshot download timeout
     cacheTtlHours: 6
     negativeTtlMinutes: 10
-    flightaware:               # OPTIONAL paid last resort (ADR 0018): only used when `flightaware` is added to `order` AND the env var FLIGHTAWARE_API_KEY is set (never put the key here)
+    flightaware:               # OPTIONAL paid last resort (ADR 0018): only used when switched on with PLANESABOVE_FLIGHTAWARE_ENABLED=true (appends it to `order`) AND FLIGHTAWARE_API_KEY is set (never put the key here)
       timeoutMs: 8000
       monthlyBudgetUsd: 4.50   # hard stop per billing period (Personal tier gives up to 5 USD credit; 0.005 USD per result set)
       monthlyRequestCap: 900   # hard stop in result sets per period
@@ -104,10 +103,10 @@ sources:
 
 # German speech (ADR 0012). piper = the `tts` sidecar container; elevenlabs = opt-in cloud voice (free plan, key from the
 # ELEVENLABS_API_KEY environment variable, never from this file); fake = silent clip (mock/testing only).
+# Switching it on is its own variable (PLANESABOVE_SPEECH_ADAPTER=elevenlabs plus PLANESABOVE_SPEECH_VOICE): a stored key alone changes nothing.
 speech:
-  adapter: piper                 # piper | elevenlabs | fake
-  voice: de_DE-thorsten-medium   # piper: model installed in the tts image (docker/piper). elevenlabs: REQUIRED voice_id, no default. Free plan: only the premade voices work via the API (e.g. Bill pqHfZKP75CvOlQylNhV4, George JBFqnCBsd6RMkjVDRZzb); library voices are blocked even after "Add to My Voices" (HTTP 402 paid_plan_required)
-  endpoint: http://tts:5000      # piper base URL; the adapter POSTs to <endpoint>/synthesize
+  # adapter, endpoint and voice: PLANESABOVE_SPEECH_ADAPTER / _ENDPOINT / _VOICE (default piper, http://tts:5000, de_DE-thorsten-medium)
+  # voice: piper: model installed in the tts image (docker/piper). elevenlabs: REQUIRED voice_id, no default. Free plan: only the premade voices work via the API (e.g. Bill pqHfZKP75CvOlQylNhV4, George JBFqnCBsd6RMkjVDRZzb); library voices are blocked even after "Add to My Voices" (HTTP 402 paid_plan_required)
   render: eager                  # eager | lazy; default: lazy for elevenlabs (every render costs credits), eager otherwise
   timeoutMs: 15000
   partGapMs: 250                 # silence between the sentence blocks of one Steckbrief (each block is rendered and cached on its own)

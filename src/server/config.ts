@@ -1,4 +1,4 @@
-// config.yaml parsed with `yaml` and validated with zod at startup; all errors at once (ADR 0007). Secrets come from env only.
+// Layered config (ADR 0030): repo config.yaml -> PLANESABOVE_* environment -> optional override file; validated with zod at startup, all errors at once (ADR 0007). Secrets come from env only.
 import fs from 'node:fs';
 import YAML from 'yaml';
 import { z } from 'zod';
@@ -177,15 +177,106 @@ export const userAgentHasContact = (ua: string): boolean => /@|https?:\/\//i.tes
 
 export class ConfigError extends Error {}
 
-export function parseConfig(yamlText: string): Config {
+type Layer = Record<string, unknown>;
+const isObj = (v: unknown): v is Layer => typeof v === 'object' && v !== null && !Array.isArray(v);
+
+/** Deep merge on key level: objects merge, scalars and lists are replaced (never unioned). A non-object base (e.g. an empty `location:`) is replaced. */
+export function mergeLayers(base: unknown, over: unknown): unknown {
+  if (!isObj(over)) return over;
+  const out: Layer = isObj(base) ? { ...base } : {};
+  for (const [k, v] of Object.entries(over)) out[k] = k in out ? mergeLayers(out[k], v) : v;
+  return out;
+}
+
+const num = (raw: string): number => (raw.trim() === '' || Number.isNaN(Number(raw)) ? NaN : Number(raw));
+const bool = (raw: string): boolean => { const v = raw.trim().toLowerCase(); if (['true', '1', 'yes'].includes(v)) return true; if (['false', '0', 'no'].includes(v)) return false; throw new Error('expected true or false'); };
+const natural = (raw: string): number => { const n = num(raw); if (Number.isNaN(n)) throw new Error('expected a number'); return n; };
+const str = (raw: string): string => raw;
+
+/** Environment variables that set one config key each (ADR 0030). The three REQUIRED ones are LAT, LON, PLACE. Secrets keep their own names and are not listed. */
+export const ENV_VARS: readonly { name: string; path: string[]; parse: (raw: string) => unknown }[] = [
+  { name: 'PLANESABOVE_LAT', path: ['location', 'lat'], parse: natural },
+  { name: 'PLANESABOVE_LON', path: ['location', 'lon'], parse: natural },
+  { name: 'PLANESABOVE_PLACE', path: ['place'], parse: str },
+  { name: 'PLANESABOVE_RADIUS_KM', path: ['radiusKm'], parse: natural },
+  { name: 'PLANESABOVE_PORT', path: ['port'], parse: natural },
+  { name: 'PLANESABOVE_DATA_DIR', path: ['dataDir'], parse: str },
+  { name: 'PLANESABOVE_LOG_LEVEL', path: ['logLevel'], parse: str },
+  { name: 'PLANESABOVE_SPEECH_ADAPTER', path: ['speech', 'adapter'], parse: str },
+  { name: 'PLANESABOVE_SPEECH_ENDPOINT', path: ['speech', 'endpoint'], parse: str },
+  { name: 'PLANESABOVE_SPEECH_VOICE', path: ['speech', 'voice'], parse: str },
+];
+/** Switches the paid FlightAware source into sources.route.order; an API key alone never does (ADR 0030). */
+export const FLIGHTAWARE_ENABLED_VAR = 'PLANESABOVE_FLIGHTAWARE_ENABLED';
+export const CONFIG_OVERRIDE_VAR = 'PLANESABOVE_CONFIG_OVERRIDE';
+const REQUIRED = [['PLANESABOVE_LAT', ['location', 'lat']], ['PLANESABOVE_LON', ['location', 'lon']], ['PLANESABOVE_PLACE', ['place']]] as const;
+
+export interface ConfigSources { /** Names of the environment variables that contributed a value (never values). */ env: string[]; /** Dotted key paths set by the override file. */ override: string[]; overrideFile?: string }
+export interface LoadedConfig { config: Config; sources: ConfigSources }
+
+const getPath = (o: unknown, path: readonly string[]): unknown => path.reduce<unknown>((a, k) => (isObj(a) ? a[k] : undefined), o);
+const setPath = (o: Layer, path: string[], v: unknown): void => { let c = o; for (const k of path.slice(0, -1)) { if (!isObj(c[k])) c[k] = {}; c = c[k] as Layer; } c[path[path.length - 1]!] = v; };
+const leafPaths = (o: unknown, prefix = ''): string[] => (isObj(o) ? Object.entries(o).flatMap(([k, v]) => (isObj(v) ? leafPaths(v, `${prefix}${k}.`) : [`${prefix}${k}`])) : []);
+const parseYamlLayer = (text: string, label: string): Layer => {
   let raw: unknown;
-  try { raw = YAML.parse(yamlText) ?? {}; } catch (e) { throw new ConfigError(`config: cannot parse YAML: ${(e as Error).message}`); }
+  try { raw = YAML.parse(text) ?? {}; } catch (e) { throw new ConfigError(`${label}: cannot parse YAML: ${(e as Error).message}`); }
+  if (!isObj(raw)) throw new ConfigError(`${label}: top level must be a mapping`);
+  return raw;
+};
+
+/** Pure assembly: repo YAML, then env, then override YAML; required values checked on the result, then the shared schema. */
+export function buildConfig(o: { repoYaml: string; env: Record<string, string | undefined>; overrideYaml?: string; overrideFile?: string }): LoadedConfig {
+  const problems: string[] = [];
+  const envLayer: Layer = {};
+  const sources: ConfigSources = { env: [], override: [] };
+  const val = (name: string): string | undefined => { const v = o.env[name]; return v === undefined || v.trim() === '' ? undefined : v; };
+  for (const v of ENV_VARS) {
+    const raw = val(v.name);
+    if (raw === undefined) continue;
+    try { setPath(envLayer, v.path, v.parse(raw)); sources.env.push(v.name); } catch (e) { problems.push(`${v.name}: ${(e as Error).message}, got "${raw}"`); }
+  }
+  let merged = mergeLayers(parseYamlLayer(o.repoYaml, 'config'), envLayer) as Layer;
+  const fa = val(FLIGHTAWARE_ENABLED_VAR);
+  if (fa !== undefined) {
+    try {
+      if (bool(fa)) {
+        const order = getPath(merged, ['sources', 'route', 'order']);
+        const base = Array.isArray(order) ? order : [...ROUTE_DEFAULTS.order];
+        setPath(merged, ['sources', 'route', 'order'], base.includes('flightaware') ? base : [...base, 'flightaware']);
+      }
+      sources.env.push(FLIGHTAWARE_ENABLED_VAR);
+    } catch (e) { problems.push(`${FLIGHTAWARE_ENABLED_VAR}: ${(e as Error).message}, got "${fa}"`); }
+  }
+  if (o.overrideYaml !== undefined) {
+    const over = parseYamlLayer(o.overrideYaml, `override file ${o.overrideFile ?? ''}`.trim());
+    sources.override = leafPaths(over);
+    sources.overrideFile = o.overrideFile;
+    merged = mergeLayers(merged, over) as Layer;
+  }
+  const missing = REQUIRED.filter(([, path]) => { const v = getPath(merged, path); return v === undefined || v === null || (typeof v === 'string' && v.trim() === ''); }).map(([name]) => name);
+  if (missing.length > 0) problems.unshift(`missing required environment variable(s): ${missing.join(', ')} (location and place are never part of the repo config.yaml, ADR 0030)`);
+  if (problems.length > 0) throw new ConfigError('Invalid configuration:\n' + problems.map((p) => `  - ${p}`).join('\n'));
+  return { config: validate(merged), sources };
+}
+
+function validate(raw: unknown): Config {
   const r = schema.safeParse(raw);
   if (!r.success) throw new ConfigError('Invalid configuration:\n' + r.error.issues.map((i) => `  - ${i.path.join('.') || '(root)'}: ${i.message}`).join('\n'));
   return r.data;
 }
 
-export function loadConfig(file: string): Config {
-  if (!fs.existsSync(file)) throw new ConfigError(`Config file not found: ${file} (set CONFIG_PATH, see config.example.yaml)`);
-  return parseConfig(fs.readFileSync(file, 'utf8'));
+export function parseConfig(yamlText: string): Config {
+  return validate(parseYamlLayer(yamlText, 'config'));
+}
+
+/** Loads the three layers: `file` (repo config.yaml, CONFIG_PATH), PLANESABOVE_* from `env`, optional PLANESABOVE_CONFIG_OVERRIDE file. */
+export function loadConfigLayered(file: string, env: Record<string, string | undefined> = process.env): LoadedConfig {
+  if (!fs.existsSync(file)) throw new ConfigError(`Config file not found: ${file} (set CONFIG_PATH; the repo ships config.yaml)`);
+  const overrideFile = env[CONFIG_OVERRIDE_VAR]?.trim() || undefined;
+  if (overrideFile !== undefined && !fs.existsSync(overrideFile)) throw new ConfigError(`Override file not found: ${overrideFile} (${CONFIG_OVERRIDE_VAR}); unset the variable or mount the file`);
+  return buildConfig({ repoYaml: fs.readFileSync(file, 'utf8'), env, overrideYaml: overrideFile === undefined ? undefined : fs.readFileSync(overrideFile, 'utf8'), overrideFile });
+}
+
+export function loadConfig(file: string, env: Record<string, string | undefined> = process.env): Config {
+  return loadConfigLayered(file, env).config;
 }

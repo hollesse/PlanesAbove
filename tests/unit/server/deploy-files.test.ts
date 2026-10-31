@@ -3,16 +3,17 @@ import { describe, expect, it } from 'vitest';
 import fs from 'node:fs';
 import { build } from 'esbuild';
 import YAML from 'yaml';
-import { parseConfig } from '../../../src/server/config';
+import { buildConfig } from '../../../src/server/config';
 import { parseScenario } from '../../../src/server/mock/scenario';
 
 const read = (p: string): string => fs.readFileSync(new URL(`../../../${p}`, import.meta.url), 'utf8');
 
 describe('shipped files stay valid', () => {
-  it('config.example.yaml passes the zod schema (sample coordinates, no real location)', () => {
-    const c = parseConfig(read('config.example.yaml'));
+  it('the repo config.yaml passes the zod schema once the required environment is supplied (ADR 0030)', () => {
+    const { config: c } = buildConfig({ repoYaml: read('config.yaml'), env: { PLANESABOVE_LAT: '50.05', PLANESABOVE_LON: '8.57', PLANESABOVE_PLACE: 'Testdorf' } });
     expect(c.location).toEqual({ lat: 50.05, lon: 8.57 });
     expect(c.radiusKm).toBe(30);
+    expect(c.sources.photo.fallback).toEqual(['planespotters']);
   });
   it.each(['empty-sky', 'one-plane', 'two-planes', 'switch-during-narration', 'outage-recovery'])('scenario %s parses', (n) => {
     expect(parseScenario(read(`scenarios/${n}.json`)).name).toBe(n);

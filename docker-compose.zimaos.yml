@@ -1,7 +1,10 @@
 # PlanesAbove for the ZimaOS home server: import via the UI ("Eigene App installieren" / custom app), no checkout, no build.
 # Differences to docker-compose.yml: GHCR images only (no build:), no profiles (tts always runs), no storybook, absolute paths only.
-# Before importing, create /DATA/AppData/planesabove/{config,data} and put config.yaml into config/ (see README, "Betrieb auf dem Heimserver").
-# In config.yaml: dataDir: /data ; speech: { adapter: piper, endpoint: "http://tts:5000" }
+# Configuration (ADR 0030): defaults live in the image (repo config.yaml); this file hands the per-installation values in as environment.
+# Set PLANESABOVE_LAT, PLANESABOVE_LON and PLANESABOVE_PLACE in the ZimaOS environment UI (required: the import fails without them).
+# Optional: put an override file at /DATA/AppData/planesabove/config/override.yaml and set PLANESABOVE_CONFIG_OVERRIDE=/config/override.yaml
+# (the folder /DATA/AppData/planesabove/config may stay empty). See README, section "Konfiguration".
+# Before importing, create /DATA/AppData/planesabove/{config,data}.
 # Watchtower image nickfedor/watchtower: maintained fork of containrrr/watchtower, which is unmaintained and fails against
 # Docker Engine >= 29 ("client version ... is too old"); same CLI flags. (ADR 0008, ADR 0022)
 # No x-casaos metadata on purpose: an unverified extension block is a risk for the import; the app is reached at http://<server>:8080/.
@@ -21,9 +24,21 @@ services:
     networks: [planesabove]
     depends_on: [tts]
     environment:
-      CONFIG_PATH: /config/config.yaml
       TZ: Europe/Berlin        # household time zone: nightly reload, clock label, month of the speech budget
-      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}   # optional, only for speech.adapter: elevenlabs; set it in the ZimaOS environment UI, never write the key into this file
+      PLANESABOVE_LAT: ${PLANESABOVE_LAT:?set PLANESABOVE_LAT (latitude of the house)}
+      PLANESABOVE_LON: ${PLANESABOVE_LON:?set PLANESABOVE_LON (longitude of the house)}
+      PLANESABOVE_PLACE: ${PLANESABOVE_PLACE:?set PLANESABOVE_PLACE (shown as "Der Himmel ueber <place>")}
+      PLANESABOVE_RADIUS_KM: ${PLANESABOVE_RADIUS_KM:-30}
+      PLANESABOVE_DATA_DIR: /data
+      PLANESABOVE_SPEECH_ADAPTER: ${PLANESABOVE_SPEECH_ADAPTER:-piper}
+      PLANESABOVE_SPEECH_ENDPOINT: http://tts:5000
+      PLANESABOVE_SPEECH_VOICE: ${PLANESABOVE_SPEECH_VOICE:-}              # elevenlabs: voice_id (required there); empty = piper default voice
+      PLANESABOVE_FLIGHTAWARE_ENABLED: ${PLANESABOVE_FLIGHTAWARE_ENABLED:-false}   # opt-in, costs money; a stored key alone does not switch it on
+      PLANESABOVE_CONFIG_OVERRIDE: ${PLANESABOVE_CONFIG_OVERRIDE:-}        # optional, e.g. /config/override.yaml
+      # Secrets: set them in the ZimaOS environment UI, never write them into this file.
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
+      FLIGHTAWARE_API_KEY: ${FLIGHTAWARE_API_KEY:-}
+      HEARTBEAT_URL: ${HEARTBEAT_URL:-}
     volumes:
       - /DATA/AppData/planesabove/data:/data      # SQLite file (sighting log), audio cache
       - /DATA/AppData/planesabove/config:/config:ro
@@ -37,7 +52,7 @@ services:
       driver: json-file
       options: { max-size: "10m", max-file: "3" }
 
-  # Piper TTS sidecar; config.yaml: speech: { adapter: piper, endpoint: "http://tts:5000" }
+  # Piper TTS sidecar, reached as http://tts:5000 (PLANESABOVE_SPEECH_ENDPOINT above)
   tts:
     image: ghcr.io/hollesse/planesabove-tts:main
     container_name: planesabove-tts

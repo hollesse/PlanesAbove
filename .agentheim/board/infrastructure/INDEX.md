@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 1
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 10
+- **Doing:** 0
+- **Done:** 11
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **infrastructure-rmzgt** — Drei-Schichten-Konfiguration: Defaults als config.yaml im Repo, Pflichtwerte und Secrets per Umgebungsvariable, optionale Override-Datei; README beschreibt alles (decision) — `doing/infrastructure-rmzgt-drei-schichten-konfiguration-defaults-im-repo-env-vars-override.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **infrastructure-rmzgt** — Drei-Schichten-Konfiguration: Defaults als config.yaml im Repo, Pflichtwerte und Secrets per Umgebungsvariable, optionale Override-Datei; README beschreibt alles (decision) — `done/infrastructure-rmzgt-drei-schichten-konfiguration-defaults-im-repo-env-vars-override.md`
 - **infrastructure-fbpd5** — Commit-SHA als eigenes Feld `commit` in /healthz und im Startlog, per CI-Build-Arg ins Image; buildId bleibt der Client-Asset-Hash und steuert weiter den iPad-Reload (chore) — `done/infrastructure-fbpd5-derive-buildid-from-the-commit-sha-via-a-ci-build-arg.md`
 - **infrastructure-z7kq4** — Eigene Compose-Datei für den Import über die ZimaOS-Oberfläche (ohne build, Piper fest dabei, gepflegter Watchtower) (feature) — `done/infrastructure-z7kq4-zimaos-compose-datei-fuer-den-import-ueber-die-oberflaeche.md`
 - **infrastructure-d3v7k** — Geräteabnahme des Walking Skeletons auf ZimaOS-Heimserver und echtem iPad (chore) — `done/infrastructure-d3v7k-ger-teabnahme-des-walking-skeletons-auf-zimaos-heimserver-un.md`

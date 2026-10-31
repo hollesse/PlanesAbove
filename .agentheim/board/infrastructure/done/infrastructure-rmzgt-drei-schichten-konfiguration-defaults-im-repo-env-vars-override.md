@@ -1,7 +1,7 @@
 ---
 id: infrastructure-rmzgt
 title: Drei-Schichten-Konfiguration: Defaults als config.yaml im Repo, Pflichtwerte und Secrets per Umgebungsvariable, optionale Override-Datei; README beschreibt alles
-status: doing
+status: done
 type: decision
 context: infrastructure
 created: 2026-10-31
@@ -43,3 +43,14 @@ ADR 0030 ist bereits geschrieben und akzeptiert. Dieser Task setzt sie um; er is
 - Mock-Modus (`mode: mock`, `scenario`) bleibt in der Datei; E2E-Tests setzen ihn weiter per eigener YAML oder Override-Datei.
 - Migration auf dem Server: alte `config.yaml` unter `/DATA/AppData/planesabove/config/` kann nach der Umstellung gelöscht oder in eine Override-Datei verkürzt werden.
 - Prior art: infrastructure-z7kq4 (Compose für ZimaOS; Env-Vars kommen dort in jeder Oberfläche unverändert an, ADR 0025).
+
+## Outcome
+
+ADR 0030 umgesetzt, ohne Abweichung: die vorgeschlagenen Variablennamen blieben unveraendert (PLANESABOVE_LAT/LON/PLACE/RADIUS_KM/PORT/DATA_DIR/LOG_LEVEL/SPEECH_ADAPTER/SPEECH_ENDPOINT/SPEECH_VOICE/FLIGHTAWARE_ENABLED, dazu PLANESABOVE_CONFIG_OVERRIDE), deshalb keine ADR-Aenderung.
+
+- Loader: src/server/config.ts mit buildConfig (rein), loadConfigLayered, loadConfig, mergeLayers, ENV_VARS. Pflichtpruefung nennt alle fehlenden Variablen; leere Variablen zaehlen als nicht gesetzt; PLANESABOVE_FLIGHTAWARE_ENABLED=true haengt flightaware an route.order; Schluessel allein aktiviert nichts. parseConfig bleibt (ohne Pflichtpruefung) fuer bestehende Tests. main.ts loggt eine Zeile "config layers" (Variablennamen, Override-Schluessel, nie Werte).
+- config.yaml ersetzt config.example.yaml (location/place leer; port, dataDir, speech.adapter/endpoint raus), enthaelt die neuen airspace-Schluessel (photo.fallback, capRelief*). .gitignore ohne config.yaml. Zusaetzlich noetig: .dockerignore ohne config.yaml und Dockerfile kopiert config.yaml in das Runtime-Image (sonst fehlt die Datei im Container).
+- Compose: beide Dateien mit PLANESABOVE_* (LAT/LON/PLACE per ${...:?}, restliche mit Default), Secrets durchgereicht, CONFIG_PATH entfernt, /config nur noch optional fuer die Override-Datei. podman compose config -q lief fehlerfrei mit gesetzten Pflichtvariablen (beide Dateien) und schlaegt ohne PLANESABOVE_PLACE mit klarer Meldung fehl.
+- README: Abschnitt "Konfiguration" mit (a) bis (e), Variablentabelle, Migration; Schnellstart, Heimserver, ElevenLabs, FlightAware umgestellt. Tests: config-layers.test.ts (Koordinaten-Regex, Pflicht, Typen, Reihenfolge, Listen ersetzt, Key ohne Aktivierung, README-Tabelle gegen Quellcode), deploy-files und deploy-workflow angepasst. npm test (709 gruen) und typecheck gruen.
+- Hinweis: scripts/route-why und photo-sample laden config.yaml jetzt ebenfalls geschichtet und brauchen PLANESABOVE_LAT/LON/PLACE in der Umgebung (route-why faengt den Fehler ab).
+- Offen [human-eye] (Betreiber): auf dem Heimserver die neue docker-compose.zimaos.yml importieren, PLANESABOVE_LAT/LON/PLACE (und bei Bedarf SPEECH_ADAPTER/VOICE, FLIGHTAWARE_ENABLED, Keys) in der ZimaOS-Oberflaeche setzen, alte config.yaml loeschen oder zu override.yaml verkuerzen, /healthz auf ok pruefen, Standort in der Szene kontrollieren. Memory-Regel zum Ansagen bleibt fuer Schicht 2 und 3.

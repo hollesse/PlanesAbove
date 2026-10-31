@@ -9,6 +9,5 @@ playwright-report/
 .agentheim/state/
 dist/
 
-# Laufzeit: eigene Konfiguration (Standort) und Datenverzeichnis (DB, Audio-Cache, VRS-Snapshot)
-config.yaml
+# Laufzeit: Datenverzeichnis (DB, Audio-Cache, VRS-Snapshot)
 data/

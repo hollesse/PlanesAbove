@@ -61,6 +61,19 @@ describe('docker-compose.yml (ADR 0022)', () => {
   const c = load('docker-compose.yml');
   const label = 'com.centurylinklabs.watchtower.enable=true';
 
+  it('hands the PLANESABOVE_* variables and secrets through (ADR 0030)', () => {
+    const env = c.services.planesabove.environment;
+    for (const k of ['PLANESABOVE_LAT', 'PLANESABOVE_LON', 'PLANESABOVE_PLACE']) expect(env[k]).toMatch(/^\$\{PLANESABOVE_[A-Z]+:\?/);
+    for (const k of ['PLANESABOVE_RADIUS_KM', 'PLANESABOVE_SPEECH_ADAPTER', 'PLANESABOVE_SPEECH_ENDPOINT', 'PLANESABOVE_SPEECH_VOICE', 'PLANESABOVE_FLIGHTAWARE_ENABLED', 'PLANESABOVE_CONFIG_OVERRIDE', 'ELEVENLABS_API_KEY', 'FLIGHTAWARE_API_KEY', 'HEARTBEAT_URL']) expect(env).toHaveProperty(k);
+    expect(env.PLANESABOVE_DATA_DIR).toBe('/data');
+  });
+
+  it('the Dockerfile ships the repo config.yaml and the ignore files let it through', () => {
+    expect(readFileSync(resolve(root, 'Dockerfile'), 'utf8')).toMatch(/^COPY config\.yaml /m);
+    expect(readFileSync(resolve(root, '.dockerignore'), 'utf8')).not.toMatch(/^config\.yaml$/m);
+    expect(readFileSync(resolve(root, '.gitignore'), 'utf8')).not.toMatch(/^config\.yaml$/m);
+  });
+
   it('points planesabove and tts at GHCR with the watchtower label', () => {
     expect(c.services.planesabove.image).toBe('ghcr.io/hollesse/planesabove:main');
     expect(c.services.tts.image).toBe('ghcr.io/hollesse/planesabove-tts:main');
@@ -104,7 +117,12 @@ describe('docker-compose.zimaos.yml (UI import on ZimaOS)', () => {
     const p = c.services.planesabove;
     expect(p.healthcheck).toBeDefined();
     expect(p.ports).toContain('8080:8080');
-    expect(p.environment.CONFIG_PATH).toBe('/config/config.yaml');
+    // Layered config (ADR 0030): required location from the environment, secrets passed through, /config only for the optional override file.
+    for (const k of ['PLANESABOVE_LAT', 'PLANESABOVE_LON', 'PLANESABOVE_PLACE']) expect(p.environment[k]).toMatch(/^\$\{PLANESABOVE_[A-Z]+:\?/);
+    expect(p.environment.CONFIG_PATH).toBeUndefined();
+    expect(p.environment.PLANESABOVE_DATA_DIR).toBe('/data');
+    expect(p.environment.PLANESABOVE_SPEECH_ENDPOINT).toBe('http://tts:5000');
+    for (const k of ['PLANESABOVE_FLIGHTAWARE_ENABLED', 'PLANESABOVE_CONFIG_OVERRIDE', 'ELEVENLABS_API_KEY', 'FLIGHTAWARE_API_KEY', 'HEARTBEAT_URL']) expect(p.environment).toHaveProperty(k);
     expect(p.environment.TZ).toBeDefined();
   });
 

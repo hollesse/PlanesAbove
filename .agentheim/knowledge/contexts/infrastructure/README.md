@@ -33,6 +33,7 @@ generic
 - **Takt** — ein Abfragezyklus des Dienstes (Default 30 s): Quelle abfragen, Auswahl bilden, Routen anreichern, Sichtungen schreiben. Eine ausgefallene Quelle behält die letzte gute Szene und markiert sie als stale.
 - **buildId** — Inhalts-Hash des Client-Bundles; ändert er sich, lädt sich der iPad-Client beim nächsten Poll selbst neu (aufgeschoben, solange vorgelesen wird).
 - **Commit (commit)** — the full git SHA of the deployed image, set by CI as build-arg GIT_SHA and reported in /healthz and the 'service started' log ('dev' without CI). Distinct from buildId, which stays the client-asset hash and alone drives the iPad reload.
+- **Repo-Config / Umgebungsvariablen / Override-Datei** - die drei Konfigurationsschichten (ADR 0030), spaetere gewinnt: eingecheckte config.yaml (Defaults, im Image, nie Standort oder Secrets), PLANESABOVE_*-Variablen (Pflicht: LAT, LON, PLACE; Dev/Prod-Unterschiede), optionale Override-Datei per PLANESABOVE_CONFIG_OVERRIDE (tiefes Merge, Listen ersetzt). Ein Secret allein aktiviert kein Feature; die Aktivierung ist eine eigene Variable.
 
 ## Aggregates
 _Noch nicht modelliert — entsteht in `modeling` / bei der Arbeit an Tasks._
