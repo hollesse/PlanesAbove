@@ -138,6 +138,7 @@ nur noch den einen Weg.
 - **Silhouette** — der leere Flieger einer Typklasse: Umriss, über den gezeichnet wird; schneidet beim Anzeigen die Lackierung zu.
 - **Detailschicht** — Cockpitscheiben und Triebwerksdetails einer Typklasse; liegt beim Anzeigen immer über der Lackierung.
 - **Ebene** — ein Pfad oder ein Logo in der Lackierung, mit Farbe, Reihenfolge und Verschiebung; wie eine Photoshop-Ebene.
+- **Farbfeld** — fester Teil der Silhouette (Triebwerkskörper), der nur eine Farbe bekommt; Pfade enden an seinem Rand.
 - **Pfad** — eine geschlossene, gefärbte Form aus Punkten; Segmente können über ihren Mittelpunkt gerundet werden; wird ungeschnitten gespeichert.
 - **Vorlage** — eine bestehende Lackierung oder ein vorgefertigter Pfad (z. B. ganze Finne), der als Ausgangspunkt in eine neue Lackierung kopiert wird.
 - **Referenzfoto** — echtes Foto der Airline auf dieser Typklasse aus der Fotokette der App, neben dem Zeichenbrett.

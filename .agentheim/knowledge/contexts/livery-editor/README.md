@@ -18,6 +18,7 @@ supporting — Werkzeug für die Illustrationsarbeit; die Himmelsszene braucht n
 - **Shift-Zwang** — mit gehaltener Shift-Taste liegt der nächste Punkt waagerecht oder senkrecht zum vorigen.
 - **Rundung** — Griff in der Mitte eines Segments; Wegziehen macht aus der Geraden eine Kurve (wie in Photoshop).
 - **Farbwahl** — Farbpicker je Ebene.
+- **Farbfeld** — Triebwerkskörper: bekommt nur eine Farbe, kein Pfad; Rumpf-Pfade enden an seinem Rand.
 - **Ansicht** — stufenlose Deckkraft für Silhouette und Detailschicht auf weißem Hintergrund: ganz durchsichtig zeigt die ungeschnittenen Pfade, wo sie wirklich verlaufen; ganz deckend zeigt das Endergebnis wie auf dem iPad (zugeschnitten, Details obenauf).
 - **Logo** — hochgeladenes SVG oder PNG als Ebene; skalierbar, drehbar, platzierbar. Der Editor zeichnet keine Logos.
 - **Vorlage** — Ausgangspunkt statt leerem Brett: eine bestehende Lackierung (auch einer anderen Airline oder Typklasse) oder ein vorgefertigter Pfad (z. B. ganze Finne).
