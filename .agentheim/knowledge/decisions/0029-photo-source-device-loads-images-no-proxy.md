@@ -1,12 +1,12 @@
 ---
 id: ADR-0029
-title: Fotoquelle: Server reicht nur Foto-URLs und Attribution durch, das Anzeigegerät lädt die Bilder selbst; Default-Kette Planespotters, Wikimedia Commons, Airport-Data
+title: Fotoquelle: Server reicht nur Foto-URLs und Attribution durch, das Anzeigegerät lädt die Bilder selbst; Primärkette Wikimedia Commons, Fallback Planespotters
 scope: airspace
 status: accepted
 date: 2026-10-31
 supersedes: []
 superseded_by: []
-related_tasks: [airspace-gw6w9, design-system-pawdq, sky-scene-xw8jv, airspace-vcytm]
+related_tasks: [airspace-gw6w9, design-system-pawdq, sky-scene-xw8jv, airspace-vcytm, airspace-hejpw]
 related_research: [aircraft-photo-sources-2026-10-31]
 related_adrs: [0001, 0004, 0005, 0016]
 ---
@@ -77,3 +77,21 @@ Pro), während Commons beliebige Vorschaubreiten erlaubt — der Adapter fordert
 Foto der Galerie ist das erste Foto der ersten konfigurierten Quelle mit Treffer; einen
 Planespotters-Vorrang gab es in der Kette nie, nur über den alten Default. Reihenfolge bleibt reine
 Konfiguration. `Photo.size` trägt optional die in der Antwort genannte Bildgröße.
+
+## Amendment 2026-10-31 (airspace-hejpw) — Airport-Data entfernt, Fallback-Regel
+
+Punkt 4 erneut geändert. **Airport-Data ist entfernt** (Betreiber-Entscheidung 2026-10-31): nur kleine
+Thumbnails, im Vollbild-Overlay unscharf, und keine veröffentlichten Terms. Adapter, Fixtures und der
+Config-Wert `airport-data` entfallen; eine alte config.yaml mit `airport-data` scheitert an der Validierung.
+
+Neue Kettenregel **Fallback-Quelle**: `sources.photo.order` ist die Primärkette (Default `[commons]`),
+`sources.photo.fallback` (Default `[planespotters]`, `[]` schaltet ab) die letzte Rettung. Fallback-Quellen
+werden **nur** gefragt, wenn die Primärkette kein einziges Foto geliefert hat — sei es leer (*Kein Foto*)
+oder gestört (*nicht verfügbar*); liefert eine Primärquelle mindestens ein Foto, bleibt die Galerie bei den
+Primärquellen und der Fallback wird nicht angefragt. Eine Quelle darf nicht in beiden Listen stehen
+(Validierungsfehler). Ein Fallback-Treffer nach gestörter Primärquelle bleibt ein Teilergebnis und wird nicht
+gecacht. `/healthz` führt Fallback-Quellen weiter unter `photo.sources[]`, markiert mit
+`role: primary | fallback`. Die Planespotters-Terms (QR-Link-back, User-Agent mit Kontakt, JSON ≤ 24 h,
+Bild direkt vom iPad) gelten unverändert. Begründung: Planespotters liefert nur 280 px, hat aber die beste
+Abdeckung bei Airlinern; ein unscharfes Foto ist besser als *Kein Foto*, soll aber nie die scharfen
+Commons-Fotos verdünnen.

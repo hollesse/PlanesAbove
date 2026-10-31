@@ -1,7 +1,7 @@
 ---
 id: airspace-hejpw
 title: Airport-Data als Fotoquelle ausbauen; Planespotters nur noch als Fallback, wenn Wikimedia Commons gar kein Foto liefert
-status: doing
+status: done
 type: feature
 context: airspace
 created: 2026-10-31
@@ -35,3 +35,7 @@ Airport-Data liefert nur kleine Thumbnails, die im Vollbild-Overlay unscharf wir
 - Betreiber-Entscheidung 2026-10-31: Airport-Data raus (Qualität, keine Terms); Planespotters nur, wenn Commons nichts liefert — nicht zum Auffüllen der Galerie.
 - Planespotters-Terms (QR-Link-back, User-Agent mit Kontakt, JSON ≤ 24 h, Bild direkt vom iPad) gelten unverändert, auch wenn die Quelle selten zieht.
 - Erwartung aus der Stichprobe 2026-10-31: Commons 19/30, Planespotters hätte bei korrektem User-Agent wohl deutlich mehr als 8/30 (22 × 403). Der Fallback hilft vor allem bei Airlinern, die Commons nicht kennt.
+
+## Outcome
+
+Airport-Data entfernt (Adapter airport-data-photo-source.ts und Fixtures airport-data-*.json geloescht; PHOTO_SOURCE_NAMES, Config-Enum, config.example.yaml, Stichproben-Skript bereinigt). Neue Config sources.photo.fallback (Default [planespotters], [] = aus), order Default [commons]; Quelle in beiden Listen = Validierungsfehler; airport-data in einer alten config.yaml scheitert an der Enum-Validierung (sources.photo.order). PhotoSourceChain nimmt Fallback-Quellen entgegen und fragt sie nur, wenn die Primaerkette kein Foto lieferte (leer oder gestoert); Teilergebnis-Regel bleibt (nicht gecacht). status() traegt role primary|fallback, /healthz zeigt es. scripts/photo-sample.src.mjs fragt alle Quellen weiter ab und weist die Rolle aus (plus Zeilen "nur Primaerquellen" und "mit Fallback"). Tests: Ketten-Tests (a)-(e) plus Rollen-Status in tests/unit/server/photo-chain.test.ts, Config-Tests, /healthz-Test mit role; bestehende Tests angepasst. npm test (689 passed) und typecheck gruen. Reale config.yaml anpassen: nur noetig, falls sie airport-data oder eine eigene photo.order enthaelt.

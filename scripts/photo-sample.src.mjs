@@ -7,7 +7,6 @@ import fs from 'node:fs';
 import { parseArgs } from 'node:util';
 import Database from 'better-sqlite3';
 import { loadConfig } from '../src/server/config.ts';
-import { AirportDataPhotoSource } from '../src/server/modules/airspace/adapters/airport-data-photo-source.ts';
 import { CommonsPhotoSource } from '../src/server/modules/airspace/adapters/commons-photo-source.ts';
 import { PlanespottersPhotoSource } from '../src/server/modules/airspace/adapters/planespotters-photo-source.ts';
 
@@ -21,7 +20,8 @@ if (!Number.isFinite(pauseMs) || pauseMs < 0) fail('--pause-ms must be >= 0');
 let userAgent = 'PlanesAbove/0.1 (self-hosted, single household)';
 let timeoutMs = 8000;
 let dataDir = './data';
-if (fs.existsSync(values.config)) { const c = loadConfig(values.config); userAgent = c.sources.userAgent; timeoutMs = c.sources.photo.timeoutMs; dataDir = c.dataDir; } else console.error(`photo-sample: ${values.config} not found, using the default User-Agent`);
+let fallbackNames = ['planespotters'];
+if (fs.existsSync(values.config)) { const c = loadConfig(values.config); userAgent = c.sources.userAgent; timeoutMs = c.sources.photo.timeoutMs; dataDir = c.dataDir; fallbackNames = c.sources.photo.fallback; } else console.error(`photo-sample: ${values.config} not found, using the default User-Agent`);
 if (!/@|https?:\/\//i.test(userAgent)) console.error('photo-sample: WARNING sources.userAgent has no contact (e-mail or URL); set one before sampling Planespotters regularly');
 const dbFile = values.db ?? `${dataDir}/planesabove.db`;
 if (!fs.existsSync(dbFile)) fail(`database file not found: ${dbFile}`);
@@ -42,7 +42,9 @@ if (sample.length === 0) fail('the sightings table is empty');
 
 const fetchFn = (url, init) => fetch(url, init);
 const o = { fetch: fetchFn, userAgent, timeoutMs };
-const sources = [new CommonsPhotoSource(o), new AirportDataPhotoSource(o), new PlanespottersPhotoSource(o)];
+// Every source is asked for the measurement (primary and fallback alike); the role shows how the live chain would use it.
+const sources = [new CommonsPhotoSource(o), new PlanespottersPhotoSource(o)];
+const roleOf = (name) => (fallbackNames.includes(name) ? 'fallback' : 'primary');
 // Size as the response states it (no image download); "?" when the source gives none.
 const dims = (p) => (p.size ? `${p.size.width}x${p.size.height}` : '?');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -81,12 +83,14 @@ for (const [i, r] of sample.entries()) {
 
 const classes = [...new Set(sample.map((r) => r.typklasse))].sort();
 const cell = (e) => (e && e.n ? `${e.hit}/${e.n} (${Math.round((100 * e.hit) / e.n)}%)${e.unavailable ? ` [${e.unavailable} unavailable]` : ''}` : '-');
-if (values.json) process.stdout.write(JSON.stringify({ sampled: sample.length, userAgent, stats: Object.fromEntries([...stats].map(([k, m]) => [k, Object.fromEntries(m)])), perPlane }, null, 2) + '\n');
+if (values.json) process.stdout.write(JSON.stringify({ sampled: sample.length, userAgent, roles: Object.fromEntries(sources.map((s) => [s.name, roleOf(s.name)])), stats: Object.fromEntries([...stats].map(([k, m]) => [k, Object.fromEntries(m)])), perPlane }, null, 2) + '\n');
 else {
   const withReg = perPlane.filter((p) => p.registration).length;
   console.log(`\nFotoquellen-Stichprobe: ${sample.length} Flugzeuge (${withReg} mit Kennzeichen via hexdb; commons braucht ein Kennzeichen)`);
-  console.log(['Quelle'.padEnd(14), 'gesamt'.padEnd(26), ...classes.map((c) => c.padEnd(26))].join(' '));
-  for (const s of sources) { const m = stats.get(s.name); console.log([s.name.padEnd(14), cell(m.get('ALL')).padEnd(26), ...classes.map((c) => cell(m.get(c)).padEnd(26))].join(' ')); }
+  console.log(['Quelle (Rolle)'.padEnd(24), 'gesamt'.padEnd(26), ...classes.map((c) => c.padEnd(26))].join(' '));
+  for (const s of sources) { const m = stats.get(s.name); console.log([`${s.name} (${roleOf(s.name)})`.padEnd(24), cell(m.get('ALL')).padEnd(26), ...classes.map((c) => cell(m.get(c)).padEnd(26))].join(' ')); }
   const any = perPlane.filter((p) => Object.values(p.hits).some((h) => typeof h === 'number' && h > 0)).length;
-  console.log(`\nirgendein Foto (mind. eine Quelle): ${any}/${sample.length} (${Math.round((100 * any) / sample.length)}%)`);
+  const primaryAny = perPlane.filter((p) => Object.entries(p.hits).some(([n, h]) => roleOf(n) === 'primary' && typeof h === 'number' && h > 0)).length;
+  console.log(`\nnur Primärquellen: ${primaryAny}/${sample.length} (${Math.round((100 * primaryAny) / sample.length)}%)`);
+  console.log(`mit Fallback (mind. eine Quelle): ${any}/${sample.length} (${Math.round((100 * any) / sample.length)}%)`);
 }

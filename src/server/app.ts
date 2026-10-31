@@ -24,7 +24,6 @@ import { VrsRouteSource } from './modules/airspace/adapters/vrs-route-source';
 import type { FlightSource, RouteSource } from './modules/airspace/model';
 import { PlanespottersPhotoSource } from './modules/airspace/adapters/planespotters-photo-source';
 import { CommonsPhotoSource } from './modules/airspace/adapters/commons-photo-source';
-import { AirportDataPhotoSource } from './modules/airspace/adapters/airport-data-photo-source';
 import type { PhotoSource } from './modules/airspace/photo-source';
 import { PhotoSourceChain } from './modules/airspace/photo-source-chain';
 import { PhotoService } from './modules/airspace/photo-service';
@@ -134,12 +133,14 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   const types = new AircraftTypeResolver({ overrides: tables.typeOverrides ?? {}, source: typeSource, clock, log, ttlMs: hx.cacheTtlHours * 3_600_000 });
   // Aircraft photos (ADR 0029): metadata only, memory cache. Mock mode has no network: the scenario's `photos` table is the only source there (unless a fetch seam is injected).
   const pc = config.sources.photo;
-  const photoSources: PhotoSource[] = mock && !o.fetch ? (driver ? [new ScenarioPhotoSource(driver)] : []) : pc.order.map((name) => {
+  const mkPhotoSource = (name: (typeof pc.order)[number]): PhotoSource => {
     const po = { fetch: fetchFn, userAgent: ua, timeoutMs: pc.timeoutMs };
-    return name === 'planespotters' ? new PlanespottersPhotoSource(po) : name === 'commons' ? new CommonsPhotoSource(po) : new AirportDataPhotoSource(po);
-  });
-  if (photoSources.length && !userAgentHasContact(ua)) log.warn('sources.userAgent has no contact (e-mail or URL) but photo sources are active: Planespotters expects a descriptive User-Agent with contact, set it in config.yaml', { userAgent: ua });
-  const photos = new PhotoService(new PhotoSourceChain(photoSources, { clock, log, maxPhotos: pc.maxPhotos, backoffMs: pc.backoffMinutes * 60_000 }), { clock, ttlMs: pc.cacheTtlHours * 3_600_000 });
+    return name === 'planespotters' ? new PlanespottersPhotoSource(po) : new CommonsPhotoSource(po);
+  };
+  const photoSources: PhotoSource[] = mock && !o.fetch ? (driver ? [new ScenarioPhotoSource(driver)] : []) : pc.order.map(mkPhotoSource);
+  const fallbackSources: PhotoSource[] = mock && !o.fetch ? [] : pc.fallback.map(mkPhotoSource);
+  if ((photoSources.length || fallbackSources.length) && !userAgentHasContact(ua)) log.warn('sources.userAgent has no contact (e-mail or URL) but photo sources are active: Planespotters expects a descriptive User-Agent with contact, set it in config.yaml', { userAgent: ua });
+  const photos = new PhotoService(new PhotoSourceChain(photoSources, { clock, log, maxPhotos: pc.maxPhotos, backoffMs: pc.backoffMinutes * 60_000, fallback: fallbackSources }), { clock, ttlMs: pc.cacheTtlHours * 3_600_000 });
   const sky = new SkyService({ config, clock, log, flight, routes, tables, types, sightings, audio, buildId, timeZone: o.timeZone });
 
   const stopFlightAwareSync = config.sources.route.enabled ? await flightaware?.start() : undefined; // usage sync before the first paid lookup (ADR 0018)

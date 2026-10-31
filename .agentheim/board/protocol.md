@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 11:06 -- Task verified and completed: airspace-hejpw - Airport-Data als Fotoquelle ausbauen; Planespotters nur noch als Fallback, wenn Wikimedia Commons gar kein Foto liefert
+
+**Type:** Work / Task completion
+**Task:** airspace-hejpw - Airport-Data als Fotoquelle ausbauen; Planespotters nur noch als Fallback, wenn Wikimedia Commons gar kein Foto liefert
+**Summary:** Airport-Data als Fotoquelle entfernt; Commons ist die Primärkette, Planespotters nur noch Fallback (sources.photo.fallback), wenn die Primärkette kein Foto liefert; /healthz zeigt role primary|fallback
+**Duration:** 6m
+**Verification:** PASS (iteration 1)
+**Files changed:** 14
+**Tests added:** 8
+**ADRs written:** 0029 (Amendment)
+
+---
+
+## 2026-10-31 11:05 -- Verification failed: airspace-tzw5t - Korridor-Deckel aufweichen bei Kursbestaetigung und weit vom Start
+
+**Type:** Work / Verification failure
+**Task:** airspace-tzw5t - Korridor-Deckel (corridorMaxKm) aufweichen, wenn der Kurs zum Ziel passt und das Flugzeug weit vom Start ist
+**Iteration:** 1 of 3
+**Reasons:** near-origin ratio test not constructed as specified, DLH7PP test mislabeled, README delta should amend the Plausibilitaetspruefung (Route) bullet
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-31 10:58 -- Batch started: [airspace-hejpw, airspace-tzw5t, sky-scene-jpjt2]
 
 **Type:** Work / Batch start

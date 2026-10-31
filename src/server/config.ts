@@ -5,11 +5,11 @@ import { z } from 'zod';
 
 import { DEFAULT_CLOSED_AIRSPACES } from './modules/airspace/closed-airspace';
 import { FLIGHT_SOURCE_NAMES } from './modules/airspace/flight-source-names';
-import { PHOTO_SOURCE_NAMES } from './modules/airspace/photo-source';
+import { PHOTO_SOURCE_NAMES, type PhotoSourceName } from './modules/airspace/photo-source';
 const FLIGHTAWARE_DEFAULTS = { timeoutMs: 8000, monthlyBudgetUsd: 4.5, monthlyRequestCap: 900, usageSyncMinutes: 30, usageLagMinutes: 15, billingPeriodStartDay: 1 };
 const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5, detourHeadingDeviationDeg: 90, closedAirspaceSampleKm: 100, closedAirspaces: DEFAULT_CLOSED_AIRSPACES };
 const ROUTE_DEFAULTS = { enabled: true, order: ['hexdb' as const, 'adsbdb' as const, 'vrs' as const], hexdb: { timeoutMs: 5000, backoffMinutes: 5 }, adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS, plausibility: PLAUSIBILITY_DEFAULTS };
-const PHOTO_DEFAULTS = { order: [...PHOTO_SOURCE_NAMES], maxPhotos: 6, timeoutMs: 5000, cacheTtlHours: 24, backoffMinutes: 5 };
+const PHOTO_DEFAULTS = { order: ['commons'] as PhotoSourceName[], fallback: ['planespotters'] as PhotoSourceName[], maxPhotos: 6, timeoutMs: 5000, cacheTtlHours: 24, backoffMinutes: 5 };
 
 /** Piper model in the tts image. */
 const PIPER_VOICE = 'de_DE-thorsten-medium';
@@ -52,14 +52,17 @@ const schema = z.object({
     }).default({ hexdb: { enabled: true, timeoutMs: 2000, cacheTtlHours: 24 } }),
     /** Aircraft photos (ADR 0029): metadata only, the iPad loads the images itself; memory-only cache. [] switches photos off. */
     photo: z.object({
-      order: z.array(z.enum(PHOTO_SOURCE_NAMES)).default([...PHOTO_SOURCE_NAMES]),
+      /** Primary chain, asked in order. */
+      order: z.array(z.enum(PHOTO_SOURCE_NAMES)).default(['commons']),
+      /** Asked only when no primary source delivered a photo (last resort). [] switches the fallback off. */
+      fallback: z.array(z.enum(PHOTO_SOURCE_NAMES)).default(['planespotters']),
       maxPhotos: z.number().int().min(1).max(20).default(6),
       timeoutMs: z.number().int().positive().default(5000),
       /** Planespotters terms allow caching the JSON for at most 24 h. */
       cacheTtlHours: z.number().positive().max(24).default(24),
       /** A source is skipped this long after an HTTP 429 without Retry-After. */
       backoffMinutes: z.number().positive().default(5),
-    }).default(PHOTO_DEFAULTS),
+    }).refine((p) => !p.order.some((n) => p.fallback.includes(n)), { message: 'a photo source must not be in both order and fallback', path: ['fallback'] }).default(PHOTO_DEFAULTS),
     route: z.object({
       enabled: z.boolean().default(true),
       /** Source order: hexdb, then adsbdb live lookups, offline VRS snapshot as fallback (ADR 0016, amendment 2026-10-27). */

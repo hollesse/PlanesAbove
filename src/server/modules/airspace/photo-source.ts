@@ -8,7 +8,7 @@ export interface Photo {
   thumbUrl: string;
   imageUrl: string;
   photographer: string;
-  /** Name of the photo source that delivered it (planespotters | commons | airport-data). */
+  /** Name of the photo source that delivered it (planespotters | commons). */
   source: string;
   /** Page the credit has to link to (plane photo page / Commons file page). */
   pageUrl: string;
@@ -28,7 +28,7 @@ export interface PhotoSource {
   lookup(q: PhotoQuery): Promise<PhotoLookup>;
 }
 
-export const PHOTO_SOURCE_NAMES = ['commons', 'airport-data', 'planespotters'] as const;
+export const PHOTO_SOURCE_NAMES = ['commons', 'planespotters'] as const;
 export type PhotoSourceName = (typeof PHOTO_SOURCE_NAMES)[number];
 
 /** Maps any thrown failure of a source call to the port's `unavailable` answer. */

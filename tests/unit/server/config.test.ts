@@ -96,11 +96,18 @@ describe('speech.partGapMs (sky-scene-b7w2n)', () => {
 });
 
 describe('sources.photo (ADR 0029)', () => {
-  it('defaults: Commons -> Airport-Data -> Planespotters, 6 photos, 24 h cache', () => {
-    expect(parseConfig(MIN).sources.photo).toMatchObject({ order: ['commons', 'airport-data', 'planespotters'], maxPhotos: 6, timeoutMs: 5000, cacheTtlHours: 24 });
+  it('defaults: primary [commons], fallback [planespotters], 6 photos, 24 h cache', () => {
+    expect(parseConfig(MIN).sources.photo).toMatchObject({ order: ['commons'], fallback: ['planespotters'], maxPhotos: 6, timeoutMs: 5000, cacheTtlHours: 24 });
   });
   it('an explicitly configured order wins over the default', () => {
-    expect(parseConfig(MIN + 'sources: { photo: { order: [planespotters, commons] } }\n').sources.photo.order).toEqual(['planespotters', 'commons']);
+    expect(parseConfig(MIN + 'sources: { photo: { order: [planespotters, commons], fallback: [] } }\n').sources.photo.order).toEqual(['planespotters', 'commons']);
+  });
+  it('fallback is configurable, [] switches it off; a source in both lists is a validation error; airport-data is gone', () => {
+    expect(parseConfig(MIN + 'sources: { photo: { order: [planespotters], fallback: [commons] } }\n').sources.photo).toMatchObject({ order: ['planespotters'], fallback: ['commons'] });
+    expect(parseConfig(MIN + 'sources: { photo: { fallback: [] } }\n').sources.photo.fallback).toEqual([]);
+    expect(() => parseConfig(MIN + 'sources: { photo: { order: [commons], fallback: [commons] } }\n')).toThrow(/sources\.photo\.fallback.*both/);
+    expect(() => parseConfig(MIN + 'sources: { photo: { order: [commons, planespotters] } }\n')).toThrow(/sources\.photo\.fallback/);
+    expect(() => parseConfig(MIN + 'sources: { photo: { order: [commons, airport-data] } }\n')).toThrow(/sources\.photo\.order/);
   });
   it('accepts overrides, including [] to switch photos off', () => {
     const c = parseConfig(MIN + 'sources: { photo: { order: [commons], maxPhotos: 3, timeoutMs: 2000, cacheTtlHours: 1 } }\n');

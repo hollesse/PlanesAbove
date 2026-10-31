@@ -14,18 +14,54 @@ const src = (name: string, answers: PhotoLookup[] | (() => PhotoLookup)): PhotoS
 };
 const DOWN: PhotoLookup = { unavailable: true, errorClass: 'timeout' };
 const Q = { icao24: '3c6444', registration: 'D-AIXA' };
-const mk = (sources: PhotoSource[], maxPhotos = 6, backoffMs = 300_000) => { const clock = new FakeClock(0); return { clock, chain: new PhotoSourceChain(sources, { clock, log: silentLogger, maxPhotos, backoffMs }) }; };
+const mk = (sources: PhotoSource[], maxPhotos = 6, backoffMs = 300_000, fallback: PhotoSource[] = []) => { const clock = new FakeClock(0); return { clock, chain: new PhotoSourceChain(sources, { clock, log: silentLogger, maxPhotos, backoffMs, fallback }) }; };
+
+describe('PhotoSourceChain fallback sources (airspace-hejpw)', () => {
+  const FB = () => src('planespotters', [{ photos: [photo('planespotters', 'p1')] }]);
+  it('(a) a primary photo: the fallback is not asked at all, the gallery is the primary one', async () => {
+    const fb = FB();
+    const { chain } = mk([src('commons', [{ photos: [photo('commons', '1')] }])], 6, 300_000, [fb]);
+    const r = await chain.lookup(Q);
+    expect(fb.calls).toBe(0);
+    expect(r.photos.map((p) => p.source)).toEqual(['commons']);
+  });
+  it('(b) every primary empty: the fallback is asked, its photo is the gallery, status ok', async () => {
+    const fb = FB();
+    const r = await mk([src('commons', [{ photos: [] }])], 6, 300_000, [fb]).chain.lookup(Q);
+    expect(fb.calls).toBe(1);
+    expect(r).toEqual(expect.objectContaining({ status: 'ok', partial: false }));
+    expect(r.photos.map((p) => p.source)).toEqual(['planespotters']);
+  });
+  it('(c) primary and fallback both empty: Kein Foto', async () => {
+    expect(await mk([src('commons', [{ photos: [] }])], 6, 300_000, [src('planespotters', [{ photos: [] }])]).chain.lookup(Q)).toEqual({ photos: [], status: 'none', partial: false });
+  });
+  it('(d) primary down, fallback delivers: gallery = fallback photo, status ok, flagged partial (so the service does not cache it)', async () => {
+    const clock = new FakeClock(0);
+    const chain = new PhotoSourceChain([src('commons', [DOWN])], { clock, log: silentLogger, maxPhotos: 6, backoffMs: 1, fallback: [FB()] });
+    const svc = new PhotoService(chain, { clock, ttlMs: 1e9 });
+    const r = await svc.get(Q);
+    expect(r).toMatchObject({ status: 'ok', partial: true, photos: [{ source: 'planespotters' }] });
+    await svc.get(Q);
+    expect((chain as unknown as { entries: { source: { calls: number } }[] }).entries[1].source.calls).toBe(2);
+  });
+  it('(e) everything down: unavailable', async () => {
+    expect(await mk([src('commons', [DOWN])], 6, 300_000, [src('planespotters', [DOWN])]).chain.lookup(Q)).toEqual({ photos: [], status: 'unavailable', partial: true });
+  });
+  it('status() marks each source with its role', async () => {
+    expect(mk([src('commons', [DOWN])], 6, 300_000, [FB()]).chain.status().sources.map((s) => `${s.name}:${s.role}`)).toEqual(['commons:primary', 'planespotters:fallback']);
+  });
+});
 
 describe('PhotoSourceChain', () => {
   it('merges in chain order: the first photo of the first configured source leads (no Planespotters precedence)', async () => {
-    const { chain } = mk([src('commons', [{ photos: [photo('commons', 'b')] }]), src('airport-data', [{ photos: [photo('airport-data', 'c')] }]), src('planespotters', [{ photos: [photo('planespotters', 'a')] }])]);
+    const { chain } = mk([src('commons', [{ photos: [photo('commons', 'b')] }]), src('other', [{ photos: [photo('other', 'c')] }]), src('planespotters', [{ photos: [photo('planespotters', 'a')] }])]);
     const r = await chain.lookup(Q);
     expect(r.status).toBe('ok');
-    expect(r.photos.map((p) => p.source)).toEqual(['commons', 'airport-data', 'planespotters']);
+    expect(r.photos.map((p) => p.source)).toEqual(['commons', 'other', 'planespotters']);
   });
   it('dedups per source + id and per source + imageUrl', async () => {
-    const { chain } = mk([src('commons', [{ photos: [photo('commons', '1'), photo('commons', '1'), photo('commons', '2', 'https://commons/1.jpg'), photo('commons', '3')] }]), src('airport-data', [{ photos: [photo('airport-data', '1')] }])]);
-    expect((await chain.lookup(Q)).photos.map((p) => `${p.source}:${p.id}`)).toEqual(['commons:1', 'commons:3', 'airport-data:1']);
+    const { chain } = mk([src('commons', [{ photos: [photo('commons', '1'), photo('commons', '1'), photo('commons', '2', 'https://commons/1.jpg'), photo('commons', '3')] }]), src('other', [{ photos: [photo('other', '1')] }])]);
+    expect((await chain.lookup(Q)).photos.map((p) => `${p.source}:${p.id}`)).toEqual(['commons:1', 'commons:3', 'other:1']);
   });
   it('caps at maxPhotos and spares the remaining sources once it is reached', async () => {
     const a = src('planespotters', [{ photos: [photo('planespotters', '1'), photo('planespotters', '2')] }]);

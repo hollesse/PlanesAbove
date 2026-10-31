@@ -1,10 +1,9 @@
 // @vitest-environment node
 // PhotoSource adapters (ADR 0029). Fixtures under tests/fixtures/photos are constructed from the response shapes the research
-// aircraft-photo-sources-2026-10-31 verified live (Planespotters hex/reg, Airport-Data ac_thumb, Commons imageinfo+extmetadata); error cases are constructed. All tests offline.
+// aircraft-photo-sources-2026-10-31 verified live (Planespotters hex/reg, Commons imageinfo+extmetadata); error cases are constructed. All tests offline.
 import fs from 'node:fs';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { AirportDataPhotoSource } from '../../../src/server/modules/airspace/adapters/airport-data-photo-source';
 import { CommonsPhotoSource } from '../../../src/server/modules/airspace/adapters/commons-photo-source';
 import type { Fetch } from '../../../src/server/modules/airspace/adapters/http';
 import { PlanespottersPhotoSource } from '../../../src/server/modules/airspace/adapters/planespotters-photo-source';
@@ -64,30 +63,6 @@ describe('PlanespottersPhotoSource', () => {
   it('an answer without photos[] is a parse failure (unavailable)', async () => {
     expect(await make(reply(200, '{"error":"x"}')).lookup(Q)).toMatchObject({ unavailable: true, errorClass: 'parse' });
   });
-  failureContract(make);
-});
-
-describe('AirportDataPhotoSource', () => {
-  const make = (f: Fetch) => new AirportDataPhotoSource(o(f));
-  it('asks ac_thumb.json?m=<HEX>&n=5', async () => {
-    const urls: string[] = [];
-    await make(async (u, i) => { urls.push(u); return reply(200, fixture('airport-data-hit'))(u, i); }).lookup(Q);
-    expect(urls).toEqual(['https://airport-data.com/api/ac_thumb.json?m=3C6444&n=5']);
-  });
-  it('hit: a gallery with photographer credit and link', async () => {
-    const r = await make(reply(200, fixture('airport-data-hit'))).lookup(Q);
-    expect(r).toMatchObject({ photos: [
-      { id: 'https://airport-data.com/aircraft/photo/001234567.html', source: 'airport-data', photographer: 'Max Muster', imageUrl: 'https://image.airport-data.com/aircraft/thumbnails/001/234/001234567.jpg', pageUrl: 'https://airport-data.com/aircraft/photo/001234567.html', licenceText: '© Max Muster · airport-data.com' },
-      { photographer: 'Erika Beispiel' },
-    ] });
-  });
-  it('no data falls back to r=<REG>; still nothing is Kein Foto', async () => {
-    const urls: string[] = [];
-    const r = await make(async (u, i) => { urls.push(u); return reply(200, fixture('airport-data-empty'))(u, i); }).lookup(Q);
-    expect(urls).toEqual(['https://airport-data.com/api/ac_thumb.json?m=3C6444&n=5', 'https://airport-data.com/api/ac_thumb.json?r=D-AIXA&n=5']);
-    expect(r).toEqual({ photos: [] });
-  });
-  it('404 is Kein Foto', async () => { expect(await make(reply(404, '')).lookup(Q)).toEqual({ photos: [] }); });
   failureContract(make);
 });
 

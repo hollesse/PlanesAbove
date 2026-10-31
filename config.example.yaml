@@ -46,7 +46,8 @@ sources:
   # Real photos of the aircraft (ADR 0029). The server only fetches JSON metadata and caches it in memory (never in SQLite, never image bytes);
   # the iPad loads the images straight from the source. Credit + link to the source page are always shown.
   photo:
-    order: [commons, airport-data, planespotters]   # first source's first photo leads the gallery; commons asks for 1600 px previews (sharpest), planespotters only offers 280 px. [] switches photos off. airport-data has no published terms (private household use, credit + link); drop it here to disable
+    order: [commons]           # primary chain, asked in order; the first source's first photo leads the gallery. commons asks for 1600 px previews (sharpest). [] switches the primary chain off
+    fallback: [planespotters]  # asked ONLY when no primary source delivered a photo (last resort; planespotters only offers 280 px, QR link-back required). [] switches the fallback off. A source must not be in both lists
     maxPhotos: 6               # gallery size after merging (dedup per source + id)
     timeoutMs: 5000
     cacheTtlHours: 24          # in-memory cache per hex, "no photo" included; max 24 (Planespotters terms)
