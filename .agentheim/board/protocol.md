@@ -5,6 +5,16 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:18 -- Modeling / Refined: airspace-gw6w9 - Fotoquelle (PhotoSource)
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** Betreiber-Entscheidungen eingearbeitet: Default-Kette planespotters → commons → airport-data (Airport-Data bewusst trotz fehlender Terms), iPad lädt Bilder direkt (kein Proxy/Rehosting), Cache nur im Speicher ≤ 24 h, maxPhotos 6, Stichprobe mit ~30 Kennzeichen aus dem Sichtungslog als Teil des Tasks; Endpunkte, Photo-Modell und Contract-Test-Fälle je Adapter konkretisiert; sources.userAgent braucht Kontakt.
+**ADRs written:** 0029
+
+---
+
 ## 2026-10-31 09:17 -- Modeling / Captured: sky-scene-jpjt2 - Sprachcache lesbar ablegen — Ordner je Adapter/Stimme/Kategorie, sprechender Dateiname mit Text-Hash-Suffix; Steckbrief wird nicht mehr als Datei gespeichert
 
 **Type:** Modeling / Capture

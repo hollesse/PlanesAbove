@@ -10,6 +10,7 @@ Catalog of ADRs, research, and concept synthesis pages scoped to this bounded co
 ## ADRs scoped to this BC
 
 <!-- adr-local:start -->
+- **0029** — Fotoquelle: Server reicht nur Foto-URLs und Attribution durch, das iPad lädt Bilder direkt (kein Proxy/Cache in SQLite); Default-Kette Planespotters → Commons → Airport-Data, hexdb nicht — 2026-10-31 — `../../decisions/0029-photo-source-device-loads-images-no-proxy.md`
 - **0026** — Flugzeugtyp je Hex: Korrekturtabelle > hexdb-Gegenprüfung (nur im Speicher, geteilter 429-Backoff) > Flugquelle; gespeichert nur type_source und eigene Typklasse; ergänzt ADR 0010/0016 — 2026-10-28 — `../../decisions/0026-aircraft-type-order-and-hexdb-memory-only.md`
 - **0023** — hexdb/VRS merge rule: both always asked (partner-first ahead of adsbdb); a VRS multi-leg route whose tail is the hexdb route wins without conflict, otherwise configured order wins and the conflict is recorded; amends ADR 0016 — 2026-10-28 — `../../decisions/0023-hexdb-vrs-merge-rule.md`
 - **0021** — Own airport table for a source-independent route display — 2026-10-27 — `../../decisions/0021-own-airport-table-uniform-route-display.md` — Eigene Flughafentabelle (ICAO zu Stadt + IATA): Routen heißen quellenunabhängig Stadt (IATA), Fallback Anbietername mit einmaliger Warnung, Seed aus VRS, kein Backfill.
