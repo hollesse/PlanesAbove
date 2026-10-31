@@ -93,7 +93,7 @@ export function renderPhotoOverlay(props: PhotoOverlayProps): HTMLElement {
       arrowNext.addEventListener('click', () => go(1));
       row.classList.add('pa-photo-row-gallery');
       row.append(arrowPrev);
-      meta.append(dots);
+      meta.insertBefore(dots, attribution); // Punkte vor der Attribution, damit eine lange Credit-Zeile sie nie verdeckt
       let startX: number | null = null;
       frame.addEventListener('touchstart', (e) => {
         startX = e.touches[0]?.clientX ?? null;
