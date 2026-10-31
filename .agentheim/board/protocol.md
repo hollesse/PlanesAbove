@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:54 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 22m (scoped run, design-system-g83gh)
+**Completed:** 1 (first-try PASS: 0, re-dispatched: 1, skipped: 0)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** design-system-g83gh: 2
+**Commits:** 3 (batch start, integration, this entry)
+**Vision-conformance:** none — QR-Link-back ist Lizenzpflicht (ADR 0029 Amendment) für den bereits geflaggten Foto-Overlay-Prototyp, keine neue Abweichung
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (1 task)
+**Carry-over:** .agentheim/.dashboard/: left behind (owner: dashboard, nicht ignoriertes Advisory-Artefakt); 2 stranded RESULT sidecars removed
+
+---
+
 ## 2026-10-31 09:54 -- Task verified and completed: design-system-g83gh - QR-Code als Link zurück zur Fotoseite im Foto-Overlay (Planespotters-Terms: URL als Text genügt nicht, QR-Code oder Anker Pflicht)
 
 **Type:** Work / Task completion
