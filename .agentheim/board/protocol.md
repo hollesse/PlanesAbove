@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 10:58 -- Batch started: [airspace-hejpw, airspace-tzw5t, sky-scene-jpjt2]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-hejpw - Airport-Data als Fotoquelle ausbauen; Planespotters nur noch als Fallback, wenn Wikimedia Commons gar kein Foto liefert, airspace-tzw5t - Korridor-Deckel (corridorMaxKm) aufweichen, wenn der Kurs zum Ziel passt und das Flugzeug weit vom Start ist (Querabstand klein gegen Strecke seit Start); TOM16Y Manchester–Heraklion wird plausibel, EWG16Y bleibt abgelehnt, sky-scene-jpjt2 - Sprachcache lesbar ablegen — Ordner je Adapter/Stimme/Kategorie, sprechender Dateiname mit Text-Hash-Suffix; Steckbrief wird nicht mehr als Datei gespeichert
+**Parallel:** yes (3 workers — infrastructure-rmzgt held to next wave: it reshapes src/server/config.ts and config.example.yaml, which airspace-hejpw and airspace-tzw5t also edit; merge airspace tasks first, then let rmzgt see the new keys)
+**Planning advisory:** whats-next (2026-10-31 09:50, stale — older than the 10:40 Work session end) recommends vision alignment for the photo overlay and sky-scene-xw8jv; not in todo, no influence on this batch
+
+---
+
 ## 2026-10-31 10:55 -- Modeling / Promoted: airspace-hejpw - Airport-Data als Fotoquelle ausbauen; Planespotters nur noch als Fallback, wenn Wikimedia Commons gar kein Foto liefert
 
 **Type:** Modeling / Promote

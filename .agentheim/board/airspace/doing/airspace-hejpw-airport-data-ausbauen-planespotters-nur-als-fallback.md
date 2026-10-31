@@ -1,7 +1,7 @@
 ---
 id: airspace-hejpw
 title: Airport-Data als Fotoquelle ausbauen; Planespotters nur noch als Fallback, wenn Wikimedia Commons gar kein Foto liefert
-status: todo
+status: doing
 type: feature
 context: airspace
 created: 2026-10-31

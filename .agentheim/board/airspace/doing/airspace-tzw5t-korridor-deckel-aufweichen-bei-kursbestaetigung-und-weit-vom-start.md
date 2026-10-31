@@ -1,7 +1,7 @@
 ---
 id: airspace-tzw5t
 title: Korridor-Deckel (corridorMaxKm) aufweichen, wenn der Kurs zum Ziel passt und das Flugzeug weit vom Start ist (Querabstand klein gegen Strecke seit Start); TOM16Y Manchester–Heraklion wird plausibel, EWG16Y bleibt abgelehnt
-status: todo
+status: doing
 type: feature
 context: airspace
 created: 2026-10-31

@@ -1,7 +1,7 @@
 ---
 id: sky-scene-jpjt2
 title: Sprachcache lesbar ablegen — Ordner je Adapter/Stimme/Kategorie, sprechender Dateiname mit Text-Hash-Suffix; Steckbrief wird nicht mehr als Datei gespeichert
-status: todo
+status: doing
 type: refactor
 context: sky-scene
 created: 2026-10-31
