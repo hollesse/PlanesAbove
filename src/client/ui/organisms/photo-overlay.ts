@@ -51,6 +51,7 @@ export function renderPhotoOverlay(props: PhotoOverlayProps): HTMLElement {
   const dots = h('div', { class: 'pa-photo-dots' });
   const meta = h('div', { class: 'pa-photo-meta' }, caption, attribution);
 
+  if (state !== 'single' && state !== 'gallery') frame.classList.add('pa-photo-frame-empty');
   if (state === 'loading') {
     frame.append(h('div', { class: 'pa-photo-status pa-photo-loading', text: LOADING_TEXT }));
   } else if (state === 'empty') {
