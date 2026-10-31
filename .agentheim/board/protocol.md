@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:46 -- Batch started: [design-system-g83gh]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-g83gh - QR-Code als Link zurück zur Fotoseite im Foto-Overlay (Planespotters-Terms: URL als Text genügt nicht, QR-Code oder Anker Pflicht)
+**Parallel:** scoped — builder named design-system-g83gh; no other ready tasks (sky-scene-xw8jv blocked on it)
+
+---
+
 ## 2026-10-31 09:44 -- Modeling / Refined: sky-scene-xw8jv - Abhängigkeit design-system-g83gh ergänzt
 
 **Type:** Modeling / Refine

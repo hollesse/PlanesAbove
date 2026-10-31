@@ -1,7 +1,7 @@
 ---
 id: design-system-g83gh
 title: QR-Code als Link zurück zur Fotoseite im Foto-Overlay (Planespotters-Terms: URL als Text genügt nicht, QR-Code oder Anker Pflicht)
-status: todo
+status: doing
 type: feature
 context: design-system
 created: 2026-10-31
