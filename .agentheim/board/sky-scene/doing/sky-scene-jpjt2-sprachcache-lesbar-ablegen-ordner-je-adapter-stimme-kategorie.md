@@ -57,3 +57,19 @@ Entscheidungen des Betreibers (2026-10-31): Hash-Suffix statt Versionsnummer; St
 - Zwei Routen mit gleichem gesprochenen Text (IST und SAW heißen beide „Istanbul“) ergeben zwei Dateien mit gleichem Inhalt. Bewusst in Kauf genommen, Codes sind eindeutiger und lesbarer.
 - Der `speech synthesized`-Logeintrag (parts/partsRendered) bleibt unverändert.
 - Betrifft im Wesentlichen `steckbrief.ts`, `audio-service.ts`, `sky-service.ts` und die Tests `tests/unit/narrator.test.ts`, `tests/unit/server/speech.contract.test.ts`.
+
+## Verifier note (iteration 1)
+
+REASONS:
+- Criterion "ein Flughafen ohne IATA nutzt den ICAO-Code (route/EDFE-EDDK-<6hex>.wav)" is not covered by a test that would fail without the fallback: the only test passes labels `Egelsbach (EDFE)` / `Köln (EDDK)`, and `codeOfLabel`'s regex matches the 4-letter codes in those labels, so the `routeCodes.icao` branch is never reached.
+- The fallback is unreachable in the running app: `airportLabel` (route-service.ts) gives an airport without IATA a label without brackets, `cityOfLabel` returns undefined, so no route block is built at all (existing test "label without IATA code gives no block", which criterion 1 says must stay green). sky-service.ts never fills `routeCodes`.
+- The task contradicts itself: criterion 1 (spoken blocks unchanged, no route block without IATA) and criterion 3 (airports without IATA filed under ICAO) cannot both hold end to end. Operator decision needed.
+- Everything else passes: npm test (694 passed) and typecheck green; path shapes, hash change, no stored composed file, fallback folder, lazy rename, slugified keys each covered by tests.
+
+SUGGESTED_FIX: Operator chooses: (a) drop the ICAO-fallback half of the criterion (routes without IATA are never spoken), or (b) allow route blocks for airports without IATA (changes spoken text and the "label without IATA gives no block" rule) — then pass Airport.iata/icao from RouteInfo through sky-service into routeCodes and test with a bracket-less label so the test fails if the icao branch is removed.
+
+ITERATION_HINT: task-under-specified
+
+## Salvage note
+
+Salvaged diff: `/Users/joshuatopfer/Documents/Projekte/Privat/PlanesAbove/.agentheim/salvage/sky-scene-jpjt2-escalated-iter1.patch` (apply with `git apply <patch>` against a scratch checkout, or open it directly to review). Salvaged bookkeeping blocks (README_DELTA, ADR 0028 amendment, OUTCOME): `/Users/joshuatopfer/Documents/Projekte/Privat/PlanesAbove/.agentheim/salvage/sky-scene-jpjt2-escalated-iter1.bookkeeping.md`. Worktree kept: `/Users/joshuatopfer/Documents/Projekte/Privat/PlanesAbove/.worktrees/sky-scene-jpjt2` (branch `aw/sky-scene-jpjt2`, one wip commit).
