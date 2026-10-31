@@ -1,7 +1,7 @@
 ---
 id: livery-editor-rv382
 title: Entscheidung: Editor als lokaler Vite-Dev-Server mit Schreib-Plugin unter tools/, nie im Client-Bundle oder Docker-Image
-status: doing
+status: done
 type: decision
 context: livery-editor
 created: 2026-10-31
@@ -9,7 +9,7 @@ completed:
 depends_on: [liveries-w35k0]
 blocks: []
 tags: [decision, foundation, editor-runtime]
-related_adrs: [0031]
+related_adrs: [0031, 0035]
 related_research: []
 prior_art: []
 ---
@@ -34,3 +34,7 @@ ADR schreiben (Vorschlag: 0033, scope livery-editor) nach dem Architekten-Entwur
 - Nichts wird ausgeliefert: Client-Build-Entry bleibt `main.ts`; `tools/` kommt in `.dockerignore`.
 - Verworfen: Node-Skript plus esbuild-Watch, Editor innerhalb von Storybook, File System Access API, paper.js.
 - Reale config.yaml anpassen: nein. Server-URL per Mac-Umgebungsvariable `PLANESABOVE_HOME_URL` oder git-ignorierte `tools/livery-editor/.env.local`.
+
+## Outcome
+
+ADR 0035 (provisorisch) formuliert: Der Lackierungs-Editor ist ein lokaler Vite-Dev-Server unter `tools/livery-editor/` (`npm run editor`, 127.0.0.1:5174). Importiert Format, Renderer und Assets aus `src/client/ui`; ein Vite-Schreib-Plugin ist der einzige Schreibweg (zod, Allow-List, Path-Traversal-Schutz, atomar, danach `build-assets`). Pfadgeometrie selbst geschrieben; `tools/` kommt in `.dockerignore`; Heimserver nur über `server.proxy` und `PLANESABOVE_HOME_URL` (oder `.env.local`). Reale config.yaml: keine Änderung. Keine Code-Änderung. Offene Punkte (Betreiber-Bestätigung, Allow-List-Verzeichnisse, tools/ in Typecheck/Tests, fester Port) stehen im Abschnitt "Offene Punkte" des ADR.

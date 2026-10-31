@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 12:03 -- Task completed (verification skipped): livery-editor-rv382 - Entscheidung: Editor als lokaler Vite-Dev-Server mit Schreib-Plugin unter tools/, nie im Client-Bundle oder Docker-Image
+
+**Type:** Work / Task completion
+**Task:** livery-editor-rv382 - Entscheidung: Editor als lokaler Vite-Dev-Server mit Schreib-Plugin unter tools/, nie im Client-Bundle oder Docker-Image
+**Summary:** ADR formuliert, der den Lackierungs-Editor als lokalen Vite-Dev-Server unter tools/livery-editor/ mit einem Schreib-Plugin als einzigem Schreibweg festlegt und sicherstellt, dass er nie ins Client-Bundle oder Docker-Image gelangt. Offene Punkte stehen gesondert für den Betreiber.
+**Duration:** 2m30s
+**Verification:** SKIPPED — decision-only task
+**Files changed:** 0
+
+---
+
 ## 2026-10-31 12:03 -- Task completed (verification skipped): liveries-ptm0c - Entscheidung: Einmaliger Import der CSS-Lackierungen, Pixelvergleich als Gate, Umstellung in einem Commit
 
 **Type:** Work / Task completion

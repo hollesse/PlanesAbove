@@ -10,6 +10,8 @@ Catalog of ADRs, research, and concept synthesis pages scoped to this bounded co
 ## ADRs scoped to this BC
 
 <!-- adr-local:start -->
+- **0035** — Lackierungs-Editor als lokaler Vite-Dev-Server mit Schreib-Plugin unter tools/, nie im Client-Bundle oder Docker-Image — 2026-10-31 — `../../decisions/0035-editor-als-lokaler-vite-dev-server-mit-schreib-plugin-unter-tools.md`
+- **0037** — Lackierungs-Editor als lokaler Vite-Dev-Server mit Schreib-Plugin unter tools/, nie im Client-Bundle oder Docker-Image — 2026-10-31 — `../../decisions/0037-editor-als-lokaler-vite-dev-server-mit-schreib-plugin-unter-tools.md`
 <!-- adr-local:end -->
 
 ## Research touching this BC

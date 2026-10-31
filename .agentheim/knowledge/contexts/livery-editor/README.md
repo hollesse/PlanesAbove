@@ -25,6 +25,8 @@ supporting — Werkzeug für die Illustrationsarbeit; die Himmelsszene braucht n
 - **Öffnen** — eine gespeicherte Lackierung wieder bearbeiten; nichts ist je fertig.
 - **Speichern** — schreibt die Lackierungsdatei ins Repo; der Commit ist Papas Sache.
 - **Import** — einmalige Übersetzung der heutigen CSS-Lackierungen in Ebenen (jede gefärbte Fläche eine Ebene) bei der Umstellung.
+- **Schreib-Plugin** — das Vite-Plugin des Editors und sein einziger Schreibweg ins Repo: validiert die Lackierungsdatei mit zod, schreibt nur in Zielverzeichnisse der Allow-List, schützt gegen Path-Traversal, schreibt atomar und stößt danach `build-assets` an (ADR 0035).
+- **Allow-List** — die feste Liste der Zielverzeichnisse im Repo, in die das Schreib-Plugin überhaupt schreiben darf; alles andere wird abgewiesen.
 
 ## Aggregates
 _Noch nicht modelliert._
