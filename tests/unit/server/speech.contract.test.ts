@@ -7,7 +7,7 @@ import { PiperSpeechSynthesizer } from '../../../src/server/modules/sky-scene/pi
 import { FakeSpeechSynthesizer } from '../../../src/server/modules/sky-scene/fake-speech';
 import { AudioService } from '../../../src/server/modules/sky-scene/audio-service';
 import { SpeechError } from '../../../src/server/modules/sky-scene/speech';
-import { makeSilentWav, pcmToWav, wavDurationMs } from '../../../src/server/modules/sky-scene/wav';
+import { concatWav, makeSilentWav, pcmToWav, wavDurationMs } from '../../../src/server/modules/sky-scene/wav';
 import { silentLogger } from '../../../src/server/logger';
 import { ElevenLabsSpeechSynthesizer } from '../../../src/server/modules/sky-scene/elevenlabs-speech';
 import { SpeechUsage } from '../../../src/server/modules/sky-scene/speech-usage';
@@ -89,7 +89,7 @@ describe('AudioService', () => {
     const log = { ...silentLogger, info: (msg: string, f?: Record<string, unknown>) => { lines.push({ msg, f }); } };
     const svc = new AudioService(new FakeSpeechSynthesizer(() => ({ durationMs: 700 })), { voice: 'v', render: 'lazy', log });
     await svc.get(svc.register('Hallo').audioUrl.replace('/audio/', '').replace('.wav', ''));
-    expect(lines).toEqual([{ msg: 'speech synthesized', f: { source: 'tts', adapter: 'fake', voice: 'v', durationMs: 700 } }]);
+    expect(lines).toEqual([{ msg: 'speech synthesized', f: { source: 'tts', adapter: 'fake', voice: 'v', durationMs: 700, parts: 1, partsRendered: 1 } }]);
   });
   it('eager mode starts rendering at registration', async () => {
     const c = counting();
@@ -291,5 +291,95 @@ describe('buildSpeechSetup (ELEVENLABS_API_KEY from env only)', () => {
     const setup = buildSpeechSetup({ ...base, config: parseConfig(MIN), env: {}, log: silentLogger });
     expect(setup).toMatchObject({ synth: { name: 'piper' }, voice: 'de_DE-thorsten-medium' });
     expect(setup.fallback).toBeUndefined(); expect(setup.budget).toBeUndefined();
+  });
+});
+
+describe('Steckbrief sentence blocks in AudioService (sky-scene-b7w2n)', () => {
+  const dir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'pa-parts-'));
+  const keyOf = (url: string) => url.replace('/audio/', '').replace('.wav', '');
+  const spy = (name: string, rate = 22050, failOn?: (t: string) => 'quota-exceeded' | undefined) => {
+    const texts: string[] = [];
+    return { name, texts, synthesize: async (t: string) => {
+      texts.push(t);
+      const f = failOn?.(t); if (f) throw new SpeechError(f);
+      return { audio: pcmToWav(new Uint8Array(rate * 2), rate), mimeType: 'audio/wav', durationMs: 500 };
+    } } as import('../../../src/server/modules/sky-scene/speech').SpeechSynthesizer & { texts: string[] };
+  };
+  const mk = (primary = spy('elevenlabs'), withFallback = true) => {
+    const cacheDir = dir(); const fallback = spy('piper', 22050);
+    const usage = new SpeechUsage(openDatabase(':memory:'), new FakeClock(Date.parse('2026-10-15T10:00:00Z')));
+    const lines: Array<{ msg: string; f?: Record<string, unknown> }> = [];
+    const log = { ...silentLogger, info: (msg: string, f?: Record<string, unknown>) => { lines.push({ msg, f }); } } as typeof silentLogger;
+    const svc = new AudioService(primary, { voice: 'EV', render: 'lazy', cacheDir, log, partGapMs: 250, ...(withFallback ? { fallback: { synth: fallback, voice: 'PV' }, budget: { usage, monthlyCharacterBudget: 9000 } } : {}) });
+    return { svc, primary, fallback, usage, cacheDir, lines };
+  };
+  const A = 'Das ist ein Airbus A dreihundertzwanzig der Lufthansa.';
+  const h1 = 'Das Flugzeug fliegt in siebentausend Metern Höhe.'; const h2 = 'Das Flugzeug fliegt in siebentausendfünfhundert Metern Höhe.';
+
+  it('second plane with same airline/type but other altitude renders only the altitude block (partsRendered=1, budget by that block)', async () => {
+    const { svc, primary, usage, lines } = mk();
+    await svc.get(keyOf(svc.register([A, h1]).audioUrl));
+    expect(primary.texts).toEqual([A, h1]);
+    expect(usage.characters()).toBe(A.length + h1.length);
+    const bytes = await svc.get(keyOf(svc.register([A, h2]).audioUrl));
+    expect(primary.texts).toEqual([A, h1, h2]);
+    expect(usage.characters()).toBe(A.length + h1.length + h2.length);
+    const last = lines.filter((l) => l.msg === 'speech synthesized').slice(-1)[0]!.f!;
+    expect(last).toMatchObject({ parts: 2, partsRendered: 1 });
+    expect(wavDurationMs(bytes!)).toBe(2000 + 250); // two 1 s clips + gap
+  });
+  it('same blocks again: same URL, nothing rendered, partsRendered=0 on a fresh composition elsewhere', async () => {
+    const { svc, primary } = mk();
+    const u1 = svc.register([A, h1]).audioUrl; await svc.get(keyOf(u1));
+    const u2 = svc.register([A, h1]).audioUrl; expect(u2).toBe(u1);
+    await svc.get(keyOf(u2)); expect(primary.texts).toHaveLength(2);
+  });
+  it('composed file is rebuilt from cached blocks with partsRendered=0 when only the composed file is missing', async () => {
+    const { svc, primary, lines, cacheDir } = mk();
+    const u = svc.register([A, h1]).audioUrl; await svc.get(keyOf(u));
+    fs.rmSync(path.join(cacheDir, `${keyOf(u)}.wav`)); // composed file gone, blocks stay
+    await svc.get(keyOf(u));
+    expect(primary.texts).toHaveLength(2);
+    expect(lines.filter((l) => l.msg === 'speech synthesized').slice(-1)[0]!.f).toMatchObject({ parts: 2, partsRendered: 0 });
+  });
+  it('quota-exceeded on block 2: whole Steckbrief from the fallback, no mixing, file under the fallback composed key', async () => {
+    const { svc, primary, fallback, cacheDir } = mk(spy('elevenlabs', 22050, (t) => (t === h1 ? 'quota-exceeded' : undefined)));
+    const key = keyOf(svc.register([A, h1]).audioUrl);
+    const bytes = await svc.get(key);
+    expect(bytes).toBeDefined();
+    expect(primary.texts).toEqual([A, h1]);
+    expect(fallback.texts).toEqual([A, h1]); // both blocks from the fallback
+    expect(wavDurationMs(bytes!)).toBe(2250);
+    expect(fs.existsSync(path.join(cacheDir, `${key}.wav`))).toBe(false); // primary composed key stays empty
+    // the fallback composed file exists under the key an AudioService with the fallback as adapter/voice computes
+    const fbKey = new AudioService(fallback, { voice: 'PV', render: 'lazy', cacheDir, log: silentLogger, partGapMs: 250 }).composedKeyFor([A, h1]);
+    expect(fbKey).not.toBe(key);
+    expect(fs.existsSync(path.join(cacheDir, `${fbKey}.wav`))).toBe(true);
+    // AudioService.get returning WAV bytes under the primary key is exactly the /audio/<key>.wav route's 200 condition (app.ts writeHead(200))
+    expect(Buffer.from(bytes!.subarray(0, 4)).toString()).toBe('RIFF');
+  });
+  it('differing sample rates between blocks: the whole Steckbrief comes from the fallback', async () => {
+    let n = 0;
+    const odd = { name: 'elevenlabs', synthesize: async () => { const rate = n++ === 0 ? 22050 : 24000; return { audio: pcmToWav(new Uint8Array(rate * 2), rate), mimeType: 'audio/wav', durationMs: 1 }; } } as import('../../../src/server/modules/sky-scene/speech').SpeechSynthesizer;
+    const { svc, fallback } = mk(odd as never);
+    expect(await svc.get(keyOf(svc.register([A, h1]).audioUrl))).toBeDefined();
+    expect(fallback.texts).toEqual([A, h1]);
+  });
+  it('budget counts only blocks that still have to be rendered; too few credits left for them goes to the fallback', async () => {
+    const { svc, primary, fallback, usage } = mk();
+    usage.add(9000 - A.length - 5);
+    await svc.get(keyOf(svc.register([A, h1]).audioUrl)); // A fits, h1 does not: whole steckbrief from fallback, primary untouched
+    expect(primary.texts).toEqual([]); expect(fallback.texts).toEqual([A, h1]);
+  });
+});
+
+describe('concatWav', () => {
+  it('joins two 22050 Hz mono clips with 250 ms of silence: duration = sum + 250', () => {
+    const a = pcmToWav(new Uint8Array(22050 * 2), 22050); const b = pcmToWav(new Uint8Array(11025 * 2), 22050);
+    const out = concatWav([a, b], 250);
+    expect(Math.abs(wavDurationMs(out)! - (wavDurationMs(a)! + wavDurationMs(b)! + 250))).toBeLessThanOrEqual(1);
+  });
+  it('throws on differing sample rates', () => {
+    expect(() => concatWav([pcmToWav(new Uint8Array(4), 22050), pcmToWav(new Uint8Array(4), 24000)], 250)).toThrow(/differ/);
   });
 });

@@ -120,7 +120,7 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   }
   const noRoutes: RouteSource = { name: 'none', lookup: async () => null };
   const routes = new RouteService(config.sources.route.enabled ? routeSources : [noRoutes], clock, { ttlMs: config.sources.route.cacheTtlHours * 3_600_000, negativeTtlMs: config.sources.route.negativeTtlMinutes * 60_000, compareAll: config.sources.route.compareAll, airports: defaultTables().airports, plausibility: config.sources.route.plausibility, log });
-  const audio = new AudioService(setup.synth, { voice: setup.voice, fallback: setup.fallback, budget: setup.budget, render: mock ? 'lazy' : config.speech.render, cacheDir: path.join(config.dataDir, 'audio'), log });
+  const audio = new AudioService(setup.synth, { voice: setup.voice, fallback: setup.fallback, budget: setup.budget, render: mock ? 'lazy' : config.speech.render, partGapMs: config.speech.partGapMs, cacheDir: path.join(config.dataDir, 'audio'), log });
   const tables = defaultTables();
   // hexdb type cross-check: off in mock mode (no network) and when disabled; the override table always applies.
   const hx = config.sources.aircraftType.hexdb;

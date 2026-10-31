@@ -1,7 +1,7 @@
 ---
 id: sky-scene-b7w2n
 title: Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline
-status: doing
+status: done
 type: feature
 context: sky-scene
 created: 2026-10-31
@@ -9,7 +9,7 @@ completed:
 depends_on: [sky-scene-k3f8d]
 blocks: []
 tags: [speech, steckbrief, cache, elevenlabs, budget]
-related_adrs: [0012, 0027]
+related_adrs: [0012, 0027, 0028]
 related_research: [free-flight-weather-tts-apis-2026-10-26]
 prior_art: [sky-scene-t6h2p, sky-scene-k3f8d, sky-scene-xczgm]
 ---
@@ -58,3 +58,18 @@ Betreiber-Entscheidung 31.10.2026: Der Steckbrief wird aus festen **Satzbaustein
 - Alte Cache-Dateien des Volltext-Steckbriefs bleiben liegen (anderer Key) und verfallen über das bestehende Alter-Pruning.
 - Betreiber-Entscheidungen 31.10.2026: Höhe auf 500 m im Satz „Das Flugzeug fliegt in … Metern Höhe.“; danach optional die Flugphase „Es befindet sich gerade im Sinkflug/Steigflug.“; Route nur Start→Ziel; ohne Typ „Das ist ein Flugzeug der <Airline>.“
 - Die Flugphase steht im Modell bereits bereit (`FlightPhase` und `verticalRateMs` in `src/server/modules/airspace/model.ts`); `SkyService.identify`/`composeSpeechParts` muss sie nur durchreichen.
+
+## Verifier note (iteration 1)
+REASONS:
+- Criterion "quota-exceeded at block 2 → whole Steckbrief from fallback, file under the fallback composed key, HTTP 200" is only partly asserted: the test checks no-mixing and that NO file sits under the primary composed key, but never asserts that a file DOES exist under the fallback composed key. "HTTP-Route antwortet 200" is only approximated by `expect(bytes).toBeDefined()`; nothing drives `/audio/<key>.wav`.
+- Everything else passes: 597 tests, typecheck clean, all other criteria map to real assertions, README_DELTA expected strings match verbatim, ADR 0028 well-formed, no .agentheim paths.
+SUGGESTED_FIX: Extend the quota-exceeded test to compute the fallback composed key (via the exposed helper or the same hash) and assert `${key}.wav` exists in cacheDir. Then either fetch `/audio/<primaryKey>.wav` through the service route and expect status 200, or state explicitly in the test name and OUTCOME that get() returning bytes is the route's 200 condition.
+ITERATION_HINT: likely-fixable
+
+## Outcome
+
+The Steckbrief is now composed from sentence blocks. `composeSpeechParts(facts, phaseMinRateMs)` in `steckbrief.ts` replaces `composeSpeech` (removed): type+airline, route first→last city (label without IATA code; legs without a code are skipped), altitude (500 m / 100 m under 1000 m), flight phase. The callsign is never spoken. `SkyService` passes `verticalRateMs` and `info.legs` and uses `config.sources.route.plausibility.phaseMinRateMs` (default 5 m/s) for the spoken phase; `speech.text` in the state is the blocks joined with a space.
+
+`AudioService.register` accepts a string (one block) or a block list. Blocks are cached per (adapter, voice, text), composed audio per composed key (`composedKeyFor`; equals `keyFor(text)` for one block). `wav.ts` gains `concatWav(parts, gapMs)` (throws `WavFormatError` on differing format/rate; the AudioService then logs warn and delivers the whole Steckbrief from the fallback). No mixing of primary and fallback blocks; the budget pre-check sums the uncached blocks, charging stays per delivered block. `speech synthesized` logs `parts` and `partsRendered`. New config `speech.partGapMs` (default 250), documented in `config.example.yaml` and the root README. The quota-exceeded-on-block-2 test additionally asserts that the composed fallback file exists in cacheDir under the fallback composed key (computed via `composedKeyFor` of an AudioService built on the fallback adapter/voice) and that `AudioService.get` returns RIFF/WAV bytes under the primary key, which is exactly the `/audio/<key>.wav` route's 200 condition (app.ts:157-161); the route itself is not booted. Tests: steckbrief, concatWav, AudioService block cache/no-mixing/stable key/budget, config (npm test: 597 passed, typecheck clean).
+
+Note: the display phase (`climbOrDescent` in `sky-service.ts`) still uses +/-2.5 m/s, the spoken block uses 5 m/s (`phaseMinRateMs`); I did not change the display rule, so a plane at 3 m/s shows climb but speaks no phase. E2E suite (`npm run e2e`) was not run (needs a Storybook build); no e2e/client file references the spoken text. The [human-eye] criterion (flow on the iPad) is open for the operator. Old full-text cache files remain until the existing age pruning.

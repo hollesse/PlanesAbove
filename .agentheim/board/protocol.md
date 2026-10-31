@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 08:41 -- Task verified and completed: sky-scene-b7w2n - Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline
+
+**Type:** Work / Task completion
+**Task:** sky-scene-b7w2n - Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline
+**Summary:** Steckbrief aus festen Satzbausteinen (Typ+Airline, Route Start→Ziel, Höhe auf 500 m, Flugphase ab 5 m/s), je Baustein gerendert und gecacht, als PCM mit 250 ms Lücke unter stabilem Key zusammengesetzt; Rufzeichen nie gesprochen, Primär- und Fallback-Bausteine nie gemischt.
+**Duration:** 52m
+**Verification:** PASS (iteration 2)
+**Files changed:** 11
+**Tests added:** 13
+**ADRs written:** 0028
+
+---
+
+## 2026-10-31 08:38 -- Verification failed: sky-scene-b7w2n - Steckbrief aus Satzbausteinen mit Baustein-Cache
+
+**Type:** Work / Verification failure
+**Task:** sky-scene-b7w2n - Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline
+**Iteration:** 1 of 3
+**Reasons:** quota-exceeded/no-mixing test does not assert the fallback composed-key file exists nor the HTTP 200 of /audio/<key>.wav
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-10-31 08:32 -- Modeling / Captured: airspace-tzw5t - Korridor-Deckel (corridorMaxKm) aufweichen, wenn der Kurs zum Ziel passt und das Flugzeug weit vom Start ist (Querabstand klein gegen Strecke seit Start); TOM16Y Manchester–Heraklion wird plausibel, EWG16Y bleibt abgelehnt
 
 **Type:** Modeling / Capture

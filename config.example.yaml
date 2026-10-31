@@ -98,6 +98,7 @@ speech:
   endpoint: http://tts:5000      # piper base URL; the adapter POSTs to <endpoint>/synthesize
   render: eager                  # eager | lazy; default: lazy for elevenlabs (every render costs credits), eager otherwise
   timeoutMs: 15000
+  partGapMs: 250                 # silence between the sentence blocks of one Steckbrief (each block is rendered and cached on its own)
   # Only for adapter: elevenlabs. Used when the monthly budget is spent, the quota is exceeded, ElevenLabs is unreachable or the key is missing.
   # fallback: piper              # piper | fake (elevenlabs is not allowed here)
   # fallbackVoice: de_DE-thorsten-medium

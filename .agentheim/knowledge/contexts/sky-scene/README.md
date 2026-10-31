@@ -13,14 +13,14 @@ core — hier entsteht das Erlebnis, um das es geht.
 ## Ubiquitous language
 - **Himmelsszene** — Himmel + bis zu zwei Flugzeuge + Info-Leiste, wie sie gerade angezeigt wird.
 - **Übergang** — animierter Wechsel: Flugzeug kommt / geht / wechselt, Wetter wechselt, Tageszeit wechselt.
-- **Steckbrief** — sachliche deutsche Ansage zu einem Flugzeug (Airline, Route mit Ländern, Höhe, Geschwindigkeit, Typ + Kategorie, ggf. Besonderheit der Typklasse).
+- **Steckbrief** — deutsche Ansage zu einem Flugzeug, aus festen Satzbausteinen zusammengesetzt (Typ+Airline, Route Start→Ziel nur mit Stadtnamen, Höhe auf 500 m gerundet (unter 1000 m auf 100 m), optional Flugphase Steig-/Sinkflug ab 5 m/s). Das Rufzeichen wird nie vorgelesen; ohne Airline heißt es „Das ist ein <Typ>.“ bzw. „Das ist ein Flugzeug.“. Unbekannte Teile entfallen als ganzer Baustein.
 - **Vorlesen** — Ausgabe des Steckbriefs per Sprachausgabe nach Tippen.
 - **Vorlese-Sperre** — solange vorgelesen wird, übernimmt die Szene keine neue Auswahl.
 - **Info-Leiste** — Textzeile(n) für Erwachsene unten im Bild; eine oder zwei Zeilen mit Nummern-Plakette.
 - **Zuletzt** — Hinweis im leeren Himmel auf das zuletzt gesehene Flugzeug („vor N Min“).
 - **SpeechSynthesizer** — serverseitiger Port: Text + Stimme rein, Audio (mp3/wav) + Dauer raus. Adapter `piper` (Standard, lokal, kostenlos) und `elevenlabs` (optional, Schlüssel per Umgebungsvariable); Auswahl allein per `config.yaml` (ADR 0012).
 - **Narrator** — clientseitiger Abspieler für das Vorlesen: spielt per `<audio>` eine Audio-URL des Servers nach Tippen und meldet das Ende (`ended`) an die Vorlese-Sperre; `speechSynthesis` ist nur ein optionaler Notfall-Adapter (ADR 0012).
-- **Sprachcache** — Audio-Cache des Servers, Schlüssel (Adapter, Stimme, Text); Wechsel des Adapters spielt nie veraltetes Audio ab.
+- **Sprachcache** — Audio-Cache des Servers. Baustein-Key (Adapter, Stimme, Bausteintext) je Satzbaustein; zusammengesetzter Key (Adapter, Stimme, Hash der Bausteintexte) für das gefügte Steckbrief-Audio, unter dem `/audio/<key>.wav` ausgeliefert wird. Bausteine von Primäradapter und Fallback werden nie gemischt: fehlt ein Baustein beim Primäradapter, kommt der ganze Steckbrief vom Fallback (unter dessen Key). Wechsel des Adapters spielt nie veraltetes Audio ab.
 - **Narrator** / **Vorlese-Sperre (Umsetzung)** — der Client spielt die Audio-URL nach Tippen per `<audio>`; die Sperre beginnt beim Abspielen, endet bei `ended` oder per Watchdog (auch bei `error`/`stalled`), eine neuere Auswahl wird bis dahin gepuffert (infrastructure-001, ADR 0012).
 - **Veraltete Szene (stale)** — serverseitig berechnet, nicht pro Fehlschlag gesetzt: die Szene gilt als veraltet (Kopfzeile "Letzter Stand"), wenn der letzte erfolgreiche Abruf der Flugquelle aelter ist als flightMaxAge (`health.flightMaxAgeSeconds`, Default 3 Takte = 90 s; dieselbe Schwelle wie /healthz-degraded). Die Clientregel (`client.staleAfterMinutes`, 5 min) bleibt separat.
 - **Slot** — eine der zwei stabilen Positionen der Szene (Slot 1, Slot 2); die Slot-Nummer ist die Identität in der Szene und die Spalte `slot` im Sichtungslog. Ein freigewordener Slot wird neu besetzt, belegte Slots tauschen nie die Position (ADR 0017).

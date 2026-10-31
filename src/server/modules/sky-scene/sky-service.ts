@@ -12,7 +12,7 @@ import { resolveAirline, resolveLivery, resolveTypeClass, type Tables } from '..
 import type { SightingRepository } from '../sighting-log/repository';
 import type { AudioService } from './audio-service';
 import { assignSlots, emptySlots, type Slots } from './slots';
-import { composeSpeech } from './steckbrief';
+import { composeSpeechParts } from './steckbrief';
 
 export interface FlightHealth { lastSuccessAt: number | null; lastTickAt: number | null; consecutiveFailures: number; lastErrorClass: string | null }
 
@@ -97,7 +97,8 @@ export class SkyService {
     const route = !info ? null : info.legs.length > 2 ? `${info.legs[0]} → ${info.legs[info.legs.length - 1]}` : info.text;
     const { tc, airline, livery } = this.identify(a);
     const altitudeM = a.altitudeM ?? 0;
-    const text = composeSpeech({ airlineName: airline?.name, callsign: a.callsign, typeName: tc.typeName, altitudeM: a.altitudeM });
+    const parts = composeSpeechParts({ airlineName: airline?.name, typeName: tc.typeName, altitudeM: a.altitudeM, verticalRateMs: a.verticalRateMs, routeLegs: info?.legs }, this.d.config.sources.route.plausibility.phaseMinRateMs);
+    const text = parts.join(' ');
     return {
       icao24: a.icao24,
       plane: { type: tc.typklasse, livery: livery.liveryId },
@@ -112,7 +113,7 @@ export class SkyService {
         speedKmh: a.speedKmh ?? 0,
         phase: climbOrDescent(a.verticalRateMs),
       },
-      speech: { text, ...this.d.audio.register(text) },
+      speech: { text, ...this.d.audio.register(parts) },
     };
   }
 

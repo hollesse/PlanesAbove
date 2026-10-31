@@ -86,3 +86,11 @@ describe('speech config (sky-scene-t6h2p)', () => {
     expect(() => parseConfig(MIN + 'speech: { adapter: espeak }\n')).toThrow(/speech\.adapter/);
   });
 });
+
+describe('speech.partGapMs (sky-scene-b7w2n)', () => {
+  it('defaults to 250 ms and is configurable', () => {
+    expect(parseConfig(MIN + 'speech: { adapter: piper }\n').speech.partGapMs).toBe(250);
+    expect(parseConfig(MIN).speech.partGapMs).toBe(250);
+    expect(parseConfig(MIN + 'speech: { adapter: piper, partGapMs: 400 }\n').speech.partGapMs).toBe(400);
+  });
+});
