@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 08:22 -- Modeling / Captured: sky-scene-b7w2n - Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline
+
+**Type:** Modeling / Capture
+**BC:** sky-scene
+**Filed to:** todo
+**Summary:** Steckbrief als Satzbausteine (Typ+Airline, Route Start→Ziel, Höhe auf 500 m) mit Baustein-Cache und serverseitigem Zusammensetzen; kein Rufzeichen ohne Airline. Grund: 70 Credits je Steckbrief im ElevenLabs Free-Plan. Direkt nach todo.
+
+---
+
 ## 2026-10-30 20:01 -- Work session ended
 
 **Type:** Work / Session end
