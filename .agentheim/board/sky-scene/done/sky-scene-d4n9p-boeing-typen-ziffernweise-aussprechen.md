@@ -1,7 +1,7 @@
 ---
 id: sky-scene-d4n9p
 title: Boeing-Typen ziffernweise aussprechen („Boeing sieben vier sieben“), Airbus bleibt als Zahl („A dreihundertzwanzig“)
-status: doing
+status: done
 type: bug
 context: sky-scene
 created: 2026-10-31
@@ -31,3 +31,7 @@ Die Texte der Typ+Airline-Bausteine ändern sich dadurch für Boeing-Typen; alte
 ## Notes
 - Betreiber-Entscheidung 31.10.2026: nur Boeing ziffernweise, und nur die Modellnummer; die Variante nach dem Bindestrich als Zahl (747-10 → „sieben vier sieben zehn“). Airbus als Zahl.
 - Artikel: „die Boeing“, „der Airbus“. Falls der Baustein heute immer „Das ist ein …“ sagt, ist „Das ist eine Boeing …“ die korrekte Form; der Worker entscheidet per kleiner Tabelle (Airbus → ein, Boeing → eine, Default → ein) und dokumentiert es im Outcome.
+
+## Outcome
+
+`spokenType` in `src/server/modules/sky-scene/steckbrief.ts` speaks the 3-digit Boeing series digit by digit and the variant after the dash as number word; `composeSpeechParts` uses "eine" for Boeing, "ein" otherwise. Tests in `tests/unit/server/steckbrief.test.ts` (old 737-800 expectation updated). npm test and typecheck green.

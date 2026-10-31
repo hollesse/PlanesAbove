@@ -19,6 +19,13 @@ export function spokenCallsign(callsign: string): string {
 
 /** "Airbus A320neo" -> "Airbus A dreihundertzwanzig Neo". */
 export function spokenType(name: string): string {
+  // Boeing model series is spoken digit by digit ("Boeing sieben vier sieben"); the variant after the dash stays a number word.
+  const boeing = /^(\s*Boeing\s+)(\d{3})(?!\d)(.*)$/i.exec(name);
+  if (boeing) {
+    const series = [...boeing[2]].map((c) => ONES[Number(c)]).join(' ');
+    const rest = spokenType(boeing[3].replace(/^-/, ' ')).trim();
+    return `Boeing ${series}${rest ? ` ${rest}` : ''}`;
+  }
   return name
     .replace(/([A-Za-z])(?=\d)/g, '$1 ')
     .replace(/(\d+)([A-Za-z]+)/g, '$1 $2')
@@ -55,7 +62,7 @@ export function cityOfLabel(label: string): string | undefined {
 export function composeSpeechParts(f: SpeechFacts, phaseMinRateMs = 5): SpeechPart[] {
   const parts: SpeechPart[] = [];
   const type = f.typeName ? spokenType(f.typeName) : '';
-  if (type) parts.push(`Das ist ein ${type}${f.airlineName ? ` der ${f.airlineName}` : ''}.`);
+  if (type) parts.push(`Das ist ${/^Boeing\b/.test(type) ? 'eine' : 'ein'} ${type}${f.airlineName ? ` der ${f.airlineName}` : ''}.`);
   else parts.push(`Das ist ein Flugzeug${f.airlineName ? ` der ${f.airlineName}` : ''}.`);
   if (f.routeLegs && f.routeLegs.length >= 2) {
     const from = cityOfLabel(f.routeLegs[0]); const to = cityOfLabel(f.routeLegs[f.routeLegs.length - 1]);

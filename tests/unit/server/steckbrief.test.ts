@@ -16,7 +16,23 @@ describe('pronunciation dictionary', () => {
   it('speaks aircraft types with number words ("A380" -> "A dreihundertachtzig")', () => {
     expect(spokenType('Airbus A380')).toBe('Airbus A dreihundertachtzig');
     expect(spokenType('Airbus A320neo')).toBe('Airbus A dreihundertzwanzig Neo');
-    expect(spokenType('Boeing 737-800')).toBe('Boeing siebenhundertsiebenunddreißig achthundert');
+    expect(spokenType('Boeing 737-800')).toBe('Boeing sieben drei sieben achthundert');
+  });
+});
+
+describe('Boeing digit-wise pronunciation (sky-scene-d4n9p)', () => {
+  it.each([
+    ['Boeing 747', 'Boeing sieben vier sieben'],
+    ['Boeing 747-10', 'Boeing sieben vier sieben zehn'],
+    ['Boeing 747-400', 'Boeing sieben vier sieben vierhundert'],
+    ['Boeing 737-800', 'Boeing sieben drei sieben achthundert'],
+    ['Boeing 787-9', 'Boeing sieben acht sieben neun'],
+    ['Boeing 737 MAX 8', 'Boeing sieben drei sieben Max acht'],
+    ['Airbus A320neo', 'Airbus A dreihundertzwanzig Neo'],
+  ])('%s', (n, e) => expect(spokenType(n)).toBe(e));
+  it('article: eine Boeing, ein Airbus', () => {
+    expect(composeSpeechParts({ typeName: 'Boeing 747-400' })[0]).toBe('Das ist eine Boeing sieben vier sieben vierhundert.');
+    expect(composeSpeechParts({ typeName: 'Airbus A320' })[0]).toMatch(/^Das ist ein Airbus/);
   });
 });
 

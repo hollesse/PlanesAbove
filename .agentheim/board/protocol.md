@@ -5,6 +5,20 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 08:55 -- Task verified and completed: sky-scene-d4n9p - Boeing-Typen ziffernweise aussprechen („Boeing sieben vier sieben“), Airbus bleibt als Zahl („A dreihundertzwanzig“)
+
+**Type:** Work / Task completion
+**Task:** sky-scene-d4n9p - Boeing-Typen ziffernweise aussprechen („Boeing sieben vier sieben“), Airbus bleibt als Zahl („A dreihundertzwanzig“)
+**Summary:** Boeing-Baureihe wird ziffernweise gesprochen (Boeing sieben vier sieben vierhundert), Airbus und andere unverändert; Artikel eine Boeing / ein Airbus.
+**Duration:** 9m
+**Verification:** PASS (iteration 1)
+**Result source:** sidecar · layout both+sentinel · sidecar present
+**Files changed:** 2
+**Tests added:** 8
+**ADRs written:** none
+
+---
+
 ## 2026-10-31 08:53 -- Batch started: [sky-scene-d4n9p]
 
 **Type:** Work / Batch start
