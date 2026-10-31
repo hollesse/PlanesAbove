@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:56 -- Batch started: [sky-scene-xw8jv]
+
+**Type:** Work / Batch start
+**Tasks:** sky-scene-xw8jv - Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp)
+**Parallel:** scoped — builder named sky-scene-xw8jv; no other ready tasks
+
+---
+
 ## 2026-10-31 09:56 -- Modeling / Promoted: sky-scene-xw8jv - Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp)
 
 **Type:** Modeling / Promote

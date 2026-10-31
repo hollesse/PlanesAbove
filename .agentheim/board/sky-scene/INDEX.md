@@ -11,19 +11,19 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 2
-- **Doing:** 0
+- **Todo:** 1
+- **Doing:** 1
 - **Done:** 8
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **sky-scene-xw8jv** — Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp) (feature) — `todo/sky-scene-xw8jv-nummern-plakette-tippen-oeffnet-foto-overlay-des-flugzeugs.md`
 - **sky-scene-jpjt2** — Sprachcache lesbar ablegen — Ordner je Adapter/Stimme/Kategorie, sprechender Dateiname mit Text-Hash-Suffix; Steckbrief wird nicht mehr als Datei gespeichert (refactor) — `todo/sky-scene-jpjt2-sprachcache-lesbar-ablegen-ordner-je-adapter-stimme-kategorie.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **sky-scene-xw8jv** — Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp) (feature) — `doing/sky-scene-xw8jv-nummern-plakette-tippen-oeffnet-foto-overlay-des-flugzeugs.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

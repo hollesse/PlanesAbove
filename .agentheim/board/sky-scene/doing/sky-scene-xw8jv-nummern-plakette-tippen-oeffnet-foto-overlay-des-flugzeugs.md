@@ -1,7 +1,7 @@
 ---
 id: sky-scene-xw8jv
 title: Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp)
-status: todo
+status: doing
 type: feature
 context: sky-scene
 created: 2026-10-31
