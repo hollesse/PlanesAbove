@@ -143,3 +143,29 @@ describe('Foto-Overlay: Rahmen folgt dem Bild', () => {
     expect(css).not.toMatch(/\.pa-photo-frame \{[^}]*aspect-ratio: 4 \/ 3/);
   });
 });
+
+describe('Foto-Overlay: Pfeil-Knöpfe neben dem Bild', () => {
+  it('gallery has prev/next arrow buttons beside the frame; they page and grey out at the ends', async () => {
+    const { renderPhotoOverlay } = await import('../../src/client/ui/organisms/photo-overlay');
+    const { SAMPLE_PHOTOS } = await import('../../src/client/ui/domain/photo');
+    const el = renderPhotoOverlay({ photos: SAMPLE_PHOTOS, onClose: () => {} });
+    const row = el.querySelector('.pa-photo-row') as HTMLElement;
+    const prev = row.querySelector('.pa-photo-arrow-prev') as HTMLButtonElement;
+    const next = row.querySelector('.pa-photo-arrow-next') as HTMLButtonElement;
+    expect(row.firstElementChild).toBe(prev);
+    expect(row.lastElementChild).toBe(next);
+    expect(prev.disabled).toBe(true);
+    expect(next.disabled).toBe(false);
+    next.click();
+    expect(el.querySelector('.pa-photo-counter')?.textContent).toBe('2 / 3');
+    expect(prev.disabled).toBe(false);
+    next.click();
+    expect(next.disabled).toBe(true);
+    prev.click();
+    expect(el.querySelector('.pa-photo-counter')?.textContent).toBe('2 / 3');
+    const single = renderPhotoOverlay({ photos: [SAMPLE_PHOTOS[0]], onClose: () => {} });
+    expect(single.querySelector('.pa-photo-arrow')).toBeNull();
+    const css = (await import('node:fs')).readFileSync('src/client/ui/styles/ui.css', 'utf8');
+    expect(css).toMatch(/\.pa-photo-arrow \{[^}]*max\(64px/);
+  });
+});

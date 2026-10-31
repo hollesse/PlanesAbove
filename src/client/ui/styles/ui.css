@@ -84,9 +84,14 @@
 
 /* Foto-Overlay (Organism, design-system-pawdq): liegt abgedunkelt ueber der Szene; Foto im 4:3-Rahmen, Attribution darunter */
 .pa-photo-overlay { position: absolute; inset: 0; z-index: 10; background: rgba(15, 20, 25, 0.78); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2cqw; padding: 4cqw 5cqw 3cqw; box-sizing: border-box; color: var(--pa-sky-ink-light); font-family: var(--pa-font-mono); }
-.pa-photo-frame { --pa-photo-ratio: 1.3333; position: relative; flex: none; width: min(90cqw, 56cqw * var(--pa-photo-ratio)); height: min(56cqw, 90cqw / var(--pa-photo-ratio)); max-width: 100%; background: var(--pa-ink); border: 2px solid var(--pa-paper); box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-/* Rahmen folgt dem Seitenverhaeltnis des geladenen Fotos (--pa-photo-ratio, per JS aus naturalWidth/naturalHeight): fuellt Breite (90cqw) oder Hoehe (56cqw bei 4:3, 42cqw bei 5:3), nie Luft im Rahmen */
-.pa-screen-5x3 .pa-photo-frame { width: min(90cqw, 42cqw * var(--pa-photo-ratio)); height: min(42cqw, 90cqw / var(--pa-photo-ratio)); }
+.pa-photo-row { --pa-photo-w: 90cqw; --pa-photo-h: 56cqw; display: flex; align-items: center; justify-content: center; gap: 1.5cqw; max-width: 100%; min-height: 0; }
+.pa-photo-row-gallery { --pa-photo-w: 74cqw; }
+.pa-screen-5x3 .pa-photo-row { --pa-photo-h: 42cqw; }
+/* Rahmen folgt dem Seitenverhaeltnis des geladenen Fotos (--pa-photo-ratio, per JS aus naturalWidth/naturalHeight): fuellt Breite oder Hoehe, nie Luft im Rahmen; in der Galerie bleibt Platz fuer die Pfeil-Knoepfe */
+.pa-photo-frame { --pa-photo-ratio: 1.3333; position: relative; flex: none; width: min(var(--pa-photo-w), var(--pa-photo-h) * var(--pa-photo-ratio)); height: min(var(--pa-photo-h), var(--pa-photo-w) / var(--pa-photo-ratio)); max-width: 100%; background: var(--pa-ink); border: 2px solid var(--pa-paper); box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.pa-photo-arrow { flex: none; width: max(64px, 6.5cqw); height: max(64px, 6.5cqw); display: flex; align-items: center; justify-content: center; padding: 0; background: var(--pa-ink); color: var(--pa-paper); border: 2px solid var(--pa-paper); border-radius: 50%; cursor: pointer; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+.pa-photo-arrow svg { width: 50%; height: 50%; }
+.pa-photo-arrow:disabled { opacity: 0.3; cursor: default; }
 .pa-photo-img { display: block; width: 100%; height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
 .pa-photo-status { font-size: 2cqw; letter-spacing: 0.08em; text-align: center; padding: 0 4cqw; }
 .pa-photo-meta { flex: none; width: 100%; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.5cqw; text-align: center; }

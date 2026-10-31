@@ -49,6 +49,10 @@ export function renderPhotoOverlay(props: PhotoOverlayProps): HTMLElement {
   const attribution = h('div', { class: 'pa-photo-attribution pa-meta-small' });
   const counter = h('div', { class: 'pa-photo-counter pa-meta-small' });
   const dots = h('div', { class: 'pa-photo-dots' });
+  const arrowSvg = (dir: 'prev' | 'next'): string => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${dir === 'prev' ? 'M15 5 L8 12 L15 19' : 'M9 5 L16 12 L9 19'}" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`;
+  const arrowPrev = h('button', { class: 'pa-photo-arrow pa-photo-arrow-prev', attrs: { type: 'button', 'aria-label': 'Voriges Foto' }, html: arrowSvg('prev') });
+  const arrowNext = h('button', { class: 'pa-photo-arrow pa-photo-arrow-next', attrs: { type: 'button', 'aria-label': 'Nächstes Foto' }, html: arrowSvg('next') });
+  const row = h('div', { class: 'pa-photo-row' });
   const meta = h('div', { class: 'pa-photo-meta' }, caption, attribution);
 
   if (state === 'loading') {
@@ -69,6 +73,8 @@ export function renderPhotoOverlay(props: PhotoOverlayProps): HTMLElement {
       if (state === 'gallery') {
         counter.textContent = `${index + 1} / ${photos.length}`;
         dots.replaceChildren(...photos.map((_, i) => h('span', { class: `pa-photo-dot${i === index ? ' pa-photo-dot-on' : ''}` })));
+        arrowPrev.disabled = index === 0;
+        arrowNext.disabled = index === photos.length - 1;
       }
     };
     update();
@@ -83,6 +89,10 @@ export function renderPhotoOverlay(props: PhotoOverlayProps): HTMLElement {
         return z;
       };
       frame.append(zone('prev', -1), zone('next', 1), counter);
+      arrowPrev.addEventListener('click', () => go(-1));
+      arrowNext.addEventListener('click', () => go(1));
+      row.classList.add('pa-photo-row-gallery');
+      row.append(arrowPrev);
       meta.append(dots);
       let startX: number | null = null;
       frame.addEventListener('touchstart', (e) => {
@@ -99,7 +109,9 @@ export function renderPhotoOverlay(props: PhotoOverlayProps): HTMLElement {
     }
   }
 
-  root.append(frame, meta, closeBtn);
+  row.append(frame);
+  if (state === 'gallery') row.append(arrowNext);
+  root.append(row, meta, closeBtn);
   if (props.autoCloseMs && props.autoCloseMs > 0) timer = setTimeout(close, props.autoCloseMs);
   return root;
 }
