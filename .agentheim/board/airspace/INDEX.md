@@ -10,14 +10,15 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 3
-- **Todo:** 1
+- **Backlog:** 2
+- **Todo:** 2
 - **Doing:** 0
 - **Done:** 23
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **airspace-hejpw** — Airport-Data als Fotoquelle ausbauen; Planespotters nur noch als Fallback, wenn Wikimedia Commons gar kein Foto liefert (feature) — `todo/airspace-hejpw-airport-data-ausbauen-planespotters-nur-als-fallback.md`
 - **airspace-tzw5t** — Korridor-Deckel (corridorMaxKm) aufweichen, wenn der Kurs zum Ziel passt und das Flugzeug weit vom Start ist (Querabstand klein gegen Strecke seit Start); TOM16Y Manchester–Heraklion wird plausibel, EWG16Y bleibt abgelehnt (feature) — `todo/airspace-tzw5t-korridor-deckel-aufweichen-bei-kursbestaetigung-und-weit-vom-start.md`
 <!-- todo-list:end -->
 
@@ -54,7 +55,6 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
-- **airspace-hejpw** — Planespotters und Airport-Data als Fotoquellen ausbauen — Bildqualität zu schlecht, nur Wikimedia Commons bleibt (feature) — `backlog/airspace-hejpw-planespotters-und-airport-data-als-fotoquellen-ausbauen.md`
 - **airspace-rrazj** — Lokale Vereinsflieger per Hex-Code erfassen und den Verein statt der Airline anzeigen (feature) — `backlog/airspace-rrazj-vereinsflieger-tabelle-verein-statt-airline-anzeigen.md`
 - **airspace-fehby** — Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.) (feature) — `backlog/airspace-fehby-keine-route-fuer-kleinflugzeuge-mit-registrierung-als-callsign.md`
 <!-- backlog-list:end -->

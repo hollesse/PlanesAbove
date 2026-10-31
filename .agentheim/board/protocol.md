@@ -5,6 +5,35 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 10:55 -- Modeling / Promoted: airspace-hejpw - Airport-Data als Fotoquelle ausbauen; Planespotters nur noch als Fallback, wenn Wikimedia Commons gar kein Foto liefert
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
+## 2026-10-31 10:55 -- Modeling / Refined: airspace-hejpw - Airport-Data ausbauen, Planespotters nur als Fallback
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** Scope vom Betreiber geändert: nur Airport-Data entfernen; Planespotters bleibt als Fallback-Quelle (neue Config sources.photo.fallback), die ausschließlich gefragt wird, wenn alle Primärquellen leer sind — nicht zum Auffüllen der Galerie. Kettenfälle (a)–(e) und healthz-Rolle als Kriterien.
+**ADRs written:** none (ADR 0029 Amendment bei Integration)
+
+---
+
+## 2026-10-31 10:55 -- Brainstorm: reale config.yaml sicher bearbeitbar machen
+
+**Type:** Brainstorm
+**Outcome:** vision extended
+**BCs identified:** none (infrastructure bestehend)
+**Summary:** Die reale config.yaml enthält keine Secrets, nur den Standort; der Schmerz ist die Prod-Kopie auf dem Heimserver. Entscheidung: drei Schichten (Repo-Config mit Defaults, versioniert; Umgebungsvariablen PLANESABOVE_* für Standort, Dev/Prod-Unterschiede, Secrets und Feature-Aktivierung; optionale Override-Datei für Feintuning). Schlüssel und Aktivierung von ElevenLabs/FlightAware bleiben getrennt. README muss alle Schichten und Variablen beschreiben.
+**ADRs written:** 0030
+**Foundation tasks emitted:** infrastructure-rmzgt (decision, todo); walking skeleton und styleguide existieren bereits
+
+---
+
 ## 2026-10-31 10:43 -- Modeling / Captured: airspace-hejpw - Planespotters und Airport-Data als Fotoquellen ausbauen — Bildqualität zu schlecht, nur Wikimedia Commons bleibt
 
 **Type:** Modeling / Capture
