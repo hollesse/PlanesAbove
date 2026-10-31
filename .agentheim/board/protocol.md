@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:56 -- Modeling / Promoted: sky-scene-xw8jv - Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp)
+
+**Type:** Modeling / Promote
+**BC:** sky-scene
+**From → To:** backlog → todo
+
+---
+
 ## 2026-10-31 09:54 -- Work session ended
 
 **Type:** Work / Session end
