@@ -23,8 +23,9 @@ Betreiber-Entscheidung 31.10.2026: Der Steckbrief wird aus festen **Satzbaustein
 **Satzbausteine** (neue Funktion `composeSpeechParts(facts): SpeechPart[]` in `steckbrief.ts`, ersetzt `composeSpeech` für die Sprachausgabe; der Text je Baustein bleibt deterministisch und so kurz wie möglich):
 1. **Typ+Airline:** „Das ist ein Airbus A dreihundertzwanzig der Lufthansa.“ Ohne Airline: „Das ist ein Airbus A dreihundertzwanzig.“ (**nie** das Rufzeichen). Ohne Typ, mit Airline: „Das ist ein Flugzeug der Lufthansa.“ Ohne beides: „Das ist ein Flugzeug.“ Aussprache-Wörterbuch (`spokenType`) wie bisher.
 2. **Route:** „Er fliegt von Frankfurt nach Istanbul.“ Nur Start und Ziel (erster und letzter Flughafen der Kette aus `RouteInfo.legs`/`text`), Stadtname ohne IATA-Code, Zwischenstopps werden nicht vorgelesen. Route unbekannt → Baustein entfällt.
-3. **Höhe:** „Er ist siebentausendfünfhundert Meter hoch.“ Rundung auf 500 m (unter 1000 m auf 100 m); Höhe 0/unbekannt → Baustein entfällt.
-4. **Stille:** zwischen zwei Bausteinen 250 ms Stille (konfigurierbar `speech.partGapMs`, Default 250).
+3. **Höhe:** „Das Flugzeug fliegt in siebentausendfünfhundert Metern Höhe.“ Rundung auf 500 m (unter 1000 m auf 100 m); Höhe 0/unbekannt → Baustein entfällt.
+4. **Flugphase:** „Es befindet sich gerade im Sinkflug.“ / „Es befindet sich gerade im Steigflug.“ aus `FlightPhase` (`verticalRateMs`, Schwelle wie `phaseMinRateMs` in airspace, Default 5 m/s). Bei `level` oder unbekannter Rate entfällt der Baustein (kein „Reiseflug“-Satz). Genau zwei Varianten, also nach dem ersten Tag immer im Cache.
+5. **Stille:** zwischen zwei Bausteinen 250 ms Stille (konfigurierbar `speech.partGapMs`, Default 250).
 
 **Baustein-Cache und Zusammensetzen (AudioService):**
 - Jeder Baustein wird einzeln über den `SpeechSynthesizer` gerendert und unter `keyFor(adapter, voice, bausteinText)` als WAV gecacht; der heutige Cache und das Fallback-Verhalten (ADR 0027: Fallback-Audio unter dem Fallback-Key, Budget nur für gelieferte Synthese) gelten je Baustein. Bausteine des Primäradapters und des Fallbacks werden **nicht gemischt**: fehlt ein Baustein beim Primäradapter (Budget, Fehler), kommt der ganze Steckbrief vom Fallback.
@@ -37,7 +38,8 @@ Betreiber-Entscheidung 31.10.2026: Der Steckbrief wird aus festen **Satzbaustein
 **Doku:** BC-README (Steckbrief-Definition: Satzform statt Aufzählung, Rufzeichen-Regel, Rundung; Sprachcache: Baustein-Key und zusammengesetzter Key), `config.example.yaml` (`partGapMs`), README-Abschnitt Sprachausgabe (Budgetreichweite neu: nach Einlaufphase fast nur Cache-Treffer).
 
 ## Acceptance criteria
-- [ ] `composeSpeechParts`: Lufthansa/A320/Route FRA→IST/7480 m → genau drei Bausteine mit den Texten „Das ist ein Airbus A dreihundertzwanzig der Lufthansa.“, „Er fliegt von Frankfurt nach Istanbul.“, „Er ist siebentausendfünfhundert Meter hoch.“
+- [ ] `composeSpeechParts`: Lufthansa/A320/Route FRA→IST/7480 m/Vertikalrate −8 m/s → genau vier Bausteine mit den Texten „Das ist ein Airbus A dreihundertzwanzig der Lufthansa.“, „Er fliegt von Frankfurt nach Istanbul.“, „Das Flugzeug fliegt in siebentausendfünfhundert Metern Höhe.“, „Es befindet sich gerade im Sinkflug.“
+- [ ] Flugphase: Vertikalrate +8 m/s → „Es befindet sich gerade im Steigflug.“; Rate zwischen −5 und +5 m/s oder unbekannt → kein Flugphasen-Baustein.
 - [ ] Ohne Airline, mit Rufzeichen DLH4EH → Baustein 1 ist „Das ist ein Airbus A dreihundertzwanzig.“ und kein Baustein enthält das Rufzeichen; ohne Typ mit Airline → „Das ist ein Flugzeug der Lufthansa.“; ohne beides → „Das ist ein Flugzeug.“
 - [ ] Route mit Zwischenstopp (FRA → VIE → IST) → „Er fliegt von Frankfurt nach Istanbul.“; Route unbekannt → kein Routen-Baustein; Höhe 0 → kein Höhen-Baustein.
 - [ ] Rundung: 7480 → 7500, 7240 → 7000, 850 → 900 (unter 1000 m auf 100 m).
@@ -54,4 +56,5 @@ Betreiber-Entscheidung 31.10.2026: Der Steckbrief wird aus festen **Satzbaustein
 - Stadtnamen: `RouteInfo.legs` enthält Labels wie „Frankfurt (FRA)“; Stadtname = Label ohne Klammerteil. Fehlt das Label (Flughafen nicht in `tables/airports.json`), den Routen-Baustein weglassen statt einen ICAO-Code vorzulesen.
 - Bekannte Grenze: Jeder Baustein hat seine eigene Satzmelodie; mit ganzen Sätzen je Baustein ist das hörbar, aber akzeptabel. Einzelwörter (nur „Lufthansa“) sind bewusst nicht vorgesehen.
 - Alte Cache-Dateien des Volltext-Steckbriefs bleiben liegen (anderer Key) und verfallen über das bestehende Alter-Pruning.
-- Betreiber-Entscheidungen 31.10.2026: Höhe auf 500 m; Route nur Start→Ziel; ohne Typ „Das ist ein Flugzeug der <Airline>.“
+- Betreiber-Entscheidungen 31.10.2026: Höhe auf 500 m im Satz „Das Flugzeug fliegt in … Metern Höhe.“; danach optional die Flugphase „Es befindet sich gerade im Sinkflug/Steigflug.“; Route nur Start→Ziel; ohne Typ „Das ist ein Flugzeug der <Airline>.“
+- Die Flugphase steht im Modell bereits bereit (`FlightPhase` und `verticalRateMs` in `src/server/modules/airspace/model.ts`); `SkyService.identify`/`composeSpeechParts` muss sie nur durchreichen.

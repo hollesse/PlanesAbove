@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 08:26 -- Modeling / Refined: sky-scene-b7w2n - Steckbrief aus Satzbausteinen mit Baustein-Cache
+
+**Type:** Modeling / Refine
+**BC:** sky-scene
+**Status after:** todo
+**Summary:** Höhen-Satz lautet jetzt „Das Flugzeug fliegt in … Metern Höhe.“; vierter Baustein Flugphase („Es befindet sich gerade im Sinkflug/Steigflug.“) aus FlightPhase/verticalRateMs, entfällt bei level/unbekannt; Akzeptanzkriterien ergänzt.
+
+---
+
 ## 2026-10-31 08:22 -- Modeling / Captured: sky-scene-b7w2n - Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline
 
 **Type:** Modeling / Capture
