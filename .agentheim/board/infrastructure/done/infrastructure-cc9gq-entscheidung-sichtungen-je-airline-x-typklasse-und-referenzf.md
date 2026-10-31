@@ -1,7 +1,7 @@
 ---
 id: infrastructure-cc9gq
 title: Entscheidung: Sichtungen je Airline × Typklasse und Referenzfotos über zwei lesende Endpunkte des Heimservers
-status: doing
+status: done
 type: decision
 context: infrastructure
 created: 2026-10-31
@@ -9,7 +9,7 @@ completed:
 depends_on: []
 blocks: []
 tags: [decision, foundation, read-endpoints]
-related_adrs: [0031]
+related_adrs: [0031, 0033]
 related_research: []
 prior_art: []
 ---
@@ -33,3 +33,7 @@ ADR schreiben (Vorschlag: 0034, scope global) nach dem Architekten-Entwurf in de
 - Der Editor erreicht den Server nur über Vites `server.proxy` auf `PLANESABOVE_HOME_URL`; keine CORS-Änderung, Server bleibt nur-lesend.
 - Verworfen: `/api/stats/liveries` erweitern, Editor ruft Commons/Planespotters direkt, SQLite-Datei auf den Mac kopieren.
 - Reale config.yaml anpassen: nein.
+
+## Outcome
+
+ADR (provisorisch 0033, scope global) schreibt den Architekten-Entwurf fest: `GET /api/stats/sightings-by-class` (sighting-log, unabhängig von `livery_present`) und `GET /api/photos/reference` (airspace, nur Hexes aus `sightings`, Browser lädt Bild direkt). Lücken rechnet der Editor selbst, Zugang nur über Vites `server.proxy`, Server bleibt nur-lesend, keine CORS-Änderung. Verworfene Alternativen und zwei offene Punkte (Betreiberbestätigung, Herkunft der Typklasse in `sightings`) stehen im ADR. Kein Code geändert.
