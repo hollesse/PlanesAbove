@@ -17,7 +17,7 @@ const res = (status: number, body: string, headers: Record<string, string> = {})
 async function boot(fetchImpl: Fetch) {
   dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pa-chain-'));
   const lines: string[] = [];
-  const config = parseConfig(`port: 0\ndataDir: ${path.join(dir, 'data')}\nlocation: { lat: 50.45, lon: 8.09 }\nspeech: { adapter: fake }\nsources: { route: { enabled: false } }\n`);
+  const config = parseConfig(`port: 0\ndataDir: ${path.join(dir, 'data')}\nlocation: { lat: 50.45, lon: 8.09 }\nspeech: { adapter: fake }\nsources: { route: { enabled: false }, photo: { order: [] } }\n`);
   svc = await startService({ config, clientDir: path.join(dir, 'client'), write: (l) => lines.push(l), timeZone: 'UTC', fetch: fetchImpl });
   const base = `http://127.0.0.1:${svc.port}`;
   return { lines, health: async () => (await (await fetch(base + '/healthz')).json()) as { flight: { active: string; sources: { name: string; state: string }[] } }, state: async () => (await (await fetch(base + '/api/state')).json()) as { stale: boolean } };

@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
 import { FakeClock, SystemClock, type Scheduler } from './clock';
-import { flightMaxAgeMs, type Config } from './config';
+import { flightMaxAgeMs, userAgentHasContact, type Config } from './config';
 import { openDatabase } from './db';
 import { evaluateHealth } from './health';
 import { createLogger, type Logger } from './logger';
@@ -22,6 +22,12 @@ import { FlightAwareRouteSource } from './modules/airspace/adapters/flightaware-
 import { FlightAwareCallLog } from './modules/airspace/flightaware-call-log';
 import { VrsRouteSource } from './modules/airspace/adapters/vrs-route-source';
 import type { FlightSource, RouteSource } from './modules/airspace/model';
+import { PlanespottersPhotoSource } from './modules/airspace/adapters/planespotters-photo-source';
+import { CommonsPhotoSource } from './modules/airspace/adapters/commons-photo-source';
+import { AirportDataPhotoSource } from './modules/airspace/adapters/airport-data-photo-source';
+import type { PhotoSource } from './modules/airspace/photo-source';
+import { PhotoSourceChain } from './modules/airspace/photo-source-chain';
+import { PhotoService } from './modules/airspace/photo-service';
 import { RouteService } from './modules/airspace/route-service';
 import { defaultTables } from './modules/airspace/typeclass';
 import { SightingRepository } from './modules/sighting-log/repository';
@@ -126,6 +132,14 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   const hx = config.sources.aircraftType.hexdb;
   const typeSource = buildAircraftTypeSource({ mock, enabled: hx.enabled, fetch: fetchFn, userAgent: ua, timeoutMs: hx.timeoutMs, backoffMs: config.sources.route.hexdb.backoffMinutes * 60_000, clock, log, backoff: hexdbBackoff });
   const types = new AircraftTypeResolver({ overrides: tables.typeOverrides ?? {}, source: typeSource, clock, log, ttlMs: hx.cacheTtlHours * 3_600_000 });
+  // Aircraft photos (ADR 0029): metadata only, memory cache. Mock mode has no network, so no photo sources there unless a fetch seam is injected.
+  const pc = config.sources.photo;
+  const photoSources: PhotoSource[] = mock && !o.fetch ? [] : pc.order.map((name) => {
+    const po = { fetch: fetchFn, userAgent: ua, timeoutMs: pc.timeoutMs };
+    return name === 'planespotters' ? new PlanespottersPhotoSource(po) : name === 'commons' ? new CommonsPhotoSource(po) : new AirportDataPhotoSource(po);
+  });
+  if (photoSources.length && !userAgentHasContact(ua)) log.warn('sources.userAgent has no contact (e-mail or URL) but photo sources are active: Planespotters expects a descriptive User-Agent with contact, set it in config.yaml', { userAgent: ua });
+  const photos = new PhotoService(new PhotoSourceChain(photoSources, { clock, log, maxPhotos: pc.maxPhotos, backoffMs: pc.backoffMinutes * 60_000 }), { clock, ttlMs: pc.cacheTtlHours * 3_600_000 });
   const sky = new SkyService({ config, clock, log, flight, routes, tables, types, sightings, audio, buildId, timeZone: o.timeZone });
 
   const stopFlightAwareSync = config.sources.route.enabled ? await flightaware?.start() : undefined; // usage sync before the first paid lookup (ADR 0018)
@@ -149,10 +163,18 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     const url = new URL(req.url ?? '/', 'http://x');
     try {
       if (req.method === 'GET' && url.pathname === '/api/state') { lastClientPollAt = clock.now(); return json(res, 200, sky.state()); }
+      const photoMatch = /^\/api\/photos\/([0-9a-fA-F]{6})$/.exec(url.pathname);
+      if (req.method === 'GET' && photoMatch) {
+        // Only for a plane of the current Auswahl; the answer is JSON metadata, the iPad loads the images itself (ADR 0029).
+        const plane = sky.state().planes.find((p) => p.icao24.toLowerCase() === photoMatch[1].toLowerCase());
+        if (!plane) return json(res, 404, { error: 'not in the current selection' });
+        const r = await photos.get({ icao24: plane.icao24, registration: plane.flight.registration || undefined });
+        return json(res, 200, { photos: r.photos, status: r.status });
+      }
       if (handleStatsRequest(db, clock.now(), req, res, url)) return;
       if (req.method === 'GET' && url.pathname === '/healthz') {
         const report = evaluateHealth({ now: clock.now(), bootAt, pollIntervalMs: pollMs, flight: sky.health, dbWritable: dbWritable(), lastClientPollAt, clientSilenceMs: config.health.clientSilenceMinutes * 60_000, flightMaxAgeMs: flightMaxAgeMs(config), flightChain: flightChain && { ...flightChain.status(), sources: flightChain.status().sources.map((s) => (s.name === 'adsb-lol' && lolBudget ? { ...s, budget: lolBudget.status() } : s)) } });
-        return json(res, report.status === 'failing' ? 503 : 200, { ...report, buildId, commit, uptimeSeconds: Math.round((clock.now() - bootAt) / 1000) });
+        return json(res, report.status === 'failing' ? 503 : 200, { ...report, photo: photos.status(), buildId, commit, uptimeSeconds: Math.round((clock.now() - bootAt) / 1000) });
       }
       const audioMatch = /^\/audio\/([0-9a-f]+)\.wav$/.exec(url.pathname);
       if (req.method === 'GET' && audioMatch) {

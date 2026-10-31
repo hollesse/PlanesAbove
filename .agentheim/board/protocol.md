@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 09:41 -- Task verified and completed: airspace-gw6w9 - Fotoquelle (PhotoSource): echte Fotos eines konkreten Flugzeugs per Kennzeichen/Hex aus mehreren kostenlosen Plattformen, mit Attribution, als Galerie
+
+**Type:** Work / Task completion
+**Task:** airspace-gw6w9 - Fotoquelle (PhotoSource): echte Fotos eines konkreten Flugzeugs per Kennzeichen/Hex aus mehreren kostenlosen Plattformen, mit Attribution, als Galerie
+**Summary:** Neuer Port PhotoSource mit Adaptern planespotters, commons und airport-data, PhotoSourceChain (Merge, Dedup, maxPhotos, Teilverfügbarkeit, Backoff je Quelle) und PhotoService (Memory-Cache, TTL); Config sources.photo, GET /api/photos/:icao24, healthz photo.sources[], scripts/photo-sample.mjs mit Stichprobe gegen die echte DB.
+**Duration:** 13m
+**Verification:** PASS (iteration 1)
+**Files changed:** 22
+**Tests added:** 46
+**ADRs written:** none
+
+---
+
 ## 2026-10-31 09:29 -- Task verified and completed: design-system-pawdq - Foto-Overlay-Baustein (Organism) in Storybook — Vollbild-Overlay mit Foto-Galerie, Attribution und X rechts oben zum Schließen
 
 **Type:** Work / Task completion

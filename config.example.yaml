@@ -31,7 +31,8 @@ liveries:
   enabled: false
 
 sources:
-  userAgent: "PlanesAbove/0.1 (self-hosted, single household)"
+  # Contact address REQUIRED while photo sources are active (Planespotters expects a descriptive User-Agent with e-mail or URL; boot warns without one).
+  userAgent: "PlanesAbove/0.1 (self-hosted, single household; mailto:you@example.org)"
   flight:
     timeoutMs: 5000            # per-source request timeout; on failure the next source is asked in the same Takt
     order: [adsb-fi, adsb-lol]   # failover order (ADR 0019); names without an adapter are skipped with a warning
@@ -42,6 +43,14 @@ sources:
       enabled: true            # false = flight source type (plus override table) only; always off in mock mode
       timeoutMs: 2000          # runs inside the Takt before the selection is shown, so keep it short
       cacheTtlHours: 24
+  # Real photos of the aircraft (ADR 0029). The server only fetches JSON metadata and caches it in memory (never in SQLite, never image bytes);
+  # the iPad loads the images straight from the source. Credit + link to the source page are always shown.
+  photo:
+    order: [planespotters, commons, airport-data]   # [] switches photos off. airport-data has no published terms (private household use, credit + link); drop it here to disable
+    maxPhotos: 6               # gallery size after merging (dedup per source + id)
+    timeoutMs: 5000
+    cacheTtlHours: 24          # in-memory cache per hex, "no photo" included; max 24 (Planespotters terms)
+    backoffMinutes: 5          # a source is skipped this long after an HTTP 429 without Retry-After
   route:
     enabled: true
     order: [hexdb, adsbdb, vrs]  # first plausible route wins. hexdb, adsbdb = live lookups (never persisted), vrs = offline VRS standing-data snapshot (CC0) as fallback

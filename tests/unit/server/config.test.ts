@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
-import { parseConfig, ConfigError, flightMaxAgeMs } from '../../../src/server/config';
+import { parseConfig, ConfigError, flightMaxAgeMs, userAgentHasContact } from '../../../src/server/config';
 
 const MIN = 'location:\n  lat: 50.05\n  lon: 8.57\n';
 
@@ -92,5 +92,26 @@ describe('speech.partGapMs (sky-scene-b7w2n)', () => {
     expect(parseConfig(MIN + 'speech: { adapter: piper }\n').speech.partGapMs).toBe(250);
     expect(parseConfig(MIN).speech.partGapMs).toBe(250);
     expect(parseConfig(MIN + 'speech: { adapter: piper, partGapMs: 400 }\n').speech.partGapMs).toBe(400);
+  });
+});
+
+describe('sources.photo (ADR 0029)', () => {
+  it('defaults: Planespotters -> Commons -> Airport-Data, 6 photos, 24 h cache', () => {
+    expect(parseConfig(MIN).sources.photo).toMatchObject({ order: ['planespotters', 'commons', 'airport-data'], maxPhotos: 6, timeoutMs: 5000, cacheTtlHours: 24 });
+  });
+  it('accepts overrides, including [] to switch photos off', () => {
+    const c = parseConfig(MIN + 'sources: { photo: { order: [commons], maxPhotos: 3, timeoutMs: 2000, cacheTtlHours: 1 } }\n');
+    expect(c.sources.photo).toMatchObject({ order: ['commons'], maxPhotos: 3, timeoutMs: 2000, cacheTtlHours: 1 });
+    expect(parseConfig(MIN + 'sources: { photo: { order: [] } }\n').sources.photo.order).toEqual([]);
+  });
+  it('rejects a cache TTL above 24 h (Planespotters terms), unknown sources and maxPhotos < 1', () => {
+    expect(() => parseConfig(MIN + 'sources: { photo: { cacheTtlHours: 48 } }\n')).toThrow(/sources\.photo\.cacheTtlHours/);
+    expect(() => parseConfig(MIN + 'sources: { photo: { order: [hexdb] } }\n')).toThrow(/sources\.photo\.order/);
+    expect(() => parseConfig(MIN + 'sources: { photo: { maxPhotos: 0 } }\n')).toThrow(/sources\.photo\.maxPhotos/);
+  });
+  it('userAgentHasContact: an e-mail address or a URL counts', () => {
+    expect(userAgentHasContact('PlanesAbove/0.1 (self-hosted; mailto:me@example.org)')).toBe(true);
+    expect(userAgentHasContact('PlanesAbove/0.1 (+https://example.org/contact)')).toBe(true);
+    expect(userAgentHasContact('PlanesAbove/0.1 (self-hosted, single household)')).toBe(false);
   });
 });
