@@ -14,7 +14,7 @@ supporting — Lernwert hängt an korrekten Lackierungen, aber es ist ein Katalo
 - **Silhouette** — der leere Flieger einer Typklasse; Umriss, der beim Anzeigen die Lackierung zuschneidet. Eigene Datei je Typklasse.
 - **Detailschicht** — Cockpitscheiben und Triebwerksdetails je Typklasse; liegt beim Anzeigen immer über der Lackierung. Keine Kabinenfenster, keine Türen. Eigene Datei je Typklasse.
 - **Ebene** — ein Pfad oder ein Logo in der Lackierungsdatei, mit Farbe bzw. Bild, Reihenfolge und Verschiebung.
-- **Farbfeld** — fester Teil der Silhouette (heute: Triebwerkskörper), der in der Lackierung genau eine Farbe bekommt; Pfade werden an Farbfeldern abgeschnitten.
+- **Farbfeld** — fester Teil der Silhouette (Triebwerkskörper, Flügel, Höhenleitwerk), der in der Lackierung genau eine Farbe bekommt; Pfade werden an Farbfeldern abgeschnitten. Pfadfläche sind Rumpf und Finne.
 - **Anzeige-Regel** — Silhouette, darüber die an der Silhouette zugeschnittene Lackierung, darüber die Detailschicht; identisch in Himmelsszene, Storybook und Editor.
 - **Standard-Lackierung** — weiß; für Airlines ohne eigene Lackierung und für Typklassen ohne Lackierung (Light Aircraft, Glider).
 - **Logo** — Airline-Emblem, an definierten Ankerpunkten der Typklasse platziert.

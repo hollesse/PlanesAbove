@@ -35,5 +35,5 @@ Nur Narrowbody, keine Serverdaten, keine Logos, keine Rundung, eine Farbe:
 
 ## Notes
 - **Stop-loss (ADR 0065):** Wenn sich mitten im Spike zeigt, dass die Minderung bereits bekannt und billig ist, aufschreiben und stoppen (record it and stop). Gleiches gilt, wenn sich der Zuschnitt (Flügel hinter dem Rumpf, Umriss-Stroke) als untauglich erweist: Befund notieren, nicht weiterbauen.
-- Der Spike beantwortet die offene Frage, ob der hintere Flügel einen eigenen Zuschnittbereich braucht.
+- Flügel, Höhenleitwerk und Triebwerke sind Farbfelder (ADR 0031 4a): im Spike bekommen sie je einen Farbwähler; der gezeichnete Pfad endet sichtbar an ihrem Rand.
 - Reale config.yaml anpassen: nein.

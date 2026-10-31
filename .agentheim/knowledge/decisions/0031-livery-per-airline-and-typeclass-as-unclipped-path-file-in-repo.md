@@ -25,7 +25,7 @@ Dafür muss geklärt sein, was eine Lackierung ist, wo sie liegt und wie sie zum
 2. **Eine Lackierung ist eine eigene Datei im Repo**, versioniert und öffentlich. Sie enthält ausschließlich Papas Ebenen: Pfade (geschlossene gefärbte Formen aus Punkten, Segmente optional gerundet) und platzierte Logos (Position, Größe, Drehung). Sie enthält keine Silhouette und keine Details.
 3. **Silhouette und Detailschicht sind getrennte Dateien je Typklasse.** Die Detailschicht umfasst Cockpitscheiben und Triebwerksdetails, keine Kabinenfenster und keine Türen. Beide gehören dem BC liveries und werden vom Editor nicht verändert.
 4. **Pfade werden ungeschnitten gespeichert.** Zuschnitt an der Silhouette und Schichtung (Silhouette, Lackierung, Details obenauf) passieren beim Anzeigen, in der Himmelsszene wie im Editor.
-4a. **Triebwerkskörper sind Farbfelder, keine Pfadflächen.** Ein Farbfeld ist ein fester Teil der Silhouette, der in der Lackierungsdatei genau eine Farbe bekommt, sonst nichts. Pfade werden am Farbfeld abgeschnitten: Rumpf-Pfade reichen nie in die Triebwerke hinein. Der Zuschnittbereich der Pfade ist also die Silhouette ohne ihre Farbfelder (Ergänzung vom 2026-10-31 nach Rückfrage des Betreibers).
+4a. **Triebwerkskörper, Flügel und Höhenleitwerk sind Farbfelder, keine Pfadflächen.** Ein Farbfeld ist ein fester Teil der Silhouette, der in der Lackierungsdatei genau eine Farbe bekommt, sonst nichts. Pfade werden an Farbfeldern abgeschnitten: Rumpf-Pfade reichen nie in Triebwerke, Flügel oder Höhenleitwerk hinein. Der Zuschnittbereich der Pfade ist die Silhouette ohne ihre Farbfelder; Pfade gehören damit zu Rumpf und Seitenleitwerk (Finne) (Ergänzung vom 2026-10-31 nach Rückfrage des Betreibers).
 5. **Der Editor läuft auf dem Mac, nicht auf dem Heimserver.** Er liest Sichtungen und Fotos vom laufenden Heimserver über dessen vorhandene Lesewege und schreibt Dateien ins Repo, die Papa committet. Der Weg aufs iPad bleibt Commit, Image, Watchtower.
 6. **Umstellung einmalig und vollständig.** Die heutigen CSS-Lackierungen bleiben in Betrieb, bis der Editor taugt. Dann werden sie per Import in das neue Format übersetzt (jede gefärbte Fläche eine Ebene), die Himmelsszene wechselt auf das neue Format, und der CSS-Weg entfällt.
 
@@ -46,7 +46,7 @@ Dafür muss geklärt sein, was eine Lackierung ist, wo sie liegt und wie sie zum
 ### Neutral
 - Die Typklassen und die Zuordnung Airline-Präfix → Lackierung (airline-liveries.json) bleiben; der Schlüssel wird um die Typklasse erweitert.
 - Logos kommen weiter fertig von außen (SVG/PNG); der Editor platziert sie nur.
-- Ob weitere Teile (z. B. Flügel) Farbfelder werden, zeigt der Editor-Durchstich; heute sind es nur die Triebwerkskörper.
+- Farbfelder je Typklasse: Triebwerkskörper, Flügel, Höhenleitwerk. Pfadfläche: Rumpf und Finne. Ob Typklassen ohne Triebwerksgondeln (Turboprop, Helicopter, Glider) andere Felder brauchen, klärt die Silhouetten-Aufteilung.
 
 ## Alternatives considered
 - **Flächen färben statt Pfade zeichnen (heutiges Modell, nur mit Editor-Oberfläche)** — nimmt Papa die Formfreiheit, die den Schmerz verursacht hat; Vorlagen wie „ganze Finne“ decken den Nutzen der Flächen als Abkürzung ab.
