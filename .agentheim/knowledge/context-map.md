@@ -21,8 +21,8 @@
 - **Key actors:** —
 
 ### liveries (Lackierungen)
-- **Purpose:** Katalog Airline → Lackierung (+ Logo) pro Typklasse, mit weißer Standard-Lackierung als Fallback. Heimat von Papas Illustrationsarbeit.
-- **Core language:** Lackierung, Standard-Lackierung, Logo, Typklasse
+- **Purpose:** Katalog Airline × Typklasse → Lackierung (Pfadebenen + Logos als eigene Datei im Repo), dazu Silhouette und Detailschicht je Typklasse und die Regel, wie sie beim Anzeigen übereinandergelegt und zugeschnitten werden; weiße Standard-Lackierung als Fallback. Bis zur Umstellung: CSS-Farbsätze je Airline.
+- **Core language:** Lackierung, Standard-Lackierung, Silhouette, Detailschicht, Ebene, Pfad, Logo, Typklasse
 - **Classification:** supporting
 - **Key actors:** Papa (Kurator)
 
@@ -31,6 +31,12 @@
 - **Core language:** Sichtung
 - **Classification:** supporting
 - **Key actors:** Papa (später als Leser der Auswertung)
+
+### livery-editor (Lackierungs-Editor)
+- **Purpose:** Papas Desktop-Werkzeug zum Zeichnen: zeigt Lücken (gesehene Airline × Typklasse ohne Lackierung), hängt ein Referenzfoto daneben, bietet Pfadwerkzeug, Ebenen, Farbwahl, Logo-Platzierung, Vorlagen, und schreibt Lackierungsdateien ins Repo. Läuft auf dem Mac, nie auf dem iPad oder Heimserver.
+- **Core language:** Ebene, Pfad, Rundung, Vorlage, Referenzfoto, Lücke, Import
+- **Classification:** supporting (Werkzeug für die Illustrationsarbeit)
+- **Key actors:** Papa (Illustrator)
 
 ### infrastructure
 - **Purpose:** Global gültige technische Belange — Laufzeit, iPad/Heimserver-Aufteilung (ZimaOS), Kiosk-Betrieb, Deployment, Konfiguration, Beobachtbarkeit.
@@ -45,6 +51,9 @@
 - **airspace → sky-scene** (customer-supplier, airspace upstream): Jeder Takt liefert eine Auswahl (0–2 Flugzeuge mit Steckbrief-Daten). sky-scene entscheidet selbst, wann sie die Auswahl übernimmt (Vorlese-Sperre).
 - **weather → sky-scene** (customer-supplier, weather upstream): liefert den aktuellen Himmel (Tageszeit × Wetterlage).
 - **liveries → sky-scene** (open host / published language): sky-scene fragt „Lackierung für Airline X auf Typklasse Y“ und bekommt immer eine Antwort (notfalls Standard-Lackierung). Typklasse ist die gemeinsame Sprache zwischen airspace und liveries.
+- **liveries → livery-editor** (published language, liveries upstream): das Dateiformat der Lackierung, die Silhouetten und Detailschichten gehören liveries; der Editor liest und schreibt genau dieses Format und erfindet kein eigenes.
+- **sighting-log → livery-editor** (customer-supplier, sighting-log upstream, lesend): der Editor fragt den laufenden Heimserver, welche Airline × Typklasse gesehen wurde, für den Lücken-Filter.
+- **airspace (Fotokette) → livery-editor** (customer-supplier, lesend): das Referenzfoto kommt aus derselben Fotokette wie der Foto-Knopf.
 - **airspace → sighting-log** (published events): jede neue Sichtung wird protokolliert; das Protokoll beeinflusst die Anzeige nicht.
 - **Externe Flugdaten-/Wetterquellen → airspace / weather** (anticorruption layer): kostenlose Fremd-APIs werden hinter einer Übersetzungsschicht gehalten, damit ein Quellenwechsel die Domäne nicht berührt.
 - **design-system → sky-scene** (Gate, Storybook-first): sky-scene verwendet ausschließlich abgenommene Storybook-Komponenten; fehlt ein Baustein, entsteht er zuerst in Storybook.

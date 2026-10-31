@@ -76,6 +76,51 @@ in der ZimaOS-Oberfläche. Ein Handgriff auf dem Server soll die Ausnahme sein, 
 - Auswertung des Sichtungsprotokolls (welche Airlines/Typen lohnen neue oder detailliertere Lackierungen)
 - Foto-Knopf mit echtem Foto des konkreten Flugzeugs (Spotter-Seiten, Lizenz/Attribution klären)
 
+## Lackierungs-Editor (Erweiterung vom 2026-10-31)
+Die bisherigen Lackierungen entstanden mit Claude Design: Farben auf feste Flächen der
+Typklassen-SVGs, per Beschreibung erzeugt. Das war ein Ratespiel um Formen und Rundungen,
+Fehler (weiße Stellen am Rumpf) ließen sich nicht direkt greifen, und jede Lackierung galt für
+alle Typklassen gleich, auch für Typen, die die Airline gar nicht fliegt (easyJet-A380).
+
+Deshalb bekommt Papa ein eigenes **Desktop-Werkzeug** zum Zeichnen: den Lackierungs-Editor.
+Er ist nur für Papa, läuft auf dem Mac aus dem Repo heraus, ist nicht für Touch und nicht fürs
+iPad. Er liest vom laufenden Heimserver, welche Airline auf welcher Typklasse gesehen wurde und
+zeigt ein echtes Foto des Flugzeugs als Referenz daneben. Gezeichnet wird mit einem Pfadwerkzeug
+über der leeren Silhouette: Pfad für Pfad, jeder Pfad eine Ebene mit eigener Farbe, Punkte mit
+Shift waagerecht oder senkrecht gezwungen, Rundungen durch Ziehen am Mittelpunkt eines
+Segments, Ebenen verschiebbar und umsortierbar. Logos kommen als SVG oder PNG hinein und werden
+skaliert, gedreht und platziert. Silhouette und Detailschicht lassen sich in der Deckkraft regeln, so dass Papa wahlweise seine ungeschnittenen Pfade oder das Endergebnis sieht. Eine vorhandene Lackierung lässt sich öffnen, kopieren und als
+Ausgangspunkt für eine andere Airline weiterbearbeiten.
+
+Die Lackierung ändert dabei ihre Natur:
+- **Eine Lackierung gilt für genau eine Airline auf genau einer Typklasse.** Ähnlichkeit
+  zwischen Typklassen ist Papas Sache beim Zeichnen, keine Regel im System. Fehlt die
+  Kombination, zeigt die Himmelsszene die weiße Standard-Lackierung.
+- **Eine Lackierung ist eine eigene Datei im Repo**, die nur Papas Pfadebenen und Logos
+  enthält. Silhouette und Detailschicht (Cockpitscheiben, Triebwerksdetails; keine
+  Kabinenfenster, keine Türen) sind getrennte Dateien je Typklasse. Die Anzeige legt sie
+  übereinander: Silhouette, Lackierung, Details obenauf.
+- **Pfade werden ungeschnitten gespeichert** und erst beim Anzeigen an der Silhouette
+  zugeschnitten. Ändert sich eine Silhouette, bleiben die Lackierungen gültig.
+- Die Datei wird committet und erreicht das iPad über den normalen Weg Commit, Image,
+  Watchtower (ADR 0030). Der Heimserver bekommt keine Schreib-Oberfläche.
+
+**Erfolg:** Papa nutzt den Editor tatsächlich, eine neue Lackierung geht schnell und sieht
+realistisch aus. **Fehlschlag:** Der Editor bleibt liegen und Lackierungen entstehen weiter
+anders.
+
+**Umstellung:** Die heutigen CSS-Lackierungen bleiben in Betrieb, bis der Editor taugt. Dann
+werden sie einmalig in das neue Format importiert (jede gefärbte Fläche eine Ebene), damit
+Papa nicht bei null anfängt, und die Himmelsszene wechselt auf das neue Format. Danach gibt es
+nur noch den einen Weg.
+
+### Non-goals des Editors
+- Kein Werkzeug für Mona, nicht fürs iPad, kein Touch.
+- Kein Mehrbenutzer-Werkzeug, kein Login, nicht auf dem Heimserver.
+- Kein allgemeines Vektorprogramm: keine Texte, keine Verläufe, keine Freihandkurven über
+  Pfad und Rundung hinaus.
+- Zeichnet keine Himmel, keine Silhouetten, keine Logos; Logos kommen fertig von außen.
+
 ## Ubiquitous language (seed)
 - **Himmelsszene** — das illustrierte Bild auf dem Display: Himmel + bis zu zwei Flugzeuge + Info-Leiste.
 - **Himmel** — Hintergrund aus **Tageszeit** × **Wetterlage** (28 Kombinationen).
@@ -88,7 +133,16 @@ in der ZimaOS-Oberfläche. Ein Handgriff auf dem Server soll die Ausnahme sein, 
 - **Vorlese-Sperre** — solange vorgelesen wird, ändert sich die Auswahl nicht.
 - **Typklasse** — gezeichnete Flugzeug-Silhouette: Narrowbody, Widebody, Jumbo (Hump), Double-Decker,
   Regional-Jet, Turboprop, Business-Jet, Light Aircraft, Glider, Helicopter.
-- **Lackierung** — Farbsatz (und ggf. Logo) einer Airline, angewendet auf eine Typklasse.
+- **Lackierung** — Papas Bemalung einer Airline auf genau einer Typklasse: eine eigene Datei aus Pfadebenen und Logos (bis zur Umstellung: Farbsatz aus CSS-Variablen je Airline, auf alle Typklassen gleich).
+- **Lackierungs-Editor** — Desktop-Werkzeug für Papa zum Zeichnen und Bearbeiten von Lackierungen; liest Sichtungen und Fotos vom Heimserver, schreibt Dateien ins Repo.
+- **Silhouette** — der leere Flieger einer Typklasse: Umriss, über den gezeichnet wird; schneidet beim Anzeigen die Lackierung zu.
+- **Detailschicht** — Cockpitscheiben und Triebwerksdetails einer Typklasse; liegt beim Anzeigen immer über der Lackierung.
+- **Ebene** — ein Pfad oder ein Logo in der Lackierung, mit Farbe, Reihenfolge und Verschiebung; wie eine Photoshop-Ebene.
+- **Pfad** — eine geschlossene, gefärbte Form aus Punkten; Segmente können über ihren Mittelpunkt gerundet werden; wird ungeschnitten gespeichert.
+- **Vorlage** — eine bestehende Lackierung oder ein vorgefertigter Pfad (z. B. ganze Finne), der als Ausgangspunkt in eine neue Lackierung kopiert wird.
+- **Referenzfoto** — echtes Foto der Airline auf dieser Typklasse aus der Fotokette der App, neben dem Zeichenbrett.
+- **Lücke** — eine gesehene Kombination Airline × Typklasse ohne Lackierung; der Editor filtert darauf.
+- **Import** — einmalige Übersetzung der heutigen CSS-Lackierungen in Pfadebenen bei der Umstellung.
 - **Standard-Lackierung** — weiß, für Airlines ohne eigene Lackierung.
 - **Route** — Abflug- → Zielort; kann **unbekannt** sein.
 - **Flugphase** — Steigflug, Sinkflug, Horizontalflug.
@@ -100,6 +154,8 @@ in der ZimaOS-Oberfläche. Ein Handgriff auf dem Server soll die Ausnahme sein, 
 - **Opt-in-Feature** — Funktion, die ein Fremdkonto braucht (ElevenLabs, FlightAware); Schlüssel und Aktivierung sind getrennte Umgebungsvariablen.
 
 ## Open questions
+- Lackierungs-Editor: Gilt Storybook-first (ADR 0002) auch für die Bausteine des Editors, oder ist er Betreiber-Werkzeug außerhalb des Gates? (open since 2026-10-31)
+- Lackierungs-Editor: Was gilt als „gesehen“ für den Lücken-Filter: jede Sichtung, oder erst ab einer Mindestzahl in den letzten N Tagen? (open since 2026-10-31)
 - Liefert eine kostenlose Quelle verlässlich genug die **Route** (Abflug/Ziel) zu einem Flug? Kernrisiko für den Steckbrief. (open since 2026-10-26)
   - Research vom 2026-10-26: Kostenlose Routendaten existieren (VRS standing-data CC0, adsb.lol routeset, adsbdb), sind aber aus dem Callsign abgeleitet und daher manchmal falsch. Bei adsbdb ist die Weitergabe eingeschränkt. Wie gut die Abdeckung wirklich ist, misst der Walking Skeleton.
 - Welches **iPad** wird genutzt? Zur Wahl stehen ein iPad Pro 12,9" 1. Gen. (iPadOS 16) und ein kleineres iPad mit Homebutton, wahrscheinlich iPad 6. Gen. oder Pro 10,5" (iPadOS 17), Modellnummer noch offen. Beide haben 4:3. Festgelegt ist die Mindestgrenze iPadOS 16 / Safari 16. (open since 2026-10-26)

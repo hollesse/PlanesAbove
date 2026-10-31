@@ -11,6 +11,7 @@ For BC-scoped artifacts, see each BC's `INDEX.md`.
 ## Bounded contexts
 
 <!-- bc-list:start -->
+- **livery-editor** — Papas Desktop-Werkzeug zum Zeichnen von Lackierungen: Lücken-Filter, Referenzfoto, Pfadwerkzeug, Ebenen, Logos; schreibt Dateien ins Repo — `contexts/livery-editor/INDEX.md`
 - **sky-scene** — Himmelsszene für Mona: Szene, Übergänge, Steckbrief vorlesen, Vorlese-Sperre — `contexts/sky-scene/INDEX.md`
 - **airspace** — Flugzeuge im Umkreis, Anreicherung, Auswahl der zwei nächsten im 30-s-Takt — `contexts/airspace/INDEX.md`
 - **weather** — echtes Wetter + Sonnenstand → einer der 28 Himmel — `contexts/weather/INDEX.md`
@@ -23,6 +24,7 @@ For BC-scoped artifacts, see each BC's `INDEX.md`.
 ## Global ADRs (scope: global)
 
 <!-- adr-global:start -->
+- **0031** — Lackierung je Airline × Typklasse als ungeschnittene Pfaddatei im Repo; Silhouette und Detailschicht getrennt; Zuschnitt beim Anzeigen — 2026-10-31 — `decisions/0031-livery-per-airline-and-typeclass-as-unclipped-path-file-in-repo.md`
 - **0030** — Drei-Schichten-Konfiguration: Defaults im Repo, Pflichtwerte und Secrets per Umgebungsvariable, optionale Override-Datei — 2026-10-31 — `decisions/0030-layered-config-defaults-in-repo-env-vars-optional-override.md`
 - **0011** — Health endpoint, dead-man's-switch heartbeat and structured logs — 2026-10-26 — `decisions/0011-health-endpoint-heartbeat-and-structured-logs.md`
 - **0008** — Docker Compose app on ZimaOS; self-recovering iPad kiosk client — 2026-10-26 — `decisions/0008-compose-on-zimaos-and-self-recovering-ipad-kiosk.md`

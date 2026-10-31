@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 11:49 -- Brainstorm: Lackierungs-Editor
+
+**Type:** Brainstorm
+**Outcome:** vision extended
+**BCs identified:** livery-editor (neu); liveries (Purpose und Sprache erweitert)
+**Summary:** Papa bekommt ein Desktop-Werkzeug zum Zeichnen von Lackierungen: Lücken-Filter aus dem Sichtungsprotokoll, Referenzfoto, Pfadwerkzeug mit Shift-Zwang und Rundung, Ebenen, Logos, Vorlagen, Deckkraft-Ansicht. Eine Lackierung gilt künftig für genau eine Airline auf genau einer Typklasse, liegt als eigene Datei aus ungeschnittenen Pfadebenen im Repo, Silhouette und Detailschicht sind getrennt, Zuschnitt beim Anzeigen; fehlende Kombination ist Weiß. Editor läuft auf dem Mac, liest vom Heimserver, schreibt ins Repo; Umstellung einmalig per Import, bis dahin bleiben die CSS-Lackierungen.
+**ADRs written:** 0031
+**Foundation tasks emitted:** liveries-w35k0, livery-editor-rv382, infrastructure-cc9gq, liveries-ptm0c, infrastructure-nwwcq, infrastructure-m6nj3 (decision); livery-editor-zc7hk (spike Editor-Durchstich). Walking skeleton und Styleguide bestehen bereits (infrastructure-001, design-system-001), nicht neu emittiert.
+
+---
+
 ## 2026-10-31 11:17 -- Work session ended
 
 **Type:** Work / Session end
