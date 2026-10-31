@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 10:36 -- Modeling / Captured: airspace-vcytm - Schärfere Fotos im Overlay — Commons-Vorschau mit 1600 px anfordern und Default-Kette auf [commons, airport-data, planespotters] drehen
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** todo
+**Summary:** Planespotters liefert nur 280-px-Thumbnails; Commons auf 1600 px anfordern, Default-Kette commons → airport-data → planespotters, Stichprobe meldet Bildgrößen.
+
+---
+
 ## 2026-10-31 10:21 -- Work session ended
 
 **Type:** Work / Session end
