@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 6
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **sky-scene-b7w2n** — Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline (feature) — `todo/sky-scene-b7w2n-steckbrief-aus-satzbausteinen-mit-baustein-cache.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **sky-scene-b7w2n** — Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline (feature) — `doing/sky-scene-b7w2n-steckbrief-aus-satzbausteinen-mit-baustein-cache.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

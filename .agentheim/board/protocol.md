@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 08:30 -- Batch started: [sky-scene-b7w2n]
+
+**Type:** Work / Batch start
+**Tasks:** sky-scene-b7w2n - Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline
+**Parallel:** scoped — builder named sky-scene-b7w2n; no other ready tasks
+
+---
+
 ## 2026-10-31 08:26 -- Modeling / Refined: sky-scene-b7w2n - Steckbrief aus Satzbausteinen mit Baustein-Cache
 
 **Type:** Modeling / Refine

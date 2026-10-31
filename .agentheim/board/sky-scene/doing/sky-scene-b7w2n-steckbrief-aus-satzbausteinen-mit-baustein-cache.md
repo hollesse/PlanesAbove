@@ -1,7 +1,7 @@
 ---
 id: sky-scene-b7w2n
 title: Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline
-status: todo
+status: doing
 type: feature
 context: sky-scene
 created: 2026-10-31
