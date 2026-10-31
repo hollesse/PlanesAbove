@@ -1,7 +1,7 @@
 ---
 id: infrastructure-cc9gq
 title: Entscheidung: Sichtungen je Airline × Typklasse und Referenzfotos über zwei lesende Endpunkte des Heimservers
-status: todo
+status: doing
 type: decision
 context: infrastructure
 created: 2026-10-31

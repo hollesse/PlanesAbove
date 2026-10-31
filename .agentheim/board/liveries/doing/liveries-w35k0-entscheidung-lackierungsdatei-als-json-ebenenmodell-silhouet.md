@@ -1,7 +1,7 @@
 ---
 id: liveries-w35k0
 title: Entscheidung: Lackierungsdatei als JSON-Ebenenmodell, Silhouette und Detailschicht als SVG je Typklasse, eine gemeinsame Render-Funktion
-status: todo
+status: doing
 type: decision
 context: liveries
 created: 2026-10-31

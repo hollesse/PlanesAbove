@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 11:58 -- Batch started: [liveries-w35k0, infrastructure-cc9gq, infrastructure-nwwcq]
+
+**Type:** Work / Batch start
+**Tasks:** liveries-w35k0 - Entscheidung: Lackierungsdatei als JSON-Ebenenmodell, Silhouette und Detailschicht als SVG je Typklasse, eine gemeinsame Render-Funktion, infrastructure-cc9gq - Entscheidung: Sichtungen je Airline × Typklasse und Referenzfotos über zwei lesende Endpunkte des Heimservers, infrastructure-nwwcq - Entscheidung: Storybook-first gilt für den Anzeigepfad, nicht für Betreiber-Werkzeuge (ergänzt ADR 0002)
+**Parallel:** scoped — builder named the six Lackierungs-Editor decision tasks; wave 1 dispatches liveries-w35k0, infrastructure-cc9gq, infrastructure-nwwcq (no deps); livery-editor-rv382, liveries-ptm0c, infrastructure-m6nj3 queued on their deps; spike livery-editor-zc7hk not in scope
+
+---
+
 ## 2026-10-31 11:49 -- Brainstorm: Lackierungs-Editor
 
 **Type:** Brainstorm

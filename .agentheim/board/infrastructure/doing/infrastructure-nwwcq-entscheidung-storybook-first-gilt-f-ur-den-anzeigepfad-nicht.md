@@ -1,7 +1,7 @@
 ---
 id: infrastructure-nwwcq
 title: Entscheidung: Storybook-first gilt für den Anzeigepfad, nicht für Betreiber-Werkzeuge (ergänzt ADR 0002)
-status: todo
+status: doing
 type: decision
 context: infrastructure
 created: 2026-10-31
