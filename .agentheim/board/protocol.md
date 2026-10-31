@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-10-31 11:09 -- Task verified and completed: airspace-tzw5t - Korridor-Deckel (corridorMaxKm) aufweichen, wenn der Kurs zum Ziel passt und das Flugzeug weit vom Start ist (Querabstand klein gegen Strecke seit Start); TOM16Y Manchester–Heraklion wird plausibel, EWG16Y bleibt abgelehnt
+
+**Type:** Work / Task completion
+**Task:** airspace-tzw5t - Korridor-Deckel (corridorMaxKm) aufweichen, wenn der Kurs zum Ziel passt und das Flugzeug weit vom Start ist (Querabstand klein gegen Strecke seit Start); TOM16Y Manchester–Heraklion wird plausibel, EWG16Y bleibt abgelehnt
+**Summary:** Korridor-Deckel corridorMaxKm entfällt, wenn der Kurs zum Ziel passt (capReliefHeadingDeg 20) und Querabstand/Entfernung vom Start klein ist (capReliefCrossTrackRatio 0.4); TOM16Y Manchester–Heraklion wird plausibel, EWG16Y bleibt abgelehnt
+**Duration:** 9m
+**Verification:** PASS (iteration 2)
+**Files changed:** 6
+**Tests added:** 4
+**ADRs written:** none
+
+---
+
+## 2026-10-31 11:08 -- Verification failed — escalating to user: sky-scene-jpjt2 - Sprachcache lesbar ablegen
+
+**Type:** Work / Verification failure
+**Task:** sky-scene-jpjt2 - Sprachcache lesbar ablegen — Ordner je Adapter/Stimme/Kategorie, sprechender Dateiname mit Text-Hash-Suffix
+**Iteration:** 1 of 3
+**Reasons:** ICAO-fallback criterion (route/EDFE-EDDK) is unreachable end to end — airports without IATA produce no route block (criterion 1 keeps that rule), routeCodes never filled from sky-service; the only test hits the label-regex shortcut, not the icao branch. Everything else green (694 tests).
+**Iteration hint:** task-under-specified
+**Next:** escalated to user — worktree kept, diff salvaged to .agentheim/salvage/sky-scene-jpjt2-escalated-iter1.patch
+
+---
+
 ## 2026-10-31 11:06 -- Task verified and completed: airspace-hejpw - Airport-Data als Fotoquelle ausbauen; Planespotters nur noch als Fallback, wenn Wikimedia Commons gar kein Foto liefert
 
 **Type:** Work / Task completion

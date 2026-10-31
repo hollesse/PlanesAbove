@@ -1,7 +1,7 @@
 ---
 id: airspace-tzw5t
 title: Korridor-Deckel (corridorMaxKm) aufweichen, wenn der Kurs zum Ziel passt und das Flugzeug weit vom Start ist (Querabstand klein gegen Strecke seit Start); TOM16Y Manchester–Heraklion wird plausibel, EWG16Y bleibt abgelehnt
-status: doing
+status: done
 type: feature
 context: airspace
 created: 2026-10-31
@@ -44,3 +44,19 @@ Gelten beide, gilt statt `corridorMaxKm` die **ungedeckelte** Formel `corridorBa
 - Verworfene Varianten (modeling): Deckel pauschal anheben (kippt EWG16Y), nur Kurs (EWG16Y 7° rutscht durch), Kurs + Reiseflug (trennt, aber ein falscher Flugplan im Reiseflug ginge durch). Gewählt: Kurs + weit vom Start, weil der Abstand zwischen den beiden Belegfällen (0,22 vs 1,0) groß ist.
 - Das Verhältnis Querabstand/Entfernung vom Start ist der Sinus des Winkels zwischen Leg-Peilung am Start und Peilung Start→Flugzeug; 0,4 entspricht ≈ 24°. Der Worker darf das alternativ als Winkel formulieren, wenn es im Code klarer ist, Default dann 24°.
 - Vorbilder: airspace-p8w2k (Schärfung), prwpv (8 % + Deckel), v4kqz (Umleitung), hw8f9 (Phase nur unter Reiseflughöhe).
+
+## Verifier note (iteration 1)
+
+REASONS:
+- Criterion 3, second half, not covered as written: the test "no relief when the plane stands close to the origin (ratio above limit)" reuses the TOM position 50.5/8.3 (ratio ~0.22, ~790 km from MAN) and lowers capReliefCrossTrackRatio to 0.1 instead of constructing a position near the origin; the default 0.4 ratio gate is never exercised by a near-origin MAN–HER position.
+- Test "EWG16Y stays rejected; DLH7PP stays rejected" asserts nothing about DLH7PP (both expectations use route(STR, LCA) at OBERWEYER). Rename or add the MUC–GDN assertion.
+- Secondary: README_DELTA appends a separate "Korridor-Aufweichung" bullet, but the task's What names the existing **Plausibilitaetspruefung (Route)** bullet as the place for this; that bullet would still read "capped at corridorMaxKm 150" with no relief exception. Cosmetic: route-why prints crossTrackRatio 0.21899999999999997 (float noise).
+- Everything else checks out: npm test (693 passed) and typecheck green; legPlausible logic matches the What; zod bounds correct; route-why TOM16Y reports PLAUSIBLE with capRelief applied.
+
+SUGGESTED_FIX: Add a test with a real constructed MAN–HER position near Manchester: outside originZoneKm, cross-track over 150 km, ratio above 0.4, trackDeg within 20° of the bearing to HER — rejected with defaults, would pass if the ratio check were removed. Rename or fix the mislabeled DLH7PP test. In README_DELTA, add the relief exception to the existing Plausibilitaetspruefung (Route) bullet (replace op) instead of / in addition to the new bullet. Round crossTrackRatio cleanly.
+
+ITERATION_HINT: likely-fixable
+
+## Outcome
+
+legPlausible (src/server/modules/airspace/route-service.ts) lifts the corridorMaxKm cap when track deviation to the leg destination <= capReliefHeadingDeg (default 20, 0 = off) and cross-track/origin distance <= capReliefCrossTrackRatio (default 0.4); requires trackDeg, altitude above minHeadingCheckAltitudeM and outside both airport zones; detoured legs unchanged. New zod-validated config keys (0..180 / 0..1), config.example.yaml and README documented. scripts/route-why.src.mjs corridor line shows capRelief (applied, deviation, rounded ratio); against TOM16Y data it reports hexdb PLAUSIBLE. Tests in tests/unit/server/route-plausibility.test.ts include TOM16Y with/without relief, no track, a constructed near-Manchester position rejected by the default ratio gate (passes without it), EWG16Y rejected. npm test and typecheck green.

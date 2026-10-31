@@ -93,6 +93,13 @@ function legBreakdown(a, b) {
   const len = distanceKm(a, b);
   const xt = crossTrackKm(a, b, position);
   const corridorKm = Math.min(plaus.corridorBaseKm + (plaus.corridorPercent / 100) * len, plaus.corridorMaxKm);
+  const uncappedKm = plaus.corridorBaseKm + (plaus.corridorPercent / 100) * len;
+  const devToDest = obs?.trackDeg === undefined ? undefined : angleDiffDeg(bearingDeg(position, b), obs.trackDeg);
+  const reliefRatio = xt / distanceKm(a, position);
+  const zonesOk = obs?.altitudeM !== undefined && obs.altitudeM > plaus.minHeadingCheckAltitudeM && distanceKm(a, position) > plaus.originZoneKm && distanceKm(position, b) > plaus.destinationZoneKm;
+  const reliefOn = (plaus.capReliefHeadingDeg ?? 20) > 0;
+  const applied = reliefOn && devToDest !== undefined && zonesOk && devToDest <= (plaus.capReliefHeadingDeg ?? 20) && reliefRatio <= (plaus.capReliefCrossTrackRatio ?? 0.4);
+  const capRelief = { applied, headingDeviationDeg: devToDest === undefined ? 'no track' : r1(devToDest), headingLimitDeg: plaus.capReliefHeadingDeg, crossTrackRatio: Math.round(reliefRatio * 100) / 100, ratioLimit: plaus.capReliefCrossTrackRatio, uncappedLimitKm: r1(uncappedKm) };
   const detour = closedAirspaceHit(a, b, plaus.closedAirspaces ?? [], plaus.closedAirspaceSampleKm ?? 100);
   const headingLimit = detour ? plaus.detourHeadingDeviationDeg : plaus.maxHeadingDeviationDeg;
   const dOrigin = distanceKm(a, position), dDest = distanceKm(position, b);
@@ -100,7 +107,7 @@ function legBreakdown(a, b) {
   const up = plaus.climbMetersPerKm * dOrigin + plaus.profileSlackM, down = plaus.descentMetersPerKm * dDest + plaus.profileSlackM;
   const checks = {
     detour: detour ? { closedAirspace: detour, effect: 'corridor skipped, heading limit ' + headingLimit + '°' } : { none: true },
-    corridor: detour ? { skipped: 'detoured leg (' + detour + ')', crossTrackKm: r1(xt), limitKm: r1(corridorKm) } : { crossTrackKm: r1(xt), limitKm: r1(corridorKm), routeLengthKm: r1(len), ok: xt <= corridorKm },
+    corridor: detour ? { skipped: 'detoured leg (' + detour + ')', crossTrackKm: r1(xt), limitKm: r1(corridorKm) } : { crossTrackKm: r1(xt), limitKm: r1(corridorKm), routeLengthKm: r1(len), capRelief, ok: xt <= (capRelief.applied ? uncappedKm : corridorKm) },
     altitudeProfile: alt === undefined ? { skipped: 'no altitude' } : { altitudeM: r1(alt), climbEnvelopeM: r1(up), descentEnvelopeM: r1(down), distanceFromOriginKm: r1(dOrigin), distanceToDestKm: r1(dDest), ok: !((up < 12500 && alt > up) || (down < 12500 && alt > down)) },
     phase: vr === undefined || alt === undefined ? { skipped: 'no vertical rate/altitude' } : { verticalRateMs: r1(vr), altitudeM: r1(alt), applies: alt < plaus.phaseMaxAltitudeM && Math.abs(vr) > plaus.phaseMinRateMs, ok: !(alt < plaus.phaseMaxAltitudeM && ((vr > plaus.phaseMinRateMs && dOrigin > plaus.maxClimbDistanceKm) || (vr < -plaus.phaseMinRateMs && dDest > plaus.maxClimbDistanceKm))) },
     heading: track === undefined || alt === undefined ? { skipped: 'no track/altitude' } : (alt <= plaus.minHeadingCheckAltitudeM || dOrigin <= plaus.originZoneKm || dDest <= plaus.destinationZoneKm) ? { skipped: 'inside airport zone or below minHeadingCheckAltitudeM' } : { trackDeg: r1(track), bearingToDestDeg: r1(bearingDeg(position, b)), deviationDeg: r1(angleDiffDeg(bearingDeg(position, b), track)), limitDeg: headingLimit, ok: angleDiffDeg(bearingDeg(position, b), track) <= headingLimit },

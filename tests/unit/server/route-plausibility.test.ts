@@ -130,7 +130,7 @@ describe('config', () => {
   it('has the documented defaults and rejects non-positive/out-of-range values', () => {
     const yaml = (extra = ''): string => `location: { lat: 50, lon: 8 }\nsources:\n  route:\n    plausibility:\n${extra || '      corridorBaseKm: 50\n'}`;
     expect(parseConfig('location: { lat: 50, lon: 8 }').sources.route.plausibility).toEqual(DEFAULT_PLAUSIBILITY);
-    expect(DEFAULT_PLAUSIBILITY).toMatchObject({ corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5 });
+    expect(DEFAULT_PLAUSIBILITY).toMatchObject({ corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5, capReliefHeadingDeg: 20, capReliefCrossTrackRatio: 0.4 });
     expect(() => parseConfig(yaml('      corridorBaseKm: 0\n'))).toThrow();
     expect(() => parseConfig(yaml('      maxHeadingDeviationDeg: 181\n'))).toThrow();
     expect(parseConfig(yaml('      maxHeadingDeviationDeg: 90\n')).sources.route.plausibility.maxHeadingDeviationDeg).toBe(90);
@@ -198,5 +198,31 @@ describe('rejected routes are remembered and re-judged per tick (airspace-prwpv)
     await clock.advance(6 * 3_600_000 + 1);
     await svc.lookupFor('E', FARP);
     expect(src.calls).toBe(2);
+  });
+});
+
+describe('isPlausibleRoute: corridor cap relief (airspace-tzw5t)', () => {
+  const MAN = ap('Manchester', 53.3537, -2.275), HER = ap('Heraklion', 35.3397, 25.1803);
+  const TOM: LatLon = { lat: 50.5, lon: 8.3 };
+  const obs = { trackDeg: 124, altitudeM: 12497, verticalRateMs: 0 };
+  it('TOM16Y Manchester-Heraklion is plausible with relief, rejected with relief off', () => {
+    expect(isPlausibleRoute(route(MAN, HER), TOM, obs, DEFAULT_PLAUSIBILITY)).toBe(true);
+    expect(isPlausibleRoute(route(MAN, HER), TOM, obs, { ...DEFAULT_PLAUSIBILITY, capReliefHeadingDeg: 0 })).toBe(false);
+  });
+  it('no relief without a track', () => {
+    expect(isPlausibleRoute(route(MAN, HER), TOM, { altitudeM: 12497, verticalRateMs: 0 }, DEFAULT_PLAUSIBILITY)).toBe(false);
+  });
+  it('no relief when the plane stands close to the origin (ratio above the default 0.4), even with the course confirming Heraklion', () => {
+    const NEAR = destinationPoint(MAN as LatLon, 400, bearingDeg(MAN as LatLon, HER as LatLon) + 30);
+    const nearObs = { trackDeg: bearingDeg(NEAR, HER as LatLon), altitudeM: 12497, verticalRateMs: 0 };
+    const xt = crossTrackKm(MAN as LatLon, HER as LatLon, NEAR);
+    expect(xt).toBeGreaterThan(150); expect(xt).toBeLessThan(284); expect(xt / 400).toBeGreaterThan(0.4);
+    expect(isPlausibleRoute(route(MAN, HER), NEAR, nearObs, DEFAULT_PLAUSIBILITY)).toBe(false);
+    // without the ratio gate the same position would pass
+    expect(isPlausibleRoute(route(MAN, HER), NEAR, nearObs, { ...DEFAULT_PLAUSIBILITY, capReliefCrossTrackRatio: 1 })).toBe(true);
+  });
+  it('EWG16Y stays rejected with relief enabled (the cap test and DLH7PP are covered above)', () => {
+    expect(isPlausibleRoute(route(STR, LCA), OBERWEYER, { trackDeg: 113, altitudeM: ft(26225), verticalRateMs: 12.6 }, DEFAULT_PLAUSIBILITY)).toBe(false);
+    expect(isPlausibleRoute(route(STR, LCA), OBERWEYER, { trackDeg: 113, altitudeM: ft(26225), verticalRateMs: 0 }, DEFAULT_PLAUSIBILITY)).toBe(false);
   });
 });

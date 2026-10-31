@@ -28,8 +28,10 @@ export interface PlausibilityConfig {
   maxHeadingDeviationDeg: number; maxClimbDistanceKm: number; climbMetersPerKm: number; descentMetersPerKm: number; profileSlackM: number; phaseMaxAltitudeM: number; phaseMinRateMs: number;
   /** Allowed heading deviation on a detoured leg (great circle crosses a closed airspace; replaces maxHeadingDeviationDeg, corridor is skipped). */
   detourHeadingDeviationDeg: number; closedAirspaceSampleKm: number; closedAirspaces: ClosedAirspace[];
+  /** Cap relief (airspace-tzw5t): the corridor cap corridorMaxKm is lifted when heading deviation to the leg's destination <= capReliefHeadingDeg (0 = off) and cross-track / distance from origin <= capReliefCrossTrackRatio. */
+  capReliefHeadingDeg: number; capReliefCrossTrackRatio: number;
 }
-export const DEFAULT_PLAUSIBILITY: PlausibilityConfig = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5, detourHeadingDeviationDeg: 90, closedAirspaceSampleKm: 100, closedAirspaces: DEFAULT_CLOSED_AIRSPACES };
+export const DEFAULT_PLAUSIBILITY: PlausibilityConfig = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5, detourHeadingDeviationDeg: 90, closedAirspaceSampleKm: 100, closedAirspaces: DEFAULT_CLOSED_AIRSPACES, capReliefHeadingDeg: 20, capReliefCrossTrackRatio: 0.4 };
 /** Own ADS-B observation of the plane; every field may be missing (e.g. MLAT has no track). */
 export interface Observation { trackDeg?: number; verticalRateMs?: number; altitudeM?: number }
 
@@ -43,9 +45,15 @@ function legPlausible(a: Pt, b: Pt, position: LatLon, obs: Observation, c: Plaus
   // A leg whose great circle crosses a closed airspace is flown around it: no corridor, wider heading tolerance (airspace-v4kqz).
   const detour = closedAirspaceHit(a, b, c.closedAirspaces, c.closedAirspaceSampleKm);
   if (detour) log?.log('debug', 'route plausibility', { detoured: true, airspace: detour });
-  else if (crossTrackKm(a, b, position) > Math.min(c.corridorBaseKm + (c.corridorPercent / 100) * len, c.corridorMaxKm)) return false;
   const dOrigin = distanceKm(a, position), dDest = distanceKm(position, b);
   const alt = obs.altitudeM;
+  if (!detour) {
+    const xt = crossTrackKm(a, b, position), uncapped = c.corridorBaseKm + (c.corridorPercent / 100) * len;
+    // Cap relief (airspace-tzw5t): course confirms the destination and the plane is far from the origin relative to its offset -> uncapped corridor.
+    const relief = obs.trackDeg !== undefined && alt !== undefined && alt > c.minHeadingCheckAltitudeM && dOrigin > c.originZoneKm && dDest > c.destinationZoneKm
+      && c.capReliefHeadingDeg > 0 && angleDiffDeg(bearingDeg(position, b), obs.trackDeg) <= c.capReliefHeadingDeg && xt / dOrigin <= c.capReliefCrossTrackRatio;
+    if (xt > (relief ? uncapped : Math.min(uncapped, c.corridorMaxKm))) return false;
+  }
   if (alt !== undefined) {
     const up = c.climbMetersPerKm * dOrigin + c.profileSlackM, down = c.descentMetersPerKm * dDest + c.profileSlackM;
     if ((up < CRUISE_CEILING_M && alt > up) || (down < CRUISE_CEILING_M && alt > down)) return false;

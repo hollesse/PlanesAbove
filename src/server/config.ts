@@ -7,7 +7,7 @@ import { DEFAULT_CLOSED_AIRSPACES } from './modules/airspace/closed-airspace';
 import { FLIGHT_SOURCE_NAMES } from './modules/airspace/flight-source-names';
 import { PHOTO_SOURCE_NAMES, type PhotoSourceName } from './modules/airspace/photo-source';
 const FLIGHTAWARE_DEFAULTS = { timeoutMs: 8000, monthlyBudgetUsd: 4.5, monthlyRequestCap: 900, usageSyncMinutes: 30, usageLagMinutes: 15, billingPeriodStartDay: 1 };
-const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5, detourHeadingDeviationDeg: 90, closedAirspaceSampleKm: 100, closedAirspaces: DEFAULT_CLOSED_AIRSPACES };
+const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5, detourHeadingDeviationDeg: 90, closedAirspaceSampleKm: 100, closedAirspaces: DEFAULT_CLOSED_AIRSPACES, capReliefHeadingDeg: 20, capReliefCrossTrackRatio: 0.4 };
 const ROUTE_DEFAULTS = { enabled: true, order: ['hexdb' as const, 'adsbdb' as const, 'vrs' as const], hexdb: { timeoutMs: 5000, backoffMinutes: 5 }, adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS, plausibility: PLAUSIBILITY_DEFAULTS };
 const PHOTO_DEFAULTS = { order: ['commons'] as PhotoSourceName[], fallback: ['planespotters'] as PhotoSourceName[], maxPhotos: 6, timeoutMs: 5000, cacheTtlHours: 24, backoffMinutes: 5 };
 
@@ -90,6 +90,9 @@ const schema = z.object({
         corridorBaseKm: z.number().positive().default(50),
         corridorPercent: z.number().positive().default(8),
         corridorMaxKm: z.number().positive().default(150),
+        /** Cap relief (airspace-tzw5t): heading deviation (deg, 0 = off) and cross-track/origin-distance ratio under which corridorMaxKm is lifted. */
+        capReliefHeadingDeg: z.number().min(0).max(180).default(20),
+        capReliefCrossTrackRatio: z.number().min(0).max(1).default(0.4),
         originZoneKm: z.number().positive().default(60),
         destinationZoneKm: z.number().positive().default(80),
         minHeadingCheckAltitudeM: z.number().positive().default(3000),

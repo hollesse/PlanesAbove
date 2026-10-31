@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 2
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 24
+- **Doing:** 0
+- **Done:** 25
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **airspace-tzw5t** — Korridor-Deckel (corridorMaxKm) aufweichen, wenn der Kurs zum Ziel passt und das Flugzeug weit vom Start ist (Querabstand klein gegen Strecke seit Start); TOM16Y Manchester–Heraklion wird plausibel, EWG16Y bleibt abgelehnt (feature) — `doing/airspace-tzw5t-korridor-deckel-aufweichen-bei-kursbestaetigung-und-weit-vom-start.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **airspace-tzw5t** — Korridor-Deckel (corridorMaxKm) aufweichen, wenn der Kurs zum Ziel passt und das Flugzeug weit vom Start ist (Querabstand klein gegen Strecke seit Start); TOM16Y Manchester–Heraklion wird plausibel, EWG16Y bleibt abgelehnt (feature) — `done/airspace-tzw5t-korridor-deckel-aufweichen-bei-kursbestaetigung-und-weit-vom-start.md`
 - **airspace-hejpw** — Airport-Data als Fotoquelle ausbauen; Planespotters nur noch als Fallback, wenn Wikimedia Commons gar kein Foto liefert (feature) — `done/airspace-hejpw-airport-data-ausbauen-planespotters-nur-als-fallback.md`
 - **airspace-vcytm** — Schärfere Fotos im Overlay — Commons-Vorschau mit 1600 px anfordern und Default-Kette auf [commons, airport-data, planespotters] drehen (feature) — `done/airspace-vcytm-schaerfere-fotos-commons-1600px-und-kette-commons-zuerst.md`
 - **airspace-gw6w9** — Fotoquelle (PhotoSource): echte Fotos eines konkreten Flugzeugs per Kennzeichen/Hex aus mehreren kostenlosen Plattformen, mit Attribution, als Galerie (feature) — `done/airspace-gw6w9-fotoquelle-echte-fotos-eines-flugzeugs-per-kennzeichen-hex.md`
