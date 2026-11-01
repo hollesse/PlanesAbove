@@ -5,6 +5,22 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 19:40 -- Modeling / Promoted: airspace-fehby - Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.)
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
+## 2026-11-01 19:40 -- Modeling / Promoted: airspace-rrazj - Lokale Vereinsflieger per Hex-Code erfassen und den Verein statt der Airline anzeigen
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-11-01 19:40 -- Modeling / Refined: airspace-rrazj, airspace-fehby - Vereinsflieger-Tabelle und keine Route für Kennzeichen-Callsigns
 
 **Type:** Modeling / Refine

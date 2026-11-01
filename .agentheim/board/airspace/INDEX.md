@@ -10,14 +10,16 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 2
-- **Todo:** 0
+- **Backlog:** 0
+- **Todo:** 2
 - **Doing:** 0
 - **Done:** 26
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **airspace-fehby** — Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.) (feature) — `todo/airspace-fehby-keine-route-fuer-kleinflugzeuge-mit-registrierung-als-callsign.md`
+- **airspace-rrazj** — Lokale Vereinsflieger per Hex-Code erfassen und den Verein statt der Airline anzeigen (feature) — `todo/airspace-rrazj-vereinsflieger-tabelle-verein-statt-airline-anzeigen.md`
 <!-- todo-list:end -->
 
 ### Doing
@@ -56,8 +58,6 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
-- **airspace-rrazj** — Lokale Vereinsflieger per Hex-Code erfassen und den Verein statt der Airline anzeigen (feature) — `backlog/airspace-rrazj-vereinsflieger-tabelle-verein-statt-airline-anzeigen.md`
-- **airspace-fehby** — Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.) (feature) — `backlog/airspace-fehby-keine-route-fuer-kleinflugzeuge-mit-registrierung-als-callsign.md`
 <!-- backlog-list:end -->
 
 ## Pointers
