@@ -5,6 +5,27 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 13:06 -- Modeling / Refined: liveries-yafve - Kriterien nach Betreiber-Entscheidung
+
+**Type:** Modeling / Refine
+**BC:** liveries
+**Status after:** doing (Iteration 2 folgt)
+**Summary:** Hecktriebwerke des regional-jet werden über dem Körper gezeichnet und aus dem Zuschnitt ausgenommen (fieldLayer front, ADR-Nachtrag zu 0032 §6 als ADR 0038); regional-jet ohne Höhenleitwerk wie die Altgrafik.
+**ADRs written:** none (ADR 0038 kommt mit dem Worker-Ergebnis)
+
+---
+
+## 2026-11-01 12:52 -- Verification failed — escalating to user: liveries-yafve - Silhouetten widebody/regional-jet
+
+**Type:** Work / Verification failure
+**Task:** liveries-yafve - Silhouette und Detailschicht für widebody und regional-jet
+**Iteration:** 1 of 3
+**Reasons:** regional-jet: Hecktriebwerke überlappen Rumpf/Finne — Zuschnitt enthält das Triebwerk (ADR 0031 §4a verletzt) und Farbfeld liegt unter dem weißen Rumpf (Gondel verdeckt); Höhenleitwerk erfunden, Altgrafik hat keins. widebody sauber; Suites grün
+**Iteration hint:** task-under-specified
+**Next:** escalated to user — worktree kept, diff salvaged
+
+---
+
 ## 2026-11-01 12:51 -- Task verified and completed: livery-editor-tps9z - Gummiband beim Zeichnen (nächstes Segment folgt der Maus, Klick setzt den Punkt) und Shift-Zwang waagerecht/senkrecht
 
 **Type:** Work / Task completion
