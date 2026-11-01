@@ -1,7 +1,7 @@
 ---
 id: livery-editor-ypj22
 title: Rundungen schon beim Zeichnen des Entwurfs setzen, nicht erst nach dem Schließen
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-01

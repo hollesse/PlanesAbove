@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 8
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **livery-editor-ypj22** — Rundungen schon beim Zeichnen des Entwurfs setzen, nicht erst nach dem Schließen (feature) — `todo/livery-editor-ypj22-rundungen-schon-beim-zeichnen.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **livery-editor-ypj22** — Rundungen schon beim Zeichnen des Entwurfs setzen, nicht erst nach dem Schließen (feature) — `doing/livery-editor-ypj22-rundungen-schon-beim-zeichnen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
