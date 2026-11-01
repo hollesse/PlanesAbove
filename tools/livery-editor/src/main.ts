@@ -89,6 +89,7 @@ function drawBoard() {
   });
   overlay.addEventListener('click', (e) => {
     if (handleGesture) { handleGesture = false; return; }
+    if (board.classList.contains('preview')) return;
     const p = toBoard(e);
     if (closesAt(state.draft, p)) {
       state.file = closeDraft(state.file, state.draft, state.pathColor);
@@ -194,7 +195,7 @@ function renderLayerPanel() {
       queueMicrotask(() => { field.focus(); field.select(); });
     } else {
       nameEl = h('button', { text: layerLabel(file, i), attrs: { class: 'layer-label', 'data-testid': 'layer-select' } });
-      nameEl.addEventListener('click', () => { editing = null; selectLayer(i); });
+      nameEl.addEventListener('click', () => { editing = null; selectLayer(state.selected === i ? null : i); });
       editBtn = iconBtn(ICONS.edit, 'Umbenennen', `layer-rename-${i}`, () => { editing = i; renderLayerPanel(); });
     }
     const actions = h('span', { attrs: { class: 'layer-actions' } },
@@ -303,6 +304,17 @@ panel.append(
 renderLayerPanel();
 drawBoard();
 void loadSightings();
+const typing = () => {
+  const a = document.activeElement as HTMLElement | null;
+  return !!a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.tagName === 'SELECT' || a.isContentEditable);
+};
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { state.draft = { points: [] }; drawBoard(); }
+  if (e.key === 'Escape') {
+    if (state.draft.points.length) { state.draft = { points: [] }; drawBoard(); }
+    else if (!typing() && state.selected !== null) selectLayer(null);
+    return;
+  }
+  if (e.code === 'Space' && !e.repeat && !typing()) { e.preventDefault(); board.classList.add('preview'); }
 });
+document.addEventListener('keyup', (e) => { if (e.code === 'Space') board.classList.remove('preview'); });
+window.addEventListener('blur', () => board.classList.remove('preview'));

@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:39 -- Task verified and completed: livery-editor-v90sn - Auswahl aufheben (Panel-Klick auf die gewählte Zeile, Escape) und Vorschau mit gehaltener Leertaste ohne Overlay
+
+**Type:** Work / Task completion
+**Task:** livery-editor-v90sn - Auswahl aufheben (Panel-Klick auf die gewählte Zeile, Escape) und Vorschau mit gehaltener Leertaste ohne Overlay
+**Summary:** Auswahl aufheben per Klick auf die gewählte Ebenenzeile oder Escape ohne Entwurf; Vorschau ohne Overlay mit gehaltener Leertaste, nicht in Textfeldern
+**Duration:** 4m30s (12:36 → 12:40)
+**Verification:** PASS (iteration 1)
+**Files changed:** 3
+**Tests added:** 3
+**ADRs written:** none
+
+---
+
 ## 2026-11-01 12:35 -- Batch started: [livery-editor-v90sn]
 
 **Type:** Work / Batch start

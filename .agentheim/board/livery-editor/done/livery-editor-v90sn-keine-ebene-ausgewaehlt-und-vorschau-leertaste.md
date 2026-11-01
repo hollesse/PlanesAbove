@@ -1,7 +1,7 @@
 ---
 id: livery-editor-v90sn
 title: Auswahl aufheben (Panel-Klick auf die gewählte Zeile, Escape) und Vorschau mit gehaltener Leertaste ohne Overlay
-status: doing
+status: done
 type: feature
 context: livery-editor
 created: 2026-11-01
@@ -33,3 +33,6 @@ Heute ist immer eine Ebene ausgewählt, und ihr Auswahlumriss, die Eckmarker und
 
 ## Notes
 Betreiber-Feedback vom 2026-11-01. Direkt nach todo. Baut auf nxdzh (Panel, `state.selected`) und rtnx3/ec2zz (Overlay-Griffe) auf.
+
+## Outcome
+Deselect: clicking the selected layer row sets state.selected to null; Escape with an empty draft does the same (not while a text field has focus; Escape with a draft only discards it). Preview: keydown Space (not repeat, no input/textarea/select/contentEditable focus) adds class preview to #board and calls preventDefault; keyup and window blur remove it; CSS hides svg.overlay; the overlay click handler ignores clicks during preview. Files: tools/livery-editor/src/main.ts, tools/livery-editor/index.html, tests/e2e-editor/deselect-preview.spec.ts (3 E2E tests). npm test, typecheck and all 17 editor-chromium tests green. The [human-eye] criterion is left to the operator.
