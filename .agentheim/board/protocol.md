@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:35 -- Task verified and completed: liveries-wyypc - Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen
+
+**Type:** Work / Task completion
+**Task:** liveries-wyypc - Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen
+**Summary:** Narrowbody-Detailschicht trägt die komplette Cockpit-Fensterleiste (3 Teilpfade) der Altgrafik; Einlassring und Fan unverändert
+**Duration:** 3m05s (10:31 → 10:36)
+**Verification:** PASS (iteration 1)
+**Files changed:** 2
+**Tests added:** 2
+**ADRs written:** none
+
+---
+
 ## 2026-11-01 10:31 -- Batch started: [liveries-wyypc, liveries-yzshd, livery-editor-hz0hb]
 
 **Type:** Work / Batch start

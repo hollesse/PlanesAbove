@@ -1,7 +1,7 @@
 ---
 id: liveries-wyypc
 title: Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen
-status: doing
+status: done
 type: bug
 context: liveries
 created: 2026-11-01
@@ -28,3 +28,6 @@ Beim Ausprobieren des Editor-Spikes fehlen in der Detailschicht Cockpitfenster. 
 
 ## Notes
 Refined 2026-11-01 aus dem Betreiber-Feedback zum Editor-Spike livery-editor-zc7hk (Kriterium [human-eye]). Betrifft nur `details.svg`; `build-assets` erzeugt daraus `generated/plane-parts.ts`. Der Spike-Worker hatte die Detailschicht bewusst minimal gehalten.
+
+## Outcome
+Cockpit windows in `src/client/ui/assets/planes/narrowbody/details.svg` now use the full legacy `paint-window-line` path (3 subpaths, fill #3A3F44). Engine inlet ring and fan unchanged. Test: `tests/unit/narrowbody-details.test.ts` compares against the legacy SVG. Full suite and typecheck green; Playwright not run. Human-eye criterion left to operator.
