@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:38 -- Task verified and completed: livery-editor-hz0hb - Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf
+
+**Type:** Work / Task completion
+**Task:** livery-editor-hz0hb - Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf
+**Summary:** Pfad schließt per Klick im Fang-Radius um den ersten Punkt (Hover-Ring), Knopf entfernt, Escape verwirft den Entwurf; Unit- und Editor-E2E-Tests
+**Duration:** 7m10s (10:31 → 10:38, eine Nachbesserung)
+**Verification:** PASS (iteration 2)
+**Files changed:** 4
+**Tests added:** 4
+**ADRs written:** none
+
+---
+
 ## 2026-11-01 10:36 -- Task verified and completed: liveries-yzshd - Trennlinie zwischen Rumpf und Finne wieder sichtbar machen
 
 **Type:** Work / Task completion

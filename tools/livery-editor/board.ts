@@ -17,3 +17,15 @@ export function closeDraft(file: LiveryFile, d: Draft, color: string): LiveryFil
   if (!canClose(d)) return file;
   return { ...file, layers: [...file.layers, { type: 'path', points: d.points, color }] };
 }
+
+/** A click within this many board units of the first point closes the path. */
+export const CLOSE_RADIUS = 12;
+
+export function isNearFirstPoint(d: Draft, p: Point): boolean {
+  if (!d.points.length) return false;
+  const [fx, fy] = d.points[0];
+  return Math.hypot(p[0] - fx, p[1] - fy) <= CLOSE_RADIUS;
+}
+
+/** Whether a click at p would close the draft (needs MIN_POINTS and proximity to the first point). */
+export const closesAt = (d: Draft, p: Point): boolean => canClose(d) && isNearFirstPoint(d, p);

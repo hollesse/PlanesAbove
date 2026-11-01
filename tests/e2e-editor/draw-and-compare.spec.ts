@@ -24,9 +24,11 @@ test('draw a quad, see it clipped, unclipped at silhouette opacity 0, save, and 
   // four clicks at the committed points (viewBox coordinates -> screen), then close
   const box = (await page.getByTestId('overlay').boundingBox())!;
   const [vx, vy, vw, vh] = (await page.getByTestId('overlay').getAttribute('viewBox'))!.split(' ').map(Number);
-  for (const [x, y] of committed.layers[0].points as number[][]) await page.mouse.click(box.x + ((x - vx) / vw) * box.width, box.y + ((y - vy) / vh) * box.height);
+  const at = ([x, y]: number[]) => [box.x + ((x - vx) / vw) * box.width, box.y + ((y - vy) / vh) * box.height] as const;
+  const pts = committed.layers[0].points as number[][];
+  for (const p of pts) await page.mouse.click(...at(p));
   await page.getByTestId('path-color').fill(committed.layers[0].color);
-  await page.getByTestId('close-path').click();
+  await page.mouse.click(...at(pts[0])); // clicking the first point closes the path
 
   // clipped: the quad reaches beyond the silhouette (x 300..700 / y 150..300) but is cut at the body edge
   const paint = page.locator('svg[data-livery-render] .lv-paint');
@@ -62,6 +64,24 @@ test('draw a quad, see it clipped, unclipped at silhouette opacity 0, save, and 
   }, [board, story]);
   // tolerance: sub-pixel anti-aliasing of the two page layouts (observed ~0.2 %); a real divergence shows as tens of percent
   expect(diff).toBeLessThan(0.005);
+});
+
+test('Escape discards the draft; a following click starts a fresh one; there is no close button', async ({ page }) => {
+  await page.goto('/');
+  const overlay = page.getByTestId('overlay');
+  await expect(page.locator('svg[data-livery-render] .lv-body')).toBeVisible();
+  await expect(page.getByTestId('close-path')).toHaveCount(0);
+  const box = (await overlay.boundingBox())!;
+  const dots = overlay.locator('circle[r="5"]');
+  await page.mouse.click(box.x + box.width * 0.4, box.y + box.height * 0.4);
+  await page.mouse.click(box.x + box.width * 0.6, box.y + box.height * 0.4);
+  await expect(dots).toHaveCount(2);
+  await page.keyboard.press('Escape');
+  await expect(dots).toHaveCount(0);
+  await expect(overlay.locator('circle')).toHaveCount(0);
+  await page.mouse.click(box.x + box.width * 0.5, box.y + box.height * 0.6);
+  await expect(dots).toHaveCount(1);
+  await expect(page.getByTestId('close-path')).toHaveCount(0);
 });
 
 test('a livery id with ../ is refused with 400 and nothing is written', async ({ request }) => {
