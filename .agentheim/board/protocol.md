@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:29 -- Batch started: [livery-editor-rtnx3]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-rtnx3 - Eckpunkte eines geschlossenen Pfads als Marker zeigen und verschieben
+**Parallel:** no (1 worker) — livery-editor-ypj22 depends on livery-editor-rtnx3 (both edit tools/livery-editor/src/main.ts overlay gestures); dispatched sequentially
+
+---
+
 ## 2026-11-01 11:29 -- Modeling / Captured: livery-editor-ypj22 - Rundungen schon beim Zeichnen des Entwurfs setzen, nicht erst nach dem Schließen
 
 **Type:** Modeling / Capture

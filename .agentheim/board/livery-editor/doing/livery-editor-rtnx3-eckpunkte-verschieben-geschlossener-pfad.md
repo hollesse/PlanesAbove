@@ -1,7 +1,7 @@
 ---
 id: livery-editor-rtnx3
 title: Eckpunkte eines geschlossenen Pfads als Marker zeigen und verschieben
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-01
