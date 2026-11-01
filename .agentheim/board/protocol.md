@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:23 -- Modeling / Captured: livery-editor-q9nbe - Sichtungen zweistufig: erst Airline (über alle Typen), dann Typklassen-Select mit Sichtungszahl und Lückenstatus je Typ
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** todo
+**Summary:** Sichtungen zweistufig: Airline-Liste über alle Typen, dann Typklassen-Select mit Zahl und Lückenstatus je Typ — Betreiber-Feedback, direkt nach todo
+
+---
+
 ## 2026-11-01 12:05 -- Work session ended
 
 **Type:** Work / Session end
