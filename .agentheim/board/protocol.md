@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:24 -- Capture / Captured: liveries-wyypc - Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen
+
+**Type:** Capture
+**BC:** liveries
+**Filed to:** backlog
+**Summary:** Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen
+
+---
+
 ## 2026-11-01 10:14 -- Work session ended
 
 **Type:** Work / Session end

@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 0
+- **Backlog:** 1
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 2
@@ -44,6 +44,7 @@ prior-art matcher additionally checks `done-archive/` when present.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **liveries-wyypc** — Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen (bug) — `backlog/liveries-wyypc-narrowbody-details-cockpitfenster-vollstaendig.md`
 <!-- backlog-list:end -->
 
 ## Pointers
