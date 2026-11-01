@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 19:40 -- Modeling / Refined: airspace-rrazj, airspace-fehby - Vereinsflieger-Tabelle und keine Route für Kennzeichen-Callsigns
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** rrazj: Tabelle tables/clubs.json (Hex → Verein), Verein ersetzt Airline in Info-Leiste, Satzbaustein und Sichtung; Heimatplatz nur Doku (Betreiber). fehby: Callsign gleich Kennzeichen (Ersatzmuster D + 4 Buchstaben) → keine Routenquelle gefragt, „Route unbekannt“.
+
+---
+
 ## 2026-11-01 19:24 -- Modeling / Promoted: design-system-q7mxe - Größenfaktor je Typklasse: gleiche Klasse gleich groß, Klassenunterschied spürbar aber gedeckelt; Anordnung in Flugrichtung gestaffelt (vorn/unten, hinten/oben) auf gleicher Tiefe
 
 **Type:** Modeling / Promote
