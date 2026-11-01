@@ -10,6 +10,7 @@ const PORT = 6007;
 // ADR 0037: the editor's own Chromium-only project; it writes into a throwaway directory, never into the repo.
 export const EDITOR_PORT = 5174;
 export const EDITOR_OUT = path.join(os.tmpdir(), 'pa-editor-out');
+export const EDITOR_LOGOS_OUT = path.join(os.tmpdir(), 'pa-editor-logos-out');
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -19,7 +20,7 @@ export default defineConfig({
   webServer: [
     { command: `node scripts/serve-static.mjs storybook-static ${PORT}`, url: `http://127.0.0.1:${PORT}/index.json`, reuseExistingServer: true },
     // never reuse: a hand-started editor would write into the repo
-    { command: 'npm run editor', url: `http://127.0.0.1:${EDITOR_PORT}/`, reuseExistingServer: false, env: { LIVERY_EDITOR_OUT: EDITOR_OUT } },
+    { command: 'npm run editor', url: `http://127.0.0.1:${EDITOR_PORT}/`, reuseExistingServer: false, env: { LIVERY_EDITOR_OUT: EDITOR_OUT, LIVERY_EDITOR_LOGOS_OUT: EDITOR_LOGOS_OUT } },
   ],
   projects: [
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },

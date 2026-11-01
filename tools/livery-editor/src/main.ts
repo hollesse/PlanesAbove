@@ -261,7 +261,7 @@ function renderLayerPanel() {
   document.getElementById('board')!.dataset.selected = selected === null ? '' : String(selected);
 }
 
-// ---- Logo: existing logos only (upload is a separate task); a click puts the logo on the fuselage and selects it ----
+// ---- Logo: a click puts the logo on the fuselage and selects it ----
 const logoList = h('div', { attrs: { 'data-testid': 'logo-list', id: 'logo-list' } });
 function addLogo(src: string) {
   const size = logoSize(src);
@@ -276,12 +276,44 @@ function addLogo(src: string) {
   renderLayerPanel(); drawBoard();
   say(`Logo ${src} platziert.`);
 }
-logoList.replaceChildren(...Object.keys(LOGO_SVG).map((src) => {
+function addLogoRow(src: string) {
   const b = h('button', { attrs: { type: 'button', class: 'logo-row', 'data-testid': `logo-add-${src}`, title: `${src} hinzufügen` } },
     h('span', { html: LOGO_SVG[src], attrs: { class: 'logo-preview' } }), h('span', { text: src }));
   b.addEventListener('click', () => addLogo(src));
-  return b;
-}));
+  logoList.append(b);
+}
+Object.keys(LOGO_SVG).forEach(addLogoRow);
+
+// Upload: the file goes through the write plugin into svg/logos/; on 200 the logo joins the list and is placed at once
+// (LOGO_SVG is patched in place, so no page reload is needed; the server-side rebuild later regenerates the same content).
+const logoFile = h('input', { attrs: { type: 'file', accept: '.svg,.png', 'data-testid': 'logo-upload-file' } }) as HTMLInputElement;
+const logoName = h('input', { attrs: { type: 'text', 'data-testid': 'logo-upload-name', placeholder: 'logo-name' } }) as HTMLInputElement;
+logoFile.addEventListener('change', () => {
+  const f = logoFile.files?.[0];
+  if (f) logoName.value = f.name.replace(/\.[^.]*$/, '').toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/^-+/, '').slice(0, 32);
+});
+const logoUploadBtn = h('button', { text: 'Hochladen', attrs: { 'data-testid': 'logo-upload', type: 'button' } });
+logoUploadBtn.addEventListener('click', async () => {
+  const f = logoFile.files?.[0];
+  if (!f) { say('Bitte zuerst eine SVG- oder PNG-Datei wählen.', true); return; }
+  const name = logoName.value;
+  const isPng = f.name.toLowerCase().endsWith('.png');
+  let data: string;
+  let dataUri = '';
+  if (isPng) {
+    const bytes = new Uint8Array(await f.arrayBuffer());
+    let bin = ''; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+    data = btoa(bin); dataUri = `data:image/png;base64,${data}`;
+  } else data = await f.text();
+  const res = await fetch('/__livery-editor/logo', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name, kind: isPng ? 'png' : 'svg', data }) });
+  const r = (await res.json()) as { message?: string; svg?: string };
+  if (!res.ok || !r.svg) { say(r.message ?? `Fehler ${res.status}`, true); return; }
+  LOGO_SVG[name] = isPng ? r.svg.replace(`href="${name}.png"`, `href="${dataUri}"`) : r.svg;
+  addLogoRow(name);
+  logoFile.value = ''; logoName.value = '';
+  addLogo(name);
+  say(`${r.message} Logo platziert.`);
+});
 
 const saveBtn = h('button', { text: 'Speichern', attrs: { 'data-testid': 'save' } });
 saveBtn.addEventListener('click', async () => {
@@ -370,6 +402,9 @@ panel.append(
   layerList,
   h('h2', { text: 'Logo' }),
   logoList,
+  row('Datei (SVG/PNG)', logoFile),
+  row('Logo-Name', logoName),
+  logoUploadBtn,
   h('h2', { text: 'Farbfelder' }),
   fieldColor('engines', 'Triebwerke'),
   fieldColor('wings', 'Flügel'),

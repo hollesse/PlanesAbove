@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 17:04 -- Task verified and completed: livery-editor-q0xd2 - Logo hochladen (SVG/PNG) über das Schreib-Plugin nach svg/logos/, danach sofort in der Logo-Liste und im LOGO-Index
+
+**Type:** Work / Task completion
+**Task:** livery-editor-q0xd2 - Logo hochladen (SVG/PNG) über das Schreib-Plugin nach svg/logos/, danach sofort in der Logo-Liste und im LOGO-Index
+**Summary:** Logo-Upload über das Schreib-Plugin nach svg/logos/: Name-, Größen-, SVG-Sanitizer- und PNG-Prüfung, PNG-Hülle, nie überschreiben; Logo erscheint sofort in Liste und Index
+**Duration:** 16m (16:52 → 17:08, eine Nachbesserung am Sanitizer)
+**Verification:** PASS (iteration 2)
+**Files changed:** 7
+**Tests added:** 40
+**ADRs written:** none
+
+---
+
+## 2026-11-01 16:57 -- Verification failed: livery-editor-q0xd2 - Logo-Upload
+
+**Type:** Work / Verification failure
+**Task:** livery-editor-q0xd2 - Logo hochladen über das Schreib-Plugin
+**Iteration:** 1 of 3
+**Reasons:** SVG-Sanitizer umgehbar (Event-Attribut nach /, ungequotete javascript:- und externe hrefs); README-Delta unvollständig (Logo-, Schreib-Plugin-Bullet)
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-11-01 16:51 -- Batch started: [livery-editor-q0xd2]
 
 **Type:** Work / Batch start

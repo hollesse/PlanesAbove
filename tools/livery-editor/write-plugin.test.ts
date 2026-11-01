@@ -14,7 +14,7 @@ afterEach(() => { if (savedEnv === undefined) delete process.env.LIVERY_EDITOR_O
 function post(rebuild: (r: string) => void, payload: unknown) {
   let handler: (req: unknown, res: unknown) => void = () => {};
   const plugin = liveryWritePlugin(root, rebuild) as any;
-  plugin.configureServer({ middlewares: { use: (_p: string, h: typeof handler) => { handler = h; } } });
+  plugin.configureServer({ middlewares: { use: (p: string, h: typeof handler) => { if (p === '/__livery-editor/save') handler = h; } } });
   const req: any = new EventEmitter(); req.method = 'POST';
   const res: any = { statusCode: 0, setHeader() {}, end() {} };
   handler(req, res);
@@ -38,6 +38,34 @@ describe('write plugin triggers build-assets after a save (ADR 0035 point 3, "oh
     process.env.LIVERY_EDITOR_OUT = fs.mkdtempSync(path.join(os.tmpdir(), 'liv-out-'));
     const calls: string[] = [];
     expect(post((r) => calls.push(r), body)).toBe(200);
+    expect(calls).toEqual([]);
+  });
+});
+
+describe('logo endpoint', () => {
+  const svg = '<svg viewBox="0 0 10 10"><rect width="10" height="10"/></svg>';
+  function postTo(endpoint: string, rebuild: (r: string) => void, payload: unknown) {
+    const handlers: Record<string, (req: unknown, res: unknown) => void> = {};
+    (liveryWritePlugin(root, rebuild) as any).configureServer({ middlewares: { use: (p: string, h: any) => { handlers[p] = h; } } });
+    const req: any = new EventEmitter(); req.method = 'POST';
+    const res: any = { statusCode: 0, setHeader() {}, end() {} };
+    handlers[endpoint](req, res);
+    req.emit('data', JSON.stringify(payload)); req.emit('end');
+    return res.statusCode as number;
+  }
+  const savedLogos = process.env.LIVERY_EDITOR_LOGOS_OUT;
+  afterEach(() => { if (savedLogos === undefined) delete process.env.LIVERY_EDITOR_LOGOS_OUT; else process.env.LIVERY_EDITOR_LOGOS_OUT = savedLogos; });
+  it('writes into svg/logos and rebuilds', () => {
+    delete process.env.LIVERY_EDITOR_LOGOS_OUT;
+    const calls: string[] = [];
+    expect(postTo('/__livery-editor/logo', (r) => calls.push(r), { name: 'acme', kind: 'svg', data: svg })).toBe(200);
+    expect(calls).toEqual([root]);
+    expect(fs.existsSync(path.join(root, 'src/client/ui/assets/svg/logos/acme.svg'))).toBe(true);
+  });
+  it('does not rebuild for a LIVERY_EDITOR_LOGOS_OUT throwaway directory', () => {
+    process.env.LIVERY_EDITOR_LOGOS_OUT = fs.mkdtempSync(path.join(os.tmpdir(), 'logos-out-'));
+    const calls: string[] = [];
+    expect(postTo('/__livery-editor/logo', (r) => calls.push(r), { name: 'acme', kind: 'svg', data: svg })).toBe(200);
     expect(calls).toEqual([]);
   });
 });

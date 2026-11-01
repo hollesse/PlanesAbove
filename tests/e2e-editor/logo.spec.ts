@@ -129,3 +129,20 @@ test('logo layer in the layer panel: rename, reorder, hide, delete; Space previe
   await expect(rows).toHaveCount(1);
   await expect(page.locator('svg[data-livery-render] .lv-paint .lv-logo')).toHaveCount(1);
 });
+
+test('logo upload: SVG goes through the write plugin, appears in the list and is placed', async ({ page }) => {
+  const { EDITOR_LOGOS_OUT } = await import('../../playwright.config');
+  fs.rmSync(EDITOR_LOGOS_OUT, { recursive: true, force: true });
+  await setup(page);
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><rect width="100" height="50" fill="#d6001c"/></svg>';
+  await page.getByTestId('logo-upload-file').setInputFiles({ name: 'Upload Test.svg', mimeType: 'image/svg+xml', buffer: Buffer.from(svg) });
+  await expect(page.getByTestId('logo-upload-name')).toHaveValue('upload-test');
+  await page.getByTestId('logo-upload').click();
+  await expect(page.getByTestId('logo-add-upload-test')).toBeVisible();
+  await expect(page.getByTestId('logo-frame')).toHaveCount(1);
+  expect(fs.readFileSync(path.join(EDITOR_LOGOS_OUT, 'upload-test.svg'), 'utf8')).toBe(svg);
+  // a second upload under the same name is refused
+  await page.getByTestId('logo-upload-file').setInputFiles({ name: 'upload-test.svg', mimeType: 'image/svg+xml', buffer: Buffer.from(svg) });
+  await page.getByTestId('logo-upload').click();
+  await expect(page.getByTestId('status')).toContainText('existiert bereits');
+});
