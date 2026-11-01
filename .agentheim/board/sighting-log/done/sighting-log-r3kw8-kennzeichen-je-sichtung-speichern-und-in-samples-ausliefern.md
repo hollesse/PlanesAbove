@@ -1,7 +1,7 @@
 ---
 id: sighting-log-r3kw8
 title: Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern
-status: doing
+status: done
 type: feature
 context: sighting-log
 created: 2026-11-01
@@ -36,3 +36,7 @@ Das Referenzfoto im Lackierungs-Editor (airspace-yvdbz) braucht das Kennzeichen:
 - Entscheidung des Betreibers (2026-11-01): Kennzeichen mit erfassen, damit Commons im Editor Fotos findet.
 - Kein eigener ADR: additive, nullable Spalte für ein öffentliches Merkmal, das wie Callsign/Typcode aus dem Flugdaten-Feed kommt; das Amendment an ADR 0033 genügt.
 - Reale config.yaml anpassen: nein.
+
+## Outcome
+
+Migration 0009 fuegt `sightings.registration` (nullable, kein Backfill) hinzu. `SightingRepository.observe` speichert das Kennzeichen getrimmt und gross (Leerstring = NULL) und fuellt beim Fortsetzen per COALESCE nur eine leere Spalte. `sky-service.ts` reicht `a.registration` durch. `sightingsByClass` liefert das gespeicherte Kennzeichen in `samples[].registration`. Neue Lesefunktion `knownAircraft(db, icao24)` in repository.ts (null fuer nie gesehenen Hex, sonst Kennzeichen der neuesten Sichtung mit Kennzeichen, Hex case-insensitiv). Tests: tests/unit/server/sighting-registration.test.ts; npm test und typecheck gruen. ADR 0033 per Amendment ergaenzt (siehe ADRS-Block).

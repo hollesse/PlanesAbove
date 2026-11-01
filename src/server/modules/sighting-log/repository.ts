@@ -8,6 +8,8 @@ export interface SightingInput {
   airline?: string;
   typeCode?: string;
   typklasse: string;
+  /** Aircraft registration from the flight feed; stored trimmed and upper-case, empty means unknown. */
+  registration?: string;
   /** Where the displayed type came from; typeCode above is always the flight source's own value. Default 'flight'. */
   typeSource?: 'flight' | 'override' | 'hexdb';
   liveryPresent: boolean;
@@ -74,13 +76,14 @@ export class SightingRepository {
     // Unlabelled text is never stored: only an explicit 'vrs' or 'flightaware' label lets route text through.
     const routeSource = s.routeSource ?? null;
     const route = routeSource === 'vrs' || routeSource === 'flightaware' ? s.route : null;
+    const registration = s.registration?.trim().toUpperCase() || null;
     const iso = new Date(nowMs).toISOString();
     if (verdict === 'new') {
-      this.db.prepare('INSERT INTO sightings (icao24, callsign, airline, type_code, typklasse, type_source, livery_present, route, route_source, slot, closest_distance_km, first_seen_at, last_seen_at, last_seen_ms, observation_point_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)')
-        .run(s.icao24, s.callsign ?? null, s.airline ?? null, s.typeCode ?? null, s.typklasse, s.typeSource ?? 'flight', s.liveryPresent ? 1 : 0, route, routeSource, s.slot ?? null, s.distanceKm, iso, iso, nowMs, this.pointId);
+      this.db.prepare('INSERT INTO sightings (icao24, callsign, airline, type_code, typklasse, type_source, livery_present, route, route_source, slot, closest_distance_km, first_seen_at, last_seen_at, last_seen_ms, observation_point_id, registration) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)')
+        .run(s.icao24, s.callsign ?? null, s.airline ?? null, s.typeCode ?? null, s.typklasse, s.typeSource ?? 'flight', s.liveryPresent ? 1 : 0, route, routeSource, s.slot ?? null, s.distanceKm, iso, iso, nowMs, this.pointId, registration);
     } else {
-      this.db.prepare(`UPDATE sightings SET typklasse = ?, type_source = ?, last_seen_at = ?, last_seen_ms = ?, closest_distance_km = MIN(closest_distance_km, ?), route = CASE WHEN route_source IS NULL OR (route_source IN ('adsbdb', 'hexdb') AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route) ELSE route END, route_source = CASE WHEN route_source IS NULL OR (route_source IN ('adsbdb', 'hexdb') AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route_source) ELSE route_source END, slot = COALESCE(slot, ?) WHERE id = (SELECT id FROM sightings WHERE icao24 = ? AND observation_point_id = ? ORDER BY last_seen_ms DESC, id DESC LIMIT 1)`)
-        .run(s.typklasse, s.typeSource ?? 'flight', iso, nowMs, s.distanceKm, routeSource, route, routeSource, routeSource, s.slot ?? null, s.icao24, this.pointId);
+      this.db.prepare(`UPDATE sightings SET typklasse = ?, type_source = ?, last_seen_at = ?, last_seen_ms = ?, closest_distance_km = MIN(closest_distance_km, ?), route = CASE WHEN route_source IS NULL OR (route_source IN ('adsbdb', 'hexdb') AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route) ELSE route END, route_source = CASE WHEN route_source IS NULL OR (route_source IN ('adsbdb', 'hexdb') AND ? IN ('vrs', 'flightaware')) THEN COALESCE(?, route_source) ELSE route_source END, slot = COALESCE(slot, ?), registration = COALESCE(registration, ?) WHERE id = (SELECT id FROM sightings WHERE icao24 = ? AND observation_point_id = ? ORDER BY last_seen_ms DESC, id DESC LIMIT 1)`)
+        .run(s.typklasse, s.typeSource ?? 'flight', iso, nowMs, s.distanceKm, routeSource, route, routeSource, routeSource, s.slot ?? null, registration, s.icao24, this.pointId);
     }
     return verdict;
   }
@@ -115,4 +118,12 @@ export class SightingRepository {
   unmapped(): { kind: string; key: string; count: number }[] {
     return this.db.prepare('SELECT kind, key, count FROM unmapped_keys ORDER BY kind, key').all() as { kind: string; key: string; count: number }[];
   }
+}
+
+/** Read for airspace (ADR 0007: only sighting-log touches the table): null when the hex was never sighted (any Standort), else the registration of its newest sighting that carries one. */
+export function knownAircraft(db: Db, icao24: string): { registration: string | null } | null {
+  const hex = icao24.toLowerCase();
+  if (!db.prepare('SELECT 1 FROM sightings WHERE lower(icao24) = ? LIMIT 1').get(hex)) return null;
+  const r = db.prepare('SELECT registration FROM sightings WHERE lower(icao24) = ? AND registration IS NOT NULL ORDER BY last_seen_ms DESC, id DESC LIMIT 1').get(hex) as { registration: string } | undefined;
+  return { registration: r?.registration ?? null };
 }

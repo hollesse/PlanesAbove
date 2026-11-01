@@ -122,7 +122,7 @@ export class SkyService {
     const { tc, airline, livery, typeSource } = this.identify(a);
     // adsbdb/hexdb text must never reach SQLite (its terms, ADR 0016): only the source is recorded for it. VRS and FlightAware text may be stored (ADR 0018).
     const route = routeInfo?.source === 'vrs' || routeInfo?.source === 'flightaware' ? routeInfo.text : null;
-    const verdict = this.d.sightings.observe({ icao24: a.icao24, callsign: a.callsign, airline: airline?.name, typeCode: a.typeCode, typklasse: tc.typklasse, typeSource, liveryPresent: livery.present, distanceKm, route, routeSource: routeInfo?.source ?? null, slot }, now);
+    const verdict = this.d.sightings.observe({ icao24: a.icao24, callsign: a.callsign, registration: a.registration, airline: airline?.name, typeCode: a.typeCode, typklasse: tc.typklasse, typeSource, liveryPresent: livery.present, distanceKm, route, routeSource: routeInfo?.source ?? null, slot }, now);
     if (lookup?.fresh && lookup.attempts.length) this.d.sightings.recordLookup(a.icao24, lookup.attempts, lookup.conflict, lookup.chosen, now);
     if (verdict === 'new') {
       if (tc.unmapped && a.typeCode && typeSource === 'flight') this.d.sightings.reportUnmapped('type', a.typeCode);

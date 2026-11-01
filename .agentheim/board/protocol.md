@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 18:34 -- Task verified and completed: sighting-log-r3kw8 - Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern
+
+**Type:** Work / Task completion
+**Task:** sighting-log-r3kw8 - Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern
+**Summary:** Kennzeichen je Sichtung speichern (Migration 0009), in samples ausliefern, knownAircraft für airspace
+**Duration:** 3m40s
+**Verification:** PASS (iteration 1)
+**Files changed:** 6
+**Tests added:** 5
+**ADRs written:** 0033 (amendment)
+
+---
+
 ## 2026-11-01 18:30 -- Batch started: [sighting-log-r3kw8]
 
 **Type:** Work / Batch start

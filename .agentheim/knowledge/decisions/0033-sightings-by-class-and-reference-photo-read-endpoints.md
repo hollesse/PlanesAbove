@@ -7,7 +7,7 @@ date: 2026-10-31
 supersedes: []
 superseded_by: []
 related_adrs: [0029, 0031]
-related_tasks: [infrastructure-cc9gq]
+related_tasks: [infrastructure-cc9gq, sighting-log-r3kw8, airspace-yvdbz]
 related_research: []
 ---
 
@@ -55,7 +55,12 @@ Die Sichtungen liegen im Heimserver (sighting-log, SQLite). Der Fotoweg gehört 
 ## Offene Punkte
 
 - Der Architekten-Entwurf nennt keine ausdrücklich offenen Punkte; die Betreiberbestätigung des Entwurfs steht aus ([human-eye]-Kriterium des Tasks).
+- Kennzeichen: wird ab Migration 0009 gespeichert (siehe Amendment); ältere Sichtungen behalten NULL.
 - Wie die Typklasse zum Sichtungszeitpunkt gewonnen und in `sightings` abgelegt wird (heute vorhanden oder nachzurüsten), klärt der Feature-Task in sighting-log; falls ein Schema-Zuwachs nötig ist, ist dort ein eigener ADR zu prüfen.
+
+## Amendment (2026-11-01, sighting-log-r3kw8)
+
+Das Kennzeichen wird ab Migration 0009 je Sichtung gespeichert (Spalte `registration`, nullable, kein Backfill; Quelle ist nur der Flugdaten-Feed, ADR 0016 bleibt unberührt). `samples[].registration` von `/api/stats/sightings-by-class` liefert es, und sighting-log stellt `knownAircraft(db, icao24)` für den Referenzfoto-Endpunkt bereit. Damit findet Wikimedia Commons (Suche nur nach Kennzeichen) Fotos zu vergangenen Sichtungen.
 
 ## References
 

@@ -22,7 +22,7 @@ export function sightingsByClass(db: StatsDb, opts: { days: number; nowMs: numbe
   const pidCol = hasPoints ? 's.observation_point_id' : 'NULL';
   const filterSql = standort === 'alle' ? '' : standort === 'unbekannt' ? ` AND ${pidCol} IS NULL` : ` AND ${pidCol} = ${Number(standort)}`;
 
-  const found = db.prepare(`SELECT s.icao24, s.callsign, s.airline, s.typklasse, s.last_seen_ms AS lastSeenMs FROM sightings s WHERE s.slot IS NOT NULL AND s.last_seen_ms >= ? AND s.typklasse NOT IN ('light-aircraft', 'glider')${filterSql} ORDER BY s.last_seen_ms DESC, s.id DESC`).all(since) as { icao24: string; callsign: string | null; airline: string | null; typklasse: string; lastSeenMs: number }[];
+  const found = db.prepare(`SELECT s.icao24, s.registration, s.callsign, s.airline, s.typklasse, s.last_seen_ms AS lastSeenMs FROM sightings s WHERE s.slot IS NOT NULL AND s.last_seen_ms >= ? AND s.typklasse NOT IN ('light-aircraft', 'glider')${filterSql} ORDER BY s.last_seen_ms DESC, s.id DESC`).all(since) as { icao24: string; registration: string | null; callsign: string | null; airline: string | null; typklasse: string; lastSeenMs: number }[];
 
   // rows arrive newest first: the first sighting of a group gives lastSeenMs, and the first non-null airline is the most recent name
   const groups = new Map<string, SightingsByClassRow>();
@@ -33,8 +33,7 @@ export function sightingsByClass(db: StatsDb, opts: { days: number; nowMs: numbe
     if (!g) { g = { prefix, airline: null, typklasse: r.typklasse, count: 0, lastSeenMs: r.lastSeenMs, samples: [] }; groups.set(key, g); }
     g.count++;
     if (g.airline === null) g.airline = r.airline;
-    // the sightings table does not store a registration yet; the field stays in the contract (ADR 0033)
-    if (g.samples.length < MAX_SAMPLES) g.samples.push({ icao24: r.icao24, registration: null, callsign: r.callsign, lastSeenMs: r.lastSeenMs });
+    if (g.samples.length < MAX_SAMPLES) g.samples.push({ icao24: r.icao24, registration: r.registration, callsign: r.callsign, lastSeenMs: r.lastSeenMs });
   }
   return {
     days: opts.days,
