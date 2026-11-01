@@ -5,6 +5,16 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 18:29 -- Modeling / Refined: airspace-yvdbz - Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033)
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** Abnahmekriterien für Endpunkt (nur bekannte Hexes via knownAircraft, gespeichertes Kennzeichen, gemeinsamer PhotoService-Cache, 400/404 ohne Quellenabfrage) und Fotopanel (Samples nacheinander, erstes Foto mit Attribution/Link, Zustände, Stale-Guard). Betreiber entschied: Kennzeichen mit erfassen.
+**Split into:** sighting-log-r3kw8 (Kennzeichen speichern, Voraussetzung)
+
+---
+
 ## 2026-11-01 18:29 -- Modeling / Captured: sighting-log-r3kw8 - Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern
 
 **Type:** Modeling / Capture
