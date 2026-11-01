@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 4
+- **Doing:** 0
+- **Done:** 5
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **liveries-yafve** — Silhouette und Detailschicht für widebody und regional-jet aus der Altgrafik (nach dem Narrowbody-Muster) (feature) — `doing/liveries-yafve-silhouette-und-detailschicht-widebody-und-regional-jet.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **liveries-yafve** — Silhouette und Detailschicht für widebody und regional-jet aus der Altgrafik (nach dem Narrowbody-Muster) (feature) — `done/liveries-yafve-silhouette-und-detailschicht-widebody-und-regional-jet.md`
 - **liveries-yzshd** — Trennlinie zwischen Rumpf und Finne wieder sichtbar machen (bug) — `done/liveries-yzshd-trennlinie-rumpf-finne-zurueck.md`
 - **liveries-wyypc** — Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen (bug) — `done/liveries-wyypc-narrowbody-details-cockpitfenster-vollstaendig.md`
 - **liveries-ptm0c** — Entscheidung: Einmaliger Import der CSS-Lackierungen, Pixelvergleich als Gate, Umstellung in einem Commit (decision) — `done/liveries-ptm0c-entscheidung-einmaliger-import-der-css-lackierungen-pixelver.md`

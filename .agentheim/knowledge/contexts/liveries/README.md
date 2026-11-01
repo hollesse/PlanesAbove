@@ -24,6 +24,7 @@ supporting — Lernwert hängt an korrekten Lackierungen, aber es ist ein Katalo
 - **Zuschnittbereich** — `<g id="body">` der Silhouette (Rumpf plus Finne); an ihm werden Pfade und Logos beim Anzeigen abgeschnitten (ADR 0032).
 - **renderLiverySvg** — die eine reine Funktion (`domain/livery-render.ts`), die Silhouette, Lackierungsdatei und Detailschicht zum Bild setzt; gemeinsam für Himmelsszene, Storybook und Editor (ADR 0032).
 - **Umriss / Trennlinie**: Der Rumpf-Umriss (outline-fuselage) wird vollständig gezeichnet, auch durch die Finnenbasis; der Finnen-Umriss (outline-fin) nur außerhalb des Rumpfs (SVG-Maske je Render-Instanz). Die Rumpfoberkante über der Finnenbasis ist die Trennlinie. #body (Vereinigung) bleibt nur der Zuschnitt-Bereich für Pfade.
+- **Farbfeld-Ebene** (`front`/`back`, ADR 0038): Farbfelder liegen standardmaessig hinter dem Koerper (`back`). Ueberlappt ein Feld den Koerper (Hecktriebwerke des regional-jet), ist es in der Silhouette als `data-layer="front"` markiert, wird nach Koerper, Pfaden und Umriss gezeichnet und aus dem Zuschnitt der Pfade ausgenommen.
 
 ## Aggregates
 _Noch nicht modelliert — entsteht in `modeling` / bei der Arbeit an Tasks._

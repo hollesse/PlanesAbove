@@ -1,7 +1,7 @@
 ---
 id: liveries-yafve
 title: Silhouette und Detailschicht für widebody und regional-jet aus der Altgrafik (nach dem Narrowbody-Muster)
-status: doing
+status: done
 type: feature
 context: liveries
 created: 2026-11-01
@@ -9,7 +9,7 @@ completed:
 depends_on: [liveries-yzshd, liveries-wyypc]
 blocks: [livery-editor-fweas]
 tags: [silhouette, details, typklassen]
-related_adrs: [0031, 0032]
+related_adrs: [0031, 0032, 0038]
 related_research: []
 prior_art: [livery-editor-zc7hk, liveries-yzshd, liveries-wyypc]
 ---
@@ -48,3 +48,6 @@ ITERATION_HINT: task-under-specified
 ## Salvage note
 
 Salvaged diff: `/Users/joshuatopfer/Documents/Projekte/Privat/PlanesAbove/.agentheim/salvage/liveries-yafve-escalated-iter1.patch`. Worktree kept: `/Users/joshuatopfer/Documents/Projekte/Privat/PlanesAbove/.worktrees/liveries-yafve` (branch `aw/liveries-yafve`, one wip commit). Escalated at iteration 1 (task-under-specified).
+
+## Outcome
+Iteration 2 nach Betreiber-Entscheidungen: Farbfelder tragen eine Ebene (`front`/`back`, ADR 0038). `build-assets` liest `data-layer` und erzeugt `fieldLayer`; `renderLiverySvg` zeichnet `front`-Felder nach Körper, Pfaden und Umriss (vor den Details) und schneidet sie per `<mask>` aus dem Pfad-Zuschnitt. Regional-jet-Triebwerke sind `front`; das erfundene Höhenleitwerk des regional-jet ist entfernt (widebody behält seins). Spike-Lackierung regional-jet: Pfad bis ins Triebwerk verbreitert, ohne tailplane. Tests: Snapshot (gegen den unveränderten Renderer erzeugt) belegt Byte-Gleichheit für narrowbody/widebody, Layer-Reihenfolge-/Maskentest, Parts-Test, Playwright-Pixelprüfung (webkit) auf `liveries-pfade--spike-regional-jet` (#c9cccb in der Gondel, Pfadrot am Rumpf). npm test 780 grün, typecheck grün, webkit + editor-chromium 47/47. Abweichung: Die Pixelprüfung belegt sichtbare Gondel (Front-Ebene); der Pfad-Ausschnitt selbst ist durch den Maskentest abgedeckt. [human-eye] offen.

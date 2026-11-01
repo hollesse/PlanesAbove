@@ -45,7 +45,8 @@ console.log(`[assets] ${Object.keys(planes).length} planes, ${Object.keys(skies)
 // ---- Livery layer model (ADR 0031/0032): silhouette + details per Typklasse, livery files, generated stories ----
 const planesDir = path.join(root, 'src/client/ui/assets/planes');
 const liveriesDir = path.join(root, 'src/client/ui/assets/liveries');
-const groupInner = (svg, id) => (svg.match(new RegExp(`<g id="${id}">([\\s\\S]*?)</g>`)) || [])[1]?.trim();
+const groupInner = (svg, id) => (svg.match(new RegExp(`<g id="${id}"[^>]*>([\\s\\S]*?)</g>`)) || [])[1]?.trim();
+const groupLayer = (svg, id) => (svg.match(new RegExp(`<g id="${id}"[^>]*data-layer="(front|back)"`)) || [])[1] || 'back'; // ADR 0038
 const pathD = (svg, id) => (svg.match(new RegExp(`<path id="${id}" d="([^"]+)"`)) || [])[1];
 const planeParts = {};
 if (fs.existsSync(planesDir)) {
@@ -55,14 +56,15 @@ if (fs.existsSync(planesDir)) {
     if (!fs.existsSync(sil) || !fs.existsSync(det)) continue;
     const svg = read(`../planes/${t}/silhouette.svg`);
     const fields = {};
-    for (const f of ['engines', 'wings', 'tailplane']) { const g = groupInner(svg, `field-${f}`); if (g) fields[f] = g; }
+    const fieldLayer = {};
+    for (const f of ['engines', 'wings', 'tailplane']) { const g = groupInner(svg, `field-${f}`); if (g) { fields[f] = g; fieldLayer[f] = groupLayer(svg, `field-${f}`); } }
     const fuselage = pathD(svg, 'outline-fuselage');
     const fin = pathD(svg, 'outline-fin');
     const outlines = fuselage && fin ? { fuselage, fin } : undefined; // absent: #body doubles as the outline
-    planeParts[t] = { viewBox: svg.match(/viewBox="([^"]+)"/)[1], body: groupInner(svg, 'body'), fields, ...(outlines ? { outlines } : {}), details: groupInner(read(`../planes/${t}/details.svg`), 'details') };
+    planeParts[t] = { viewBox: svg.match(/viewBox="([^"]+)"/)[1], body: groupInner(svg, 'body'), fields, fieldLayer, ...(outlines ? { outlines } : {}), details: groupInner(read(`../planes/${t}/details.svg`), 'details') };
   }
 }
-emit('plane-parts', 'PLANE_PARTS', planeParts, 'Silhouette body/fields and details per Typklasse (ADR 0032).', 'Record<string, { viewBox: string; body: string; fields: Record<string, string>; outlines?: { fuselage: string; fin: string }; details: string }>');
+emit('plane-parts', 'PLANE_PARTS', planeParts, 'Silhouette body/fields and details per Typklasse (ADR 0032).', 'Record<string, { viewBox: string; body: string; fields: Record<string, string>; fieldLayer: Record<string, "front" | "back">; outlines?: { fuselage: string; fin: string }; details: string }>');
 
 const liveryFiles = {};
 if (fs.existsSync(liveriesDir)) {

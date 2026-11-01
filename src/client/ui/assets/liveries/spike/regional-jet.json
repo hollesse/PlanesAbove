@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "livery": "spike",
+  "typklasse": "regional-jet",
+  "fields": { "engines": "#c9cccb", "wings": "#e1e3e1" },
+  "layers": [
+    { "type": "path", "points": [[150, 150], [600, 150], [600, 300], [150, 300]], "color": "#d6001c" }
+  ]
+}

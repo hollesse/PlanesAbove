@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -60 1000 460" data-type="regional-jet">
+  <g id="details">
+    <path fill="#3A3F44" d="M835.6 222.2 L834 220.9 L832.4 219.7 L830.8 218.6 L829.2 217.5 L827.6 216.6 L825.9 215.7 L824.3 214.8 L822.7 214 L821.1 213.2 L819.5 212.6 L821.5 222.2 Z M817.7 212.6 L814.2 212.6 L810.7 212.6 L807.1 212.6 L803.6 212.6 L805.6 222.2 L819.7 222.2 Z"/>
+    <path fill="none" stroke="#1F2A33" stroke-width="4" stroke-linecap="round" d="M278.9 180 Q273.4 203 278.9 226"/>
+    <ellipse fill="#1F2A33" cx="308.3" cy="203" rx="6.4" ry="21.3"/>
+  </g>
+</svg>

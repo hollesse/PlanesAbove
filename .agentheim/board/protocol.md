@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 13:12 -- Task verified and completed: liveries-yafve - Silhouette und Detailschicht für widebody und regional-jet aus der Altgrafik (nach dem Narrowbody-Muster)
+
+**Type:** Work / Task completion
+**Task:** liveries-yafve - Silhouette und Detailschicht für widebody und regional-jet aus der Altgrafik (nach dem Narrowbody-Muster)
+**Summary:** Silhouette und Detailschicht für widebody und regional-jet; Farbfeld-Ebene front/back (ADR 0038): Hecktriebwerke vor dem Körper und aus dem Zuschnitt ausgenommen; regional-jet ohne Höhenleitwerk
+**Duration:** 22m (12:47 → 13:12, eine Nachbesserung nach Betreiber-Entscheidung)
+**Verification:** PASS (iteration 2)
+**Files changed:** 12
+**Tests added:** 10
+**ADRs written:** 0038-farbfelder-vor-oder-hinter-dem-koerper.md
+
+---
+
 ## 2026-11-01 13:06 -- Modeling / Refined: liveries-yafve - Kriterien nach Betreiber-Entscheidung
 
 **Type:** Modeling / Refine

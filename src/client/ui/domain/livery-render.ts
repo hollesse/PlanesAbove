@@ -2,7 +2,8 @@ import { PLANE_PARTS } from '../assets/generated/plane-parts';
 import type { LiveryFile, PathLayer } from './livery-file';
 
 // The one pure render function for sky scene, Storybook and the editor (ADR 0032 point 6).
-// Layer order from the bottom: colour fields, white body, paths (clipped to the body), body outline, details.
+// Layer order from the bottom: back colour fields, white body, paths (clipped to the body), body outline,
+// front colour fields, details. Front fields (ADR 0038, e.g. rear engines) are cut out of the paths' clip area.
 
 export const OUTLINE = '#1F2A33';
 export const BODY_FILL = '#F4F4F2';
@@ -43,21 +44,36 @@ export function renderLiverySvg(file: LiveryFile, options: RenderOptions = {}): 
   const paths = file.layers.filter((l): l is PathLayer => l.type === 'path');
   const pathEls = (extra = '') => paths.map((l) => `<path d="${pathData(l)}" fill="${safeColor(l.color, '#000000')}"${extra}/>`).join('');
   const stroke = `stroke="${OUTLINE}" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"`;
-  const fields = Object.entries(parts.fields)
-    .map(([k, geo]) => `<g class="lv-field-${k}" fill="${safeColor(file.fields[k as keyof typeof FIELD_DEFAULTS], FIELD_DEFAULTS[k as keyof typeof FIELD_DEFAULTS])}" ${stroke}>${geo}</g>`)
+  const fieldEls = (layer: 'front' | 'back') =>
+    Object.entries(parts.fields)
+      .filter(([k]) => (parts.fieldLayer?.[k] ?? 'back') === layer)
+      .map(([k, geo]) => `<g class="lv-field-${k}" fill="${safeColor(file.fields[k as keyof typeof FIELD_DEFAULTS], FIELD_DEFAULTS[k as keyof typeof FIELD_DEFAULTS])}" ${stroke}>${geo}</g>`)
+      .join('');
+  const fields = fieldEls('back');
+  const frontFields = fieldEls('front');
+  const frontGeo = Object.entries(parts.fields)
+    .filter(([k]) => parts.fieldLayer?.[k] === 'front')
+    .map(([, geo]) => geo)
     .join('');
+  // Paint area = body minus front fields. SVG clip-path cannot subtract, so a mask is used in that case.
+  const paintArea = frontGeo
+    ? `mask="url(#${id}-paint-mask)"`
+    : `clip-path="url(#${id}-clip)"`;
   const outline = parts.outlines
     ? `<path class="lv-outline-fin" d="${parts.outlines.fin}" mask="url(#${id}-ol-mask)"/><path class="lv-outline-fuselage" d="${parts.outlines.fuselage}"/>`
     : parts.body;
   return [
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${parts.viewBox}" data-livery-render data-typklasse="${file.typklasse}">`,
     `<defs><clipPath id="${id}-clip">${parts.body}</clipPath>${
+      frontGeo ? `<mask id="${id}-paint-mask" maskUnits="userSpaceOnUse" x="-1000" y="-1000" width="3000" height="3000"><g fill="#fff">${parts.body}</g><g fill="#000">${frontGeo}</g></mask>` : ''
+    }${
       parts.outlines ? `<mask id="${id}-ol-mask" maskUnits="userSpaceOnUse" x="-1000" y="-1000" width="3000" height="3000"><rect x="-1000" y="-1000" width="3000" height="3000" fill="#fff"/><path d="${parts.outlines.fuselage}" fill="#000"/></mask>` : ''
     }</defs>`,
     `<g class="lv-silhouette"${op(so)}>${fields}<g class="lv-body" fill="${BODY_FILL}">${parts.body}</g></g>`,
     so < 1 ? `<g class="lv-ghost"${op(1 - so)}>${pathEls()}</g>` : '',
-    `<g class="lv-paint" clip-path="url(#${id}-clip)">${pathEls()}</g>`,
+    `<g class="lv-paint" ${paintArea}>${pathEls()}</g>`,
     `<g class="lv-outline"${op(so)} fill="none" ${stroke}>${outline}</g>`,
+    frontFields ? `<g class="lv-front-fields"${op(so)}>${frontFields}</g>` : '',
     `<g class="lv-details"${op(dop)}>${parts.details}</g>`,
     '</svg>',
   ].join('');
