@@ -15,7 +15,7 @@ const preview: Preview = {
     controls: { expanded: true },
     viewport: { options: viewports },
     backgrounds: { options: { dark: { name: 'Papier dunkel', value: '#D8D6CC' }, paper: { name: 'Papier', value: '#ECEBE3' } } },
-    options: { storySort: { order: ['Atoms', 'Molecules', 'Organisms', 'Templates', 'Pages'] } },
+    options: { storySort: { order: ['Atoms', 'Molecules', 'Organisms', 'Templates', 'Pages', 'Liveries'] } },
   },
   initialGlobals: { backgrounds: { value: 'dark' } },
   decorators: [

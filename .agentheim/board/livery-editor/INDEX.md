@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 1
+- **Doing:** 0
+- **Done:** 2
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **livery-editor-zc7hk** — Spike: Editor-Durchstich — Narrowbody-Silhouette, Lackierungsdatei, Render-Funktion, Pfad zeichnen, speichern, in Storybook sehen (spike) — `doing/livery-editor-zc7hk-spike-editor-durchstich-narrowbody-silhouette-lackierungsdat.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **livery-editor-zc7hk** — Spike: Editor-Durchstich — Narrowbody-Silhouette, Lackierungsdatei, Render-Funktion, Pfad zeichnen, speichern, in Storybook sehen (spike) — `done/livery-editor-zc7hk-spike-editor-durchstich-narrowbody-silhouette-lackierungsdat.md`
 - **livery-editor-rv382** — Entscheidung: Editor als lokaler Vite-Dev-Server mit Schreib-Plugin unter tools/, nie im Client-Bundle oder Docker-Image (decision) — `done/livery-editor-rv382-entscheidung-editor-als-lokaler-vite-dev-server-mit-schreib.md`
 <!-- done-list:end -->
 

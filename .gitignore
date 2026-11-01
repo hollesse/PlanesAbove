@@ -11,3 +11,4 @@ dist/
 
 # Laufzeit: Datenverzeichnis (DB, Audio-Cache, VRS-Snapshot)
 data/
+tools/livery-editor/.env.local

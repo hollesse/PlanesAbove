@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>Lackierungs-Editor</title>
+  <style>
+    body { font: 14px system-ui, sans-serif; margin: 0; display: flex; height: 100vh; background: #ECEBE3; color: #1F2A33; }
+    #panel { width: 280px; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; background: #F4F4F2; border-right: 1px solid #C9CCCB; overflow-y: auto; }
+    #panel label { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    #panel h2 { font-size: 12px; text-transform: uppercase; margin: 8px 0 0; letter-spacing: .06em; }
+    #stage { flex: 1; padding: 24px; overflow: auto; }
+    #board { position: relative; width: 900px; background: #D8D6CC; }
+    #board svg { display: block; width: 100%; height: auto; }
+    #board svg.overlay { position: absolute; inset: 0; cursor: crosshair; }
+    #status { min-height: 1.4em; }
+    #status.error { color: #b00020; }
+    button { padding: 6px 10px; }
+  </style>
+</head>
+<body>
+  <div id="panel"></div>
+  <div id="stage"><div id="board"></div></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

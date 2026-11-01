@@ -19,6 +19,7 @@
     "storybook": "npm run assets && storybook dev -p 6006",
     "build-storybook": "npm run assets && storybook build -o storybook-static",
     "pree2e": "npm run build-storybook && npm run build",
+    "editor": "npm run assets && vite --configLoader runner --config tools/livery-editor/vite.config.ts",
     "e2e": "playwright test",
     "e2e:chromium": "playwright test --project=chromium"
   },

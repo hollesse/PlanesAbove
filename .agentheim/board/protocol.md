@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:14 -- Task verified and completed: livery-editor-zc7hk - Spike: Editor-Durchstich — Narrowbody-Silhouette, Lackierungsdatei, Render-Funktion, Pfad zeichnen, speichern, in Storybook sehen
+
+**Type:** Work / Task completion
+**Task:** livery-editor-zc7hk - Spike: Editor-Durchstich — Narrowbody-Silhouette, Lackierungsdatei, Render-Funktion, Pfad zeichnen, speichern, in Storybook sehen
+**Summary:** Editor-Durchstich steht: Narrowbody-Silhouette und Detailschicht, Lackierungsdatei mit zod-Schema, renderLiverySvg, erzeugte Story Liveries/Pfade, lokaler Editor (npm run editor) mit Pfadwerkzeug und Schreib-Plugin inkl. build-assets-Anstoß; Zuschnitt per clipPath trägt, Stop-loss nicht ausgelöst
+**Duration:** 13m40s (09:59 dispatch → 10:13 PASS, incl. one re-dispatch)
+**Verification:** PASS (iteration 2)
+**Files changed:** 27
+**Tests added:** 25
+**ADRs written:** none
+
+---
+
+## 2026-11-01 10:11 -- Verification failed: livery-editor-zc7hk - Spike: Editor-Durchstich
+
+**Type:** Work / Verification failure
+**Task:** livery-editor-zc7hk - Spike: Editor-Durchstich — Narrowbody-Silhouette, Lackierungsdatei, Render-Funktion, Pfad zeichnen, speichern, in Storybook sehen
+**Iteration:** 1 of 3
+**Reasons:** save → build-assets trigger (ADR 0035 §3, criterion 4 „ohne Neustart“) untested — E2E saves to LIVERY_EDITOR_OUT which suppresses the rebuild; all other criteria green (vitest 729, tsc, editor-chromium 2/2, bundle/image guards)
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-11-01 09:59 -- Batch started: [livery-editor-zc7hk]
 
 **Type:** Work / Batch start

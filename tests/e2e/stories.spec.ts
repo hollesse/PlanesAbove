@@ -28,7 +28,7 @@ test('every story renders without errors', async ({ page, request, baseURL }) =>
 test('the Atomic Design levels are visible in the navigation', async ({ request, baseURL }) => {
   const index = (await (await request.get(`${baseURL}/index.json`)).json()) as { entries: Record<string, Entry> };
   const levels = new Set(Object.values(index.entries).map((e) => e.title.split('/')[0]));
-  expect([...levels].sort()).toEqual(['Atoms', 'Molecules', 'Organisms', 'Pages', 'Templates']);
+  expect([...levels].sort()).toEqual(['Atoms', 'Liveries', 'Molecules', 'Organisms', 'Pages', 'Templates']);
 });
 
 test('fonts are served locally', async ({ page }) => {
