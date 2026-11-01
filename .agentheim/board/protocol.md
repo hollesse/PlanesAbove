@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:23 -- Batch started: [livery-editor-q9nbe]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-q9nbe - Sichtungen zweistufig: erst Airline (über alle Typen), dann Typklassen-Select mit Sichtungszahl und Lückenstatus je Typ
+**Parallel:** scoped — builder feedback on the gap list; only ready task
+
+---
+
 ## 2026-11-01 12:23 -- Modeling / Captured: livery-editor-q9nbe - Sichtungen zweistufig: erst Airline (über alle Typen), dann Typklassen-Select mit Sichtungszahl und Lückenstatus je Typ
 
 **Type:** Modeling / Capture

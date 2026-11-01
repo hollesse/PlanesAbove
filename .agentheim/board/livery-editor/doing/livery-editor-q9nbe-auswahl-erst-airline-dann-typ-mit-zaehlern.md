@@ -1,7 +1,7 @@
 ---
 id: livery-editor-q9nbe
 title: Sichtungen zweistufig: erst Airline (über alle Typen), dann Typklassen-Select mit Sichtungszahl und Lückenstatus je Typ
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-01
