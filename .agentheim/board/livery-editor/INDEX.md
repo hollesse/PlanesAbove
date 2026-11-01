@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 11
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **livery-editor-v90sn** — Auswahl aufheben (Panel-Klick auf die gewählte Zeile, Escape) und Vorschau mit gehaltener Leertaste ohne Overlay (feature) — `todo/livery-editor-v90sn-keine-ebene-ausgewaehlt-und-vorschau-leertaste.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **livery-editor-v90sn** — Auswahl aufheben (Panel-Klick auf die gewählte Zeile, Escape) und Vorschau mit gehaltener Leertaste ohne Overlay (feature) — `doing/livery-editor-v90sn-keine-ebene-ausgewaehlt-und-vorschau-leertaste.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

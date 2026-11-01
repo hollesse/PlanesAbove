@@ -1,7 +1,7 @@
 ---
 id: livery-editor-v90sn
 title: Auswahl aufheben (Panel-Klick auf die gewählte Zeile, Escape) und Vorschau mit gehaltener Leertaste ohne Overlay
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-01

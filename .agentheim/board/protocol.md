@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:35 -- Batch started: [livery-editor-v90sn]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-v90sn - Auswahl aufheben (Panel-Klick auf die gewählte Zeile, Escape) und Vorschau mit gehaltener Leertaste ohne Overlay
+**Parallel:** no (1 worker) — only ready task; dispatched after q9nbe landed (shared src/main.ts)
+
+---
+
 ## 2026-11-01 12:35 -- Task verified and completed: livery-editor-q9nbe - Sichtungen zweistufig: erst Airline (über alle Typen), dann Typklassen-Select mit Sichtungszahl und Lückenstatus je Typ
 
 **Type:** Work / Task completion
