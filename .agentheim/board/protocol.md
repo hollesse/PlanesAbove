@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:36 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 8m (11:29 – 11:37)
+**Completed:** 2 (first-try PASS: 2 [livery-editor-rtnx3, livery-editor-ypj22], re-dispatched: 0, skipped: 0)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0 (sky-scene-jpjt2 bleibt eskaliert, Betreiber-Entscheidung offen)
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** livery-editor-rtnx3: 1, livery-editor-ypj22: 1
+**Commits:** 7 (2 capture, 2 batch start, 2 task integrations, 1 session end)
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (2 tasks)
+**Carry-over:** .agentheim/.dashboard/: left behind (owner: dashboard, untracked advisory state); .worktrees/sky-scene-jpjt2: kept (owner: sky-scene-jpjt2, escalated 2026-10-31 at iteration 1, salvaged: .agentheim/salvage/sky-scene-jpjt2-escalated-iter1.patch + .bookkeeping.md); 2 stranded RESULT sidecars removed
+
+---
+
 ## 2026-11-01 11:36 -- Task verified and completed: livery-editor-ypj22 - Rundungen schon beim Zeichnen des Entwurfs setzen, nicht erst nach dem Schließen
 
 **Type:** Work / Task completion
