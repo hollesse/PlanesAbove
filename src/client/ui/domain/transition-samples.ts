@@ -7,8 +7,8 @@ import type { ScreenPlane } from '../templates/screen';
 const sp = (k: SampleKey): ScreenPlane => ({ plane: SAMPLE_PLANES[k], flight: SAMPLE_FLIGHTS[k] });
 const keys = (ks: SampleKey[]): ScreenPlane[] => ks.map(sp);
 
-const LAST_ONE = 'Zuletzt: Lufthansa LH400 · gerade eben';
-const LAST_TWO = 'Zuletzt: Lufthansa LH400 · Ryanair FR1724 · gerade eben';
+const LAST_ONE = 'Zuletzt: Lufthansa DLH1450 · gerade eben';
+const LAST_TWO = 'Zuletzt: Lufthansa DLH1450 · Ryanair RYR3TL · gerade eben';
 
 const PLANE_SAMPLES: Record<string, { from: SampleKey[]; to: SampleKey[]; recent?: { from?: string; to?: string } }> = {
   'empty-to-one': { from: [], to: ['A'], recent: { from: RECENT_TEXT } },

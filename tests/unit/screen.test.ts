@@ -58,6 +58,6 @@ describe('Szene und Bildschirm', () => {
     document.body.append(el);
     expect(document.body.querySelector('.pa-screen svg')).not.toBeNull();
     expect(el.textContent).toContain('Der Himmel über Kirchstrasse 17');
-    expect(el.textContent).toContain('Frankfurt → New York');
+    expect(el.textContent).toContain('Frankfurt (FRA) → Thessaloniki (SKG)');
   });
 });

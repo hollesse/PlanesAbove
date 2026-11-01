@@ -1,7 +1,7 @@
 ---
 id: design-system-m4r7v
 title: Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei
-status: doing
+status: done
 type: feature
 context: design-system
 created: 2026-10-28
@@ -53,3 +53,7 @@ ICAO-Codes für den Tabellen-Test: EDDF, LGTS, MKJS, MUVR, EDFH, LEPA, LEBL, EDD
 - Kopfkommentar in `samples.ts` anpassen („realistische Beispiele im Anzeigeformat“ statt „aus den Screens-Entwürfen“).
 - „Längste Route“-Stories bleiben unverändert (Benchmark SCQ → XRY).
 
+
+## Outcome
+
+SAMPLE_FLIGHTS (samples.ts) replaced with the refined table: ICAO callsigns, "Stadt (IATA) → Stadt (IATA)" routes, C with via Varadero; no "Privat"/"Business-Jet" placeholders. RECENT_TEXT, LAST_ONE, LAST_TWO use DLH1450 / RYR3TL. New tests/unit/samples-airports.test.ts checks every route end and via city against airports.json (and the nine ICAO codes). Assertions in info-bar/screen/transitions unit tests and e2e long-route.spec.ts updated; transition-stages.json baseline hashes regenerated (only markup text changed). The two-plane sample is now long, so the e2e "short routes keep normal size" test moved to a new story "Zwei Flugzeuge · kurze Routen" (E + F) in info-bar.stories.ts; stories.test.ts count 6 -> 7. Verification: npm test, typecheck, build green; webkit e2e 30/30 green run against a temp config because port 5174 (livery editor) was occupied by a foreign process, so the stock playwright config could not start (one photo-overlay speaking test failed once in an earlier run, passed on rerun - likely flaky). skeleton.spec.ts untouched (uses a mock service, not SAMPLE_FLIGHTS).

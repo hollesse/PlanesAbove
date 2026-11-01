@@ -15,6 +15,7 @@ const story = (props: InfoBarProps): StoryObj<{ aspect: ScreenAspect }> => ({
 export const EinFlugzeugRouteBekannt = { ...story({ variant: 'single', flight: SAMPLE_FLIGHTS.A }), name: 'Ein Flugzeug · Route bekannt' };
 export const EinFlugzeugRouteUnbekannt = { ...story({ variant: 'single', flight: SAMPLE_FLIGHTS.B }), name: 'Ein Flugzeug · Route unbekannt' };
 export const ZweiFlugzeuge = { ...story({ variant: 'double', flights: [SAMPLE_FLIGHTS.C, SAMPLE_FLIGHTS.D] }), name: 'Zwei Flugzeuge' };
+export const ZweiFlugzeugeKurzeRouten = { ...story({ variant: 'double', flights: [SAMPLE_FLIGHTS.E, SAMPLE_FLIGHTS.F] }), name: 'Zwei Flugzeuge · kurze Routen' };
 export const Zuletzt = { ...story({ variant: 'recent', text: RECENT_TEXT }), name: 'Schmale „Zuletzt“-Leiste' };
 
 // Benchmark route of two long labels from tables/airports.json (ADR 0021). tests/e2e/long-route.spec.ts checks this text against the table.

@@ -79,7 +79,7 @@ test('single view: the longest route breaks before the arrow at a smaller size',
 });
 
 test('short routes (two-plane sample) keep their normal size and one line', async ({ page }) => {
-  await page.goto('/iframe.html?id=organisms-info-leiste--zwei-flugzeuge&viewMode=story');
+  await page.goto('/iframe.html?id=organisms-info-leiste--zwei-flugzeuge-kurze-routen&viewMode=story');
   await page.waitForSelector('[data-routes-fitted] .pa-route-large');
   const styles = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>('.pa-route-large')].map((e) => ({ inline: e.style.fontSize, lines: e.querySelectorAll('.pa-route-line').length })));
   for (const s of styles) { expect(s.inline).toBe(''); expect(s.lines).toBe(0); }
@@ -89,6 +89,6 @@ test('short single route stays on one line', async ({ page }) => {
   await page.goto('/iframe.html?id=organisms-info-leiste--ein-flugzeug-route-bekannt&viewMode=story');
   await page.waitForSelector('[data-routes-fitted] .pa-route-large');
   const r = await page.evaluate(() => { const e = document.querySelector<HTMLElement>('.pa-route-large')!; return { text: e.textContent, lines: e.querySelectorAll('.pa-route-line').length }; });
-  expect(r.text).toBe('Frankfurt → New York');
+  expect(r.text).toBe('Frankfurt (FRA) → Thessaloniki (SKG)');
   expect(r.lines).toBe(0);
 });

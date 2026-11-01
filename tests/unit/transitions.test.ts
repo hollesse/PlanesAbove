@@ -107,7 +107,7 @@ describe('Übergänge', () => {
     const spec = TRANSITIONS.find((t) => t.id === 'two-to-empty')!;
     const text = renderTransitionStage(spec, custom).textContent!;
     for (const s of ['XX111', 'YY222', 'Zeppelin NT', 'Ballon', 'Zuletzt: Testflug XX111 · eben', 'Testweg 1', '03:33']) expect(text).toContain(s);
-    for (const s of ['LH400', 'FR1724', 'Lufthansa', 'Kirchstrasse', 'gerade eben']) expect(text).not.toContain(s);
+    for (const s of ['DLH1450', 'RYR3TL', 'Lufthansa', 'Kirchstrasse', 'gerade eben']) expect(text).not.toContain(s);
   });
 
   it('night sky gives plane specs a light header ink; a missing reference skips the layer without throwing', () => {

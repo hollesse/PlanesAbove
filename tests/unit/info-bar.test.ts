@@ -9,8 +9,8 @@ describe('Info-Leiste', () => {
   it('formats numbers, eyebrow, meta and stats like the drafts', () => {
     expect(formatNumber(11300)).toBe('11 300');
     expect(formatNumber(870)).toBe('870');
-    expect(formatEyebrow(SAMPLE_FLIGHTS.A)).toBe('Lufthansa · LH400 · Airbus A320neo · D-AIBI');
-    expect(formatEyebrow(SAMPLE_FLIGHTS.B)).toBe('Privat · Business-Jet · D-CGEO');
+    expect(formatEyebrow(SAMPLE_FLIGHTS.A)).toBe('Lufthansa · DLH1450 · Airbus A320neo · D-AINA');
+    expect(formatEyebrow(SAMPLE_FLIGHTS.B)).toBe('NetJets Europe · NJE7GT · Embraer Phenom 300 · CS-PHJ');
     expect(formatMeta(SAMPLE_FLIGHTS.A)).toBe('→ 11 300 m · 870 km/h');
     expect(formatMeta(SAMPLE_FLIGHTS.C)).toBe('↗ 11 900 m · 905 km/h');
     expect(formatMeta(SAMPLE_FLIGHTS.D)).toBe('↘ 9 400 m · 790 km/h');
@@ -21,7 +21,7 @@ describe('Info-Leiste', () => {
   it('state 1: one plane, route known', () => {
     const el = renderInfoBar({ variant: 'single', flight: SAMPLE_FLIGHTS.A });
     expect(el.dataset.state).toBe('single-known');
-    expect(el.querySelector('.pa-route-large')!.textContent).toBe('Frankfurt → New York');
+    expect(el.querySelector('.pa-route-large')!.textContent).toBe('Frankfurt (FRA) → Thessaloniki (SKG)');
     expect(el.querySelector('.pa-route-unknown')).toBeNull();
     expect(el.querySelector('.pa-meta-small')!.textContent).toBe('→ 11 300 m · 870 km/h');
     expect(el.querySelector('.pa-phase')!.getAttribute('aria-label')).toBe('Horizontalflug');
@@ -38,13 +38,13 @@ describe('Info-Leiste', () => {
     const el = renderInfoBar({ variant: 'double', flights: [SAMPLE_FLIGHTS.A, SAMPLE_FLIGHTS.D] });
     expect(el.dataset.state).toBe('double');
     expect([...el.querySelectorAll('.pa-badge')].map((b) => b.textContent)).toEqual(['1', '2']);
-    expect([...el.querySelectorAll('.pa-info-row .pa-route-large')].map((r) => r.textContent)).toEqual(['Frankfurt → New York', 'Köln → Palma']);
+    expect([...el.querySelectorAll('.pa-info-row .pa-route-large')].map((r) => r.textContent)).toEqual(['Frankfurt (FRA) → Thessaloniki (SKG)', 'Hahn (HHN) → Palma de Mallorca (PMI)']);
   });
 
   it('state 4: slim "Zuletzt" bar', () => {
-    const el = renderInfoBar({ variant: 'recent', text: 'Zuletzt: Lufthansa LH400 · vor 6 Min' });
+    const el = renderInfoBar({ variant: 'recent', text: 'Zuletzt: Lufthansa DLH1450 · vor 6 Min' });
     expect(el.dataset.state).toBe('recent');
-    expect(el.textContent).toBe('Zuletzt: Lufthansa LH400 · vor 6 Min');
+    expect(el.textContent).toBe('Zuletzt: Lufthansa DLH1450 · vor 6 Min');
   });
 
   it('scene header veraltet: "Letzter Stand · HH:MM" with the time of the last good Stand, same ink and glow, no "Live"', () => {
@@ -85,7 +85,7 @@ describe('Info-Leiste', () => {
 
 describe('formatEyebrow via', () => {
   it('appends "über X" for stops, comma for several', () => {
-    expect(formatEyebrow({ ...SAMPLE_FLIGHTS.A, via: ['Sharjah'] })).toBe('Lufthansa · LH400 · Airbus A320neo · D-AIBI · über Sharjah');
+    expect(formatEyebrow({ ...SAMPLE_FLIGHTS.A, via: ['Sharjah'] })).toBe('Lufthansa · DLH1450 · Airbus A320neo · D-AINA · über Sharjah');
     expect(formatEyebrow({ ...SAMPLE_FLIGHTS.A, via: ['Sharjah', 'Dubai'] })).toMatch(/über Sharjah, Dubai$/);
   });
 });

@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 21:10 -- Task verified and completed: design-system-m4r7v - Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei
+
+**Type:** Work / Task completion
+**Task:** design-system-m4r7v - Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei
+**Summary:** realistische Beispieldaten in den Info-Leisten-Stories
+**Duration:** 8m40s
+**Verification:** PASS (iteration 1)
+**Files changed:** 10
+**Tests added:** 3
+**ADRs written:** none
+
+---
+
 ## 2026-11-01 21:07 -- Task verified and completed: airspace-fehby - Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.)
 
 **Type:** Work / Task completion
