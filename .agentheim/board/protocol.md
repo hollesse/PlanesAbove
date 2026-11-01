@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 13:25 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 10m (13:16 – 13:26)
+**Completed:** 1 (first-try PASS: 0, re-dispatched: 1 [liveries-ecn02: Editor-Starttyp rutschte alphabetisch auf double-decker, Quad-E2E rot; Worker hatte Playwright nicht ausgeführt], skipped: 0)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0 (sky-scene-jpjt2 bleibt eskaliert)
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** liveries-ecn02: 2
+**Commits:** 4 (1 capture, 1 batch start, 1 task integration, 1 session end)
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (1 task)
+**Carry-over:** .agentheim/.dashboard/: left behind (owner: dashboard, untracked advisory state); .worktrees/sky-scene-jpjt2: kept (owner: sky-scene-jpjt2, escalated 2026-10-31 at iteration 1, salvaged: .agentheim/salvage/sky-scene-jpjt2-escalated-iter1.patch + .bookkeeping.md); 2 stranded RESULT sidecars removed
+
+---
+
 ## 2026-11-01 13:25 -- Task verified and completed: liveries-ecn02 - Silhouette und Detailschicht für jumbo-hump und double-decker aus der Altgrafik (nach dem Widebody-Muster)
 
 **Type:** Work / Task completion
