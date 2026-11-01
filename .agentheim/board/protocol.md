@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 13:16 -- Modeling / Captured: liveries-ecn02 - Silhouette und Detailschicht für jumbo-hump und double-decker aus der Altgrafik (nach dem Widebody-Muster)
+
+**Type:** Modeling / Capture
+**BC:** liveries
+**Filed to:** todo
+**Summary:** Silhouette und Detailschicht für jumbo-hump und double-decker nach dem Widebody-Muster — direkt nach todo
+
+---
+
 ## 2026-11-01 13:13 -- Work session ended
 
 **Type:** Work / Session end

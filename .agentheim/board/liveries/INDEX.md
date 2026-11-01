@@ -11,13 +11,14 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 0
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 5
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **liveries-ecn02** — Silhouette und Detailschicht für jumbo-hump und double-decker aus der Altgrafik (nach dem Widebody-Muster) (feature) — `todo/liveries-ecn02-silhouette-und-detailschicht-jumbo-hump-und-double-decker.md`
 <!-- todo-list:end -->
 
 ### Doing
