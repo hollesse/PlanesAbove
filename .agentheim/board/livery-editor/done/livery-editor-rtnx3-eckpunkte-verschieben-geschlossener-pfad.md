@@ -1,7 +1,7 @@
 ---
 id: livery-editor-rtnx3
 title: Eckpunkte eines geschlossenen Pfads als Marker zeigen und verschieben
-status: doing
+status: done
 type: feature
 context: livery-editor
 created: 2026-11-01
@@ -30,3 +30,6 @@ Für die ausgewählte, sichtbare Pfad-Ebene zeigt das Overlay neben den Rundungs
 
 ## Notes
 Betreiber-Feedback vom 2026-11-01. Direkt nach todo. Konflikt-Hinweis: teilt `src/main.ts` mit livery-editor-ypj22 (Kurven beim Zeichnen); livery-editor-ypj22 wird danach gebaut.
+
+## Outcome
+Eckmarker umgesetzt. `movePoint(layer, i, p)` in tools/livery-editor/curve.ts setzt nur points[i], laesst via unveraendert und verweigert einen Punkt identisch zu einem Nachbarn (inkl. Schlusskante). main.ts zeichnet fuer die ausgewaehlte, sichtbare Ebene (ohne Entwurf) je Punkt ein Quadrat `vertex-handle-<i>`; der Mousedown-Handler teilt das handleGesture-Prinzip mit den Rundungsgriffen, es entsteht kein Entwurfspunkt. Tests: 2 Unit-Tests, 2 Editor-E2E (Fixture move-corner mit Pixelvergleich, Marker-Anzahl). npm test, typecheck, editor-chromium (9) gruen. Das [human-eye]-Kriterium bleibt dem Betreiber.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { segmentHandle, setVia } from './curve';
+import { movePoint, segmentHandle, setVia } from './curve';
 import { pathData } from '../../src/client/ui/domain/livery-render';
 
 const quad = { points: [[0, 0], [100, 0], [100, 50], [0, 50]] as [number, number][] };
@@ -26,5 +26,20 @@ describe('curve handle logic', () => {
     const [cx, cy] = [Number(m[1]), Number(m[2])];
     const at = (a: number, c: number, b: number) => 0.25 * a + 0.5 * c + 0.25 * b;
     expect([at(0, cx, 100), at(0, cy, 0)]).toEqual([50, -30]);
+  });
+});
+
+describe('movePoint', () => {
+  const rounded = setVia(quad, 0, [50, -10]);
+  it('sets exactly points[i] and keeps via unchanged', () => {
+    const r = movePoint(rounded, 1, [120, 5]);
+    expect(r.points).toEqual([[0, 0], [120, 5], [100, 50], [0, 50]]);
+    expect(r.via).toEqual(rounded.via);
+    expect(rounded.points[1]).toEqual([100, 0]);
+  });
+  it('refuses a point identical to either neighbour, including across the closing edge', () => {
+    expect(movePoint(quad, 0, [100, 0])).toBe(quad);
+    expect(movePoint(quad, 0, [0, 50])).toBe(quad);
+    expect(movePoint(quad, 2, [100, 0])).toBe(quad);
   });
 });

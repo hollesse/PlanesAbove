@@ -28,6 +28,7 @@ supporting — Werkzeug für die Illustrationsarbeit; die Himmelsszene braucht n
 - **Schreib-Plugin** — das Vite-Plugin des Editors und sein einziger Schreibweg ins Repo: validiert die Lackierungsdatei mit zod, schreibt nur in Zielverzeichnisse der Allow-List, schützt gegen Path-Traversal, schreibt atomar und stößt danach `build-assets` an (ADR 0035).
 - **Allow-List** — die feste Liste der Zielverzeichnisse im Repo, in die das Schreib-Plugin überhaupt schreiben darf; alles andere wird abgewiesen.
 - **Deckkraft-Ansicht (Spike-Stand)** — Der Deckkraft-Regler der Silhouette blendet sie aus und zeigt dabei die ungeschnittenen Pfade (Geisterkopie); bei 100 % sieht man den Zuschnitt, bei 0 % den ganzen Pfad. Umsetzung: Option `silhouetteOpacity` von `renderLiverySvg`.
+- **Eckmarker**: quadratischer Overlay-Griff (`vertex-handle-<i>`) an jedem Eckpunkt der ausgewaehlten Pfad-Ebene; Ziehen setzt `points[i]` (gefangen), `via` bleibt unveraendert. Unterscheidet sich vom runden Rundungsgriff in der Segmentmitte.
 
 ## Aggregates
 _Noch nicht modelliert._

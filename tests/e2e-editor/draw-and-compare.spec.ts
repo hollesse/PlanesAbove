@@ -293,3 +293,48 @@ test('layer row: compact icons, hidden at rest, visible on hover/selection, kept
   await del0.click();
   await expect(page.getByTestId('layer-list').locator('[data-testid^="layer-row-"]')).toHaveCount(1);
 });
+
+test('corner markers: only for the selected layer; drag one, save, match the story; no draft point added', async ({ page }) => {
+  const fixture = JSON.parse(fs.readFileSync('src/client/ui/assets/liveries/move-corner/narrowbody.json', 'utf8'));
+  await page.goto('/');
+  await expect(page.locator('svg[data-livery-render] .lv-body')).toBeVisible();
+  const box = (await page.getByTestId('overlay').boundingBox())!;
+  const [vx, vy, vw, vh] = (await page.getByTestId('overlay').getAttribute('viewBox'))!.split(' ').map(Number);
+  const at = ([x, y]: number[]) => [box.x + ((x - vx) / vw) * box.width, box.y + ((y - vy) / vh) * box.height] as const;
+  const drawn = [[300, 150], [700, 150], [700, 300], [300, 300]];
+  for (const p of drawn) await page.mouse.click(...at(p));
+  await page.getByTestId('path-color').fill(fixture.layers[0].color);
+  await page.mouse.click(...at(drawn[0]));
+  await page.getByTestId('livery-id').fill('move-corner');
+  for (let i = 0; i < 4; i++) await expect(page.getByTestId(`vertex-handle-${i}`)).toHaveCount(1);
+  await expect(page.getByTestId('vertex-handle-4')).toHaveCount(0);
+
+  await page.mouse.move(...at([700, 300]));
+  await page.mouse.down();
+  await page.mouse.move(...at([725, 325]));
+  await page.mouse.move(...at([750, 350]));
+  await page.mouse.up();
+  await expect(page.locator('svg[data-livery-render] .lv-paint path')).toHaveAttribute('d', /^M300 150 L700 150 L750 350 L300 300 Z$/);
+  expect(await page.locator('svg.overlay circle[r="5"]').count()).toBe(0); // no draft point
+
+  await page.getByTestId('save').click();
+  await expect(page.getByTestId('status')).toContainText('Gespeichert');
+  expect(JSON.parse(fs.readFileSync(path.join(EDITOR_OUT, 'move-corner/narrowbody.json'), 'utf8'))).toEqual(fixture);
+  await expectSameAsStory(page, 'liveries-pfade--move-corner-narrowbody');
+});
+
+test('corner markers disappear when the layer is deselected', async ({ page }) => {
+  await page.goto('/');
+  const board = page.getByTestId('overlay');
+  const box = (await board.boundingBox())!;
+  const [vx, vy, vw, vh] = (await board.getAttribute('viewBox'))!.split(' ').map(Number);
+  const at = ([x, y]: number[]) => [box.x + ((x - vx) / vw) * box.width, box.y + ((y - vy) / vh) * box.height] as const;
+  for (const pts of [[[0, 0], [10, 0], [10, 10]], [[0, 20], [10, 20], [10, 30]]]) {
+    for (const p of pts) await page.mouse.click(...at(p));
+    await page.mouse.click(...at(pts[0]));
+  }
+  // second layer selected: three markers; selecting the first moves them, never doubles them
+  await expect(page.locator('[data-testid^="vertex-handle-"]')).toHaveCount(3);
+  await page.getByTestId('layer-row-0').getByTestId('layer-select').click();
+  await expect(page.locator('[data-testid^="vertex-handle-"]')).toHaveCount(3);
+});

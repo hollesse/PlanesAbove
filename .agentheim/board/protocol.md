@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:32 -- Task verified and completed: livery-editor-rtnx3 - Eckpunkte eines geschlossenen Pfads als Marker zeigen und verschieben
+
+**Type:** Work / Task completion
+**Task:** livery-editor-rtnx3 - Eckpunkte eines geschlossenen Pfads als Marker zeigen und verschieben
+**Summary:** Eckmarker (Quadrat) an jedem Punkt der gewählten Pfad-Ebene; Ziehen verschiebt den Punkt, Rundungen bleiben, kein Entwurfspunkt beim Griff-Start
+**Duration:** 3m30s (11:29 → 11:32)
+**Verification:** PASS (iteration 1)
+**Files changed:** 5
+**Tests added:** 4
+**ADRs written:** none
+
+---
+
 ## 2026-11-01 11:29 -- Batch started: [livery-editor-rtnx3]
 
 **Type:** Work / Batch start

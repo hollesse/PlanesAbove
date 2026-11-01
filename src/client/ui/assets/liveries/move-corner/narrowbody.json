@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "livery": "move-corner",
+  "typklasse": "narrowbody",
+  "fields": { "engines": "#c9cccb", "wings": "#e1e3e1", "tailplane": "#e1e3e1" },
+  "layers": [
+    { "type": "path", "points": [[300, 150], [700, 150], [750, 350], [300, 300]], "color": "#cc2200" }
+  ]
+}

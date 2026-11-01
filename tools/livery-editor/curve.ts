@@ -21,3 +21,11 @@ export function setVia<L extends Curvable>(layer: L, i: number, p: Pt | null): L
   via[i] = p;
   return { ...layer, via };
 }
+
+/** Move the corner points[i] to p; `via` stays untouched. Refuses a p identical to a neighbouring point (returns the layer unchanged). */
+export function movePoint<L extends Pick<PathLayer, 'points'>>(layer: L, i: number, p: Pt): L {
+  const n = layer.points.length;
+  const same = (q: readonly number[]) => q[0] === p[0] && q[1] === p[1];
+  if (n > 1 && (same(layer.points[(i + n - 1) % n]) || same(layer.points[(i + 1) % n]))) return layer;
+  return { ...layer, points: layer.points.map((q, k) => (k === i ? p : q)) };
+}
