@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 18:29 -- Modeling / Promoted: sighting-log-r3kw8 - Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern
+
+**Type:** Modeling / Promote
+**BC:** sighting-log
+**From → To:** backlog → todo
+
+---
+
 ## 2026-11-01 18:29 -- Modeling / Refined: airspace-yvdbz - Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033)
 
 **Type:** Modeling / Refine
