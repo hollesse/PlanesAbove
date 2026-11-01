@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:29 -- Modeling / Promoted: livery-editor-hz0hb - Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf
+
+**Type:** Modeling / Promote
+**BC:** livery-editor
+**From → To:** backlog → todo
+
+---
+
 ## 2026-11-01 10:29 -- Modeling / Promoted: liveries-yzshd - Trennlinie zwischen Rumpf und Finne wieder sichtbar machen
 
 **Type:** Modeling / Promote
