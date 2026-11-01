@@ -11,13 +11,14 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
+- **Todo:** 2
 - **Doing:** 0
 - **Done:** 7
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **livery-editor-ypj22** — Rundungen schon beim Zeichnen des Entwurfs setzen, nicht erst nach dem Schließen (feature) — `todo/livery-editor-ypj22-rundungen-schon-beim-zeichnen.md`
 - **livery-editor-rtnx3** — Eckpunkte eines geschlossenen Pfads als Marker zeigen und verschieben (feature) — `todo/livery-editor-rtnx3-eckpunkte-verschieben-geschlossener-pfad.md`
 <!-- todo-list:end -->
 

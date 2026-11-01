@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:29 -- Modeling / Captured: livery-editor-ypj22 - Rundungen schon beim Zeichnen des Entwurfs setzen, nicht erst nach dem Schließen
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** todo
+**Summary:** Rundungen schon beim Zeichnen des Entwurfs setzen — Betreiber-Feedback, direkt nach todo
+
+---
+
 ## 2026-11-01 11:29 -- Modeling / Captured: livery-editor-rtnx3 - Eckpunkte eines geschlossenen Pfads als Marker zeigen und verschieben
 
 **Type:** Modeling / Capture
