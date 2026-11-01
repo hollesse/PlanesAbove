@@ -338,3 +338,53 @@ test('corner markers disappear when the layer is deselected', async ({ page }) =
   await page.getByTestId('layer-row-0').getByTestId('layer-select').click();
   await expect(page.locator('[data-testid^="vertex-handle-"]')).toHaveCount(3);
 });
+
+test('draft rounding: handles per existing segment, drag, close, save, match the story; Escape discards it', async ({ page }) => {
+  const fixture = JSON.parse(fs.readFileSync('src/client/ui/assets/liveries/draft-curve/narrowbody.json', 'utf8'));
+  await page.goto('/');
+  await expect(page.locator('svg[data-livery-render] .lv-body')).toBeVisible();
+  const box = (await page.getByTestId('overlay').boundingBox())!;
+  const [vx, vy, vw, vh] = (await page.getByTestId('overlay').getAttribute('viewBox'))!.split(' ').map(Number);
+  const at = ([x, y]: number[]) => [box.x + ((x - vx) / vw) * box.width, box.y + ((y - vy) / vh) * box.height] as const;
+  const drawn = [[300, 150], [700, 150], [700, 300], [300, 300]];
+  const handles = page.locator('[data-testid^="draft-handle-"]');
+  await page.mouse.click(...at(drawn[0]));
+  await expect(handles).toHaveCount(0);
+  await page.mouse.click(...at(drawn[1]));
+  await expect(handles).toHaveCount(1);
+  await page.mouse.click(...at(drawn[2]));
+  await expect(handles).toHaveCount(2);
+  await page.mouse.click(...at(drawn[3]));
+  await expect(handles).toHaveCount(3);
+  expect(await page.locator('svg.overlay circle[r="5"]').count()).toBe(4);
+
+  await page.mouse.move(...at([500, 150]));
+  await page.mouse.down();
+  await page.mouse.move(...at([500, 125]));
+  await page.mouse.move(...at([500, 100]));
+  await page.mouse.up();
+  await expect(page.getByTestId('draft-path')).toHaveAttribute('d', /^M300 150 Q500 50 700 150 L700 300 L300 300$/);
+  expect(await page.locator('svg.overlay circle[r="5"]').count()).toBe(4); // the handle gesture added no draft point
+
+  // Escape discards points and rounding together
+  await page.keyboard.press('Escape');
+  await expect(handles).toHaveCount(0);
+  await page.mouse.click(...at(drawn[0]));
+  await page.mouse.click(...at(drawn[1]));
+  await expect(page.getByTestId('draft-path')).toHaveAttribute('d', 'M300 150 L700 150');
+
+  // draw it again with the rounding, close, save
+  await page.keyboard.press('Escape');
+  for (const p of drawn) await page.mouse.click(...at(p));
+  await page.mouse.move(...at([500, 150]));
+  await page.mouse.down();
+  await page.mouse.move(...at([500, 100]));
+  await page.mouse.up();
+  await page.getByTestId('path-color').fill(fixture.layers[0].color);
+  await page.mouse.click(...at(drawn[0]));
+  await page.getByTestId('livery-id').fill('draft-curve');
+  await page.getByTestId('save').click();
+  await expect(page.getByTestId('status')).toContainText('Gespeichert');
+  expect(JSON.parse(fs.readFileSync(path.join(EDITOR_OUT, 'draft-curve/narrowbody.json'), 'utf8'))).toEqual(fixture);
+  await expectSameAsStory(page, 'liveries-pfade--draft-curve-narrowbody');
+});

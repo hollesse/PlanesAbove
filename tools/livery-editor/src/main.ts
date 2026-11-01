@@ -4,7 +4,7 @@ import { FIELD_DEFAULTS, pathData, renderLiverySvg } from '../../../src/client/u
 import type { LiveryFile, PathLayer } from '../../../src/client/ui/domain/livery-file';
 import { layerLabel, moveItem, moveLayer, NAME_MAX, recolorLayer, removeItem, removeLayer, renameLayer, visibleFile, type Direction } from '../layers';
 import { movePoint, segmentHandle, setVia } from '../curve';
-import { addPoint, closeDraft, closesAt, snap, CLOSE_RADIUS, type Draft } from '../board';
+import { addPoint, closeDraft, draftPathData, setDraftVia, closesAt, snap, CLOSE_RADIUS, type Draft } from '../board';
 
 // Walking-skeleton editor (spike): Typklasse choice, board with silhouette/details opacity, path tool, one colour, save.
 const typklassen = Object.keys(PLANE_PARTS);
@@ -48,8 +48,9 @@ function drawBoard() {
   overlay.innerHTML = selOutline + handles + corners;
   if (pts.length) {
     overlay.innerHTML +=
-      `<polyline points="${pts.map((p) => p.join(',')).join(' ')}" fill="none" stroke="${state.pathColor}" stroke-width="3"/>` +
+      `<path data-testid="draft-path" d="${draftPathData(state.draft)}" fill="none" stroke="${state.pathColor}" stroke-width="3"/>` +
       pts.map((p) => `<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#fff" stroke="${state.pathColor}" stroke-width="2"/>`).join('') +
+ pts.slice(1).map((_, i) => { const [x, y] = segmentHandle(state.draft, i); return `<circle class="curve-handle draft-handle" data-testid="draft-handle-${i}" data-segment="${i}" cx="${x}" cy="${y}" r="6" fill="#0a84ff" stroke="#fff" stroke-width="2" style="cursor:grab"/>`; }).join('') +
       `<circle data-testid="first-point-ring" cx="${pts[0][0]}" cy="${pts[0][1]}" r="${CLOSE_RADIUS}" fill="none" stroke="${state.pathColor}" stroke-width="3" visibility="hidden"/>`;
   }
   // a gesture that starts on a handle must not also add a draft point (its click bubbles to the overlay)
@@ -57,11 +58,14 @@ function drawBoard() {
     const target = e.target as Element;
     const vertex = target.closest?.('.vertex-handle');
     const handle = vertex ?? target.closest?.('.curve-handle');
-    if (!handle) { handleGesture = false; return; }
+    // a click that would close the draft wins over a draft handle lying on top of the first point
+    if (!handle || (handle.classList.contains('draft-handle') && closesAt(state.draft, toBoard(e)))) { handleGesture = false; return; }
     handleGesture = true;
     e.preventDefault();
     const i = Number(handle.getAttribute(vertex ? 'data-vertex' : 'data-segment'));
+    const isDraft = handle.classList.contains('draft-handle');
     const move = (ev: MouseEvent) => {
+      if (isDraft) { state.draft = setDraftVia(state.draft, i, toBoard(ev)); drawBoard(); return; }
       if (state.selected === null) return;
       const edit = vertex ? (l: PathLayer) => movePoint(l, i, toBoard(ev)) : (l: PathLayer) => setVia(l, i, toBoard(ev));
       state.file = { ...state.file, layers: state.file.layers.map((l, k) => (k === state.selected && l.type === 'path' ? edit(l) : l)) };
@@ -73,8 +77,10 @@ function drawBoard() {
   });
   overlay.addEventListener('dblclick', (e) => {
     const handle = (e.target as Element).closest?.('.curve-handle');
-    if (!handle || state.selected === null) return;
+    if (!handle) return;
     const i = Number(handle.getAttribute('data-segment'));
+    if (handle.classList.contains('draft-handle')) { state.draft = setDraftVia(state.draft, i, null); drawBoard(); return; }
+    if (state.selected === null) return;
     state.file = { ...state.file, layers: state.file.layers.map((l, k) => (k === state.selected && l.type === 'path' ? setVia(l, i, null) : l)) };
     drawBoard();
   });

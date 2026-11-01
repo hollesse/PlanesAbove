@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { LiveryFile } from '../../src/client/ui/domain/livery-file';
-import { addPoint, canClose, closeDraft, closesAt, isNearFirstPoint, CLOSE_RADIUS, snap } from './board';
+import { addPoint, canClose, closeDraft, closesAt, draftPathData, setDraftVia, isNearFirstPoint, CLOSE_RADIUS, snap } from './board';
 
 const empty: LiveryFile = { version: 1, livery: 'spike', typklasse: 'narrowbody', fields: {}, layers: [] };
 
@@ -26,5 +26,22 @@ describe('board path tool', () => {
     expect(closesAt(three, [105, 103])).toBe(true);
     expect(closesAt({ points: three.points.slice(0, 2) }, [105, 103])).toBe(false);
     expect(closesAt(three, [150, 150])).toBe(false);
+  });
+});
+
+describe('draft rounding', () => {
+  const pts: [number, number][] = [[0, 0], [100, 0], [100, 100]];
+  it('setDraftVia writes exactly the index, padded to points.length', () => {
+    const d = setDraftVia({ points: pts }, 1, [100, 30]);
+    expect(d.via).toEqual([null, [100, 30], null]);
+    expect(setDraftVia(d, 1, null).via).toEqual([null, null, null]);
+  });
+  it('addPoint keeps via; closeDraft carries it padded with null (closing segment straight)', () => {
+    const d = addPoint(setDraftVia({ points: pts.slice(0, 2) }, 0, [50, -20]), pts[2]);
+    expect(d.via).toEqual([[50, -20], null]);
+    expect(closeDraft(empty, d, '#ff0000').layers).toEqual([{ type: 'path', points: pts, color: '#ff0000', via: [[50, -20], null, null] }]);
+  });
+  it('draftPathData is an open path with quadratic segments', () => {
+    expect(draftPathData({ points: pts, via: [[50, -20], null, null] })).toBe('M0 0 Q50 -40 100 0 L100 100');
   });
 });

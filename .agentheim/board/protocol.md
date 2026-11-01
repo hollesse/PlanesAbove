@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:36 -- Task verified and completed: livery-editor-ypj22 - Rundungen schon beim Zeichnen des Entwurfs setzen, nicht erst nach dem Schließen
+
+**Type:** Work / Task completion
+**Task:** livery-editor-ypj22 - Rundungen schon beim Zeichnen des Entwurfs setzen, nicht erst nach dem Schließen
+**Summary:** Rundungen schon beim Zeichnen: Entwurf trägt via, Griffe je Entwurfssegment, Kurvenvorschau als offener Pfad, Schließen übernimmt via, Escape verwirft
+**Duration:** 4m00s (11:32 → 11:36)
+**Verification:** PASS (iteration 1)
+**Files changed:** 5
+**Tests added:** 4
+**ADRs written:** none
+
+---
+
 ## 2026-11-01 11:32 -- Batch started: [livery-editor-ypj22]
 
 **Type:** Work / Batch start

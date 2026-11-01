@@ -1,7 +1,7 @@
 ---
 id: livery-editor-ypj22
 title: Rundungen schon beim Zeichnen des Entwurfs setzen, nicht erst nach dem Schließen
-status: doing
+status: done
 type: feature
 context: livery-editor
 created: 2026-11-01
@@ -30,3 +30,6 @@ Der Entwurf (`Draft`) bekommt wie `PathLayer` ein `via`-Array (je gesetztem Segm
 
 ## Notes
 Betreiber-Feedback vom 2026-11-01. Direkt nach todo. Baut auf livery-editor-rtnx3 auf (gleiche Overlay-/Gestenlogik in `src/main.ts`).
+
+## Outcome
+Der Entwurf (`Draft`) traegt jetzt ein optionales `via`. `setDraftVia` und `draftPathData` (offener Pfad, quadratische Segmente, Steuerpunkt = 2*via - Mitte) in `tools/livery-editor/board.ts`; `closeDraft` uebernimmt `via`, aufgefuellt mit null. `src/main.ts` zeigt je Entwurfssegment einen Griff `draft-handle-<i>` (Ziehen, Doppelklick = zuruecksetzen), Vorschau als Pfad `draft-path`. Ein Klick, der den Pfad schliessen wuerde, hat Vorrang vor einem Entwurfsgriff ueber dem ersten Punkt (sonst waeren kurze Segmente nicht schliessbar). Tests: 3 Unit-Tests, 1 Editor-E2E mit Fixture draft-curve (Pixelvergleich). [human-eye]-Kriterium bleibt beim Betreiber.
