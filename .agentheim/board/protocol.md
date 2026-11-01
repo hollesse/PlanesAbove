@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 19:42 -- Modeling / Refined: airspace-rrazj - clubs.json normalisiert (Vereins-ID)
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** todo
+**Summary:** clubs.json trennt vereine (ID → Name, Heimatplatz) und flugzeuge (Hex → Vereins-ID, Kennzeichen), damit ein Vereinsname nur einmal gepflegt wird; Validierung der Verweise ergänzt.
+
+---
+
 ## 2026-11-01 19:40 -- Modeling / Promoted: airspace-fehby - Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.)
 
 **Type:** Modeling / Promote
