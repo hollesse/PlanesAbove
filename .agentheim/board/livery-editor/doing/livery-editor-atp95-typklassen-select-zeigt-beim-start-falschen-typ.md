@@ -1,7 +1,7 @@
 ---
 id: livery-editor-atp95
 title: Typklassen-Select zeigt beim Start „double-decker“, obwohl narrowbody geladen ist
-status: todo
+status: doing
 type: bug
 context: livery-editor
 created: 2026-11-01

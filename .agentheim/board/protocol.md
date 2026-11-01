@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 13:28 -- Batch started: [livery-editor-atp95]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-atp95 - Typklassen-Select zeigt beim Start „double-decker“, obwohl narrowbody geladen ist
+**Parallel:** no (1 worker) — only ready task; operator bug report
+
+---
+
 ## 2026-11-01 13:28 -- Modeling / Captured: livery-editor-atp95 - Typklassen-Select zeigt beim Start „double-decker“, obwohl narrowbody geladen ist
 
 **Type:** Modeling / Capture
