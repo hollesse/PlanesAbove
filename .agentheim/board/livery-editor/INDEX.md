@@ -11,13 +11,14 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 0
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 12
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **livery-editor-tps9z** — Gummiband beim Setzen eines Punkts (Segment folgt der Maus ab Mousedown, Punkt sitzt beim Loslassen) und Shift-Zwang waagerecht/senkrecht (feature) — `todo/livery-editor-tps9z-gummiband-beim-ziehen-und-shift-zwang.md`
 <!-- todo-list:end -->
 
 ### Doing

@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:45 -- Modeling / Captured: livery-editor-tps9z - Gummiband beim Setzen eines Punkts (Segment folgt der Maus ab Mousedown, Punkt sitzt beim Loslassen) und Shift-Zwang waagerecht/senkrecht
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** todo
+**Summary:** Gummiband beim Punktsetzen und Shift-Zwang — direkt nach todo
+
+---
+
 ## 2026-11-01 12:39 -- Work session ended
 
 **Type:** Work / Session end
