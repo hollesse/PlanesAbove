@@ -1,7 +1,7 @@
 ---
 id: livery-editor-ykjrk
 title: Auswahl Airline × Typklasse aus den Sichtungen des Heimservers mit Lückenfilter; Fallback Airline-Code-Textfeld und Typklassen-Select
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-01

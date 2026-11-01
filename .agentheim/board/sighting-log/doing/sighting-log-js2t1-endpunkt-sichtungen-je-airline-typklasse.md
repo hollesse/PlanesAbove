@@ -1,7 +1,7 @@
 ---
 id: sighting-log-js2t1
 title: Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033)
-status: todo
+status: doing
 type: feature
 context: sighting-log
 created: 2026-11-01

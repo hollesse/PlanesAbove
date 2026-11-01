@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:57 -- Batch started: [sighting-log-js2t1, livery-editor-ykjrk]
+
+**Type:** Work / Batch start
+**Tasks:** sighting-log-js2t1 - Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033), livery-editor-ykjrk - Auswahl Airline × Typklasse aus den Sichtungen des Heimservers mit Lückenfilter; Fallback Airline-Code-Textfeld und Typklassen-Select
+**Parallel:** yes (2 workers) — both ready tasks; different BCs, the editor task tests against a mocked home server so it does not wait for the endpoint
+
+---
+
 ## 2026-11-01 11:57 -- Modeling / Captured: airspace-yvdbz - Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033)
 
 **Type:** Modeling / Capture

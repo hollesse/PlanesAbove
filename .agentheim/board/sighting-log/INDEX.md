@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 4
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **sighting-log-js2t1** — Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033) (feature) — `todo/sighting-log-js2t1-endpunkt-sichtungen-je-airline-typklasse.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **sighting-log-js2t1** — Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033) (feature) — `doing/sighting-log-js2t1-endpunkt-sichtungen-je-airline-typklasse.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
