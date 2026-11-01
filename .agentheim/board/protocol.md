@@ -5,6 +5,24 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:05 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 9m (11:57 – 12:06)
+**Completed:** 2 (first-try PASS: 1 [livery-editor-ykjrk], re-dispatched: 1 [sighting-log-js2t1: Contract-Test prüfte airline null nicht], skipped: 0)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0 (sky-scene-jpjt2 bleibt eskaliert, Betreiber-Entscheidung offen)
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** sighting-log-js2t1: 2, livery-editor-ykjrk: 1
+**Commits:** 7 (3 capture, 1 batch start, 2 task integrations, 1 session end)
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (2 tasks)
+**Carry-over:** .agentheim/.dashboard/: left behind (owner: dashboard, untracked advisory state); .worktrees/sky-scene-jpjt2: kept (owner: sky-scene-jpjt2, escalated 2026-10-31 at iteration 1, salvaged: .agentheim/salvage/sky-scene-jpjt2-escalated-iter1.patch + .bookkeeping.md); 3 stranded RESULT sidecars removed
+
+---
+
 ## 2026-11-01 12:05 -- Task verified and completed: livery-editor-ykjrk - Auswahl Airline × Typklasse aus den Sichtungen des Heimservers mit Lückenfilter; Fallback Airline-Code-Textfeld und Typklassen-Select
 
 **Type:** Work / Task completion
