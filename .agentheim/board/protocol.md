@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:39 -- Batch started: [livery-editor-nxdzh]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-nxdzh - Ebenenpanel: Pfade als Ebenen sehen, auswählen, umsortieren, ein-/ausblenden, löschen, färben, benennen
+**Parallel:** no (1 worker) — wave 2a; livery-editor-ec2zz held to wave 2b because both edit tools/livery-editor/src/main.ts and ec2zz builds on the layer selection nxdzh introduces; sequential dispatch avoids a merge-back conflict
+
+---
+
 ## 2026-11-01 10:38 -- Task verified and completed: livery-editor-hz0hb - Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf
 
 **Type:** Work / Task completion
