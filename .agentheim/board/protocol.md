@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 19:24 -- Modeling / Refined: design-system-q7mxe - Größenfaktor je Typklasse und gestaffelte Anordnung
+
+**Type:** Modeling / Refine
+**BC:** design-system
+**Status after:** todo
+**Summary:** Betreiber legte die Abstufung „Deutlich“ fest (Double-Decker 130 % … Light Aircraft/Glider 50 % der Narrowbody-Länge, Narrowbody ≈ 65 % der Slotbreite); der Faktor gilt auch für ein einzelnes Flugzeug. Kriterien messbar gemacht (±3 Prozentpunkte), Code-Pfade ergänzt.
+
+---
+
 ## 2026-11-01 19:22 -- Modeling / Dismissed: design-system-t6wz4
 
 **Type:** Modeling / Dismiss
