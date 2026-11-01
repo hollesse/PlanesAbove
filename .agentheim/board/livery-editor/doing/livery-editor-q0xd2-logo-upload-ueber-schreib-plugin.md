@@ -1,7 +1,7 @@
 ---
 id: livery-editor-q0xd2
 title: Logo hochladen (SVG/PNG) über das Schreib-Plugin nach svg/logos/, danach sofort in der Logo-Liste und im LOGO-Index
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-01

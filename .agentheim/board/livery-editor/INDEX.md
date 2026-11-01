@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 15
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **livery-editor-q0xd2** — Logo hochladen (SVG/PNG) über das Schreib-Plugin nach svg/logos/, danach sofort in der Logo-Liste und im LOGO-Index (feature) — `todo/livery-editor-q0xd2-logo-upload-ueber-schreib-plugin.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **livery-editor-q0xd2** — Logo hochladen (SVG/PNG) über das Schreib-Plugin nach svg/logos/, danach sofort in der Logo-Liste und im LOGO-Index (feature) — `doing/livery-editor-q0xd2-logo-upload-ueber-schreib-plugin.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

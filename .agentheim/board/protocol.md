@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 16:51 -- Batch started: [livery-editor-q0xd2]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-q0xd2 - Logo hochladen (SVG/PNG) über das Schreib-Plugin nach svg/logos/, danach sofort in der Logo-Liste und im LOGO-Index
+**Parallel:** no (1 worker) — only ready task; second half of the logo topic
+
+---
+
 ## 2026-11-01 16:51 -- Modeling / Promoted: livery-editor-q0xd2 - Logo hochladen (SVG/PNG) über das Schreib-Plugin nach svg/logos/, danach sofort in der Logo-Liste und im LOGO-Index
 
 **Type:** Modeling / Promote
