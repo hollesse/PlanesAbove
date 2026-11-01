@@ -114,9 +114,8 @@ undoBtn.addEventListener('click', () => { if (state.file.layers.length) removeAt
 
 // ---- layer panel: top layer first ("oben ist oben"); layers[] itself runs bottom -> top ----
 const layerList = h('div', { attrs: { 'data-testid': 'layer-list', id: 'layer-list' } });
-const selName = h('input', { attrs: { type: 'text', maxlength: String(NAME_MAX), 'data-testid': 'layer-name', placeholder: 'Name der Ebene' } });
-const selColor = h('input', { attrs: { type: 'color', 'data-testid': 'layer-color' } });
-const act = (label: string, testid: string, on: () => void) => { const b = h('button', { text: label, attrs: { 'data-testid': testid } }); b.addEventListener('click', on); return b; };
+/** Row currently in inline-rename mode (only one at a time), or null. */
+let editing: number | null = null;
 
 function removeAt(i: number) {
   state.file = removeLayer(state.file, i);
@@ -124,40 +123,72 @@ function removeAt(i: number) {
   state.selected = state.selected === null || state.selected === i ? null : state.selected > i ? state.selected - 1 : state.selected;
   renderLayerPanel(); drawBoard();
 }
-function move(dir: Direction) {
-  const i = state.selected;
-  if (i === null) return;
+function moveAt(i: number, dir: Direction) {
   const to = dir === 'up' ? i + 1 : i - 1;
   if (to < 0 || to >= state.file.layers.length) return;
   state.file = moveLayer(state.file, i, dir);
   state.hidden = moveItem(state.hidden, i, dir);
-  state.selected = to;
+  if (state.selected === i) state.selected = to; else if (state.selected === to) state.selected = i;
+  editing = null;
   renderLayerPanel(); drawBoard();
 }
 function selectLayer(i: number | null) { state.selected = i; renderLayerPanel(); drawBoard(); }
 
+const ICONS = {
+  edit: '✎', confirm: '✓', up: '↑', down: '↓', del: '🗑',
+};
+function iconBtn(glyph: string, label: string, testid: string, on: () => void, disabled = false) {
+  const b = h('button', { text: glyph, attrs: { class: 'icon-btn', title: label, 'aria-label': label, 'data-testid': testid, type: 'button' } });
+  b.disabled = disabled;
+  b.addEventListener('click', (ev) => { ev.stopPropagation(); on(); });
+  return b;
+}
+
 function renderLayerPanel() {
   const { file, selected } = state;
+  const last = file.layers.length - 1;
   layerList.replaceChildren(...file.layers.map((l, i) => i).reverse().map((i) => {
     const l = file.layers[i];
     const eye = h('input', { attrs: { type: 'checkbox', 'data-testid': 'layer-visible', title: 'Sichtbar' } });
     eye.checked = !state.hidden[i];
     eye.addEventListener('change', () => { state.hidden = state.hidden.map((v, k) => (k === i ? !eye.checked : v)); drawBoard(); });
-    const swatch = h('span', { attrs: { class: 'swatch', style: `background:${l.type === 'path' ? l.color : '#ccc'}` } });
-    const label = h('button', { text: layerLabel(file, i), attrs: { class: 'layer-label', 'data-testid': 'layer-select' } });
-    label.addEventListener('click', () => selectLayer(i));
-    return h('div', { attrs: { class: 'layer-row' + (i === selected ? ' selected' : ''), 'data-testid': `layer-row-${i}`, 'data-index': String(i) } }, eye, swatch, label);
+    const color = h('input', { attrs: { type: 'color', class: 'swatch', 'data-testid': `layer-color-${i}`, title: 'Farbe', 'aria-label': 'Farbe' } });
+    color.value = l.type === 'path' ? l.color : '#cccccc';
+    color.disabled = l.type !== 'path';
+    color.addEventListener('input', () => { state.file = recolorLayer(state.file, i, color.value); drawBoard(); });
+    color.addEventListener('change', () => renderLayerPanel());
+
+    let nameEl: HTMLElement;
+    let editBtn: HTMLElement;
+    if (editing === i) {
+      const field = h('input', { attrs: { type: 'text', class: 'layer-name-input', maxlength: String(NAME_MAX), 'data-testid': `layer-name-input-${i}`, 'aria-label': 'Name der Ebene' } });
+      const auto = layerLabel({ ...file, layers: file.layers.map((x) => { const { name: _n, ...r } = x; return r as typeof x; }) }, i);
+      field.value = l.name ?? auto;
+      field.placeholder = auto;
+      // an unnamed layer is pre-filled with its auto label; confirming it unchanged keeps the layer unnamed
+      const commit = () => { state.file = renameLayer(state.file, i, !l.name && field.value === auto ? '' : field.value); editing = null; renderLayerPanel(); };
+      field.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter') { ev.preventDefault(); commit(); }
+        else if (ev.key === 'Escape') { ev.preventDefault(); ev.stopPropagation(); editing = null; renderLayerPanel(); }
+      });
+      field.addEventListener('click', (ev) => ev.stopPropagation());
+      nameEl = field;
+      editBtn = iconBtn(ICONS.confirm, 'Umbenennen bestätigen', `layer-rename-confirm-${i}`, commit);
+      queueMicrotask(() => { field.focus(); field.select(); });
+    } else {
+      nameEl = h('button', { text: layerLabel(file, i), attrs: { class: 'layer-label', 'data-testid': 'layer-select' } });
+      nameEl.addEventListener('click', () => { editing = null; selectLayer(i); });
+      editBtn = iconBtn(ICONS.edit, 'Umbenennen', `layer-rename-${i}`, () => { editing = i; renderLayerPanel(); });
+    }
+    const actions = h('span', { attrs: { class: 'layer-actions' } },
+      editBtn,
+      iconBtn(ICONS.up, 'Nach oben', `layer-up-${i}`, () => moveAt(i, 'up'), i === last),
+      iconBtn(ICONS.down, 'Nach unten', `layer-down-${i}`, () => moveAt(i, 'down'), i === 0),
+      iconBtn(ICONS.del, 'Löschen', `layer-delete-${i}`, () => { editing = null; removeAt(i); }));
+    return h('div', { attrs: { class: 'layer-row' + (i === selected ? ' selected' : ''), 'data-testid': `layer-row-${i}`, 'data-index': String(i) } }, eye, color, nameEl, actions);
   }));
-  const sel = selected === null ? undefined : file.layers[selected];
-  selName.value = sel ? (sel.name ?? '') : '';
-  selName.placeholder = selected === null ? 'Name der Ebene' : layerLabel({ ...file, layers: file.layers.map((l) => { const { name: _n, ...r } = l; return r as typeof l; }) }, selected);
-  selName.disabled = !sel;
-  selColor.disabled = sel?.type !== 'path';
-  if (sel?.type === 'path') selColor.value = sel.color;
   document.getElementById('board')!.dataset.selected = selected === null ? '' : String(selected);
 }
-selName.addEventListener('input', () => { if (state.selected !== null) { state.file = renameLayer(state.file, state.selected, selName.value); renderLayerPanel(); selName.focus(); } });
-selColor.addEventListener('input', () => { if (state.selected !== null) { state.file = recolorLayer(state.file, state.selected, selColor.value); renderLayerPanel(); drawBoard(); } });
 
 const saveBtn = h('button', { text: 'Speichern', attrs: { 'data-testid': 'save' } });
 saveBtn.addEventListener('click', async () => {
@@ -181,12 +212,6 @@ panel.append(
   undoBtn,
   h('h2', { text: 'Ebenen (oben zuerst)' }),
   layerList,
-  row('Name', selName),
-  row('Farbe', selColor),
-  h('div', { attrs: { class: 'layer-actions' } },
-    act('Nach oben', 'layer-up', () => move('up')),
-    act('Nach unten', 'layer-down', () => move('down')),
-    act('Löschen', 'layer-delete', () => { if (state.selected !== null) removeAt(state.selected); })),
   h('h2', { text: 'Farbfelder' }),
   fieldColor('engines', 'Triebwerke'),
   fieldColor('wings', 'Flügel'),

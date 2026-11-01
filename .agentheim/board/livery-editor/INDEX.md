@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 5
+- **Doing:** 0
+- **Done:** 6
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **livery-editor-wcnxg** — Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker (feature) — `doing/livery-editor-wcnxg-ebenenzeile-icon-aktionen-inline-umbenennen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **livery-editor-wcnxg** — Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker (feature) — `done/livery-editor-wcnxg-ebenenzeile-icon-aktionen-inline-umbenennen.md`
 - **livery-editor-ec2zz** — Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve (feature) — `done/livery-editor-ec2zz-rundungen-griff-segmentmitte.md`
 - **livery-editor-nxdzh** — Ebenenpanel: Pfade als Ebenen sehen, auswählen, umsortieren, ein-/ausblenden, löschen, färben, benennen (feature) — `done/livery-editor-nxdzh-ebenenpanel-pfade-umsortieren.md`
 - **livery-editor-hz0hb** — Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf (feature) — `done/livery-editor-hz0hb-pfad-schliessen-per-klick-auf-ersten-punkt.md`

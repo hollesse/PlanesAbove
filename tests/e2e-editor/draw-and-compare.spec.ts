@@ -119,16 +119,45 @@ test('layer panel: two overlapping paths, swap their order, hide one, save in pa
   await expect(rows.nth(0)).toHaveClass(/selected/);
   await expect(page.locator('#board')).toHaveAttribute('data-selected', '1');
   await expect(page.getByTestId('selection-outline')).toHaveCount(1);
-  await page.getByTestId('layer-name').fill('Blau');
+  const rename = async (i: number, name: string, old?: string) => {
+    await page.getByTestId(`layer-rename-${i}`).click();
+    if (old !== undefined) await expect(page.getByTestId(`layer-name-input-${i}`)).toHaveValue(old);
+    await page.getByTestId(`layer-name-input-${i}`).fill(name);
+    await page.getByTestId(`layer-rename-confirm-${i}`).click();
+  };
+  await rename(1, 'Blau', 'Pfad 2');
   await rows.nth(1).getByTestId('layer-select').click();
   await expect(page.locator('#board')).toHaveAttribute('data-selected', '0');
-  await page.getByTestId('layer-name').fill('Rot');
+  await rename(0, 'Rot', 'Pfad 1');
+  // renaming again pre-fills the current (explicit) name
+  await page.getByTestId('layer-rename-0').click();
+  await expect(page.getByTestId('layer-name-input-0')).toHaveValue('Rot');
+  await page.getByTestId('layer-name-input-0').press('Escape');
   await expect(rows.nth(1).getByTestId('layer-select')).toHaveText('Rot');
 
-  // swap: Rot goes up, above Blau
-  await page.getByTestId('layer-up').click();
+  // icon actions per row, in order, labelled; edges disabled
+  const labels = await rows.nth(0).locator('.layer-actions button').evaluateAll((bs) => bs.map((b) => b.getAttribute('aria-label')));
+  expect(labels).toEqual(['Umbenennen', 'Nach oben', 'Nach unten', 'Löschen']);
+  await expect(page.getByTestId('layer-up-1')).toBeDisabled();
+  await expect(page.getByTestId('layer-down-0')).toBeDisabled();
+
+  // swap: Rot (row 0) goes up, above Blau
+  await page.getByTestId('layer-up-0').click();
   await expect(rows.nth(0).getByTestId('layer-select')).toHaveText('Rot');
   await expect(page.locator('#board')).toHaveAttribute('data-selected', '1');
+  // down arrow on the UNSELECTED row: select Blau (row 1, index 0), then move Rot (index 1) down
+  await rows.nth(1).getByTestId('layer-select').click();
+  await expect(page.locator('#board')).toHaveAttribute('data-selected', '0');
+  await page.getByTestId('layer-down-1').click();
+  await expect(rows.nth(0).getByTestId('layer-select')).toHaveText('Blau');
+  await expect(rows.nth(1).getByTestId('layer-select')).toHaveText('Rot');
+  // the selection stays on Blau, which is now the top layer
+  await expect(page.locator('#board')).toHaveAttribute('data-selected', '1');
+  await expect(rows.nth(0)).toHaveClass(/selected/);
+  // and back up again (Rot is index 0 now, unselected)
+  await page.getByTestId('layer-up-0').click();
+  await expect(rows.nth(0).getByTestId('layer-select')).toHaveText('Rot');
+  await expect(rows.nth(1)).toHaveClass(/selected/);
 
   // hiding removes it from the board, not from the saved file
   await page.getByTestId('livery-id').fill('stack-order');
@@ -183,4 +212,38 @@ test('round one segment by dragging its handle, save, match the story; double-cl
   await page.evaluate(() => document.querySelectorAll('svg.overlay').forEach((o) => ((o as unknown as HTMLElement).style.display = ''))); // the screenshot helper hid the overlay
   await page.getByTestId('curve-handle-0').dblclick();
   await expect(paint).toHaveAttribute('d', /^M300 150 L700 150 L700 300 L300 300 Z$/);
+});
+
+test('layer row: inline rename with Escape, per-row colour, per-row delete', async ({ page }) => {
+  await page.goto('/');
+  const board = page.getByTestId('overlay');
+  const box = (await board.boundingBox())!;
+  const [vx, vy, vw, vh] = (await board.getAttribute('viewBox'))!.split(' ').map(Number);
+  const at = ([x, y]: number[]) => [box.x + ((x - vx) / vw) * box.width, box.y + ((y - vy) / vh) * box.height] as const;
+  for (const pts of [[[0, 0], [10, 0], [10, 10]], [[0, 20], [10, 20], [10, 30]]]) {
+    for (const p of pts) await page.mouse.click(...at(p));
+    await page.mouse.click(...at(pts[0]));
+  }
+  const rows = page.getByTestId('layer-list').locator('[data-testid^="layer-row-"]');
+  await expect(rows).toHaveCount(2);
+  // Escape restores the old name
+  const before = await page.getByTestId('layer-row-0').getByTestId('layer-select').textContent();
+  await page.getByTestId('layer-rename-0').click();
+  await expect(page.getByTestId('layer-rename-confirm-0')).toBeVisible();
+  // an unnamed layer is pre-filled with its auto label
+  await expect(page.getByTestId('layer-name-input-0')).toHaveValue(before!);
+  await page.getByTestId('layer-name-input-0').fill('Verworfen');
+  await page.getByTestId('layer-name-input-0').press('Escape');
+  await expect(page.getByTestId('layer-row-0').getByTestId('layer-select')).toHaveText(before!);
+  // colour of exactly that layer
+  await page.getByTestId('layer-color-0').fill('#123456');
+  await expect(page.locator('svg[data-livery-render] .lv-paint path').first()).toHaveAttribute('fill', '#123456');
+  // delete a layer OTHER than the selected one: select the coloured layer (index 0, panel row 1), delete index 1 -> the coloured one survives
+  await rows.nth(1).getByTestId('layer-select').click();
+  await expect(rows.nth(1)).toHaveClass(/selected/);
+  await page.getByTestId('layer-delete-1').click();
+  await expect(rows).toHaveCount(1);
+  await expect(page.locator('svg[data-livery-render] .lv-paint path')).toHaveCount(1);
+  await expect(page.locator('svg[data-livery-render] .lv-paint path').first()).toHaveAttribute('fill', '#123456');
+  await expect(rows.nth(0)).toHaveClass(/selected/);
 });

@@ -1,7 +1,7 @@
 ---
 id: livery-editor-wcnxg
 title: Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker
-status: doing
+status: done
 type: feature
 context: livery-editor
 created: 2026-11-01
@@ -36,3 +36,22 @@ Jede Ebenenzeile im Panel zeigt von links nach rechts: Sichtbarkeits-Schalter (w
 
 ## Notes
 Betreiber-Feedback vom 2026-11-01 nach dem Ausprobieren des Ebenenpanels (livery-editor-nxdzh). Direkt nach todo erfasst, weil die Anforderung vollständig beschrieben ist. Nicht in diesem Task: Logo-Ebenen, Drag-and-drop der Zeilen.
+
+## Verifier note (iteration 1)
+
+REASONS:
+- Criterion 3: no E2E ever clicks a down arrow; only `layer-up-0` is exercised, and on an already-selected row, so the old move-the-selection behaviour would also pass. `layer-down-<i>` is only checked for its disabled state.
+- Criterion 4: the delete test clicks `layer-delete-1` (the selected layer) and only asserts row count 1 and `layer-row-0` visible; indices renumber after delete, so it cannot tell which layer was removed, and the old delete-selection behaviour would pass too.
+- Criterion 2: no test asserts `layer-name-input-<i>` is pre-filled with the current name. For an unnamed layer the field value is '' and "Pfad n" is only a placeholder; pin down which is intended.
+- Suites were not run (stopped at check 1).
+
+SUGGESTED_FIX: In the editor E2E, click `layer-down-<i>` on an UNSELECTED row and assert the new order. Delete a row other than the selected one and check which layer survives (fill colour or name). Assert `layer-name-input-<i>` holds the old name (or the documented value for an unnamed layer) right after clicking the pencil.
+
+ITERATION_HINT: likely-fixable
+
+## Outcome
+Each layer row now shows visibility toggle, colour swatch (a styled color input that recolours that layer), name, and right-aligned icon buttons Stift, Pfeil hoch, Pfeil runter, Mülleimer (aria-labels Umbenennen / Nach oben / Nach unten / Löschen). The pencil turns the name into a text field plus a check button (Enter confirms, Escape restores the old name, one row at a time). Arrows and trash act on their own row regardless of selection; edge arrows are disabled. The old action bar and selection-based name and colour fields are gone; the draw colour stays. Test IDs are per layer index: layer-rename-i, layer-rename-confirm-i, layer-name-input-i, layer-up-i, layer-down-i, layer-delete-i, layer-color-i.
+
+Iteration 2: an unnamed layer's name field is pre-filled with its auto label ("Pfad n"). Confirming it unchanged keeps the layer unnamed. E2E now covers down on an unselected layer (order changes, selection follows its layer), up on an unselected layer, deleting a non-selected layer (the selected, coloured layer survives and stays selected), and that the name field holds the old name right after the pencil click (auto label for unnamed, explicit name for named). The human-eye layout criterion is not covered by automation.
+
+Key files: tools/livery-editor/src/main.ts, tools/livery-editor/index.html, tests/e2e-editor/draw-and-compare.spec.ts. npm test, typecheck and editor-chromium (6 tests) are green.

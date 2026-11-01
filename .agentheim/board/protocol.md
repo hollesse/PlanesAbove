@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:15 -- Task verified and completed: livery-editor-wcnxg - Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker
+
+**Type:** Work / Task completion
+**Task:** livery-editor-wcnxg - Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker
+**Summary:** Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer) je Zeile, Umbenennen inline mit Haken/Escape, Farbfeld ist der Farbpicker der Ebene; alte Aktionsleiste entfernt
+**Duration:** 7m40s (11:08 → 11:16, eine Nachbesserung)
+**Verification:** PASS (iteration 2)
+**Files changed:** 3
+**Tests added:** 2
+**ADRs written:** none
+
+---
+
+## 2026-11-01 11:11 -- Verification failed: livery-editor-wcnxg - Ebenenzeile: Icon-Aktionen rechts
+
+**Type:** Work / Verification failure
+**Task:** livery-editor-wcnxg - Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker
+**Iteration:** 1 of 3
+**Reasons:** E2E-Lücken: Pfeil runter nie geklickt, Verschieben/Löschen nur auf der ausgewählten Zeile geprüft (altes Verhalten würde auch bestehen), Vorbelegung des Namensfelds nicht geprüft
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-11-01 11:08 -- Batch started: [livery-editor-wcnxg]
 
 **Type:** Work / Batch start
