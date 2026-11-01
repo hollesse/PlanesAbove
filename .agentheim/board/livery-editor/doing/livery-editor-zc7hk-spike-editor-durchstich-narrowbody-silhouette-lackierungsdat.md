@@ -1,7 +1,7 @@
 ---
 id: livery-editor-zc7hk
 title: Spike: Editor-Durchstich — Narrowbody-Silhouette, Lackierungsdatei, Render-Funktion, Pfad zeichnen, speichern, in Storybook sehen
-status: todo
+status: doing
 type: spike
 context: livery-editor
 created: 2026-10-31

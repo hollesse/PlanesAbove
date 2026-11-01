@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 09:59 -- Batch started: [livery-editor-zc7hk]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-zc7hk - Spike: Editor-Durchstich — Narrowbody-Silhouette, Lackierungsdatei, Render-Funktion, Pfad zeichnen, speichern, in Storybook sehen
+**Parallel:** no (1 worker) — only ready task; sky-scene-jpjt2 stays escalated in doing/ pending operator decision; previous whats-next advisory (2026-10-31 09:50) stale, background only
+
+---
+
 ## 2026-11-01 09:58 -- Task completed (verification skipped): infrastructure-m6nj3 - Entscheidung: Teststrategie und Auslieferungsgrenze des Lackierungs-Editors
 
 **Type:** Work / Task completion
