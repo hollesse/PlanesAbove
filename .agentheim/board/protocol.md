@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:21 -- Modeling / Captured: livery-editor-snc1d - Ebenenzeile: kompakte Icon-Buttons, nur bei Hover oder Auswahl sichtbar, Name bekommt die ganze Breite
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** todo
+**Summary:** Ebenenzeile: Icon-Buttons 22 px, nur bei Hover/Auswahl/Fokus sichtbar, Name bekommt die volle Breite, Panel 320 px — Betreiber wählte kompakt + Hover aus drei Vorschlägen
+
+---
+
 ## 2026-11-01 11:15 -- Work session ended
 
 **Type:** Work / Session end
