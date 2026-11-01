@@ -1,7 +1,7 @@
 ---
 id: livery-editor-ec2zz
 title: Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve
-status: backlog
+status: todo
 type: feature
 context: livery-editor
 created: 2026-11-01

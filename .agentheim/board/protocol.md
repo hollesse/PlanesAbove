@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:30 -- Modeling / Promoted: livery-editor-ec2zz - Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve
+
+**Type:** Modeling / Promote
+**BC:** livery-editor
+**From → To:** backlog → todo
+
+---
+
 ## 2026-11-01 10:30 -- Modeling / Promoted: livery-editor-nxdzh - Ebenenpanel: Pfade als Ebenen sehen, auswählen, umsortieren, ein-/ausblenden, löschen, färben, benennen
 
 **Type:** Modeling / Promote
