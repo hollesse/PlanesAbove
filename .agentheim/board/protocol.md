@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 13:16 -- Batch started: [liveries-ecn02]
+
+**Type:** Work / Batch start
+**Tasks:** liveries-ecn02 - Silhouette und Detailschicht für jumbo-hump und double-decker aus der Altgrafik (nach dem Widebody-Muster)
+**Parallel:** no (1 worker) — only ready task
+
+---
+
 ## 2026-11-01 13:16 -- Modeling / Captured: liveries-ecn02 - Silhouette und Detailschicht für jumbo-hump und double-decker aus der Altgrafik (nach dem Widebody-Muster)
 
 **Type:** Modeling / Capture

@@ -1,7 +1,7 @@
 ---
 id: liveries-ecn02
 title: Silhouette und Detailschicht für jumbo-hump und double-decker aus der Altgrafik (nach dem Widebody-Muster)
-status: todo
+status: doing
 type: feature
 context: liveries
 created: 2026-11-01
