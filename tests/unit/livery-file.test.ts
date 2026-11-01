@@ -13,6 +13,15 @@ describe('livery file schema (ADR 0032)', () => {
   it('survives a JSON roundtrip unchanged', () => {
     expect(LiveryFileSchema.parse(JSON.parse(JSON.stringify(sample)))).toEqual(sample);
   });
+  it('keeps an optional layer name through a roundtrip, accepts files without one, rejects names over 40 characters', () => {
+    const named: LiveryFile = { ...sample, layers: [{ type: 'path', points: [[1, 2], [3, 4], [5, 6]], color: '#d6001c', name: 'Heck' }, { type: 'logo', src: 'x', x: 0, y: 0, scale: 1, rotation: 0, name: 'Logo' }] };
+    expect(LiveryFileSchema.parse(JSON.parse(JSON.stringify(named)))).toEqual(named);
+    expect(LiveryFileSchema.safeParse(sample).success).toBe(true);
+    const long = 'x'.repeat(41);
+    expect(LiveryFileSchema.safeParse({ ...sample, layers: [{ type: 'path', points: [[1, 2], [3, 4], [5, 6]], color: '#d6001c', name: long }] }).success).toBe(false);
+    expect(LiveryFileSchema.safeParse({ ...sample, layers: [{ type: 'logo', src: 'x', x: 0, y: 0, scale: 1, rotation: 0, name: long }] }).success).toBe(false);
+    expect(LiveryFileSchema.safeParse({ ...sample, layers: [{ type: 'logo', src: 'x', x: 0, y: 0, scale: 1, rotation: 0, name: 'x'.repeat(40) }] }).success).toBe(true);
+  });
   it('rejects broken files', () => {
     const bad = (patch: object) => expect(LiveryFileSchema.safeParse({ ...sample, ...patch }).success).toBe(false);
     bad({ livery: '../x' });

@@ -1,7 +1,8 @@
 import { h } from '../../../src/client/ui/dom';
 import { PLANE_PARTS } from '../../../src/client/ui/assets/generated/plane-parts';
-import { FIELD_DEFAULTS, renderLiverySvg } from '../../../src/client/ui/domain/livery-render';
+import { FIELD_DEFAULTS, pathData, renderLiverySvg } from '../../../src/client/ui/domain/livery-render';
 import type { LiveryFile } from '../../../src/client/ui/domain/livery-file';
+import { layerLabel, moveItem, moveLayer, NAME_MAX, recolorLayer, removeItem, removeLayer, renameLayer, visibleFile, type Direction } from '../layers';
 import { addPoint, closeDraft, closesAt, snap, CLOSE_RADIUS, type Draft } from '../board';
 
 // Walking-skeleton editor (spike): Typklasse choice, board with silhouette/details opacity, path tool, one colour, save.
@@ -9,6 +10,10 @@ const typklassen = Object.keys(PLANE_PARTS);
 const state = {
   file: { version: 1, livery: 'spike', typklasse: typklassen[0], fields: { ...FIELD_DEFAULTS }, layers: [] } as unknown as LiveryFile,
   draft: { points: [] } as Draft,
+  /** Index into file.layers (bottom -> top) of the selected layer, or null. The curve-handle tool builds on this. */
+  selected: null as number | null,
+  /** Editor-only visibility, parallel to file.layers; never written to the file. */
+  hidden: [] as boolean[],
   pathColor: '#d6001c',
   silhouetteOpacity: 1,
   detailsOpacity: 1,
@@ -31,8 +36,12 @@ function drawBoard() {
     const pt = new DOMPoint(e.clientX, e.clientY).matrixTransform(overlay.getScreenCTM()!.inverse());
     return snap(pt.x, pt.y);
   };
+  const sel = state.selected === null ? undefined : state.file.layers[state.selected];
+  const selOutline = sel?.type === 'path' && !state.hidden[state.selected!]
+    ? `<path data-testid="selection-outline" d="${pathData(sel)}" fill="none" stroke="#0a84ff" stroke-width="3" stroke-dasharray="8 5" pointer-events="none"/>` : '';
+  overlay.innerHTML = selOutline;
   if (pts.length) {
-    overlay.innerHTML =
+    overlay.innerHTML +=
       `<polyline points="${pts.map((p) => p.join(',')).join(' ')}" fill="none" stroke="${state.pathColor}" stroke-width="3"/>` +
       pts.map((p) => `<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#fff" stroke="${state.pathColor}" stroke-width="2"/>`).join('') +
       `<circle data-testid="first-point-ring" cx="${pts[0][0]}" cy="${pts[0][1]}" r="${CLOSE_RADIUS}" fill="none" stroke="${state.pathColor}" stroke-width="3" visibility="hidden"/>`;
@@ -41,6 +50,9 @@ function drawBoard() {
     const p = toBoard(e);
     if (closesAt(state.draft, p)) {
       state.file = closeDraft(state.file, state.draft, state.pathColor);
+      state.hidden = [...state.hidden, false];
+      state.selected = state.file.layers.length - 1;
+      renderLayerPanel();
       state.draft = { points: [] };
       say(`Pfad geschlossen (${state.file.layers.length} Pfad/e).`);
     } else {
@@ -53,7 +65,7 @@ function drawBoard() {
     if (ring) ring.setAttribute('visibility', closesAt(state.draft, toBoard(e)) ? 'visible' : 'hidden');
   });
   board.replaceChildren();
-  board.insertAdjacentHTML('afterbegin', renderLiverySvg(state.file, { silhouetteOpacity: state.silhouetteOpacity, detailsOpacity: state.detailsOpacity }));
+  board.insertAdjacentHTML('afterbegin', renderLiverySvg(visibleFile(state.file, state.hidden), { silhouetteOpacity: state.silhouetteOpacity, detailsOpacity: state.detailsOpacity }));
   board.append(overlay);
 }
 
@@ -70,7 +82,54 @@ const select = h('select', { attrs: { 'data-testid': 'typklasse' } }, ...typklas
 select.addEventListener('change', () => { state.file = { ...state.file, typklasse: select.value }; state.draft = { points: [] }; drawBoard(); });
 
 const undoBtn = h('button', { text: 'Letzten Pfad löschen' });
-undoBtn.addEventListener('click', () => { state.file = { ...state.file, layers: state.file.layers.slice(0, -1) }; state.draft = { points: [] }; drawBoard(); });
+undoBtn.addEventListener('click', () => { if (state.file.layers.length) removeAt(state.file.layers.length - 1); state.draft = { points: [] }; drawBoard(); });
+
+// ---- layer panel: top layer first ("oben ist oben"); layers[] itself runs bottom -> top ----
+const layerList = h('div', { attrs: { 'data-testid': 'layer-list', id: 'layer-list' } });
+const selName = h('input', { attrs: { type: 'text', maxlength: String(NAME_MAX), 'data-testid': 'layer-name', placeholder: 'Name der Ebene' } });
+const selColor = h('input', { attrs: { type: 'color', 'data-testid': 'layer-color' } });
+const act = (label: string, testid: string, on: () => void) => { const b = h('button', { text: label, attrs: { 'data-testid': testid } }); b.addEventListener('click', on); return b; };
+
+function removeAt(i: number) {
+  state.file = removeLayer(state.file, i);
+  state.hidden = removeItem(state.hidden, i);
+  state.selected = state.selected === null || state.selected === i ? null : state.selected > i ? state.selected - 1 : state.selected;
+  renderLayerPanel(); drawBoard();
+}
+function move(dir: Direction) {
+  const i = state.selected;
+  if (i === null) return;
+  const to = dir === 'up' ? i + 1 : i - 1;
+  if (to < 0 || to >= state.file.layers.length) return;
+  state.file = moveLayer(state.file, i, dir);
+  state.hidden = moveItem(state.hidden, i, dir);
+  state.selected = to;
+  renderLayerPanel(); drawBoard();
+}
+function selectLayer(i: number | null) { state.selected = i; renderLayerPanel(); drawBoard(); }
+
+function renderLayerPanel() {
+  const { file, selected } = state;
+  layerList.replaceChildren(...file.layers.map((l, i) => i).reverse().map((i) => {
+    const l = file.layers[i];
+    const eye = h('input', { attrs: { type: 'checkbox', 'data-testid': 'layer-visible', title: 'Sichtbar' } });
+    eye.checked = !state.hidden[i];
+    eye.addEventListener('change', () => { state.hidden = state.hidden.map((v, k) => (k === i ? !eye.checked : v)); drawBoard(); });
+    const swatch = h('span', { attrs: { class: 'swatch', style: `background:${l.type === 'path' ? l.color : '#ccc'}` } });
+    const label = h('button', { text: layerLabel(file, i), attrs: { class: 'layer-label', 'data-testid': 'layer-select' } });
+    label.addEventListener('click', () => selectLayer(i));
+    return h('div', { attrs: { class: 'layer-row' + (i === selected ? ' selected' : ''), 'data-testid': `layer-row-${i}`, 'data-index': String(i) } }, eye, swatch, label);
+  }));
+  const sel = selected === null ? undefined : file.layers[selected];
+  selName.value = sel ? (sel.name ?? '') : '';
+  selName.placeholder = selected === null ? 'Name der Ebene' : layerLabel({ ...file, layers: file.layers.map((l) => { const { name: _n, ...r } = l; return r as typeof l; }) }, selected);
+  selName.disabled = !sel;
+  selColor.disabled = sel?.type !== 'path';
+  if (sel?.type === 'path') selColor.value = sel.color;
+  document.getElementById('board')!.dataset.selected = selected === null ? '' : String(selected);
+}
+selName.addEventListener('input', () => { if (state.selected !== null) { state.file = renameLayer(state.file, state.selected, selName.value); renderLayerPanel(); selName.focus(); } });
+selColor.addEventListener('input', () => { if (state.selected !== null) { state.file = recolorLayer(state.file, state.selected, selColor.value); renderLayerPanel(); drawBoard(); } });
 
 const saveBtn = h('button', { text: 'Speichern', attrs: { 'data-testid': 'save' } });
 saveBtn.addEventListener('click', async () => {
@@ -92,6 +151,14 @@ panel.append(
   h('div', { text: 'Klicks setzen Punkte; Klick auf den ersten Punkt schließt den Pfad, Escape verwirft den Entwurf.' }),
   row('Farbe', input('color', state.pathColor, (v) => { state.pathColor = v; drawBoard(); }, 'path-color')),
   undoBtn,
+  h('h2', { text: 'Ebenen (oben zuerst)' }),
+  layerList,
+  row('Name', selName),
+  row('Farbe', selColor),
+  h('div', { attrs: { class: 'layer-actions' } },
+    act('Nach oben', 'layer-up', () => move('up')),
+    act('Nach unten', 'layer-down', () => move('down')),
+    act('Löschen', 'layer-delete', () => { if (state.selected !== null) removeAt(state.selected); })),
   h('h2', { text: 'Farbfelder' }),
   fieldColor('engines', 'Triebwerke'),
   fieldColor('wings', 'Flügel'),
@@ -100,6 +167,7 @@ panel.append(
   saveBtn,
   status,
 );
+renderLayerPanel();
 drawBoard();
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') { state.draft = { points: [] }; drawBoard(); }

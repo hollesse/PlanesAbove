@@ -1,7 +1,7 @@
 ---
 id: livery-editor-nxdzh
 title: Ebenenpanel: Pfade als Ebenen sehen, auswählen, umsortieren, ein-/ausblenden, löschen, färben, benennen
-status: doing
+status: done
 type: feature
 context: livery-editor
 created: 2026-11-01
@@ -31,3 +31,10 @@ Reine Logik (`moveLayer`, `removeLayer`, `recolorLayer`, `renameLayer`) in `tool
 
 ## Notes
 Refined 2026-11-01 aus dem Betreiber-Feedback zum Editor-Spike livery-editor-zc7hk (Kriterium [human-eye]). Die Schema-Erweiterung um `name` liegt im Format des BC liveries (ADR 0032); sie ist additiv und optional, deshalb hier im Editor-Task mit erledigt und nicht als eigener liveries-Task. Konflikt-Hinweis: teilt `src/main.ts` mit hz0hb und ec2zz.
+
+## Outcome
+Ebenenpanel im Editor: Liste oben zuerst, je Zeile Sichtbarkeits-Checkbox, Farbfeld, Name; Auswahl hebt den Pfad im Brett mit gestricheltem Umriss hervor; Aktionen Nach oben/unten, Löschen, Farbe, Name. Ein frisch geschlossener Pfad ist ausgewählt. Der ausgewählte Index liegt in `state.selected` (und als `data-selected` auf `#board`) für das spätere Kurvenwerkzeug. Sichtbarkeit ist ein zu `layers` paralleles `state.hidden`; das Brett rendert `visibleFile(file, hidden)`, gespeichert wird die volle Datei.
+
+Reine Logik in `tools/livery-editor/layers.ts` (`moveLayer`, `removeLayer`, `recolorLayer`, `renameLayer`, `layerLabel`, `visibleFile`, generisches `moveItem`/`removeItem` für die parallele Sichtbarkeit), getestet in `layers.test.ts`. `PathLayerSchema`/`LogoLayerSchema` haben optionales `name` (max 40), Test in `tests/unit/livery-file.test.ts`.
+
+E2E (`tests/e2e-editor/draw-and-compare.spec.ts`): zwei überlappende Pfade zeichnen, benennen, Reihenfolge tauschen, ausblenden (Datei behält beide Ebenen), speichern, Datei == neue Fixture `src/client/ui/assets/liveries/stack-order/narrowbody.json`, Pixelvergleich mit deren generierter Story `liveries-pfade--stack-order-narrowbody`. Die Screenshot-Hilfe blendet das Editor-Overlay (Auswahlumriss/Entwurf) aus, sonst wäre es nicht Teil des Vergleichs. Hinweis: neue committete Lackierung `stack-order` erscheint als zusätzlicher Eintrag in `LIVERY_FILES`. Das [human-eye]-Kriterium bleibt dem Betreiber.

@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "livery": "stack-order",
+  "typklasse": "narrowbody",
+  "fields": { "engines": "#c9cccb", "wings": "#e1e3e1", "tailplane": "#e1e3e1" },
+  "layers": [
+    { "type": "path", "points": [[440, 150], [700, 150], [700, 300], [440, 300]], "color": "#0044cc", "name": "Blau" },
+    { "type": "path", "points": [[300, 150], [560, 150], [560, 300], [300, 300]], "color": "#d6001c", "name": "Rot" }
+  ]
+}
