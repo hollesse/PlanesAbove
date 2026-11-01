@@ -22,7 +22,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **livery-editor-tps9z** — Gummiband beim Setzen eines Punkts (Segment folgt der Maus ab Mousedown, Punkt sitzt beim Loslassen) und Shift-Zwang waagerecht/senkrecht (feature) — `doing/livery-editor-tps9z-gummiband-beim-ziehen-und-shift-zwang.md`
+- **livery-editor-tps9z** — Gummiband beim Zeichnen (nächstes Segment folgt der Maus, Klick setzt den Punkt) und Shift-Zwang waagerecht/senkrecht (feature) — `doing/livery-editor-tps9z-gummiband-beim-ziehen-und-shift-zwang.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
