@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 1
+- **Backlog:** 2
 - **Todo:** 1
 - **Doing:** 0
 - **Done:** 12
@@ -55,6 +55,7 @@ prior-art matcher additionally checks `done-archive/` when present.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **livery-editor-gn6gp** — Logo hochladen (SVG/PNG) und als Ebene platzieren, skalieren, drehen; Ablage im Repo über das Schreib-Plugin (feature) — `backlog/livery-editor-gn6gp-logo-upload-und-platzierung.md`
 - **livery-editor-fweas** — Typwechsel-E2E für die Sichtungsauswahl, sobald eine zweite Silhouette (z. B. widebody) existiert (chore) — `backlog/livery-editor-fweas-typwechsel-e2e-sobald-zweite-silhouette.md`
 <!-- backlog-list:end -->
 

@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:45 -- Modeling / Captured: livery-editor-gn6gp - Logo hochladen (SVG/PNG) und als Ebene platzieren, skalieren, drehen; Ablage im Repo über das Schreib-Plugin
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** backlog
+**Summary:** Logo-Upload und Platzierung — Backlog, braucht Refine
+
+---
+
 ## 2026-11-01 12:45 -- Modeling / Captured: liveries-yafve - Silhouette und Detailschicht für widebody und regional-jet aus der Altgrafik (nach dem Narrowbody-Muster)
 
 **Type:** Modeling / Capture
