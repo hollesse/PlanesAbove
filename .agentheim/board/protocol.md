@@ -5,6 +5,16 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:29 -- Modeling / Refined: liveries-wyypc, liveries-yzshd, livery-editor-hz0hb, livery-editor-nxdzh, livery-editor-ec2zz - Editor-Feedback
+
+**Type:** Modeling / Refine
+**BC:** liveries, livery-editor
+**Status after:** todo (alle fünf)
+**Summary:** Fünf Feedback-Tasks aus dem Editor-Spike verfeinert. Betreiber-Entscheidungen: Trennlinie Rumpf/Finne wie die Altgrafik (getrennte Umrisse, Finne im Rumpf maskiert, Zuschnitt bleibt Vereinigung); Ebenenpanel zusätzlich mit Löschen, Färben, Benennen (optionales name-Feld im Schema); Rundung zurück zur Geraden per Doppelklick auf den Griff. Pfad-Schließen per Klick auf den ersten Punkt mit Fang-Radius 12. Die beiden liveries-Bugs hängen am (erledigten) Styleguide-Gate.
+**ADRs written:** none
+
+---
+
 ## 2026-11-01 10:24 -- Capture / Captured: livery-editor-ec2zz - Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve
 
 **Type:** Capture
