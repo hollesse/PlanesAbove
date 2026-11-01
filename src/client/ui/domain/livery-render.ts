@@ -46,13 +46,18 @@ export function renderLiverySvg(file: LiveryFile, options: RenderOptions = {}): 
   const fields = Object.entries(parts.fields)
     .map(([k, geo]) => `<g class="lv-field-${k}" fill="${safeColor(file.fields[k as keyof typeof FIELD_DEFAULTS], FIELD_DEFAULTS[k as keyof typeof FIELD_DEFAULTS])}" ${stroke}>${geo}</g>`)
     .join('');
+  const outline = parts.outlines
+    ? `<path class="lv-outline-fin" d="${parts.outlines.fin}" mask="url(#${id}-ol-mask)"/><path class="lv-outline-fuselage" d="${parts.outlines.fuselage}"/>`
+    : parts.body;
   return [
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${parts.viewBox}" data-livery-render data-typklasse="${file.typklasse}">`,
-    `<defs><clipPath id="${id}-clip">${parts.body}</clipPath></defs>`,
+    `<defs><clipPath id="${id}-clip">${parts.body}</clipPath>${
+      parts.outlines ? `<mask id="${id}-ol-mask" maskUnits="userSpaceOnUse" x="-1000" y="-1000" width="3000" height="3000"><rect x="-1000" y="-1000" width="3000" height="3000" fill="#fff"/><path d="${parts.outlines.fuselage}" fill="#000"/></mask>` : ''
+    }</defs>`,
     `<g class="lv-silhouette"${op(so)}>${fields}<g class="lv-body" fill="${BODY_FILL}">${parts.body}</g></g>`,
     so < 1 ? `<g class="lv-ghost"${op(1 - so)}>${pathEls()}</g>` : '',
     `<g class="lv-paint" clip-path="url(#${id}-clip)">${pathEls()}</g>`,
-    `<g class="lv-outline"${op(so)} fill="none" ${stroke}>${parts.body}</g>`,
+    `<g class="lv-outline"${op(so)} fill="none" ${stroke}>${outline}</g>`,
     `<g class="lv-details"${op(dop)}>${parts.details}</g>`,
     '</svg>',
   ].join('');

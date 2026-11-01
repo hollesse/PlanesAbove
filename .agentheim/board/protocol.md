@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:36 -- Task verified and completed: liveries-yzshd - Trennlinie zwischen Rumpf und Finne wieder sichtbar machen
+
+**Type:** Work / Task completion
+**Task:** liveries-yzshd - Trennlinie zwischen Rumpf und Finne wieder sichtbar machen
+**Summary:** Trennlinie Rumpf/Finne wieder sichtbar: Rumpf-Umriss vollständig, Finnen-Umriss je Render-Instanz maskiert; #body bleibt Zuschnitt, Fallback für Typklassen ohne Umriss-Pfade
+**Duration:** 5m30s (10:31 → 10:37)
+**Verification:** PASS (iteration 1)
+**Files changed:** 4
+**Tests added:** 3
+**ADRs written:** none
+
+---
+
+## 2026-11-01 10:36 -- Verification failed: livery-editor-hz0hb - Pfad durch Klick auf den ersten Punkt schließen
+
+**Type:** Work / Verification failure
+**Task:** livery-editor-hz0hb - Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf
+**Iteration:** 1 of 3
+**Reasons:** Escape-leert-Entwurf (Kriterium 2) ohne Test; alles andere grün (vitest 734, tsc, editor-chromium 2/2)
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-11-01 10:35 -- Task verified and completed: liveries-wyypc - Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen
 
 **Type:** Work / Task completion

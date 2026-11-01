@@ -1,7 +1,7 @@
 ---
 id: liveries-yzshd
 title: Trennlinie zwischen Rumpf und Finne wieder sichtbar machen
-status: doing
+status: done
 type: bug
 context: liveries
 created: 2026-11-01
@@ -32,3 +32,6 @@ Die Silhouette bekommt getrennte Umriss-Geometrie für Rumpf und Finne; der Zusc
 
 ## Notes
 Refined 2026-11-01 aus dem Betreiber-Feedback zum Editor-Spike livery-editor-zc7hk (Kriterium [human-eye]). Im Spike-Outcome steht die Vereinigung als Vereinfachung („kein Mask-Trick nötig“); dieser Task nimmt den Mask-Trick aus der Altgrafik (`narrowbody-ol-mask`) wieder auf. Keine Änderung an der Lackierungsdatei.
+
+## Outcome
+silhouette.svg hat neben #body die Pfade outline-fuselage und outline-fin (Koordinaten 1:1 aus der Altgrafik). build-assets liefert optional `outlines` je Typklasse (Fallback: #body als Umriss). renderLiverySvg zeichnet in lv-outline erst den Finnen-Umriss mit Maske (ID `lvN-ol-mask`, Rumpf schwarz), dann den Rumpf-Umriss ungemaskt; clipPath bleibt #body. Tests: livery-render.test.ts (Masken-IDs, Clip, Fallback); npm test, typecheck, webkit und editor-chromium grün. [human-eye]-Kriterium offen für den Betreiber.
