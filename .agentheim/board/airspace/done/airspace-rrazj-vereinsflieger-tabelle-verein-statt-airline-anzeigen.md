@@ -1,7 +1,7 @@
 ---
 id: airspace-rrazj
 title: Lokale Vereinsflieger per Hex-Code erfassen und den Verein statt der Airline anzeigen
-status: doing
+status: done
 type: feature
 context: airspace
 created: 2026-10-30
@@ -45,3 +45,7 @@ Vereinsflugzeuge aus der Nachbarschaft tauchen regelmäßig über dem Haus auf, 
 - Auflösung heute: `resolveAirline` in `src/server/modules/airspace/typeclass.ts` (nur Callsign `^[A-Z]{3}[0-9]`), `identify()` in `src/server/modules/sky-scene/sky-service.ts` (~Zeile 90). Tabellen-Laden wie `airlines.json`.
 - Schwestertask airspace-fehby (keine Route für Kennzeichen-Callsigns) ist unabhängig umsetzbar.
 - Reale config.yaml anpassen: nein.
+
+## Outcome
+
+Added normalized `clubs.json` (Verein sfg-elz, Flugzeug 3d07b6) with load-time validation (hex, slug id, name, known verein) in `typeclass.ts` (`ClubTable`, `resolveClub`, optional `Tables.clubs`). `SkyService.identify()` lets a club hit replace the airline (prefix empty -> Standard-Lackierung, no unmapped report). Tests in typeclass.test.ts and sky-service.test.ts; README section "Vereinsflieger" documents maintenance. Full suite and typecheck green.

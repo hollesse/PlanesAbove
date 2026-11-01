@@ -8,7 +8,7 @@ import { SourceError, type FlightSource, type Flugzeug } from '../airspace/model
 import type { RouteInfo, RouteLookup, RouteService } from '../airspace/route-service';
 import { AircraftTypeResolver, type CorrectedType } from '../airspace/aircraft-type';
 import { selectNearest } from '../airspace/selection';
-import { resolveAirline, resolveLivery, resolveTypeClass, type Tables } from '../airspace/typeclass';
+import { resolveAirline, resolveClub, resolveLivery, resolveTypeClass, type Tables } from '../airspace/typeclass';
 import type { SightingRepository } from '../sighting-log/repository';
 import type { AudioService } from './audio-service';
 import { assignSlots, emptySlots, type Slots } from './slots';
@@ -87,7 +87,8 @@ export class SkyService {
     const t = this.d.tables;
     const type: CorrectedType = this.types.peek(a.icao24, a.typeCode);
     const tc = resolveTypeClass(t, type.typeCode, a.emitterCategory);
-    const airline = resolveAirline(t, a.callsign);
+    const club = resolveClub(t, a.icao24);
+    const airline = club ? { prefix: '', name: club } : resolveAirline(t, a.callsign);
     const livery = resolveLivery(t, airline?.prefix, tc.typklasse, this.d.config.liveries.enabled);
     return { tc, airline, livery, typeSource: type.source, typeCode: type.typeCode };
   }
@@ -97,7 +98,7 @@ export class SkyService {
     const route = !info ? null : info.legs.length > 2 ? `${info.legs[0]} → ${info.legs[info.legs.length - 1]}` : info.text;
     const { tc, airline, livery, typeCode } = this.identify(a);
     const altitudeM = a.altitudeM ?? 0;
-    const parts = composeSpeechParts({ airlineName: airline?.name, typeName: tc.typeName, typeCode: typeCode ?? a.typeCode, airlineIcao: airline?.prefix, altitudeM: a.altitudeM, verticalRateMs: a.verticalRateMs, routeLegs: info?.legs }, this.d.config.sources.route.plausibility.phaseMinRateMs);
+    const parts = composeSpeechParts({ airlineName: airline?.name, typeName: tc.typeName, typeCode: typeCode ?? a.typeCode, airlineIcao: airline?.prefix || undefined, altitudeM: a.altitudeM, verticalRateMs: a.verticalRateMs, routeLegs: info?.legs }, this.d.config.sources.route.plausibility.phaseMinRateMs);
     const text = parts.map((p) => p.text).join(' ');
     return {
       icao24: a.icao24,

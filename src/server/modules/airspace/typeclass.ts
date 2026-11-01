@@ -6,11 +6,17 @@ import airlinesJson from './tables/airlines.json';
 import airlineLiveriesJson from './tables/airline-liveries.json';
 import airportsJson from './tables/airports.json';
 import typeOverridesJson from './tables/type-overrides.json';
+import clubsJson from './tables/clubs.json';
 
 export interface TypeClassEntry { name: string; typklasse: string; kategorie: string; besonderheit?: string }
 export interface AirlineEntry { name: string; country: string }
 /** Own airport table (airspace-b7kx2): ICAO -> display city and optional IATA, so a route reads the same whichever source delivered it. */
 export interface AirportEntry { city: string; iata?: string }
+/** Vereinsflieger table (airspace-rrazj), normalized: a club name is kept in one place. `registration` and `heimatplatz` are documentation only. */
+export interface ClubTable {
+  vereine: Record<string, { name: string; heimatplatz?: string }>;
+  flugzeuge: Record<string, { verein: string; registration?: string }>;
+}
 export interface Tables {
   airports: Record<string, AirportEntry>;
   typeClasses: Record<string, TypeClassEntry>;
@@ -18,6 +24,8 @@ export interface Tables {
   airlineLiveries: Record<string, string>;
   /** Own correction table (airspace-t4x9k): hex (6 chars, lower case) -> ICAO type code; wins over hexdb and the flight source. */
   typeOverrides?: Record<string, string>;
+  /** Local club aircraft by hex; the club takes the place of the airline. */
+  clubs?: ClubTable;
 }
 
 /** Validates the tables against the design-system catalog ids (ADR 0009); throws with all problems. */
@@ -27,6 +35,14 @@ export function loadTables(raw: Tables): Tables {
   for (const [hex, code] of Object.entries(raw.typeOverrides ?? {})) {
     if (!/^[0-9a-f]{6}$/.test(hex)) problems.push(`type-overrides.${hex}: key is not a 6-character lower-case hex`);
     if (!raw.typeClasses[code]) problems.push(`type-overrides.${hex}: type code "${code}" is not in type-classes`);
+  }
+  for (const [id, v] of Object.entries(raw.clubs?.vereine ?? {})) {
+    if (!/^[a-z0-9-]+$/.test(id)) problems.push(`clubs.vereine.${id}: key is not a slug (a-z, 0-9, -)`);
+    if (typeof v?.name !== 'string' || !v.name.trim()) problems.push(`clubs.vereine.${id}: missing name`);
+  }
+  for (const [hex, f] of Object.entries(raw.clubs?.flugzeuge ?? {})) {
+    if (!/^[0-9a-f]{6}$/.test(hex)) problems.push(`clubs.flugzeuge.${hex}: key is not a 6-character lower-case hex`);
+    if (!raw.clubs?.vereine[f?.verein]) problems.push(`clubs.flugzeuge.${hex}: unknown verein "${f?.verein}"`);
   }
   const liveryIds = LIVERIES.map((l) => l.id);
   for (const [prefix, id] of Object.entries(raw.airlineLiveries)) if (!liveryIds.includes(id)) problems.push(`airline-liveries.${prefix}: unknown livery "${id}"`);
@@ -39,7 +55,7 @@ export function loadTables(raw: Tables): Tables {
   return raw;
 }
 
-export const defaultTables = (): Tables => loadTables({ typeClasses: typeClassesJson as Record<string, TypeClassEntry>, airlines: airlinesJson, airports: airportsJson as Record<string, AirportEntry>, airlineLiveries: airlineLiveriesJson, typeOverrides: typeOverridesJson });
+export const defaultTables = (): Tables => loadTables({ typeClasses: typeClassesJson as Record<string, TypeClassEntry>, airlines: airlinesJson, airports: airportsJson as Record<string, AirportEntry>, airlineLiveries: airlineLiveriesJson, typeOverrides: typeOverridesJson, clubs: clubsJson as ClubTable });
 
 export interface ResolvedTypeClass {
   typklasse: PlaneType;
@@ -67,6 +83,12 @@ export function resolveTypeClass(t: Tables, typeCode: string | undefined, emitte
   const byEmitter = emitterCategory ? EMITTER_FALLBACK[emitterCategory] : undefined;
   if (byEmitter) return { typklasse: byEmitter, kategorie: KATEGORIE_BY_CLASS[byEmitter] ?? 'unbekannt', fallback: true, unmapped };
   return { typklasse: 'light-aircraft', kategorie: 'unbekannt', fallback: true, unmapped };
+}
+
+/** Club name for a hex (case-insensitive), or undefined. Takes precedence over the callsign-prefix airline. */
+export function resolveClub(t: Tables, hex: string | undefined): string | undefined {
+  const f = hex ? t.clubs?.flugzeuge[hex.toLowerCase()] : undefined;
+  return f ? t.clubs?.vereine[f.verein]?.name : undefined;
 }
 
 export interface ResolvedAirline { prefix: string; name?: string; country?: string }

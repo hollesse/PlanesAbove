@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 21:06 -- Task verified and completed: airspace-rrazj - Lokale Vereinsflieger per Hex-Code erfassen und den Verein statt der Airline anzeigen
+
+**Type:** Work / Task completion
+**Task:** airspace-rrazj - Lokale Vereinsflieger per Hex-Code erfassen und den Verein statt der Airline anzeigen
+**Summary:** Vereinsflieger per Hex in clubs.json erfassen, Verein ersetzt die Airline
+**Duration:** 4m30s
+**Verification:** PASS (iteration 1)
+**Files changed:** 6
+**Tests added:** 9
+**ADRs written:** none
+
+---
+
+## 2026-11-01 21:05 -- Verification failed: airspace-fehby - Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.)
+
+**Type:** Work / Verification failure
+**Task:** airspace-fehby - Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.)
+**Iteration:** 1 of 3
+**Reasons:** no scene-level test for criterion 5 (route null in Szenenzustand), sky-service.ts registration pass-through untested, route_lookups absence only indirectly shown
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-11-01 21:01 -- Batch started: [airspace-fehby, airspace-rrazj, design-system-m4r7v]
 
 **Type:** Work / Batch start

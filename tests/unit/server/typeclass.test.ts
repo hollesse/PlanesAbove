@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
-import { loadTables, resolveAirline, resolveLivery, resolveTypeClass, defaultTables } from '../../../src/server/modules/airspace/typeclass';
+import { loadTables, resolveClub, resolveAirline, resolveLivery, resolveTypeClass, defaultTables } from '../../../src/server/modules/airspace/typeclass';
 import { PLANE_TYPE_IDS } from '../../../src/client/ui/domain/catalog';
 import { LIVERIES } from '../../../src/client/ui/domain/liveries';
 
@@ -126,5 +126,25 @@ describe('curation from live operation (airspace-n8c4t)', () => {
     expect(resolveTypeClass(T, 'ZZZZ', 'A1')).toMatchObject({ typklasse: 'light-aircraft', unmapped: false });
     expect(resolveTypeClass(T, 'ZZZZ', undefined)).toMatchObject({ typklasse: 'light-aircraft', kategorie: 'unbekannt', unmapped: false });
     expect(T.typeClasses).not.toHaveProperty('ZZZZ');
+  });
+});
+
+describe('clubs table (Vereinsflieger)', () => {
+  const base = { typeClasses: {}, airlines: {}, airports: {}, airlineLiveries: {} };
+  const ok = { vereine: { 'sfg-elz': { name: 'Sportfluggruppe Elz' } }, flugzeuge: { '3d07b6': { verein: 'sfg-elz' } } };
+  it('default table has sfg-elz and 3d07b6', () => {
+    expect(T.clubs?.vereine['sfg-elz'].name).toBe('Sportfluggruppe Elz');
+    expect(T.clubs?.flugzeuge['3d07b6'].verein).toBe('sfg-elz');
+  });
+  it('accepts a valid table', () => { expect(() => loadTables({ ...base, clubs: ok })).not.toThrow(); });
+  it('rejects invalid hex', () => { expect(() => loadTables({ ...base, clubs: { ...ok, flugzeuge: { XYZ: { verein: 'sfg-elz' } } } })).toThrow(/clubs.flugzeuge.XYZ/); });
+  it('rejects invalid club id', () => { expect(() => loadTables({ ...base, clubs: { vereine: { 'Bad ID': { name: 'x' } }, flugzeuge: {} } })).toThrow(/Bad ID/); });
+  it('rejects club without name', () => { expect(() => loadTables({ ...base, clubs: { vereine: { a: { name: ' ' } }, flugzeuge: {} } })).toThrow(/missing name/); });
+  it('rejects aircraft pointing to unknown club', () => { expect(() => loadTables({ ...base, clubs: { ...ok, flugzeuge: { '3d07b6': { verein: 'nope' } } } })).toThrow(/unknown verein/); });
+  it('two aircraft of one club share the name; a rename affects both', () => {
+    const t = { ...base, clubs: { vereine: { a: { name: 'Alt' } }, flugzeuge: { '000001': { verein: 'a' }, '000002': { verein: 'a' } } } };
+    expect(resolveClub(t, '000001')).toBe('Alt'); expect(resolveClub(t, '000002')).toBe('Alt');
+    t.clubs.vereine.a.name = 'Neu';
+    expect(resolveClub(t, '000001')).toBe('Neu'); expect(resolveClub(t, '000002')).toBe('Neu');
   });
 });

@@ -88,6 +88,21 @@ describe('SkyService Takt', () => {
     expect(sightings.list().map((s) => [s.icao24, s.slot])).toEqual([['a', 1], ['b', 2], ['c', null]]);
     expect(sightings.list().find((s) => s.icao24 === 'a')).toMatchObject({ callsign: 'DLH400', airline: 'Lufthansa', typeCode: 'A20N', typklasse: 'narrowbody', liveryPresent: true });
   });
+  it('club aircraft: Verein replaces the airline in operator, speech and sighting; wins over the callsign prefix; no unmapped prefix', async () => {
+    const { svc, sightings } = rig([{ at: 0, planes: [P('3D07B6', 3, { callsign: 'DEBEC', typeCode: 'DV20' })] }]);
+    await svc.tick();
+    const [p] = svc.state().planes;
+    expect(p.flight.operator).toBe('Sportfluggruppe Elz');
+    expect(p.plane.livery).toBe('def');
+    expect(p.speech.text).toMatch(/der Sportfluggruppe Elz\./);
+    expect(sightings.latest()?.airline).toBe('Sportfluggruppe Elz');
+    expect(sightings.unmapped().filter((u) => u.kind === 'airline')).toEqual([]);
+  });
+  it('club beats a known airline prefix', async () => {
+    const { svc } = rig([{ at: 0, planes: [P('3d07b6', 3, { callsign: 'DLH400', typeCode: 'DV20' })] }]);
+    await svc.tick();
+    expect(svc.state().planes[0].flight.operator).toBe('Sportfluggruppe Elz');
+  });
   it('reports unmapped type codes once', async () => {
     const { svc, sightings } = rig([{ at: 0, planes: [P('a', 5, { typeCode: 'XXXX', callsign: 'QQQ1' })] }]);
     await svc.tick(); await svc.tick();

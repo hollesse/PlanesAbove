@@ -78,6 +78,15 @@ Der Flugzeugtyp je Hex wird in dieser Reihenfolge bestimmt: (1) **Korrekturtabel
 npm run stats:types -- --db data/planesabove.db --days 30 [--json]   # Sichtungen je type_source plus Hex-Codes mit override/hexdb
 ```
 
+## Vereinsflieger (Tabelle clubs.json)
+
+Lokale Vereinsflugzeuge stehen in `src/server/modules/airspace/tables/clubs.json` (von Hand gepflegt, beim Start validiert). Der Verein tritt an die Stelle der Airline (Info-Leiste, Satz „Das ist eine Diamond DV20 der Sportfluggruppe Elz.“, Spalte `airline` der Sichtung) und hat Vorrang vor dem Callsign-Praefix. Es gibt keine eigene Lackierung (Standard-Lackierung). So tragt ihr ein:
+
+1. Verein unter `vereine` anlegen, falls neu: Schluessel ist eine ID aus `a-z`, `0-9`, `-` (z. B. `sfg-elz`), dazu `name` (wird angezeigt) und optional `heimatplatz` (nur Doku).
+2. Flugzeug unter `flugzeuge` eintragen: Schluessel ist der Hex-Code (6 Zeichen, klein), `verein` verweist auf die Vereins-ID, `registration` ist optional (nur Doku).
+
+Der Vereinsname steht nur an einer Stelle; eine Aenderung wirkt auf alle Flugzeuge des Vereins.
+
 ## Lackierungs-Statistik
 
 Welche Airlines fliegen ueber dem Haus, werden aber mit der Standard-Lackierung (weiss) gezeigt? Das beantwortet

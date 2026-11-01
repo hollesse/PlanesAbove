@@ -1,0 +1,8 @@
+{
+  "vereine": {
+    "sfg-elz": { "name": "Sportfluggruppe Elz", "heimatplatz": "Flugplatz Elz" }
+  },
+  "flugzeuge": {
+    "3d07b6": { "verein": "sfg-elz", "registration": "D-EBEC" }
+  }
+}
