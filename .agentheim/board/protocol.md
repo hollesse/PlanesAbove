@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:21 -- Batch started: [livery-editor-snc1d]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-snc1d - Ebenenzeile: kompakte Icon-Buttons, nur bei Hover oder Auswahl sichtbar, Name bekommt die ganze Breite
+**Parallel:** scoped — builder chose compact + hover from three proposals; only ready task
+
+---
+
 ## 2026-11-01 11:21 -- Modeling / Captured: livery-editor-snc1d - Ebenenzeile: kompakte Icon-Buttons, nur bei Hover oder Auswahl sichtbar, Name bekommt die ganze Breite
 
 **Type:** Modeling / Capture

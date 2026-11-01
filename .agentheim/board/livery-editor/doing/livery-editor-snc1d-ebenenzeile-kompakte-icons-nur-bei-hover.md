@@ -1,7 +1,7 @@
 ---
 id: livery-editor-snc1d
 title: Ebenenzeile: kompakte Icon-Buttons, nur bei Hover oder Auswahl sichtbar, Name bekommt die ganze Breite
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-01
