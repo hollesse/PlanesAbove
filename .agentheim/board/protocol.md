@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:24 -- Capture / Captured: liveries-yzshd - Trennlinie zwischen Rumpf und Finne wieder sichtbar machen
+
+**Type:** Capture
+**BC:** liveries
+**Filed to:** backlog
+**Summary:** Trennlinie zwischen Rumpf und Finne wieder sichtbar machen
+
+---
+
 ## 2026-11-01 10:24 -- Capture / Captured: liveries-wyypc - Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen
 
 **Type:** Capture
