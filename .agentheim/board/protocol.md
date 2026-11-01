@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:29 -- Modeling / Promoted: liveries-wyypc - Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen
+
+**Type:** Modeling / Promote
+**BC:** liveries
+**From → To:** backlog → todo
+
+---
+
 ## 2026-11-01 10:29 -- Modeling / Refined: liveries-wyypc, liveries-yzshd, livery-editor-hz0hb, livery-editor-nxdzh, livery-editor-ec2zz - Editor-Feedback
 
 **Type:** Modeling / Refine

@@ -1,7 +1,7 @@
 ---
 id: liveries-wyypc
 title: Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen
-status: backlog
+status: todo
 type: bug
 context: liveries
 created: 2026-11-01

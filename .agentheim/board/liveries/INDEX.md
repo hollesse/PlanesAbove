@@ -10,14 +10,15 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 2
-- **Todo:** 0
+- **Backlog:** 1
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 2
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **liveries-wyypc** — Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen (bug) — `todo/liveries-wyypc-narrowbody-details-cockpitfenster-vollstaendig.md`
 <!-- todo-list:end -->
 
 ### Doing
@@ -45,7 +46,6 @@ prior-art matcher additionally checks `done-archive/` when present.
 ### Backlog
 <!-- backlog-list:start -->
 - **liveries-yzshd** — Trennlinie zwischen Rumpf und Finne wieder sichtbar machen (bug) — `backlog/liveries-yzshd-trennlinie-rumpf-finne-zurueck.md`
-- **liveries-wyypc** — Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen (bug) — `backlog/liveries-wyypc-narrowbody-details-cockpitfenster-vollstaendig.md`
 <!-- backlog-list:end -->
 
 ## Pointers
