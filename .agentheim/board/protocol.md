@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 13:44 -- Modeling / Promoted: livery-editor-gn6gp - Logo-Ebene: vorhandenes Logo wählen, auf dem Brett platzieren (Transform-Rahmen: verschieben, skalieren, drehen), gerendert in Szene, Story und Editor
+
+**Type:** Modeling / Promote
+**BC:** livery-editor
+**From → To:** backlog → todo
+
+---
+
 ## 2026-11-01 13:44 -- Modeling / Refined: livery-editor-gn6gp - Logo-Ebene und Platzierung
 
 **Type:** Modeling / Refine
