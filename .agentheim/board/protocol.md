@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 18:34 -- Modeling / Promoted: airspace-yvdbz - Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033)
+
+**Type:** Modeling / Promote
+**BC:** airspace
+**From → To:** backlog → todo
+
+---
+
 ## 2026-11-01 18:34 -- Task verified and completed: sighting-log-r3kw8 - Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern
 
 **Type:** Work / Task completion
