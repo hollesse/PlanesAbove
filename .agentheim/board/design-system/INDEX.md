@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 3
+- **Backlog:** 2
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 16
@@ -49,7 +49,6 @@ Catalog of this bounded context's tasks by status.
 <!-- backlog-list:start -->
 - **design-system-q7mxe** — Größenfaktor je Typklasse (Länge Narrowbody/Widebody realistisch) (feature) — `backlog/design-system-q7mxe-gr-enfaktor-je-typklasse-l-nge-narrowbody-widebody-realistis.md`
 - **design-system-m4r7v** — Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei (feature) — `backlog/design-system-m4r7v-realistische-beispieldaten-info-leiste-stories.md`
-- **design-system-t6wz4** — Flugzeuge je Airline in eigener Lackierung zeichnen, fehlende Airline-Designs in der Statistik ausweisen (feature) — `backlog/design-system-t6wz4-flugzeuge-je-airline-in-eigener-lackierung-statistik-standard-fallback.md`
 <!-- backlog-list:end -->
 
 ## Pointers

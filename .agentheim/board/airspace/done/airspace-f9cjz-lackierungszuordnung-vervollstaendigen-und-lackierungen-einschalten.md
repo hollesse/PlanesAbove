@@ -7,7 +7,7 @@ context: airspace
 created: 2026-10-27
 completed:
 depends_on: []
-blocks: [design-system-t6wz4]
+blocks: []
 tags: [liveries, tables, config]
 related_adrs: [0010, 0009]
 related_research: []

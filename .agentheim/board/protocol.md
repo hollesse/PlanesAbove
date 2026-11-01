@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 19:22 -- Modeling / Dismissed: design-system-t6wz4
+
+**Type:** Modeling / Dismiss
+**Dismissed:**
+- design-system-t6wz4 - Neue Lackierungen und Logos für die Airlines zeichnen, die im Sichtungslog ohne eigenes Design erscheinen (erste Runde: SunExpress, Cathay Pacific, AJet, Corendon, Aegean, Virgin Atlantic) (design-system)
+
+---
+
 ## 2026-11-01 19:06 -- Work session ended
 
 **Type:** Work / Session end
