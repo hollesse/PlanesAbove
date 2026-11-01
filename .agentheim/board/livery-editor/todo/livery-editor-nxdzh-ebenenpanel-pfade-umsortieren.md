@@ -1,7 +1,7 @@
 ---
 id: livery-editor-nxdzh
 title: Ebenenpanel: Pfade als Ebenen sehen, auswählen, umsortieren, ein-/ausblenden, löschen, färben, benennen
-status: backlog
+status: todo
 type: feature
 context: livery-editor
 created: 2026-11-01
