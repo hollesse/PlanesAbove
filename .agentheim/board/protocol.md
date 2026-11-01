@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 18:34 -- Batch started: [airspace-yvdbz]
+
+**Type:** Work / Batch start
+**Tasks:** airspace-yvdbz - Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033)
+**Parallel:** scoped — builder named airspace-yvdbz (follows sighting-log-r3kw8)
+
+---
+
 ## 2026-11-01 18:34 -- Modeling / Promoted: airspace-yvdbz - Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033)
 
 **Type:** Modeling / Promote

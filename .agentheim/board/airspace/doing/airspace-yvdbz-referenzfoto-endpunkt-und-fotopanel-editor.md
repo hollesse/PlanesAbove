@@ -1,7 +1,7 @@
 ---
 id: airspace-yvdbz
 title: Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033)
-status: todo
+status: doing
 type: feature
 context: airspace
 created: 2026-11-01

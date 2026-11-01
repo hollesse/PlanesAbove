@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 2
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 25
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **airspace-yvdbz** — Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033) (feature) — `todo/airspace-yvdbz-referenzfoto-endpunkt-und-fotopanel-editor.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **airspace-yvdbz** — Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033) (feature) — `doing/airspace-yvdbz-referenzfoto-endpunkt-und-fotopanel-editor.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
