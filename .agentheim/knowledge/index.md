@@ -24,6 +24,7 @@ For BC-scoped artifacts, see each BC's `INDEX.md`.
 ## Global ADRs (scope: global)
 
 <!-- adr-global:start -->
+- **0037** — Teststrategie und Auslieferungsgrenze des Lackierungs-Editors: Vitest zuerst, eigenes Playwright-Projekt editor-chromium, Guard-Tests gegen Client-Bundle und Docker-Image — 2026-10-31 — `decisions/0037-teststrategie-und-auslieferungsgrenze-des-lackierungs-editors.md`
 - **0034** — Storybook-first gilt für den Anzeigepfad, nicht für Betreiber-Werkzeuge (ergänzt ADR 0002) — 2026-10-31 — `decisions/0034-storybook-first-gilt-fuer-anzeigepfad-nicht-fuer-betreiber-werkzeuge.md`
 - **0033** — Sichtungen je Airline x Typklasse und Referenzfotos über zwei lesende Endpunkte des Heimservers — 2026-10-31 — `decisions/0033-sightings-by-class-and-reference-photo-read-endpoints.md`
 - **0031** — Lackierung je Airline × Typklasse als ungeschnittene Pfaddatei im Repo; Silhouette und Detailschicht getrennt; Zuschnitt beim Anzeigen — 2026-10-31 — `decisions/0031-livery-per-airline-and-typeclass-as-unclipped-path-file-in-repo.md`

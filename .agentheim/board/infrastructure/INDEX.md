@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 1
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 13
+- **Doing:** 0
+- **Done:** 14
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **infrastructure-m6nj3** — Entscheidung: Teststrategie und Auslieferungsgrenze des Lackierungs-Editors (decision) — `doing/infrastructure-m6nj3-entscheidung-teststrategie-und-auslieferungsgrenze-des-lacki.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **infrastructure-m6nj3** — Entscheidung: Teststrategie und Auslieferungsgrenze des Lackierungs-Editors (decision) — `done/infrastructure-m6nj3-entscheidung-teststrategie-und-auslieferungsgrenze-des-lacki.md`
 - **infrastructure-nwwcq** — Entscheidung: Storybook-first gilt für den Anzeigepfad, nicht für Betreiber-Werkzeuge (ergänzt ADR 0002) (decision) — `done/infrastructure-nwwcq-entscheidung-storybook-first-gilt-f-ur-den-anzeigepfad-nicht.md`
 - **infrastructure-cc9gq** — Entscheidung: Sichtungen je Airline × Typklasse und Referenzfotos über zwei lesende Endpunkte des Heimservers (decision) — `done/infrastructure-cc9gq-entscheidung-sichtungen-je-airline-x-typklasse-und-referenzf.md`
 - **infrastructure-rmzgt** — Drei-Schichten-Konfiguration: Defaults als config.yaml im Repo, Pflichtwerte und Secrets per Umgebungsvariable, optionale Override-Datei; README beschreibt alles (decision) — `done/infrastructure-rmzgt-drei-schichten-konfiguration-defaults-im-repo-env-vars-override.md`

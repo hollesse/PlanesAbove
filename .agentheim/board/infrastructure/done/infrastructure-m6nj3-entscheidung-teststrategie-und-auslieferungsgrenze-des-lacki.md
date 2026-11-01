@@ -1,7 +1,7 @@
 ---
 id: infrastructure-m6nj3
 title: Entscheidung: Teststrategie und Auslieferungsgrenze des Lackierungs-Editors
-status: doing
+status: done
 type: decision
 context: infrastructure
 created: 2026-10-31
@@ -9,7 +9,7 @@ completed:
 depends_on: [livery-editor-rv382]
 blocks: []
 tags: [decision, foundation, tests]
-related_adrs: [0031]
+related_adrs: [0031, 0037]
 related_research: []
 prior_art: []
 ---
@@ -31,3 +31,7 @@ ADR schreiben (Vorschlag: 0037, scope global) nach dem Architekten-Entwurf in de
 - Editor-E2E als eigenes Playwright-Projekt `editor-chromium` (kein WebKit) gegen `npm run editor` mit `LIVERY_EDITOR_OUT=<tmp>` und Server im Mock-Modus; läuft im CI-Job `e2e`. Der bestehende WebKit-Lauf über alle Stories deckt die neuen Lackierungs-Stories ab.
 - `tools/` in `.dockerignore`; ein Guard-Test prüft, dass das Client-Bundle keinen Editor-Code enthält.
 - Verworfen: nur lokale Editor-Tests, WebKit für den Editor.
+
+## Outcome
+
+ADR 0037 (provisorisch) entscheidet Teststrategie und Auslieferungsgrenze des Editors: Vitest-Unit-Tests zuerst (Geometrie, zod-Roundtrip, Renderer, Import-Konverter, Schreibschutz, Lücken/Statistik), `tools/` in Typprüfung und Vitest, Editor-E2E als eigenes Playwright-Projekt `editor-chromium` im CI-Job `e2e`, WebKit weiter für den Anzeigepfad, Guard-Tests für `.dockerignore`, Client-Bundle und Importgraph. Offene Punkte (Betreiber-Bestätigung, Mock-Modus, Bundle-Marker) stehen im ADR. Keine Code-Änderung.

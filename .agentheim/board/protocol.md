@@ -5,6 +5,17 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 09:58 -- Task completed (verification skipped): infrastructure-m6nj3 - Entscheidung: Teststrategie und Auslieferungsgrenze des Lackierungs-Editors
+
+**Type:** Work / Task completion
+**Task:** infrastructure-m6nj3 - Entscheidung: Teststrategie und Auslieferungsgrenze des Lackierungs-Editors
+**Summary:** ADR 0037: Teststrategie und Auslieferungsgrenze des Lackierungs-Editors — Vitest zuerst, eigenes Chromium-E2E-Projekt editor-chromium, Guard-Tests gegen Bundle und Image; offene Punkte für den Betreiber benannt
+**Duration:** resumed — worker result from 2026-10-31 12:04 session, integrated 2026-11-01
+**Verification:** SKIPPED — decision-only task
+**Files changed:** 0
+
+---
+
 ## 2026-10-31 12:04 -- Batch started: [infrastructure-m6nj3]
 
 **Type:** Work / Batch start
