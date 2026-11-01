@@ -39,4 +39,5 @@ export const LiveryFileSchema = z.object({
   layers: z.array(z.discriminatedUnion('type', [PathLayerSchema, LogoLayerSchema])),
 });
 export type PathLayer = z.infer<typeof PathLayerSchema>;
+export type LogoLayer = z.infer<typeof LogoLayerSchema>;
 export type LiveryFile = z.infer<typeof LiveryFileSchema>;

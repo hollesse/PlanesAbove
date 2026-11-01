@@ -31,12 +31,13 @@ export function renameLayer(file: LiveryFile, index: number, name: string): Live
 }
 export const NAME_MAX = 40;
 
-/** Panel label: the layer's name, else "Pfad n" / "Logo n" counted per kind from the bottom. */
+/** Panel label: the layer's name, else "Pfad n" counted from the bottom for paths, the logo name (`src`) for logos. */
 export function layerLabel(file: LiveryFile, index: number): string {
   const l = file.layers[index];
   if (l.name) return l.name;
+  if (l.type === 'logo') return l.src;
   const n = file.layers.slice(0, index + 1).filter((x) => x.type === l.type).length;
-  return `${l.type === 'path' ? 'Pfad' : 'Logo'} ${n}`;
+  return `Pfad ${n}`;
 }
 
 /** The file as the board draws it: hidden layers (editor state, `hidden[i]` parallel to `layers`) are left out. The saved file keeps them. */

@@ -1,5 +1,6 @@
 import { PLANE_PARTS } from '../assets/generated/plane-parts';
-import type { LiveryFile, PathLayer } from './livery-file';
+import { LOGO_SVG } from '../assets/generated/logos';
+import type { LiveryFile, LogoLayer, PathLayer } from './livery-file';
 
 // The one pure render function for sky scene, Storybook and the editor (ADR 0032 point 6).
 // Layer order from the bottom: back colour fields, white body, paths (clipped to the body), body outline,
@@ -34,6 +35,29 @@ export function pathData(layer: Pick<PathLayer, 'points' | 'via'>): string {
   return d + ' Z';
 }
 
+/** Size of a logo in its own units (from its viewBox), or null for an unknown `src`. */
+export function logoSize(src: string): { w: number; h: number } | null {
+  const svg = LOGO_SVG[src];
+  const vb = svg?.match(/^<svg[^>]*?\sviewBox="([^"]+)"/)?.[1]?.trim().split(/[\s,]+/).map(Number);
+  return vb && vb.length === 4 && vb.every(Number.isFinite) && vb[2] > 0 && vb[3] > 0 ? { w: vb[2], h: vb[3] } : null;
+}
+/** Placeholder size (logo units) for an unknown `src`. */
+export const LOGO_PLACEHOLDER = { w: 100, h: 60 } as const;
+
+/** A placed logo: centred on (x, y), rotated, then scaled around that centre. Unknown `src` -> dashed placeholder. */
+export function logoElement(l: LogoLayer): string {
+  const t = `transform="translate(${n(l.x)} ${n(l.y)}) rotate(${n(l.rotation)}) scale(${Math.round(l.scale * 1000) / 1000})"`;
+  const size = logoSize(l.src);
+  if (!size) {
+    const { w, h } = LOGO_PLACEHOLDER;
+    return `<g class="lv-logo lv-logo-missing" ${t}><rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" fill="none" stroke="#888" stroke-width="3" stroke-dasharray="8 5"/></g>`;
+  }
+  const svg = LOGO_SVG[l.src];
+  const vb = svg.match(/^<svg[^>]*?\sviewBox="([^"]+)"/)![1];
+  const inner = svg.slice(svg.indexOf('>') + 1, svg.lastIndexOf('</svg>'));
+  return `<g class="lv-logo" ${t}><svg x="${n(-size.w / 2)}" y="${n(-size.h / 2)}" width="${n(size.w)}" height="${n(size.h)}" viewBox="${vb}">${inner}</svg></g>`;
+}
+
 export function renderLiverySvg(file: LiveryFile, options: RenderOptions = {}): string {
   const parts = PLANE_PARTS[file.typklasse];
   if (!parts) throw new Error(`no silhouette for Typklasse ${file.typklasse}`);
@@ -41,8 +65,8 @@ export function renderLiverySvg(file: LiveryFile, options: RenderOptions = {}): 
   const so = options.silhouetteOpacity ?? 1;
   const dop = options.detailsOpacity ?? 1;
   const op = (v: number) => (v < 1 ? ` opacity="${n(v)}"` : '');
-  const paths = file.layers.filter((l): l is PathLayer => l.type === 'path');
-  const pathEls = (extra = '') => paths.map((l) => `<path d="${pathData(l)}" fill="${safeColor(l.color, '#000000')}"${extra}/>`).join('');
+  // paths and logos in layer order (bottom -> top)
+  const pathEls = (extra = '') => file.layers.map((l) => (l.type === 'logo' ? logoElement(l) : `<path d="${pathData(l)}" fill="${safeColor(l.color, '#000000')}"${extra}/>`)).join('');
   const stroke = `stroke="${OUTLINE}" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"`;
   const fieldEls = (layer: 'front' | 'back') =>
     Object.entries(parts.fields)

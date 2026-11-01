@@ -1,7 +1,7 @@
 ---
 id: livery-editor-gn6gp
 title: Logo-Ebene: vorhandenes Logo wählen, auf dem Brett platzieren (Transform-Rahmen: verschieben, skalieren, drehen), gerendert in Szene, Story und Editor
-status: doing
+status: done
 type: feature
 context: livery-editor
 created: 2026-11-01
@@ -33,3 +33,17 @@ Lackierungen brauchen Airline-Logos auf Finne und Rumpf. Laut ADR 0031/0032 komm
 
 ## Notes
 Refined 2026-11-01 (Betreiber: Transform-Rahmen; vorhandene Logos + Upload, Upload als eigener Task livery-editor-q0xd2). Logos werden wie Pfade zugeschnitten (ADR 0032 §6); ein Logo über einem Farbfeld (Flügel) wird also abgeschnitten — bewusst, Logos gehören auf Rumpf und Finne. Konflikt-Hinweis: `src/main.ts`, `livery-render.ts`.
+
+## Verifier note (iteration 1)
+
+REASONS:
+- `## What` item 2 not met: an unnamed logo layer shows as "Logo 1"/"Logo 2" in the panel (unchanged `layerLabel` in layers.ts), the spec says Name = Logoname. logo.spec.ts:141 and :192 lock the wrong label in.
+- (README delta: the worker DID deliver a replace of the "Logo" bullet defining Transform-Rahmen; the conductor only passed a summary — no action needed beyond adjusting the "Ebene" bullet wording for logo labels.)
+- Everything else green: npm test 812, typecheck, builds, webkit + editor-chromium 52/52; clipping via clipPath AND mask tested; rotation centre = logo centre; hidden logo removed from board but saved; snapshot unchanged; screenshot shows the Lufthansa logo clipped at the body edges.
+
+SUGGESTED_FIX: Unnamed logo layer label = `src` (display-only default, don't write `name` into the file or the fixture deep-equal breaks); update the two asserts; add a `replace` on the "Ebene" bullet (ohne Namen: „Pfad n“ bzw. Logoname).
+
+ITERATION_HINT: likely-fixable
+
+## Outcome
+Logo-Ebene umgesetzt: `LogoLayer` (src, x, y, scale, rotation) in der Livery-Datei, gerendert in Szene, Story und Editor (zugeschnitten wie Pfade). Der Editor listet vorhandene Logos; ein Klick legt eines mittig auf den Rumpf. Transform-Rahmen im Overlay: Ziehen, Eckgriffe skalieren, Drehgriff dreht (Shift rastet auf 15°). Iteration 2: Ebenenpanel zeigt den Logonamen statt „Pfad n“ (layers.ts/layers.test.ts), E2E-Spec angepasst. Gesamte Suite grün (814 passed, 1 skipped). Schlüsseldateien: tools/livery-editor/logo.ts, tools/livery-editor/src/main.ts, src/client/ui/domain/livery-render.ts, src/client/ui/domain/livery-file.ts.

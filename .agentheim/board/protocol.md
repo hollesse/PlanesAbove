@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 16:51 -- Task verified and completed: livery-editor-gn6gp - Logo-Ebene: vorhandenes Logo wählen, auf dem Brett platzieren (Transform-Rahmen: verschieben, skalieren, drehen), gerendert in Szene, Story und Editor
+
+**Type:** Work / Task completion
+**Task:** livery-editor-gn6gp - Logo-Ebene: vorhandenes Logo wählen, auf dem Brett platzieren (Transform-Rahmen: verschieben, skalieren, drehen), gerendert in Szene, Story und Editor
+**Summary:** Logo-Ebene: vorhandenes Logo aus der Liste wählen, per Transform-Rahmen verschieben, skalieren und drehen (Shift 15°); Logos werden wie Pfade zugeschnitten in Szene, Story und Editor
+**Duration:** 15m (16:38 → 16:53, eine Nachbesserung, ein RESULT-Rewrite)
+**Verification:** PASS (iteration 2)
+**Files changed:** 11
+**Tests added:** 19
+**ADRs written:** none
+
+---
+
+## 2026-11-01 16:45 -- Verification failed: livery-editor-gn6gp - Logo-Ebene
+
+**Type:** Work / Verification failure
+**Task:** livery-editor-gn6gp - Logo-Ebene: vorhandenes Logo wählen, platzieren (Transform-Rahmen)
+**Iteration:** 1 of 3
+**Reasons:** unbenannte Logo-Ebene heißt „Logo n“ statt Logoname (Spec-Punkt 2); sonst alles grün (812 Unit, 52 Playwright, Zuschnitt in clipPath und Maske, Screenshot ok)
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-11-01 13:44 -- Batch started: [livery-editor-gn6gp]
 
 **Type:** Work / Batch start

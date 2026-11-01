@@ -36,6 +36,16 @@ describe('layer logic', () => {
     const f = renameLayer(file(), 0, 'Streifen');
     expect([0, 1, 2].map((i) => layerLabel(f, i))).toEqual(['Streifen', 'Pfad 2', 'Pfad 3']);
   });
+  it('labels an unnamed logo layer with its logo name', () => {
+    const f: LiveryFile = { ...file(), layers: [...file().layers, { type: 'logo', src: 'lufthansa', x: 0, y: 0, scale: 1, rotation: 0 }] };
+    expect(layerLabel(f, 3)).toBe('lufthansa');
+    expect(layerLabel(renameLayer(f, 3, 'Heck'), 3)).toBe('Heck');
+  });
+  it('labels an unnamed logo layer with its logo name', () => {
+    const f: LiveryFile = { ...file(), layers: [...file().layers, { type: 'logo', src: 'lufthansa', x: 0, y: 0, scale: 1, rotation: 0 }] };
+    expect(layerLabel(f, 3)).toBe('lufthansa');
+    expect(layerLabel(renameLayer(f, 3, 'Heck'), 3)).toBe('Heck');
+  });
   it('hiding drops a layer from the render but not from the file', () => {
     const f = file();
     const shown = visibleFile(f, [false, true, false]);

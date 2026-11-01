@@ -1,9 +1,11 @@
 import { h } from '../../../src/client/ui/dom';
 import { PLANE_PARTS } from '../../../src/client/ui/assets/generated/plane-parts';
-import { FIELD_DEFAULTS, pathData, renderLiverySvg } from '../../../src/client/ui/domain/livery-render';
-import type { LiveryFile, PathLayer } from '../../../src/client/ui/domain/livery-file';
+import { FIELD_DEFAULTS, LOGO_PLACEHOLDER, logoSize, pathData, renderLiverySvg } from '../../../src/client/ui/domain/livery-render';
+import type { LiveryFile, LogoLayer, PathLayer } from '../../../src/client/ui/domain/livery-file';
 import { layerLabel, moveItem, moveLayer, NAME_MAX, recolorLayer, removeItem, removeLayer, renameLayer, visibleFile, type Direction } from '../layers';
 import { movePoint, segmentHandle, setVia } from '../curve';
+import { LOGO_SVG } from '../../../src/client/ui/assets/generated/logos';
+import { logoFrame, newLogoLayer, rotationFromHandle, scaleFromCorner, snapRotation } from '../logo';
 import { LIVERY_FILES } from '../../../src/client/ui/assets/generated/liveries';
 import { LIVERY_ID, LiveryFileSchema } from '../../../src/client/ui/domain/livery-file';
 import { groupByAirline, typeOptions, type AirlineGroup, type SightingsResponse } from '../gaps';
@@ -49,7 +51,9 @@ function drawBoard() {
     ? sel.points.map((_, i) => { const [x, y] = segmentHandle(sel, i); return `<circle class="curve-handle" data-testid="curve-handle-${i}" data-segment="${i}" cx="${x}" cy="${y}" r="6" fill="#0a84ff" stroke="#fff" stroke-width="2" style="cursor:grab"/>`; }).join('') : '';
   const corners = sel?.type === 'path' && !state.hidden[state.selected!] && !pts.length
     ? sel.points.map(([x, y], i) => `<rect class="vertex-handle" data-testid="vertex-handle-${i}" data-vertex="${i}" x="${x - 6}" y="${y - 6}" width="12" height="12" fill="#fff" stroke="#0a84ff" stroke-width="3" style="cursor:move"/>`).join('') : '';
-  overlay.innerHTML = selOutline + handles + corners;
+  const logoSel = sel?.type === 'logo' && !state.hidden[state.selected!] && !pts.length ? sel : undefined;
+  const logoFrameEls = logoSel ? logoFrameSvg(logoSel) : '';
+  overlay.innerHTML = selOutline + handles + corners + logoFrameEls;
   if (pts.length) {
     overlay.innerHTML +=
       `<path data-testid="draft-path" d="${draftPathData(state.draft)}" fill="none" stroke="${state.pathColor}" stroke-width="3"/>` +
@@ -61,6 +65,8 @@ function drawBoard() {
   // a gesture that starts on a handle must not also add a draft point (its click bubbles to the overlay)
   overlay.addEventListener('mousedown', (e) => {
     const target = e.target as Element;
+    const logoPart = target.closest?.('[data-logo-part]');
+    if (logoPart && state.selected !== null) { startLogoGesture(e, logoPart, toBoard); return; }
     const vertex = target.closest?.('.vertex-handle');
     const handle = vertex ?? target.closest?.('.curve-handle');
     // a click that would close the draft wins over a draft handle lying on top of the first point
@@ -120,6 +126,42 @@ function drawBoard() {
   board.replaceChildren();
   board.insertAdjacentHTML('afterbegin', renderLiverySvg(visibleFile(state.file, state.hidden), { silhouetteOpacity: state.silhouetteOpacity, detailsOpacity: state.detailsOpacity }));
   board.append(overlay);
+}
+
+/** Transform frame of the selected logo layer: body (drag = move), four corner handles (scale), one rotation handle. */
+function logoFrameSvg(l: LogoLayer): string {
+  const size = logoSize(l.src) ?? LOGO_PLACEHOLDER;
+  const f = logoFrame(l, size);
+  const pts = f.corners.map((c) => c.join(',')).join(' ');
+  const top: [number, number] = [(f.corners[0][0] + f.corners[1][0]) / 2, (f.corners[0][1] + f.corners[1][1]) / 2];
+  return `<polygon data-testid="logo-frame" data-logo-part="move" points="${pts}" fill="rgba(10,132,255,0.06)" stroke="#0a84ff" stroke-width="2" style="cursor:move"/>` +
+    `<line x1="${top[0]}" y1="${top[1]}" x2="${f.rotateHandle[0]}" y2="${f.rotateHandle[1]}" stroke="#0a84ff" stroke-width="2" pointer-events="none"/>` +
+    f.corners.map(([x, y], i) => `<rect data-testid="logo-corner-${i}" data-logo-part="corner" x="${x - 6}" y="${y - 6}" width="12" height="12" fill="#fff" stroke="#0a84ff" stroke-width="3" style="cursor:nwse-resize"/>`).join('') +
+    `<circle data-testid="logo-rotate" data-logo-part="rotate" cx="${f.rotateHandle[0]}" cy="${f.rotateHandle[1]}" r="7" fill="#fff" stroke="#0a84ff" stroke-width="3" style="cursor:grab"/>`;
+}
+
+function startLogoGesture(e: MouseEvent, part: Element, toBoard: (e: MouseEvent) => [number, number]) {
+  const index = state.selected!;
+  const start = state.file.layers[index];
+  if (start.type !== 'logo') return;
+  handleGesture = true; dragging = true;
+  e.preventDefault();
+  const kind = part.getAttribute('data-logo-part');
+  const p0 = toBoard(e);
+  const size = logoSize(start.src) ?? LOGO_PLACEHOLDER;
+  const edit = (ev: MouseEvent, l: LogoLayer): LogoLayer => {
+    const p = toBoard(ev);
+    if (kind === 'move') return { ...l, x: start.x + p[0] - p0[0], y: start.y + p[1] - p0[1] };
+    if (kind === 'corner') return { ...l, scale: scaleFromCorner(start, size, p) };
+    return { ...l, rotation: snapRotation(rotationFromHandle(start, p), ev.shiftKey) };
+  };
+  const move = (ev: MouseEvent) => {
+    state.file = { ...state.file, layers: state.file.layers.map((l, k) => (k === index && l.type === 'logo' ? edit(ev, l) : l)) };
+    drawBoard();
+  };
+  const up = () => { dragging = false; document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); };
+  document.addEventListener('mousemove', move);
+  document.addEventListener('mouseup', up);
 }
 
 function say(msg: string, error = false) { status.textContent = msg; status.className = error ? 'error' : ''; }
@@ -219,6 +261,28 @@ function renderLayerPanel() {
   document.getElementById('board')!.dataset.selected = selected === null ? '' : String(selected);
 }
 
+// ---- Logo: existing logos only (upload is a separate task); a click puts the logo on the fuselage and selects it ----
+const logoList = h('div', { attrs: { 'data-testid': 'logo-list', id: 'logo-list' } });
+function addLogo(src: string) {
+  const size = logoSize(src);
+  if (!size) return;
+  // the fuselage lies a bit below the middle of the board (the fin above it)
+  const [vx, vy, vw, vh] = PLANE_PARTS[state.file.typklasse].viewBox.split(/\s+/).map(Number);
+  const layer = newLogoLayer(src, size, Math.round(vx + vw / 2), Math.round(vy + vh * 0.61));
+  state.file = { ...state.file, layers: [...state.file.layers, layer] };
+  state.hidden = [...state.hidden, false];
+  state.selected = state.file.layers.length - 1;
+  editing = null;
+  renderLayerPanel(); drawBoard();
+  say(`Logo ${src} platziert.`);
+}
+logoList.replaceChildren(...Object.keys(LOGO_SVG).map((src) => {
+  const b = h('button', { attrs: { type: 'button', class: 'logo-row', 'data-testid': `logo-add-${src}`, title: `${src} hinzufügen` } },
+    h('span', { html: LOGO_SVG[src], attrs: { class: 'logo-preview' } }), h('span', { text: src }));
+  b.addEventListener('click', () => addLogo(src));
+  return b;
+}));
+
 const saveBtn = h('button', { text: 'Speichern', attrs: { 'data-testid': 'save' } });
 saveBtn.addEventListener('click', async () => {
   const res = await fetch('/__livery-editor/save', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(state.file) });
@@ -304,6 +368,8 @@ panel.append(
   undoBtn,
   h('h2', { text: 'Ebenen (oben zuerst)' }),
   layerList,
+  h('h2', { text: 'Logo' }),
+  logoList,
   h('h2', { text: 'Farbfelder' }),
   fieldColor('engines', 'Triebwerke'),
   fieldColor('wings', 'Flügel'),
