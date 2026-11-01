@@ -6,7 +6,7 @@ import { layerLabel, moveItem, moveLayer, NAME_MAX, recolorLayer, removeItem, re
 import { movePoint, segmentHandle, setVia } from '../curve';
 import { LIVERY_FILES } from '../../../src/client/ui/assets/generated/liveries';
 import { LIVERY_ID, LiveryFileSchema } from '../../../src/client/ui/domain/livery-file';
-import { computeGaps, type SightingsResponse } from '../gaps';
+import { groupByAirline, typeOptions, type AirlineGroup, type SightingsResponse } from '../gaps';
 import { addPoint, closeDraft, draftPathData, setDraftVia, closesAt, snap, CLOSE_RADIUS, type Draft } from '../board';
 
 // Walking-skeleton editor (spike): Typklasse choice, board with silhouette/details opacity, path tool, one colour, save.
@@ -121,7 +121,10 @@ const input = (type: string, value: string, on: (v: string) => void, testid: str
 const row = (label: string, el: HTMLElement) => h('label', {}, h('span', { text: label }), el);
 
 const select = h('select', { attrs: { 'data-testid': 'typklasse' } }, ...typklassen.map((t) => h('option', { text: t, attrs: { value: t } })));
-select.addEventListener('change', () => { state.file = { ...state.file, typklasse: select.value }; state.draft = { points: [] }; drawBoard(); });
+select.addEventListener('change', () => {
+  if (sightings.selected) { pick(sightings.selected.liveryId, select.value); return; }
+  state.file = { ...state.file, typklasse: select.value }; state.draft = { points: [] }; drawBoard();
+});
 
 const undoBtn = h('button', { text: 'Letzten Pfad löschen' });
 undoBtn.addEventListener('click', () => { if (state.file.layers.length) removeAt(state.file.layers.length - 1); state.draft = { points: [] }; drawBoard(); });
@@ -216,9 +219,10 @@ const fieldColor = (k: 'engines' | 'wings' | 'tailplane', label: string) => row(
 const liveryIdInput = input('text', state.file.livery, (v) => { state.file = { ...state.file, livery: v }; liveryIdInput.setAttribute('aria-invalid', String(!LIVERY_ID.test(v))); }, 'livery-id');
 
 // ---- Sichtungen: Abkürzung zum Setzen von Lackierungs-ID + Typklasse (ADR 0033); der Editor funktioniert auch ohne Heimserver ----
-const sightings = { days: 90, onlyGaps: true, response: null as SightingsResponse | null, failed: false };
+const sightings = { days: 90, onlyGaps: true, response: null as SightingsResponse | null, failed: false, selected: null as AirlineGroup | null };
 const sightingList = h('div', { attrs: { 'data-testid': 'sighting-list', id: 'sighting-list' } });
 function pick(liveryId: string, typklasse: string) {
+  if (!(typklasse in PLANE_PARTS)) { select.value = state.file.typklasse; say(`Für ${typklasse} gibt es keine Silhouette.`); return; }
   const existing = LIVERY_FILES[`${liveryId}/${typklasse}`];
   const parsed = existing === undefined ? null : LiveryFileSchema.safeParse(existing);
   state.file = parsed?.success ? structuredClone(parsed.data) : { ...state.file, livery: liveryId, typklasse, layers: [] };
@@ -229,14 +233,26 @@ function pick(liveryId: string, typklasse: string) {
   renderLayerPanel(); drawBoard();
   say(parsed?.success ? `Lackierung ${liveryId}/${typklasse} geladen.` : `Neue Lackierung ${liveryId}/${typklasse}.`);
 }
+function renderTypeSelect() {
+  const { options, preselected } = typeOptions(sightings.selected, typklassen, Object.keys(PLANE_PARTS));
+  select.replaceChildren(...options.map((o) => h('option', { text: o.label, attrs: o.disabled ? { value: o.value, disabled: '' } : { value: o.value } })));
+  select.value = state.file.typklasse;
+  return preselected;
+}
+function selectAirline(g: AirlineGroup) {
+  sightings.selected = g;
+  const preselected = renderTypeSelect();
+  renderSightings();
+  if (preselected) pick(g.liveryId, preselected);
+}
 function renderSightings() {
   if (sightings.failed) { sightingList.replaceChildren(h('div', { text: 'Heimserver nicht erreichbar', attrs: { 'data-testid': 'sightings-unreachable', class: 'error' } })); return; }
   if (!sightings.response) { sightingList.replaceChildren(h('div', { text: 'Lade Sichtungen …' })); return; }
-  const rows = computeGaps(sightings.response.rows, LIVERY_FILES, { onlyGaps: sightings.onlyGaps });
-  sightingList.replaceChildren(...(rows.length ? rows.map((r) => {
-    const b = h('button', { attrs: { type: 'button', class: 'sighting-row' + (r.gap ? ' gap' : ''), 'data-testid': 'sighting-row', 'data-livery': r.liveryId, 'data-typklasse': r.typklasse } },
-      h('span', { text: r.airline, attrs: { class: 'sighting-airline' } }), h('span', { text: r.typklasse }), h('span', { text: `${r.count}×` }), ...(r.gap ? [h('span', { text: 'Lücke', attrs: { class: 'gap-badge' } })] : []));
-    b.addEventListener('click', () => pick(r.liveryId, r.typklasse));
+  const groups = groupByAirline(sightings.response.rows, LIVERY_FILES).filter((g) => !sightings.onlyGaps || g.gaps > 0);
+  sightingList.replaceChildren(...(groups.length ? groups.map((g) => {
+    const b = h('button', { attrs: { type: 'button', class: 'sighting-row airline-row' + (g.gaps > 0 ? ' gap' : '') + (sightings.selected?.prefix === g.prefix ? ' selected' : ''), 'data-testid': 'airline-row', 'data-livery': g.liveryId } },
+      h('span', { text: g.airline, attrs: { class: 'sighting-airline' } }), h('span', { text: g.prefix }), h('span', { text: `${g.total}×` }), h('span', { text: `${g.gaps} von ${g.seenTypes} Typen fehlen`, attrs: g.gaps > 0 ? { class: 'gap-badge' } : {} }));
+    b.addEventListener('click', () => selectAirline(g));
     return b;
   }) : [h('div', { text: sightings.onlyGaps ? 'Keine Lücken in den Sichtungen.' : 'Keine Sichtungen.' })]));
 }
@@ -249,7 +265,7 @@ async function loadSightings() {
     if (!res.ok) throw new Error(String(res.status));
     const body = (await res.json()) as SightingsResponse;
     if (!Array.isArray(body.rows)) throw new Error('bad body');
-    if (mine === sightingsRequest) sightings.response = body;
+    if (mine === sightingsRequest) { sightings.response = body; sightings.selected = null; renderTypeSelect(); }
   } catch {
     if (mine === sightingsRequest) sightings.failed = true;
   }

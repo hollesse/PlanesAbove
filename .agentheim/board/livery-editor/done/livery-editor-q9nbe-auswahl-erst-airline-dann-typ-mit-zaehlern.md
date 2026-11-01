@@ -1,7 +1,7 @@
 ---
 id: livery-editor-q9nbe
 title: Sichtungen zweistufig: erst Airline (über alle Typen), dann Typklassen-Select mit Sichtungszahl und Lückenstatus je Typ
-status: doing
+status: done
 type: feature
 context: livery-editor
 created: 2026-11-01
@@ -61,3 +61,6 @@ ITERATION_HINT: task-under-specified
 ## Salvage note
 
 Salvaged diff: `/Users/joshuatopfer/Documents/Projekte/Privat/PlanesAbove/.agentheim/salvage/livery-editor-q9nbe-escalated-iter2.patch` (git apply against a scratch checkout). Worktree kept: `/Users/joshuatopfer/Documents/Projekte/Privat/PlanesAbove/.worktrees/livery-editor-q9nbe` (branch `aw/livery-editor-q9nbe`, two wip commits). Escalated at iteration 2 (task-under-specified) — criterion 2 needs re-wording by the operator.
+
+## Outcome
+Sichtungen-Abschnitt ist zweistufig. gaps.ts: groupByAirline (je Präfix aggregiert, Typen nach Zahl, Lücke gegen <liveryId>/<typklasse>, nach total sortiert) und typeOptions (Beschriftung, Vorauswahl); computeGaps entfernt. main.ts: Airline-Zeilen (airline-row, selected), Klick setzt Lackierungs-ID, befüllt das Select neu und lädt den vorausgewählten Typ (häufigster zeichenbarer; dessen vorhandene Datei wird geladen); ohne Server/Auswahl bleibt das Select schlicht. Gesichtete Typen ohne Silhouette in PLANE_PARTS sind im Select deaktiviert mit Zusatz "· keine Silhouette" (Zahl und Status bleiben) und nie vorausgewählt; pick() verweigert sie mit Statusmeldung, drawBoard stürzt nicht ab. Tests: gaps.test.ts (Unit), sightings.spec.ts (E2E, Kriterium 2 explizit: Option disabled, Label endet auf "· keine Silhouette", Vorauswahl narrowbody, Ebenen von spike/narrowbody nach Airline-Klick geladen; pageerror-Prüfung nach jedem Test). Typwechsel-E2E ist ins Backlog verschoben. npm test, typecheck, editor-chromium (14) grün. [human-eye]-Kriterium offen für den Betreiber.
