@@ -1,7 +1,7 @@
 ---
 id: livery-editor-hz0hb
 title: Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-01

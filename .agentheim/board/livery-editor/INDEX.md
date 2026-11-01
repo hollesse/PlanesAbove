@@ -11,8 +11,8 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 3
-- **Doing:** 0
+- **Todo:** 2
+- **Doing:** 1
 - **Done:** 2
 <!-- task-counts:end -->
 
@@ -20,11 +20,11 @@ Catalog of this bounded context's tasks by status.
 <!-- todo-list:start -->
 - **livery-editor-ec2zz** — Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve (feature) — `todo/livery-editor-ec2zz-rundungen-griff-segmentmitte.md`
 - **livery-editor-nxdzh** — Ebenenpanel: Pfade als Ebenen sehen, auswählen, umsortieren, ein-/ausblenden, löschen, färben, benennen (feature) — `todo/livery-editor-nxdzh-ebenenpanel-pfade-umsortieren.md`
-- **livery-editor-hz0hb** — Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf (feature) — `todo/livery-editor-hz0hb-pfad-schliessen-per-klick-auf-ersten-punkt.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **livery-editor-hz0hb** — Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf (feature) — `doing/livery-editor-hz0hb-pfad-schliessen-per-klick-auf-ersten-punkt.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

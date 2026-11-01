@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:31 -- Batch started: [liveries-wyypc, liveries-yzshd, livery-editor-hz0hb]
+
+**Type:** Work / Batch start
+**Tasks:** liveries-wyypc - Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen, liveries-yzshd - Trennlinie zwischen Rumpf und Finne wieder sichtbar machen, livery-editor-hz0hb - Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf
+**Parallel:** yes (3 workers, cap 3) — wave 1 of 5 ready tasks; livery-editor-nxdzh and livery-editor-ec2zz held to wave 2 (all three editor tasks share tools/livery-editor/src/main.ts; nxdzh introduces the layer selection ec2zz builds on). Merge order wave 1: wyypc before yzshd (both touch narrowbody details.svg/silhouette.svg). sky-scene-jpjt2 stays escalated in doing/ per operator
+
+---
+
 ## 2026-11-01 10:30 -- Modeling / Promoted: livery-editor-ec2zz - Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve
 
 **Type:** Modeling / Promote

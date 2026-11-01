@@ -11,19 +11,19 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 2
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 2
 - **Done:** 2
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **liveries-yzshd** — Trennlinie zwischen Rumpf und Finne wieder sichtbar machen (bug) — `todo/liveries-yzshd-trennlinie-rumpf-finne-zurueck.md`
-- **liveries-wyypc** — Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen (bug) — `todo/liveries-wyypc-narrowbody-details-cockpitfenster-vollstaendig.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **liveries-yzshd** — Trennlinie zwischen Rumpf und Finne wieder sichtbar machen (bug) — `doing/liveries-yzshd-trennlinie-rumpf-finne-zurueck.md`
+- **liveries-wyypc** — Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen (bug) — `doing/liveries-wyypc-narrowbody-details-cockpitfenster-vollstaendig.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
