@@ -89,16 +89,16 @@ export class SkyService {
     const tc = resolveTypeClass(t, type.typeCode, a.emitterCategory);
     const airline = resolveAirline(t, a.callsign);
     const livery = resolveLivery(t, airline?.prefix, tc.typklasse, this.d.config.liveries.enabled);
-    return { tc, airline, livery, typeSource: type.source };
+    return { tc, airline, livery, typeSource: type.source, typeCode: type.typeCode };
   }
 
   private toScenePlane(a: Flugzeug, info: RouteInfo | null): ScenePlane {
     // Display: first → last only, intermediate stops go to `via` (the persisted text stays the full chain).
     const route = !info ? null : info.legs.length > 2 ? `${info.legs[0]} → ${info.legs[info.legs.length - 1]}` : info.text;
-    const { tc, airline, livery } = this.identify(a);
+    const { tc, airline, livery, typeCode } = this.identify(a);
     const altitudeM = a.altitudeM ?? 0;
-    const parts = composeSpeechParts({ airlineName: airline?.name, typeName: tc.typeName, altitudeM: a.altitudeM, verticalRateMs: a.verticalRateMs, routeLegs: info?.legs }, this.d.config.sources.route.plausibility.phaseMinRateMs);
-    const text = parts.join(' ');
+    const parts = composeSpeechParts({ airlineName: airline?.name, typeName: tc.typeName, typeCode: typeCode ?? a.typeCode, airlineIcao: airline?.prefix, altitudeM: a.altitudeM, verticalRateMs: a.verticalRateMs, routeLegs: info?.legs }, this.d.config.sources.route.plausibility.phaseMinRateMs);
+    const text = parts.map((p) => p.text).join(' ');
     return {
       icao24: a.icao24,
       plane: { type: tc.typklasse, livery: livery.liveryId },

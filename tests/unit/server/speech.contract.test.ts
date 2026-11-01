@@ -166,6 +166,8 @@ describe('ElevenLabsSpeechSynthesizer contract', () => {
   });
 });
 
+const wavsUnder = (d: string): string[] => (fs.existsSync(d) ? fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? wavsUnder(path.join(d, e.name)) : [path.join(d, e.name)])) : []);
+
 describe('AudioService with primary budget and fallback (sky-scene-t6h2p)', () => {
   const dir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'pa-audio-'));
   const keyOf = (url: string) => url.replace('/audio/', '').replace('.wav', '');
@@ -187,10 +189,8 @@ describe('AudioService with primary budget and fallback (sky-scene-t6h2p)', () =
     expect(await svc.get(keyOf(u1))).toBeDefined();
     expect(await svc.get(keyOf(u2))).toBeDefined();
     expect(primary.calls()).toBe(1); expect(fallback.calls()).toBe(1);
-    expect(fs.existsSync(path.join(cacheDir, `${keyOf(u1)}.wav`))).toBe(true);
-    expect(fs.existsSync(path.join(cacheDir, `${keyOf(u2)}.wav`))).toBe(false); // primary key stays empty
-    const fbKey = fs.readdirSync(cacheDir).filter((f) => f !== `${keyOf(u1)}.wav`);
-    expect(fbKey).toHaveLength(1);
+    expect(wavsUnder(path.join(cacheDir, 'elevenlabs'))).toHaveLength(1); // primary folder holds only the first text
+    expect(wavsUnder(path.join(cacheDir, 'piper'))).toHaveLength(1); // second text lives under the fallback adapter folder
     expect(usage.characters()).toBe(60);
     await svc.get(keyOf(u2)); // fallback cache hit, no second render
     expect(fallback.calls()).toBe(1);
@@ -334,13 +334,34 @@ describe('Steckbrief sentence blocks in AudioService (sky-scene-b7w2n)', () => {
     const u2 = svc.register([A, h1]).audioUrl; expect(u2).toBe(u1);
     await svc.get(keyOf(u2)); expect(primary.texts).toHaveLength(2);
   });
-  it('composed file is rebuilt from cached blocks with partsRendered=0 when only the composed file is missing', async () => {
+  it('no composed file is stored; every GET joins the cached blocks (partsRendered=0)', async () => {
     const { svc, primary, lines, cacheDir } = mk();
     const u = svc.register([A, h1]).audioUrl; await svc.get(keyOf(u));
-    fs.rmSync(path.join(cacheDir, `${keyOf(u)}.wav`)); // composed file gone, blocks stay
-    await svc.get(keyOf(u));
+    expect(fs.existsSync(path.join(cacheDir, `${keyOf(u)}.wav`))).toBe(false);
+    expect(wavsUnder(cacheDir)).toHaveLength(2); // the two blocks only
+    const bytes = await svc.get(keyOf(u));
+    expect(wavDurationMs(bytes!)).toBe(2250);
     expect(primary.texts).toHaveLength(2);
     expect(lines.filter((l) => l.msg === 'speech synthesized').slice(-1)[0]!.f).toMatchObject({ parts: 2, partsRendered: 0 });
+  });
+  it('blocks land in <adapter>/<voice>/<kategorie>/<schluessel>-<6hex>.wav; changed wording gives a new file', async () => {
+    const { svc, cacheDir } = mk();
+    const part = (text: string) => ({ kategorie: 'typ-airline', schluessel: 'A320_DLH', text });
+    await svc.get(keyOf(svc.register([part(A)]).audioUrl));
+    const files = wavsUnder(path.join(cacheDir, 'elevenlabs', 'EV', 'typ-airline'));
+    expect(files.map((f) => path.basename(f))).toEqual([expect.stringMatching(/^A320_DLH-[0-9a-f]{6}\.wav$/)]);
+    await svc.get(keyOf(svc.register([part(A + ' Neu')]).audioUrl));
+    expect(wavsUnder(path.join(cacheDir, 'elevenlabs', 'EV', 'typ-airline'))).toHaveLength(2);
+  });
+  it('lazy migration: old flat <hash24>.wav moves to the new path, not rendered again, budget untouched', async () => {
+    const { svc, primary, usage, cacheDir } = mk();
+    const old = path.join(cacheDir, `${svc.keyFor(A)}.wav`);
+    fs.writeFileSync(old, pcmToWav(new Uint8Array(22050 * 2), 22050));
+    await svc.get(keyOf(svc.register([{ kategorie: 'typ-airline', schluessel: 'A320_DLH', text: A }]).audioUrl));
+    expect(primary.texts).toEqual([]);
+    expect(usage.characters()).toBe(0);
+    expect(fs.existsSync(old)).toBe(false);
+    expect(wavsUnder(path.join(cacheDir, 'elevenlabs'))).toHaveLength(1);
   });
   it('quota-exceeded on block 2: whole Steckbrief from the fallback, no mixing, file under the fallback composed key', async () => {
     const { svc, primary, fallback, cacheDir } = mk(spy('elevenlabs', 22050, (t) => (t === h1 ? 'quota-exceeded' : undefined)));
@@ -350,11 +371,8 @@ describe('Steckbrief sentence blocks in AudioService (sky-scene-b7w2n)', () => {
     expect(primary.texts).toEqual([A, h1]);
     expect(fallback.texts).toEqual([A, h1]); // both blocks from the fallback
     expect(wavDurationMs(bytes!)).toBe(2250);
-    expect(fs.existsSync(path.join(cacheDir, `${key}.wav`))).toBe(false); // primary composed key stays empty
-    // the fallback composed file exists under the key an AudioService with the fallback as adapter/voice computes
-    const fbKey = new AudioService(fallback, { voice: 'PV', render: 'lazy', cacheDir, log: silentLogger, partGapMs: 250 }).composedKeyFor([A, h1]);
-    expect(fbKey).not.toBe(key);
-    expect(fs.existsSync(path.join(cacheDir, `${fbKey}.wav`))).toBe(true);
+    expect(wavsUnder(path.join(cacheDir, 'elevenlabs'))).toHaveLength(1); // only block A rendered at the primary; no fallback file there
+    expect(wavsUnder(path.join(cacheDir, 'piper', 'PV'))).toHaveLength(2); // fallback blocks under the fallback folder
     // AudioService.get returning WAV bytes under the primary key is exactly the /audio/<key>.wav route's 200 condition (app.ts writeHead(200))
     expect(Buffer.from(bytes!.subarray(0, 4)).toString()).toBe('RIFF');
   });

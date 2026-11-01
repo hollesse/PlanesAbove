@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 1
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 9
+- **Doing:** 0
+- **Done:** 10
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **sky-scene-jpjt2** — Sprachcache lesbar ablegen — Ordner je Adapter/Stimme/Kategorie, sprechender Dateiname mit Text-Hash-Suffix; Steckbrief wird nicht mehr als Datei gespeichert (refactor) — `doing/sky-scene-jpjt2-sprachcache-lesbar-ablegen-ordner-je-adapter-stimme-kategorie.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **sky-scene-jpjt2** — Sprachcache lesbar ablegen — Ordner je Adapter/Stimme/Kategorie, sprechender Dateiname mit Text-Hash-Suffix; Steckbrief wird nicht mehr als Datei gespeichert (refactor) — `done/sky-scene-jpjt2-sprachcache-lesbar-ablegen-ordner-je-adapter-stimme-kategorie.md`
 - **sky-scene-xw8jv** — Nummern-Plakette tippen öffnet das Foto-Overlay mit echten Fotos des Flugzeugs; X rechts oben schließt (Prototyp) (feature) — `done/sky-scene-xw8jv-nummern-plakette-tippen-oeffnet-foto-overlay-des-flugzeugs.md`
 - **sky-scene-d4n9p** — Boeing-Typen ziffernweise aussprechen („Boeing sieben vier sieben“), Airbus bleibt als Zahl („A dreihundertzwanzig“) (bug) — `done/sky-scene-d4n9p-boeing-typen-ziffernweise-aussprechen.md`
 - **sky-scene-b7w2n** — Steckbrief aus Satzbausteinen mit Baustein-Cache (Typ+Airline, Route, Höhe); kein Rufzeichen ohne Airline (feature) — `done/sky-scene-b7w2n-steckbrief-aus-satzbausteinen-mit-baustein-cache.md`

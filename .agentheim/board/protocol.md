@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 19:05 -- Task verified and completed: sky-scene-jpjt2 - Sprachcache lesbar ablegen — Ordner je Adapter/Stimme/Kategorie, sprechender Dateiname mit Text-Hash-Suffix; Steckbrief wird nicht mehr als Datei gespeichert
+
+**Type:** Work / Task completion
+**Task:** sky-scene-jpjt2 - Sprachcache lesbar ablegen — Ordner je Adapter/Stimme/Kategorie, sprechender Dateiname mit Text-Hash-Suffix; Steckbrief wird nicht mehr als Datei gespeichert
+**Summary:** Sprachcache lesbar je Adapter/Stimme/Kategorie, sprechende Dateinamen mit Text-Hash, Steckbrief nicht mehr gespeichert, Lazy-Migration
+**Duration:** 6m (Iteration 2)
+**Verification:** PASS (iteration 2)
+**Files changed:** 6
+**Tests added:** 12
+**ADRs written:** 0028 (amendment)
+
+---
+
 ## 2026-11-01 18:43 -- Work session ended
 
 **Type:** Work / Session end

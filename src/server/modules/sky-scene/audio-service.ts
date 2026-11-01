@@ -5,13 +5,14 @@ import path from 'node:path';
 import type { Logger } from '../../logger';
 import type { SpeechSynthesizer } from './speech';
 import type { SpeechUsage } from './speech-usage';
+import { slug, type SpeechPart } from './steckbrief';
 import { concatWav, WavFormatError, wavDurationMs } from './wav';
 
 const SEP = '\u0001';
 interface PartAudio { bytes: Buffer; rendered: boolean }
 
 export class AudioService {
-  private entries = new Map<string, string[]>();
+  private entries = new Map<string, SpeechPart[]>();
   private durations = new Map<string, number>();
   private inflight = new Map<string, Promise<Buffer | undefined>>();
   private memParts = new Map<string, Buffer>(); // block cache when there is no cacheDir
@@ -36,15 +37,15 @@ export class AudioService {
   keyFor(text: string): string { return this.hash(this.synth.name, this.o.voice, text); }
 
   /** Composed key (adapter, voice, hash of the block texts); equals `keyFor(text)` for a single block. */
-  composedKeyFor(parts: string[]): string { return this.keyFor(parts.join(SEP)); }
+  composedKeyFor(parts: PartInput[]): string { return this.keyFor(toParts(parts).map((p) => p.text).join(SEP)); }
 
   private hash(adapter: string, voice: string, text: string): string {
     return crypto.createHash('sha256').update(`${adapter}\0${voice}\0${text}`).digest('hex').slice(0, 24);
   }
 
   /** Register a Steckbrief (one text or its sentence blocks); returns its URL (and duration when already rendered). Eager mode starts rendering. */
-  register(textOrParts: string | string[]): { audioUrl: string; durationMs?: number } {
-    const parts = typeof textOrParts === 'string' ? [textOrParts] : textOrParts;
+  register(textOrParts: PartInput | PartInput[]): { audioUrl: string; durationMs?: number } {
+    const parts = toParts(Array.isArray(textOrParts) ? textOrParts : [textOrParts]);
     const key = this.composedKeyFor(parts);
     this.entries.set(key, parts);
     if (this.o.render === 'eager') void this.get(key);
@@ -53,15 +54,13 @@ export class AudioService {
 
   /** WAV bytes for a registered key, synthesizing on first request; undefined when unknown or synthesis failed. */
   async get(key: string): Promise<Buffer | undefined> {
-    const file = this.o.cacheDir && path.join(this.o.cacheDir, `${key}.wav`);
-    if (file && fs.existsSync(file)) return fs.readFileSync(file);
-    const parts = this.entries.get(key);
+    const parts = this.entries.get(key); // the composed Steckbrief is never stored as a file, it is joined from its blocks on every request
     if (parts === undefined) return undefined;
     const running = this.inflight.get(key);
     if (running) return running;
     const p = (async () => {
       try {
-        const r = await this.render(key, parts);
+        const r = await this.render(parts);
         this.durations.set(key, r.durationMs);
         return r.bytes;
       } catch (e) {
@@ -75,17 +74,17 @@ export class AudioService {
     return p;
   }
 
-  private async render(key: string, parts: string[]): Promise<{ bytes: Buffer; durationMs: number }> {
+  private async render(parts: SpeechPart[]): Promise<{ bytes: Buffer; durationMs: number }> {
     const fb = this.o.fallback;
     const budget = this.o.budget;
-    if (!fb) return this.compose(this.synth, this.o.voice, parts, key, true);
+    if (!fb) return this.compose(this.synth, this.o.voice, parts, true);
     let reason: string; let detail: string | undefined;
     const missing = parts.filter((t) => !this.cachedPart(this.synth, this.o.voice, t));
-    const needed = missing.reduce((n, t) => n + t.length, 0);
+    const needed = missing.reduce((n, t) => n + t.text.length, 0);
     if (budget && needed > 0 && budget.usage.characters() + needed > budget.monthlyCharacterBudget) reason = 'budget exhausted';
     else {
       // charged only for delivered audio (inside renderPart) or a timeout after the request went out (the one grey area); HTTP errors cost nothing
-      try { return await this.compose(this.synth, this.o.voice, parts, key, true); } catch (e) {
+      try { return await this.compose(this.synth, this.o.voice, parts, true); } catch (e) {
         reason = (e as { kind?: string }).kind ?? 'unavailable';
         detail = (e as Error).message;
         if (e instanceof WavFormatError) this.o.log.warn('speech parts differ in audio format, delivering the whole Steckbrief from the fallback', { source: 'tts', detail });
@@ -94,29 +93,33 @@ export class AudioService {
     const msg = `speech ${reason}${detail && detail !== reason ? ` (${detail})` : ''}, falling back to ${fb.synth.name}`;
     // bad-config / bad-voice were already logged as warn by the adapter on every request; do not repeat as warn
     if (this.fallbackNoticed || reason === 'bad-config' || reason === 'bad-voice') this.o.log.info(msg, { source: 'tts' }); else { this.fallbackNoticed = true; this.o.log.warn(msg, { source: 'tts' }); }
-    return this.compose(fb.synth, fb.voice, parts, this.hash(fb.synth.name, fb.voice, parts.join(SEP)), false);
+    return this.compose(fb.synth, fb.voice, parts, false);
   }
 
   private partKey(synth: SpeechSynthesizer, voice: string, text: string): string { return this.hash(synth.name, voice, text); }
 
-  private cachedPart(synth: SpeechSynthesizer, voice: string, text: string): Buffer | undefined {
-    const k = this.partKey(synth, voice, text);
-    const file = this.o.cacheDir && path.join(this.o.cacheDir, `${k}.wav`);
-    if (file) return fs.existsSync(file) ? fs.readFileSync(file) : undefined;
-    return this.memParts.get(k);
+  /** data/audio/<adapter>/<voice>/<kategorie>/<schluessel>-<texthash>.wav; the 6-hex text hash changes with the wording so a stale file is never replayed. */
+  private partFile(synth: SpeechSynthesizer, voice: string, p: SpeechPart): string | undefined {
+    if (!this.o.cacheDir) return undefined;
+    const h = crypto.createHash('sha256').update(p.text).digest('hex').slice(0, 6);
+    return path.join(this.o.cacheDir, slug(synth.name), slug(voice), slug(p.kategorie), `${slug(p.schluessel)}-${h}.wav`);
   }
 
-  /** Renders (or takes from cache) every block with ONE adapter and joins them; writes the composed file under `composedKey` (the fallback key for the fallback). */
-  private async compose(synth: SpeechSynthesizer, voice: string, parts: string[], composedKey: string, charge: boolean): Promise<{ bytes: Buffer; durationMs: number }> {
-    const file = this.o.cacheDir && path.join(this.o.cacheDir, `${composedKey}.wav`);
-    if (file && synth !== this.synth && fs.existsSync(file)) {
-      const bytes = fs.readFileSync(file);
-      return { bytes, durationMs: wavDurationMs(bytes) ?? 0 };
-    }
+  private cachedPart(synth: SpeechSynthesizer, voice: string, p: SpeechPart): Buffer | undefined {
+    const file = this.partFile(synth, voice, p);
+    if (!file) return this.memParts.get(this.partKey(synth, voice, p.text));
+    if (fs.existsSync(file)) return fs.readFileSync(file);
+    // lazy migration: the old flat file data/audio/<hash24>.wav moves to the new path instead of being rendered again
+    const old = path.join(this.o.cacheDir!, `${this.partKey(synth, voice, p.text)}.wav`);
+    if (fs.existsSync(old)) { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.renameSync(old, file); return fs.readFileSync(file); }
+    return undefined;
+  }
+
+  /** Renders (or takes from cache) every block with ONE adapter and joins them; the joined audio is not stored. */
+  private async compose(synth: SpeechSynthesizer, voice: string, parts: SpeechPart[], charge: boolean): Promise<{ bytes: Buffer; durationMs: number }> {
     const audios: PartAudio[] = [];
     for (const t of parts) audios.push(await this.renderPart(synth, voice, t, charge));
     const bytes = audios.length === 1 ? audios[0].bytes : Buffer.from(concatWav(audios.map((a) => a.bytes), this.o.partGapMs ?? 250));
-    if (file && audios.length > 1) fs.writeFileSync(file, bytes);
     const durationMs = wavDurationMs(bytes) ?? 0;
     const fields: Record<string, unknown> = { source: 'tts', adapter: synth.name, voice, durationMs, parts: parts.length, partsRendered: audios.filter((a) => a.rendered).length };
     if (this.o.budget) fields.charactersUsedThisMonth = this.o.budget.usage.characters();
@@ -124,9 +127,10 @@ export class AudioService {
     return { bytes, durationMs };
   }
 
-  private async renderPart(synth: SpeechSynthesizer, voice: string, text: string, charge: boolean): Promise<PartAudio> {
-    const cached = this.cachedPart(synth, voice, text);
+  private async renderPart(synth: SpeechSynthesizer, voice: string, p: SpeechPart, charge: boolean): Promise<PartAudio> {
+    const cached = this.cachedPart(synth, voice, p);
     if (cached) return { bytes: cached, rendered: false };
+    const text = p.text;
     let r;
     try { r = await synth.synthesize(text, voice); } catch (e) {
       if (charge && this.o.budget && (e as { timedOut?: boolean }).timedOut) this.o.budget.usage.add(text.length);
@@ -134,8 +138,12 @@ export class AudioService {
     }
     if (charge && this.o.budget) this.o.budget.usage.add(text.length);
     const bytes = Buffer.from(r.audio);
-    const k = this.partKey(synth, voice, text);
-    if (this.o.cacheDir) fs.writeFileSync(path.join(this.o.cacheDir, `${k}.wav`), bytes); else this.memParts.set(k, bytes);
+    const file = this.partFile(synth, voice, p);
+    if (file) { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, bytes); } else this.memParts.set(this.partKey(synth, voice, text), bytes);
     return { bytes, rendered: true };
   }
 }
+
+/** A block as plain text (tests, ad-hoc speech) or a categorised SpeechPart. */
+export type PartInput = string | SpeechPart;
+const toParts = (xs: PartInput[]): SpeechPart[] => xs.map((x) => (typeof x === 'string' ? { kategorie: 'sonstiges', schluessel: 'text', text: x } : x));

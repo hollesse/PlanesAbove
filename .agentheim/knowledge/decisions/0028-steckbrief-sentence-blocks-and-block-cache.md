@@ -4,7 +4,7 @@ title: Steckbrief from sentence blocks with a per-block speech cache
 scope: sky-scene
 status: accepted
 date: 2026-10-31
-related_tasks: [sky-scene-b7w2n]
+related_tasks: [sky-scene-b7w2n, sky-scene-jpjt2]
 related_adrs: [0012, 0027]
 ---
 
@@ -21,6 +21,13 @@ First listening test with ElevenLabs (31.10.2026): a 136-character Steckbrief co
 - No mixing: blocks of the primary adapter and the fallback are never combined. If one block is missing at the primary (not enough budget for the blocks still to render, error, differing sample rates), the whole Steckbrief comes from the fallback and is stored under the fallback's composed key. Budget (ADR 0027) is charged per delivered block and only for blocks that were actually rendered; the pre-check uses the summed length of the uncached blocks.
 - Log line `speech synthesized` carries `parts` and `partsRendered`.
 
+## Amendment (sky-scene-jpjt2): readable storage layout
+
+- Blocks are `{ kategorie, schluessel, text }` and stored as `data/audio/<adapter>/<voice>/<kategorie>/<schluessel>-<texthash6>.wav` (all path segments slugified to `[A-Za-z0-9_-]`). Categories: `typ-airline/<Typcode>_<AirlineICAO>` (`Flugzeug` without type), `route/<IATA>-<IATA>` (a route block exists only when both airports have IATA codes; no ICAO fallback), `hoehe/<meters>`, `phase/steigflug|sinkflug`. The 6-hex hash is over the spoken block text, so reworded blocks get a new file and stale audio is never replayed (no version number).
+- The composed Steckbrief is no longer stored as a file; `GET /audio/<key>.wav` joins the cached blocks on each request (cheap PCM concatenation). The URL key stays the composed hash over (adapter, voice, block texts); the client still does not know the adapter (ADR 0012).
+- Fallback blocks live under the fallback adapter's and voice's folder, never under the primary folder.
+- Lazy migration: on first need of a block, if the old flat `data/audio/<hash24>.wav` (hash over adapter, voice, text) exists, it is moved (`renameSync`) to the new path instead of re-rendering; budget is untouched. Leftover flat files are deleted by hand.
+
 ## Consequences
 
-After a warm-up phase almost every block is a cache hit; only new altitude steps cost credits. A block of a partly rendered Steckbrief stays cached even when the whole announcement falls back. Each block has its own sentence melody, audible but accepted.
+After a warm-up phase almost every block is a cache hit; only new altitude steps cost credits. A block of a partly rendered Steckbrief stays cached even when the whole announcement falls back. Each block has its own sentence melody, audible but accepted. The cache can be browsed, listened to and pruned per block. Two airports with the same spoken city (IST/SAW) produce two files with identical audio, accepted for readability.
