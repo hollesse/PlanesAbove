@@ -33,6 +33,8 @@ async function expectSameAsStory(page: import('@playwright/test').Page, storyId:
   expect(diff).toBeLessThan(0.005);
 }
 
+// The tests share one EDITOR_OUT directory and some assert on its whole listing: run them one after another.
+test.describe.configure({ mode: 'serial' });
 test.beforeEach(() => fs.rmSync(EDITOR_OUT, { recursive: true, force: true }));
 
 test('draw a quad, see it clipped, unclipped at silhouette opacity 0, save, and match the Storybook story', async ({ page }) => {
@@ -144,4 +146,41 @@ test('layer panel: two overlapping paths, swap their order, hide one, save in pa
   await expect(page.getByTestId('status')).toContainText('Gespeichert');
   expect(JSON.parse(fs.readFileSync(target, 'utf8'))).toEqual(fixture);
   await expectSameAsStory(page, 'liveries-pfade--stack-order-narrowbody');
+});
+
+test('round one segment by dragging its handle, save, match the story; double-click straightens it again', async ({ page }) => {
+  const fixture = JSON.parse(fs.readFileSync('src/client/ui/assets/liveries/round-corner/narrowbody.json', 'utf8'));
+  await page.goto('/');
+  await expect(page.locator('svg[data-livery-render] .lv-body')).toBeVisible();
+  const box = (await page.getByTestId('overlay').boundingBox())!;
+  const [vx, vy, vw, vh] = (await page.getByTestId('overlay').getAttribute('viewBox'))!.split(' ').map(Number);
+  const at = ([x, y]: number[]) => [box.x + ((x - vx) / vw) * box.width, box.y + ((y - vy) / vh) * box.height] as const;
+  const pts = fixture.layers[0].points as number[][];
+  for (const p of pts) await page.mouse.click(...at(p));
+  await page.getByTestId('path-color').fill(fixture.layers[0].color);
+  await page.mouse.click(...at(pts[0]));
+  await page.getByTestId('livery-id').fill('round-corner');
+  const paint = page.locator('svg[data-livery-render] .lv-paint path');
+  await expect(paint).toHaveAttribute('d', /^M300 150 L700 150 L700 300 L300 300 Z$/);
+
+  // the handle of the top segment sits at its midpoint (500,150); drag it to (500,100)
+  const handle = page.getByTestId('curve-handle-0');
+  await expect(handle).toHaveAttribute('cx', '500');
+  await page.mouse.move(...at([500, 150]));
+  await page.mouse.down();
+  await page.mouse.move(...at([500, 125]));
+  await page.mouse.move(...at([500, 100]));
+  await page.mouse.up();
+  await expect(paint).toHaveAttribute('d', /Q500 50 700 150/); // control = 2*via - midpoint
+  expect(await page.locator('svg.overlay circle[r="5"]').count()).toBe(0); // dragging added no draft point
+
+  await page.getByTestId('save').click();
+  await expect(page.getByTestId('status')).toContainText('Gespeichert');
+  expect(JSON.parse(fs.readFileSync(path.join(EDITOR_OUT, 'round-corner/narrowbody.json'), 'utf8'))).toEqual(fixture);
+  await expectSameAsStory(page, 'liveries-pfade--round-corner-narrowbody');
+
+  // double-click on the handle makes the segment straight again
+  await page.evaluate(() => document.querySelectorAll('svg.overlay').forEach((o) => ((o as unknown as HTMLElement).style.display = ''))); // the screenshot helper hid the overlay
+  await page.getByTestId('curve-handle-0').dblclick();
+  await expect(paint).toHaveAttribute('d', /^M300 150 L700 150 L700 300 L300 300 Z$/);
 });

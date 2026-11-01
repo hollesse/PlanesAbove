@@ -3,6 +3,7 @@ import { PLANE_PARTS } from '../../../src/client/ui/assets/generated/plane-parts
 import { FIELD_DEFAULTS, pathData, renderLiverySvg } from '../../../src/client/ui/domain/livery-render';
 import type { LiveryFile } from '../../../src/client/ui/domain/livery-file';
 import { layerLabel, moveItem, moveLayer, NAME_MAX, recolorLayer, removeItem, removeLayer, renameLayer, visibleFile, type Direction } from '../layers';
+import { segmentHandle, setVia } from '../curve';
 import { addPoint, closeDraft, closesAt, snap, CLOSE_RADIUS, type Draft } from '../board';
 
 // Walking-skeleton editor (spike): Typklasse choice, board with silhouette/details opacity, path tool, one colour, save.
@@ -25,6 +26,7 @@ const board = document.getElementById('board')!;
 const panel = document.getElementById('panel')!;
 const status = h('div', { attrs: { id: 'status', 'data-testid': 'status' } });
 
+let handleGesture = false;
 function drawBoard() {
   const vb = PLANE_PARTS[state.file.typklasse].viewBox;
   const overlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -33,20 +35,46 @@ function drawBoard() {
   overlay.dataset.testid = 'overlay';
   const pts = state.draft.points;
   const toBoard = (e: MouseEvent) => {
-    const pt = new DOMPoint(e.clientX, e.clientY).matrixTransform(overlay.getScreenCTM()!.inverse());
+    const pt = new DOMPoint(e.clientX, e.clientY).matrixTransform((board.querySelector('svg.overlay') as SVGSVGElement ?? overlay).getScreenCTM()!.inverse());
     return snap(pt.x, pt.y);
   };
   const sel = state.selected === null ? undefined : state.file.layers[state.selected];
   const selOutline = sel?.type === 'path' && !state.hidden[state.selected!]
     ? `<path data-testid="selection-outline" d="${pathData(sel)}" fill="none" stroke="#0a84ff" stroke-width="3" stroke-dasharray="8 5" pointer-events="none"/>` : '';
-  overlay.innerHTML = selOutline;
+  const handles = sel?.type === 'path' && !state.hidden[state.selected!] && !pts.length
+    ? sel.points.map((_, i) => { const [x, y] = segmentHandle(sel, i); return `<circle class="curve-handle" data-testid="curve-handle-${i}" data-segment="${i}" cx="${x}" cy="${y}" r="6" fill="#0a84ff" stroke="#fff" stroke-width="2" style="cursor:grab"/>`; }).join('') : '';
+  overlay.innerHTML = selOutline + handles;
   if (pts.length) {
     overlay.innerHTML +=
       `<polyline points="${pts.map((p) => p.join(',')).join(' ')}" fill="none" stroke="${state.pathColor}" stroke-width="3"/>` +
       pts.map((p) => `<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#fff" stroke="${state.pathColor}" stroke-width="2"/>`).join('') +
       `<circle data-testid="first-point-ring" cx="${pts[0][0]}" cy="${pts[0][1]}" r="${CLOSE_RADIUS}" fill="none" stroke="${state.pathColor}" stroke-width="3" visibility="hidden"/>`;
   }
+  // a gesture that starts on a handle must not also add a draft point (its click bubbles to the overlay)
+  overlay.addEventListener('mousedown', (e) => {
+    const handle = (e.target as Element).closest?.('.curve-handle');
+    if (!handle) { handleGesture = false; return; }
+    handleGesture = true;
+    e.preventDefault();
+    const i = Number(handle.getAttribute('data-segment'));
+    const move = (ev: MouseEvent) => {
+      if (state.selected === null) return;
+      state.file = { ...state.file, layers: state.file.layers.map((l, k) => (k === state.selected && l.type === 'path' ? setVia(l, i, toBoard(ev)) : l)) };
+      drawBoard();
+    };
+    const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); };
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', up);
+  });
+  overlay.addEventListener('dblclick', (e) => {
+    const handle = (e.target as Element).closest?.('.curve-handle');
+    if (!handle || state.selected === null) return;
+    const i = Number(handle.getAttribute('data-segment'));
+    state.file = { ...state.file, layers: state.file.layers.map((l, k) => (k === state.selected && l.type === 'path' ? setVia(l, i, null) : l)) };
+    drawBoard();
+  });
   overlay.addEventListener('click', (e) => {
+    if (handleGesture) { handleGesture = false; return; }
     const p = toBoard(e);
     if (closesAt(state.draft, p)) {
       state.file = closeDraft(state.file, state.draft, state.pathColor);
@@ -148,7 +176,7 @@ panel.append(
   row('Silhouette', input('range', '1', (v) => { state.silhouetteOpacity = Number(v); drawBoard(); }, 'opacity-silhouette', { min: '0', max: '1', step: '0.05' })),
   row('Details', input('range', '1', (v) => { state.detailsOpacity = Number(v); drawBoard(); }, 'opacity-details', { min: '0', max: '1', step: '0.05' })),
   h('h2', { text: 'Pfadwerkzeug' }),
-  h('div', { text: 'Klicks setzen Punkte; Klick auf den ersten Punkt schließt den Pfad, Escape verwirft den Entwurf.' }),
+  h('div', { text: 'Klicks setzen Punkte; Klick auf den ersten Punkt schließt den Pfad, Escape verwirft den Entwurf. Griffe an den Segmenten der gewählten Ebene ziehen rundet, Doppelklick macht wieder gerade.' }),
   row('Farbe', input('color', state.pathColor, (v) => { state.pathColor = v; drawBoard(); }, 'path-color')),
   undoBtn,
   h('h2', { text: 'Ebenen (oben zuerst)' }),

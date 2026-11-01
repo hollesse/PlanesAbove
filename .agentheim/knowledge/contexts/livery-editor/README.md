@@ -16,7 +16,7 @@ supporting — Werkzeug für die Illustrationsarbeit; die Himmelsszene braucht n
 - **Ebene** — ein Pfad oder ein Logo mit Farbe bzw. Bild, Reihenfolge im Stapel und Verschiebung; optional mit Namen (max. 40 Zeichen, ohne Namen zeigt das Panel „Pfad n“). Das Ebenenpanel listet oben zuerst (`layers[]` läuft unten→oben); eine Ebene ist auswählbar (Auswahl = Editor-Zustand `state.selected`, Umriss im Brett), nach oben/unten verschiebbar, löschbar, färbbar, benennbar. Sichtbarkeit ist reiner Editor-Zustand: ausgeblendete Ebenen werden im Brett nicht gezeichnet, bleiben aber in der gespeicherten Datei.
 - **Pfad** — geschlossene gefärbte Form aus Punkten; wird ungeschnitten gespeichert.
 - **Shift-Zwang** — mit gehaltener Shift-Taste liegt der nächste Punkt waagerecht oder senkrecht zum vorigen.
-- **Rundung** — Griff in der Mitte eines Segments; Wegziehen macht aus der Geraden eine Kurve (wie in Photoshop).
+- **Rundung** — Griff in der Mitte eines Segments der gewählten Ebene; Wegziehen setzt `via[i]` (Punkt auf der Kurve, ganzzahlig gefangen) und macht aus der Geraden eine Kurve (wie in Photoshop). Doppelklick auf den Griff setzt `via[i]` zurück auf null (gerade).
 - **Farbwahl** — Farbpicker je Ebene.
 - **Farbfeld** — Triebwerkskörper, Flügel und Höhenleitwerk: bekommen je nur eine Farbe, keinen Pfad; Rumpf-Pfade enden an ihrem Rand. Gezeichnet wird auf Rumpf und Finne.
 - **Ansicht** — stufenlose Deckkraft für Silhouette und Detailschicht auf weißem Hintergrund: ganz durchsichtig zeigt die ungeschnittenen Pfade, wo sie wirklich verlaufen; ganz deckend zeigt das Endergebnis wie auf dem iPad (zugeschnitten, Details obenauf).

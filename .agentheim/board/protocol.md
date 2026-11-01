@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:54 -- Task verified and completed: livery-editor-ec2zz - Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve
+
+**Type:** Work / Task completion
+**Task:** livery-editor-ec2zz - Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve
+**Summary:** Rundungen: Griff je Segment der gewählten Ebene, Ziehen setzt via (gefangen), Doppelklick macht gerade; Editor-E2E seriell gegen geteiltes EDITOR_OUT
+**Duration:** 10m30s (10:44 → 10:55, eine Nachbesserung)
+**Verification:** PASS (iteration 2)
+**Files changed:** 6
+**Tests added:** 5
+**ADRs written:** none
+
+---
+
+## 2026-11-01 10:51 -- Verification failed: livery-editor-ec2zz - Rundungen: Griff in der Segmentmitte
+
+**Type:** Work / Verification failure
+**Task:** livery-editor-ec2zz - Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve
+**Iteration:** 1 of 3
+**Reasons:** editor-chromium flaky (3/5 rot): neuer round-corner-E2E schreibt in das von allen Playwright-Workern geteilte EDITOR_OUT, der bestehende Quad-Test prüft das ganze Verzeichnis; Unit, typecheck, Builds grün
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-11-01 10:44 -- Batch started: [livery-editor-ec2zz]
 
 **Type:** Work / Batch start
