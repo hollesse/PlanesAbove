@@ -167,3 +167,30 @@ describe('SkyService Slot-Haltezeit (ADR 0017)', () => {
     expect(ids(r.svc)).toEqual(['a', 'c']);
   });
 });
+
+describe('SkyService Kennzeichen-Callsign (airspace-fehby)', () => {
+  const ap = (c: string, lat: number, lon: number) => ({ name: c, city: c, lat, lon });
+  function regRig(plane: object) {
+    const clock = new FakeClock(Date.parse('2026-10-27T10:00:00Z'));
+    const driver = new ScenarioDriver(parseScenario(JSON.stringify({ name: 't', startTime: '2026-10-27T10:00:00Z', steps: [{ at: 0, planes: [P('a', 8, plane)] }] })), clock, clock.now());
+    const source = { name: 'fake', calls: 0, async lookup() { source.calls++; return { from: ap('Gelnhausen', 50.2, 9.2), to: ap('Limburg', 50.4, 8.1) }; } };
+    const sightings = new SightingRepository(openDatabase(':memory:'), 30 * 60_000, { lat: 50.05, lon: 8.57, radiusKm: 30, place: 'dem Haus' });
+    const routes = new RouteService(source, clock, { ttlMs: 1e9, negativeTtlMs: 1e9 });
+    const svc = new SkyService({
+      config: parseConfig(HOME), clock, log: silentLogger, flight: new ScenarioFlightSource(driver), tables: defaultTables(), sightings, buildId: 'test', timeZone: 'UTC',
+      routes, audio: new AudioService(new FakeSpeechSynthesizer(), { voice: 'v', render: 'lazy', log: silentLogger }),
+    });
+    return { svc, source };
+  }
+  it.each([['DEBEC', 'D-EBEC'], ['N123AB', 'N123AB']])('callsign %s with registration %s: route null, no source asked', async (callsign, registration) => {
+    const { svc, source } = regRig({ callsign, registration, typeCode: 'C172' });
+    await svc.tick();
+    expect(svc.state().planes[0].flight.route).toBeNull();
+    expect(source.calls).toBe(0);
+  });
+  it('airline callsign is still asked', async () => {
+    const { svc, source } = regRig({ callsign: 'DLH4AB', registration: 'D-AIBI', typeCode: 'A20N' });
+    await svc.tick();
+    expect(source.calls).toBeGreaterThan(0);
+  });
+});

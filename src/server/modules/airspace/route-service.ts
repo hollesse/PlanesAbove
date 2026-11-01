@@ -5,6 +5,7 @@ import { distanceKm } from './selection';
 import { angleDiffDeg, bearingDeg, crossTrackKm } from './geo';
 import { closedAirspaceHit, DEFAULT_CLOSED_AIRSPACES, type ClosedAirspace } from './closed-airspace';
 import type { Logger } from '../../logger';
+import { isRegistrationCallsign } from './registration-callsign';
 import type { AirportEntry } from './typeclass';
 import type { Airport, LatLon, LookupContext, Route, RouteOrigin, RouteSource } from './model';
 
@@ -121,6 +122,7 @@ export class RouteService {
   /** Like `routeInfoFor`, plus the per-source findings of this lookup (for the sighting log). null when there is no callsign. Never throws. */
   async lookupFor(callsign: string | undefined, position: LatLon, ctx?: LookupContext): Promise<RouteLookup | null> {
     if (!callsign) return null;
+    if (isRegistrationCallsign(callsign, ctx?.registration)) return null; // Kennzeichen-Callsign: no source asked, nothing cached or recorded
     const now = this.clock.now();
     const hit = this.cache.get(callsign);
     if (hit && hit.until > now) {

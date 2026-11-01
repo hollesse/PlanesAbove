@@ -74,7 +74,7 @@ export class SkyService {
       const before = this.shownClass.get(a.icao24);
       if (before !== undefined && before !== tc.typklasse) log.info('shown aircraft changed type class', { hex: a.icao24, from: before, to: tc.typklasse });
       this.shownClass.set(a.icao24, tc.typklasse);
-      const lookup = await this.d.routes.lookupFor(a.callsign, a, { typklasse: tc.typklasse, airlineKnown: Boolean(airline?.name), altitudeM: a.altitudeM, verticalRateMs: a.verticalRateMs, trackDeg: a.trackDeg });
+      const lookup = await this.d.routes.lookupFor(a.callsign, a, { typklasse: tc.typklasse, airlineKnown: Boolean(airline?.name), altitudeM: a.altitudeM, verticalRateMs: a.verticalRateMs, trackDeg: a.trackDeg, registration: a.registration });
       routeById.set(a.icao24, lookup);
       planes.push(this.toScenePlane(a, lookup?.info ?? null));
     }

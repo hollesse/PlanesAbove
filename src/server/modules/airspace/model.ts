@@ -26,7 +26,7 @@ export type RouteOrigin = 'vrs' | 'adsbdb' | 'hexdb' | 'flightaware';
 
 /** Facts about the aircraft that a paid last-resort source needs before it may be asked (ADR 0018). Passed in by the caller; the chain itself only knows callsign + position. */
 /** Per-plane context for a route lookup. The observation fields (own ADS-B data) let the plausibility check use heading and flight phase as arbiter (airspace-p8w2k). */
-export interface LookupContext { typklasse: string; airlineKnown: boolean; altitudeM?: number; verticalRateMs?: number; trackDeg?: number }
+export interface LookupContext { typklasse: string; airlineKnown: boolean; altitudeM?: number; verticalRateMs?: number; trackDeg?: number; /** Reported registration (adsb.lol `r`) for the Kennzeichen-Callsign rule. */ registration?: string }
 
 export interface Airport { name: string; city: string; /** ICAO code as delivered by the source; key into the own airport table (airspace-b7kx2). */ icao?: string; iata?: string; lat?: number; lon?: number }
 

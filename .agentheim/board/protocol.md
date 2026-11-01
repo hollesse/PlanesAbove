@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 21:07 -- Task verified and completed: airspace-fehby - Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.)
+
+**Type:** Work / Task completion
+**Task:** airspace-fehby - Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.)
+**Summary:** keine Routenabfrage für Kennzeichen-Callsigns (DEBEC/D-EBEC u. ä.)
+**Duration:** 6m10s
+**Verification:** PASS (iteration 2)
+**Files changed:** 6
+**Tests added:** 10
+**ADRs written:** none
+
+---
+
 ## 2026-11-01 21:06 -- Task verified and completed: airspace-rrazj - Lokale Vereinsflieger per Hex-Code erfassen und den Verein statt der Airline anzeigen
 
 **Type:** Work / Task completion
