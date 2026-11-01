@@ -1,7 +1,7 @@
 ---
 id: sighting-log-js2t1
 title: Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033)
-status: doing
+status: done
 type: feature
 context: sighting-log
 created: 2026-11-01
@@ -28,3 +28,17 @@ Der Lackierungs-Editor soll Airline und Typklasse aus den echten Sichtungen wäh
 
 ## Notes
 ADR 0033 Punkt 1. Keine Lückenlogik im Server (Punkt 3). Reale config.yaml anpassen: nein.
+
+## Verifier note (iteration 1)
+
+REASONS:
+- Criterion 3 ("unbekannter Präfix erscheint mit `airline: null` (Server-Contract-Test)") is not covered at the server-contract layer: the new stats-api.test.ts test never asserts `airline: null`; the fixture seeds only non-null airlines, and the one unknown-prefix assertion rewrites a callsign to 'ZZ1' and asserts the '?' row has airline 'Emirates'. Test name and assertions disagree.
+- null-airline behaviour is covered only at unit level (sightings-by-class.test.ts, XYZ → null).
+- Criteria 1, 2 covered by unit tests; days default/limits via parseStatsParams tested; npm test (758 passed) and typecheck green. The `samples[].registration = null` deviation is acceptable (documented, field stays `string | null`).
+
+SUGGESTED_FIX: In stats-api.test.ts, insert/update a sighting with an unknown callsign prefix AND a null stored airline (e.g. set `airline = NULL` on the 'ZZ1' row), then assert GET /api/stats/sightings-by-class returns that row with `airline: null`. Drop or fix the contradictory "'?' row is Emirates" assertion.
+
+ITERATION_HINT: likely-fixable
+
+## Outcome
+Added the pure function `sightingsByClass(db, opts)` in `src/server/modules/sighting-log/sightings-by-class.ts` (one row per ICAO prefix x typklasse with count, lastSeenMs, up to 3 newest samples; sorted count desc then lastSeenMs desc; excludes out-of-window, slot-less, light-aircraft/glider; Standort semantics like liveryStats). Wired `GET /api/stats/sightings-by-class` in `stats-api.ts` using `parseStatsParams`. Unit tests in `tests/unit/server/sightings-by-class.test.ts`; server contract test in `tests/unit/server/stats-api.test.ts` (JSON equals function output, 400 on bad input, and an unknown-prefix sighting with NULL airline is returned as `airline: null`). `samples[].registration` is null (no registration column; field stays string | null). npm test and typecheck green.

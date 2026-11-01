@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:03 -- Task verified and completed: sighting-log-js2t1 - Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033)
+
+**Type:** Work / Task completion
+**Task:** sighting-log-js2t1 - Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033)
+**Summary:** Endpunkt GET /api/stats/sightings-by-class: Sichtungen je Präfix × Typklasse mit Anzahl, zuletzt gesehen und bis zu 3 Beispielen (ADR 0033); registration vorerst null
+**Duration:** 5m30s (11:57 → 12:03, eine Nachbesserung)
+**Verification:** PASS (iteration 2)
+**Files changed:** 4
+**Tests added:** 5
+**ADRs written:** none
+
+---
+
+## 2026-11-01 12:01 -- Verification failed: sighting-log-js2t1 - Endpunkt sightings-by-class
+
+**Type:** Work / Verification failure
+**Task:** sighting-log-js2t1 - Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033)
+**Iteration:** 1 of 3
+**Reasons:** Contract-Test prüft airline: null nicht (Fixture ohne Null-Airline, widersprüchliche Assertion); Unit-Tests, npm test 758, typecheck grün
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-11-01 11:57 -- Batch started: [sighting-log-js2t1, livery-editor-ykjrk]
 
 **Type:** Work / Batch start

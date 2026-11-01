@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 4
+- **Doing:** 0
+- **Done:** 5
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **sighting-log-js2t1** — Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033) (feature) — `doing/sighting-log-js2t1-endpunkt-sichtungen-je-airline-typklasse.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **sighting-log-js2t1** — Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033) (feature) — `done/sighting-log-js2t1-endpunkt-sichtungen-je-airline-typklasse.md`
 - **sighting-log-r3m8x** — Routen- und Lackierungs-Statistik als API-Endpunkt des Dienstes, damit die Auswertung auf dem Heimserver ohne Node und ohne DB-Kopie im Browser abrufbar ist (feature) — `done/sighting-log-r3m8x-routen-und-lackierungs-statistik-als-api-endpunkt.md`
 - **sighting-log-t8tfb** — Lackierungs-Statistik „npm run stats:liveries“: welche Airlines wie oft mit der Standard-Lackierung gezeigt wurden, weil kein Design oder keine Zuordnung vorlag (feature) — `done/sighting-log-t8tfb-lackierungs-statistik-airlines-mit-standard-lackierung.md`
 - **sighting-log-k4m7q** — Beobachtungsstandort je Sichtung mitloggen (Tabelle observation_points, Standortwechsel beendet den Besuch, Statistik je Standort) (feature) — `done/sighting-log-k4m7q-beobachtungsstandort-je-sichtung-mitloggen.md`

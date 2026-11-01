@@ -8,6 +8,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { parseConfig } from '../../../src/server/config';
 import { startService, type Service } from '../../../src/server/app';
 import { formatLiveryStats, liveryStats } from '../../../src/server/modules/sighting-log/livery-stats';
+import { sightingsByClass } from '../../../src/server/modules/sighting-log/sightings-by-class';
 import { formatRouteStats, routeStats } from '../../../src/server/modules/sighting-log/route-stats';
 
 const START = Date.parse('2026-10-27T10:00:00Z');
@@ -62,6 +63,21 @@ describe('stats API', () => {
     expect(r.status).toBe(200);
     const hasPoints = Boolean(raw.prepare("SELECT 1 FROM sqlite_master WHERE name='observation_points'").get());
     expect(await r.json()).toEqual(JSON.parse(JSON.stringify(liveryStats(raw, { days: 1, nowMs: START, hasPoints }))));
+  });
+  it('sightings-by-class: 200 JSON equal to sightingsByClass, unknown prefix has airline null, 400 on bad input', async () => {
+    const { url, raw } = await boot();
+    const r = await fetch(`${url}/api/stats/sightings-by-class?days=1`);
+    expect(r.status).toBe(200);
+    expect(r.headers.get('content-type')).toContain('application/json');
+    const expected = sightingsByClass(raw, { days: 1, nowMs: START, hasPoints: true });
+    expect(expected.rows.length).toBeGreaterThan(0);
+    expect(await r.json()).toEqual(JSON.parse(JSON.stringify(expected)));
+    const all = (await (await fetch(`${url}/api/stats/sightings-by-class?days=1&standort=alle`)).json()) as { rows: { prefix: string }[] };
+    expect(all.rows).toHaveLength(3);
+    raw.prepare("UPDATE sightings SET callsign = 'ZZ1', airline = NULL WHERE icao24 = 'a'").run();
+    const u = (await (await fetch(`${url}/api/stats/sightings-by-class?days=1`)).json()) as { rows: { prefix: string; airline: string | null }[] };
+    expect(u.rows.find((x) => x.prefix === '?')).toMatchObject({ airline: null });
+    for (const q of ['days=0', 'days=abc', 'days=1&standort=x']) expect((await fetch(`${url}/api/stats/sightings-by-class?${q}`)).status).toBe(400);
   });
   it('standort alle / unbekannt / id are evaluated like the script; invalid input is 400', async () => {
     const { url, raw } = await boot();

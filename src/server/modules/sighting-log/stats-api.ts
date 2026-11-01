@@ -1,12 +1,13 @@
-// Read-only HTTP endpoints GET /api/stats/routes and /api/stats/liveries (LAN-only, ADR 0008); evaluation stays in route-stats / livery-stats.
+// Read-only HTTP endpoints GET /api/stats/routes, /api/stats/liveries and /api/stats/sightings-by-class (LAN-only, ADR 0008); evaluation stays in route-stats / livery-stats.
 import type http from 'node:http';
 import { formatLiveryStats, liveryStats } from './livery-stats';
+import { sightingsByClass } from './sightings-by-class';
 import { formatRouteStats, routeStats } from './route-stats';
 import { inspectStatsDb, parseStatsParams, type PrepDb } from './stats-common';
 
 /** Returns true when the request was a stats request and has been answered. */
 export function handleStatsRequest(db: PrepDb, nowMs: number, req: http.IncomingMessage, res: http.ServerResponse, url: URL): boolean {
-  if (req.method !== 'GET' || (url.pathname !== '/api/stats/routes' && url.pathname !== '/api/stats/liveries')) return false;
+  if (req.method !== 'GET' || !['/api/stats/routes', '/api/stats/liveries', '/api/stats/sightings-by-class'].includes(url.pathname)) return false;
   const reply = (status: number, type: string, body: string): true => { res.writeHead(status, { 'content-type': `${type}; charset=utf-8`, 'cache-control': 'no-store' }).end(body); return true; };
   const params = parseStatsParams({ days: url.searchParams.get('days') ?? undefined, standort: url.searchParams.get('standort') });
   if (!params.ok) return reply(400, 'application/json', JSON.stringify({ error: params.error }));
@@ -18,6 +19,7 @@ export function handleStatsRequest(db: PrepDb, nowMs: number, req: http.Incoming
     const s = routeStats(prep.routeDb, opts);
     return text ? reply(200, 'text/plain', formatRouteStats(s)) : reply(200, 'application/json', JSON.stringify(s));
   }
+  if (url.pathname === '/api/stats/sightings-by-class') return reply(200, 'application/json', JSON.stringify(sightingsByClass(db, opts)));
   const s = liveryStats(db, opts);
   return text ? reply(200, 'text/plain', formatLiveryStats(s)) : reply(200, 'application/json', JSON.stringify(s));
 }
