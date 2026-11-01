@@ -29,7 +29,7 @@ import { PhotoSourceChain } from './modules/airspace/photo-source-chain';
 import { PhotoService } from './modules/airspace/photo-service';
 import { RouteService } from './modules/airspace/route-service';
 import { defaultTables } from './modules/airspace/typeclass';
-import { SightingRepository } from './modules/sighting-log/repository';
+import { SightingRepository, knownAircraft } from './modules/sighting-log/repository';
 import { handleStatsRequest } from './modules/sighting-log/stats-api';
 import { AudioService } from './modules/sky-scene/audio-service';
 import { FakeSpeechSynthesizer } from './modules/sky-scene/fake-speech';
@@ -141,6 +141,9 @@ export async function startService(o: ServiceOptions): Promise<Service> {
   const fallbackSources: PhotoSource[] = mock && !o.fetch ? [] : pc.fallback.map(mkPhotoSource);
   if ((photoSources.length || fallbackSources.length) && !userAgentHasContact(ua)) log.warn('sources.userAgent has no contact (e-mail or URL) but photo sources are active: Planespotters expects a descriptive User-Agent with contact, set it in config.yaml', { userAgent: ua });
   const photos = new PhotoService(new PhotoSourceChain(photoSources, { clock, log, maxPhotos: pc.maxPhotos, backoffMs: pc.backoffMinutes * 60_000, fallback: fallbackSources }), { clock, ttlMs: pc.cacheTtlHours * 3_600_000 });
+  // Reference photo for the livery editor (ADR 0033 §2, amended): Wikimedia Commons only - Planespotters' 280 px is too small to redraw from, so neither `order` nor `fallback` applies.
+  const refSources: PhotoSource[] = mock && !o.fetch ? (driver ? [new ScenarioPhotoSource(driver)] : []) : [mkPhotoSource('commons')];
+  const refPhotos = new PhotoService(new PhotoSourceChain(refSources, { clock, log, maxPhotos: pc.maxPhotos, backoffMs: pc.backoffMinutes * 60_000 }), { clock, ttlMs: pc.cacheTtlHours * 3_600_000 });
   const sky = new SkyService({ config, clock, log, flight, routes, tables, types, sightings, audio, buildId, timeZone: o.timeZone });
 
   const stopFlightAwareSync = config.sources.route.enabled ? await flightaware?.start() : undefined; // usage sync before the first paid lookup (ADR 0018)
@@ -164,6 +167,16 @@ export async function startService(o: ServiceOptions): Promise<Service> {
     const url = new URL(req.url ?? '/', 'http://x');
     try {
       if (req.method === 'GET' && url.pathname === '/api/state') { lastClientPollAt = clock.now(); return json(res, 200, sky.state()); }
+      if (req.method === 'GET' && url.pathname === '/api/photos/reference') {
+        // Only for hexes in `sightings` (asked via sighting-log's knownAircraft, ADR 0007); the stored registration is the only one used, so a `registration` parameter cannot steer the Commons search.
+        const hex = url.searchParams.get('icao24') ?? '';
+        if (!/^[0-9a-fA-F]{6}$/.test(hex)) return json(res, 400, { error: 'icao24 must be 6 hex characters' });
+        const known = knownAircraft(db, hex);
+        if (!known) return json(res, 404, { error: 'hex never sighted' });
+        if (!known.registration) return json(res, 200, { photos: [], status: 'none' });
+        const r = await refPhotos.get({ icao24: hex.toLowerCase(), registration: known.registration });
+        return json(res, 200, { photos: r.photos, status: r.status });
+      }
       const photoMatch = /^\/api\/photos\/([0-9a-fA-F]{6})$/.exec(url.pathname);
       if (req.method === 'GET' && photoMatch) {
         // Only for a plane of the current Auswahl; the answer is JSON metadata, the iPad loads the images itself (ADR 0029).

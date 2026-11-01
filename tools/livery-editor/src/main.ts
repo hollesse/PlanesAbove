@@ -339,7 +339,46 @@ function pick(liveryId: string, typklasse: string) {
   liveryIdInput.value = liveryId; liveryIdInput.setAttribute('aria-invalid', String(!LIVERY_ID.test(liveryId)));
   select.value = typklasse;
   renderLayerPanel(); drawBoard();
+  void updatePhoto();
   say(parsed?.success ? `Lackierung ${liveryId}/${typklasse} geladen.` : `Neue Lackierung ${liveryId}/${typklasse}.`);
+}
+// ---- Fotopanel: erstes Referenzfoto der gewählten Kombination (ADR 0033 §2); fragt die Samples nacheinander ab ----
+const photoPanel = document.getElementById('photo')!;
+type RefPhoto = { imageUrl: string; photographer: string; source: string; pageUrl: string; licenceText: string };
+let photoRequest = 0;
+function showPhoto(...nodes: (HTMLElement | string)[]) { photoPanel.replaceChildren(h('h2', { text: 'Referenzfoto' }), ...nodes.map((n) => (typeof n === 'string' ? h('div', { text: n, attrs: { 'data-testid': 'photo-state' } }) : n))); }
+async function updatePhoto() {
+  const mine = ++photoRequest;
+  const g = sightings.selected;
+  const row = g && sightings.response?.rows.find((r) => r.prefix === g.prefix && r.typklasse === state.file.typklasse);
+  if (!row) { showPhoto('Keine Sichtung gewählt'); return; }
+  showPhoto('Lade Foto …');
+  let failed = 0;
+  const samples = row.samples ?? [];
+  for (const s of samples) {
+    try {
+      const q = new URLSearchParams({ icao24: s.icao24 });
+      if (s.registration) q.set('registration', s.registration);
+      const res = await fetch(`/api/photos/reference?${q}`);
+      if (!res.ok) throw new Error(String(res.status));
+      const body = (await res.json()) as { status: string; photos?: RefPhoto[] };
+      if (mine !== photoRequest) return;
+      if (body.status === 'ok' && body.photos?.length) {
+        const p = body.photos[0];
+        showPhoto(
+          h('img', { attrs: { src: p.imageUrl, alt: 'Referenzfoto', 'data-testid': 'photo-img' } }),
+          h('div', { attrs: { class: 'photo-credit', 'data-testid': 'photo-credit' } }, h('span', { text: `${p.photographer} · ${p.source} · ${p.licenceText} · ` }), h('a', { text: 'Seite öffnen', attrs: { href: p.pageUrl, target: '_blank', rel: 'noopener noreferrer', 'data-testid': 'photo-link' } })),
+        );
+        return;
+      }
+    } catch {
+      failed++;
+      if (mine !== photoRequest) return;
+    }
+  }
+  if (mine !== photoRequest) return;
+  if (samples.length > 0 && failed === samples.length) showPhoto(h('div', { text: 'Foto nicht verfügbar', attrs: { class: 'error', 'data-testid': 'photo-state' } }));
+  else showPhoto('Kein Foto');
 }
 function renderTypeSelect() {
   const { options, preselected } = typeOptions(sightings.selected, typklassen, Object.keys(PLANE_PARTS));
@@ -351,7 +390,7 @@ function selectAirline(g: AirlineGroup) {
   sightings.selected = g;
   const preselected = renderTypeSelect();
   renderSightings();
-  if (preselected) pick(g.liveryId, preselected);
+  if (preselected) pick(g.liveryId, preselected); else void updatePhoto();
 }
 function renderSightings() {
   if (sightings.failed) { sightingList.replaceChildren(h('div', { text: 'Heimserver nicht erreichbar', attrs: { 'data-testid': 'sightings-unreachable', class: 'error' } })); return; }
@@ -365,6 +404,7 @@ function renderSightings() {
   }) : [h('div', { text: sightings.onlyGaps ? 'Keine Lücken in den Sichtungen.' : 'Keine Sichtungen.' })]));
 }
 let sightingsRequest = 0;
+void updatePhoto();
 async function loadSightings() {
   const mine = ++sightingsRequest;
   sightings.response = null; sightings.failed = false; renderSightings();
@@ -373,7 +413,7 @@ async function loadSightings() {
     if (!res.ok) throw new Error(String(res.status));
     const body = (await res.json()) as SightingsResponse;
     if (!Array.isArray(body.rows)) throw new Error('bad body');
-    if (mine === sightingsRequest) { sightings.response = body; sightings.selected = null; renderTypeSelect(); }
+    if (mine === sightingsRequest) { sightings.response = body; sightings.selected = null; renderTypeSelect(); void updatePhoto(); }
   } catch {
     if (mine === sightingsRequest) sightings.failed = true;
   }

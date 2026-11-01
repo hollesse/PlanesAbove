@@ -13,6 +13,11 @@
     #board svg { display: block; width: 100%; height: auto; }
     #board svg.overlay { position: absolute; inset: 0; cursor: crosshair; }
     #board.preview svg.overlay { visibility: hidden; }
+    #photo { width: 380px; flex: none; padding: 16px; box-sizing: border-box; overflow-y: auto; background: #F4F4F2; border-left: 1px solid #C9CCCB; display: flex; flex-direction: column; gap: 8px; }
+    #photo h2 { font-size: 12px; text-transform: uppercase; margin: 0; letter-spacing: .06em; }
+    #photo img { width: 100%; height: auto; display: block; background: #D8D6CC; }
+    #photo .photo-credit { font-size: 12px; }
+    #photo .error { color: #b00020; }
     #status { min-height: 1.4em; }
     #status.error { color: #b00020; }
     .layer-row { display: flex; align-items: center; gap: 6px; padding: 2px 4px; border: 1px solid transparent; border-radius: 4px; }
@@ -44,6 +49,7 @@
 <body>
   <div id="panel"></div>
   <div id="stage"><div id="board"></div></div>
+  <aside id="photo" data-testid="photo-panel"></aside>
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

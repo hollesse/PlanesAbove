@@ -1,7 +1,7 @@
 ---
 id: airspace-yvdbz
 title: Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033)
-status: doing
+status: done
 type: feature
 context: airspace
 created: 2026-11-01
@@ -50,3 +50,13 @@ Beim Zeichnen will Papa ein echtes Foto der Airline auf dieser Typklasse neben d
 - Das Fotopanel ist Editor-eigene UI außerhalb des Storybook-Gates (README livery-editor, ADR 0034); kein `design-system-001-styleguide` in `depends_on`.
 - Der Editor erreicht den Server nur über den Vite-Proxy `/api` → `PLANESABOVE_HOME_URL` (ADR 0033 §4); keine CORS-Änderung.
 - Reale config.yaml anpassen: nein.
+
+## Outcome
+
+Server: `GET /api/photos/reference` in `src/server/app.ts` (neben `/api/photos/:icao24`). Pruefung per `knownAircraft`, eigene Commons-only `PhotoSourceChain` + `PhotoService` (Mock-Modus: `ScenarioPhotoSource`); nur das gespeicherte Kennzeichen wird verwendet, `registration`-Parameter wirkungslos; 400/404/none-Faelle ohne Quellenabfrage. Tests: `tests/unit/server/photo-reference.test.ts` (5).
+
+Editor: Fotopanel (`<aside id="photo">`, rechts neben dem Brett) in `tools/livery-editor/index.html` + `src/main.ts` (`updatePhoto`: Samples der Zeile prefix+Typklasse nacheinander, stoppt beim ersten `ok`, verwirft veraltete Antworten per Request-Zaehler; Zustaende Keine Sichtung gewaehlt / Lade Foto / Kein Foto / Foto nicht verfuegbar). `gaps.ts` typisiert `samples`. E2E: `tests/e2e-editor/photo-panel.spec.ts` (5). Das [human-eye]-Kriterium (Layout, Fotogroesse) ist nicht automatisch geprueft.
+
+Hinweis Verifikation: `npm test` (858 gruen) und `npm run typecheck` gruen. Die E2E-Konfiguration war hier nicht direkt lauffaehig (Port 5174 von einem fremden Editor belegt, storybook-static fehlt im Worktree); die Editor-Specs sightings und photo-panel liefen gruen ueber eine temporaere Config auf Port 5199, die Storybook-abhaengigen Specs draw-and-compare und logo blieben mangels storybook-static unausgefuehrt.
+
+Noch zu tun durch den Conductor: README livery-editor (kein Worker-Delta fuer fremdes BC moeglich): Bullet **Referenzfoto** ersetzen durch: echtes Foto der Airline auf dieser Typklasse aus Wikimedia Commons (nur Commons, GET /api/photos/reference des Heimservers), in einem Fotopanel rechts neben dem Brett; das Panel fragt die Samples der gewaehlten Zeile nacheinander ab und zeigt das erste Foto mit Fotograf, Quelle, Lizenz und Link auf die Quellseite (neuer Tab); Zustaende Keine Sichtung gewaehlt / Kein Foto / Foto nicht verfuegbar. Relationship-Zeile 'Customer of airspace-Fotokette' entsprechend 'nur Commons'.

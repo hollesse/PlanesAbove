@@ -62,6 +62,10 @@ Die Sichtungen liegen im Heimserver (sighting-log, SQLite). Der Fotoweg gehört 
 
 Das Kennzeichen wird ab Migration 0009 je Sichtung gespeichert (Spalte `registration`, nullable, kein Backfill; Quelle ist nur der Flugdaten-Feed, ADR 0016 bleibt unberührt). `samples[].registration` von `/api/stats/sightings-by-class` liefert es, und sighting-log stellt `knownAircraft(db, icao24)` für den Referenzfoto-Endpunkt bereit. Damit findet Wikimedia Commons (Suche nur nach Kennzeichen) Fotos zu vergangenen Sichtungen.
 
+## Amendment (2026-11-01, airspace-yvdbz)
+
+Abweichung von §2 ("bestehende Fotokette"): `GET /api/photos/reference` fragt nur Wikimedia Commons, nie Planespotters, unabhängig von `sources.photo.order` und `fallback` (Entscheidung des Betreibers: 280 px reichen zum Nachzeichnen einer Lackierung nicht). Dafür hat der Endpunkt eine eigene `PhotoSourceChain` mit nur dem Commons-Adapter (im Mock-Modus die `ScenarioPhotoSource`) hinter einem eigenen `PhotoService` (24-h-Speichercache je Hex). Die Hex-Prüfung läuft über `knownAircraft` (sighting-log, ADR 0007); abgefragt wird nur mit dem gespeicherten Kennzeichen, ein `registration`-Parameter kann die Suche nicht steuern. Ohne gespeichertes Kennzeichen antwortet der Endpunkt `status: none`, ohne Commons zu fragen; ungültiger Hex ergibt 400, nie gesehener Hex 404. `/api/photos/:icao24` bleibt unverändert.
+
 ## References
 
 - ADR 0031 (Lackierung je Airline x Typklasse als Pfaddatei im Repo; Farbfelder: Pfade gehören nur zu Rumpf und Finne)

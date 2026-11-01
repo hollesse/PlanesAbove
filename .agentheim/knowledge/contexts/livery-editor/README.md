@@ -12,7 +12,7 @@ supporting — Werkzeug für die Illustrationsarbeit; die Himmelsszene braucht n
 ## Ubiquitous language
 - **Zeichenbrett** — die Fläche mit der leeren Silhouette einer Typklasse, über die gezeichnet wird; zeigt das beschnittene Ergebnis mit Detailschicht obenauf.
 - **Lücke** — eine im Sichtungsprotokoll gesehene Kombination Airline × Typklasse, für die keine Lackierung existiert; Filter „nur Lücken“. Die Auswahl ist zweistufig: erst Airline (aggregiert über alle Typen, „n von m Typen fehlen“), dann Typklasse im Select mit Sichtungszahl und Status (fehlt/vorhanden).
-- **Referenzfoto** — echtes Foto der Airline auf dieser Typklasse aus der Fotokette der App (Commons, Planespotters als Fallback), nur zum Anschauen.
+- **Referenzfoto** — echtes Foto der Airline auf dieser Typklasse aus Wikimedia Commons (nur Commons, `GET /api/photos/reference` des Heimservers; Planespotters reicht zum Nachzeichnen nicht), nur zum Anschauen. Das **Fotopanel** rechts neben dem Brett fragt die Samples der gewählten Airline × Typklasse nacheinander ab und zeigt das erste Foto mit Fotograf, Quelle, Lizenz und Link auf die Quellseite (neuer Tab); Zustände „Keine Sichtung gewählt“, „Kein Foto“, „Foto nicht verfügbar“ (airspace-yvdbz).
 - **Ebene** — ein Pfad oder ein Logo mit Farbe bzw. Bild, Reihenfolge im Stapel und Verschiebung; optional mit Namen (max. 40 Zeichen, ohne Namen zeigt das Panel „Pfad n“ bzw. den Logonamen). Das Ebenenpanel listet oben zuerst (`layers[]` läuft unten→oben); eine Ebene ist auswählbar (Auswahl = Editor-Zustand `state.selected`, Umriss im Brett), nach oben/unten verschiebbar, löschbar, färbbar, benennbar. Sichtbarkeit ist reiner Editor-Zustand: ausgeblendete Ebenen werden im Brett nicht gezeichnet, bleiben aber in der gespeicherten Datei.
 - **Pfad** — geschlossene gefärbte Form aus Punkten; wird ungeschnitten gespeichert.
 - **Shift-Zwang** — mit gehaltener Shift-Taste liegt der nächste Punkt (und das Gummiband dorthin) waagerecht oder senkrecht zum vorigen Punkt; die dominante Achse gewinnt.
@@ -44,7 +44,7 @@ _Noch offen._
 ## Relationships with other contexts
 - **Conformist to liveries:** Dateiformat, Silhouetten, Detailschichten und Zuschnitt-Regel gehören liveries; der Editor erfindet nichts Eigenes.
 - **Customer of sighting-log (lesend):** Lücken aus der Lackierungs-Statistik des laufenden Heimservers, erweitert um die Typklasse.
-- **Customer of airspace-Fotokette (lesend):** Referenzfoto.
+- **Customer of airspace (lesend):** Referenzfoto über `GET /api/photos/reference`, nur Commons (ADR 0033 Amendment).
 - **design-system (ADR 0034):** Der Anzeigepfad (Render-Funktion, Molekül „lackiertes Flugzeug“, Silhouetten, Detailschichten) bleibt Storybook-first; der Editor konsumiert diese Module und dupliziert sie nie. Editor-eigene UI (Werkzeugleiste, Ebenenpanel, Farbpicker, Lückenliste, Fotopanel) liegt außerhalb des Gates und wird im laufenden Editor abgenommen. Nur Tasks, die Anzeigepfad-Bausteine ändern, tragen `depends_on: [design-system-001-styleguide]`.
 See `../../context-map.md`.
 

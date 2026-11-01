@@ -1,5 +1,6 @@
 // Pure gap logic (ADR 0033 §3): seen Airline x Typklasse combinations minus the local livery files, grouped per airline.
-export type SightingRow = { prefix: string; airline: string | null; typklasse: string; count: number; lastSeenMs: number; samples?: unknown };
+export type SightingSample = { icao24: string; registration?: string | null };
+export type SightingRow = { prefix: string; airline: string | null; typklasse: string; count: number; lastSeenMs: number; samples?: SightingSample[] };
 export type SightingsResponse = { days: number; standort?: unknown; rows: SightingRow[] };
 export type TypeSighting = { typklasse: string; count: number; gap: boolean };
 export type AirlineGroup = { prefix: string; liveryId: string; airline: string; total: number; types: TypeSighting[]; gaps: number; seenTypes: number };
