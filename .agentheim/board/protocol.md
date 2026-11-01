@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:24 -- Capture / Captured: livery-editor-hz0hb - Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf
+
+**Type:** Capture
+**BC:** livery-editor
+**Filed to:** backlog
+**Summary:** Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf
+
+---
+
 ## 2026-11-01 10:24 -- Capture / Captured: liveries-yzshd - Trennlinie zwischen Rumpf und Finne wieder sichtbar machen
 
 **Type:** Capture
