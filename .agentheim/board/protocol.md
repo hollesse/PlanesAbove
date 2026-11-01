@@ -5,6 +5,26 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 13:44 -- Modeling / Refined: livery-editor-gn6gp - Logo-Ebene und Platzierung
+
+**Type:** Modeling / Refine
+**BC:** livery-editor
+**Status after:** todo
+**Summary:** Betreiber-Entscheidungen: Logos bleiben unter svg/logos/ (gleiche Konvention), Platzieren per Transform-Rahmen (verschieben, Eckgriffe skalieren, Drehgriff, Shift 15°), vorhandene Logos wählen und hochladen. Aufgeteilt: gn6gp = Rendering + Auswahl + Rahmen; livery-editor-q0xd2 = Upload über das Schreib-Plugin (Allow-List svg/logos/).
+**Split into:** livery-editor-q0xd2
+**ADRs written:** none
+
+---
+
+## 2026-11-01 13:44 -- Modeling / Captured: livery-editor-q0xd2 - Logo hochladen (SVG/PNG) über das Schreib-Plugin nach svg/logos/, danach sofort in der Logo-Liste und im LOGO-Index
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** backlog
+**Summary:** Logo-Upload über das Schreib-Plugin nach svg/logos/ — zweiter Teil des Logo-Themas
+
+---
+
 ## 2026-11-01 13:31 -- Work session ended
 
 **Type:** Work / Session end
