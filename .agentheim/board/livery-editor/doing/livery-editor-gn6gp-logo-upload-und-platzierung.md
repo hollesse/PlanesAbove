@@ -1,7 +1,7 @@
 ---
 id: livery-editor-gn6gp
 title: Logo-Ebene: vorhandenes Logo wählen, auf dem Brett platzieren (Transform-Rahmen: verschieben, skalieren, drehen), gerendert in Szene, Story und Editor
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-01

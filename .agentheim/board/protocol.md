@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 13:44 -- Batch started: [livery-editor-gn6gp]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-gn6gp - Logo-Ebene: vorhandenes Logo wählen, auf dem Brett platzieren (Transform-Rahmen: verschieben, skalieren, drehen), gerendert in Szene, Story und Editor
+**Parallel:** no (1 worker) — livery-editor-q0xd2 depends on gn6gp (logo list + panel), dispatched after
+
+---
+
 ## 2026-11-01 13:44 -- Modeling / Promoted: livery-editor-gn6gp - Logo-Ebene: vorhandenes Logo wählen, auf dem Brett platzieren (Transform-Rahmen: verschieben, skalieren, drehen), gerendert in Szene, Story und Editor
 
 **Type:** Modeling / Promote
