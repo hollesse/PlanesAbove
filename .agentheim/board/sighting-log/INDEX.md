@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 0
+- **Backlog:** 1
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 5
@@ -47,6 +47,7 @@ prior-art matcher additionally checks `done-archive/` when present.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **sighting-log-r3kw8** — Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern (feature) — `backlog/sighting-log-r3kw8-kennzeichen-je-sichtung-speichern-und-in-samples-ausliefern.md`
 <!-- backlog-list:end -->
 
 ## Pointers

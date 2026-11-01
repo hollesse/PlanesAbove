@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 18:29 -- Modeling / Captured: sighting-log-r3kw8 - Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern
+
+**Type:** Modeling / Capture
+**BC:** sighting-log
+**Filed to:** backlog
+**Summary:** Kennzeichen je Sichtung speichern und in samples ausliefern; Voraussetzung für Commons-Referenzfotos im Editor (airspace-yvdbz).
+
+---
+
 ## 2026-11-01 17:04 -- Work session ended
 
 **Type:** Work / Session end
