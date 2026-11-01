@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 13:28 -- Modeling / Captured: livery-editor-atp95 - Typklassen-Select zeigt beim Start „double-decker“, obwohl narrowbody geladen ist
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** todo
+**Summary:** Bug: Typklassen-Select zeigt beim Start double-decker statt narrowbody — direkt nach todo
+
+---
+
 ## 2026-11-01 13:25 -- Work session ended
 
 **Type:** Work / Session end
