@@ -5,6 +5,37 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:32 -- Modeling / Refined: livery-editor-q9nbe - Kriterium 2 umformuliert
+
+**Type:** Modeling / Refine
+**BC:** livery-editor
+**Status after:** doing (bleibt; Verifier-Iteration 3 folgt)
+**Summary:** Kriterium 2 auf die Ein-Silhouetten-Realität umformuliert: nicht zeichenbare gesichtete Typen deaktiviert und nie vorausgewählt, Vorauswahl = häufigster zeichenbarer Typ ohne Datei (Unit-Test), Airline-Klick lädt dessen Datei. Typwechsel-E2E ins Backlog verschoben.
+**Split into:** livery-editor-fweas (backlog)
+**ADRs written:** none
+
+---
+
+## 2026-11-01 12:32 -- Modeling / Captured: livery-editor-fweas - Typwechsel-E2E für die Sichtungsauswahl, sobald eine zweite Silhouette (z. B. widebody) existiert
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** backlog
+**Summary:** Typwechsel-E2E der Sichtungsauswahl nachholen, sobald eine zweite Silhouette existiert — aus q9nbe verschoben
+
+---
+
+## 2026-11-01 12:30 -- Verification failed — escalating to user: livery-editor-q9nbe - Sichtungen zweistufig
+
+**Type:** Work / Verification failure
+**Task:** livery-editor-q9nbe - Sichtungen zweistufig: erst Airline, dann Typklassen-Select mit Sichtungszahl und Lückenstatus je Typ
+**Iteration:** 2 of 3
+**Reasons:** Kriterium 2 ist mit nur einer Silhouette (narrowbody) nicht per E2E erfüllbar: der fehlende Typ im Mock ist nicht zeichenbar und darf seit Iteration 1 nicht vorausgewählt werden; der Worker hat die Messung verschoben (Metric drift). Umsetzung sonst sauber (vitest 769, editor-chromium 14/14 ohne Seitenfehler)
+**Iteration hint:** task-under-specified
+**Next:** escalated to user — worktree kept, diff salvaged to .agentheim/salvage/livery-editor-q9nbe-escalated-iter2.patch
+
+---
+
 ## 2026-11-01 12:30 -- Modeling / Captured: livery-editor-v90sn - Auswahl aufheben (Panel-Klick auf die gewählte Zeile, Escape) und Vorschau mit gehaltener Leertaste ohne Overlay
 
 **Type:** Modeling / Capture

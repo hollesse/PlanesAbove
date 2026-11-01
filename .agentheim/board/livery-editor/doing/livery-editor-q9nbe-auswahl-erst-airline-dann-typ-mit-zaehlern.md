@@ -26,7 +26,7 @@ Der Abschnitt „Sichtungen“ wird zweistufig:
 
 ## Acceptance criteria
 - [ ] `groupByAirline` aggregiert je Präfix über Typen (total, types nach count sortiert, gap je Typ gegen die Datei `<liveryId>/<typklasse>`), sortiert nach total, bildet `airline: null` auf „Airline fehlt im Katalog“ ab; `typeOptions` liefert gesichtete Typen zuerst mit Zahl und Status, übrige danach, und den vorausgewählten Typ (Unit-Tests).
-- [ ] Editor-E2E (gemockter Server mit einer Airline auf zwei Typen, eine davon mit Datei `spike/narrowbody`): Airline-Zeile zeigt Gesamtzahl und „1 von 2 Typen fehlen“; Klick setzt `livery-id`; das Select zeigt die Optionstexte mit Zahl und Status, der fehlende Typ ist vorausgewählt; Typwechsel auf den vorhandenen lädt dessen Ebenen.
+- [ ] Editor-E2E (gemockter Server mit einer Airline auf zwei Typen, narrowbody mit Datei `spike/narrowbody`, der zweite Typ ohne Silhouette): Airline-Zeile zeigt Gesamtzahl und „1 von 2 Typen fehlen“; Klick setzt `livery-id`; das Select zeigt die Optionstexte mit Zahl und Status; der gesichtete Typ ohne Silhouette steht deaktiviert mit „· keine Silhouette“ und ist nicht vorausgewählt; vorausgewählt ist der häufigste zeichenbare Typ, dessen vorhandene Datei beim Airline-Klick geladen wird. Die Regel „Vorauswahl = häufigster zeichenbarer Typ ohne Datei“ ist per Unit-Test belegt. (Umformuliert 2026-11-01 nach Verifier-Iteration 2: mit nur einer Silhouette ist ein echter Typwechsel-E2E nicht möglich; siehe Backlog-Task für die zweite Silhouette.)
 - [ ] „nur Lücken“ blendet eine Airline aus, deren gesichtete Typen alle eine Datei haben (E2E).
 - [ ] Ohne Server: Select ohne Zusätze, Textfeld und Select funktionieren (bestehender E2E bleibt grün, angepasst).
 - [ ] `npm test`, `npm run typecheck`, `editor-chromium` grün.
@@ -34,3 +34,30 @@ Der Abschnitt „Sichtungen“ wird zweistufig:
 
 ## Notes
 Betreiber-Feedback vom 2026-11-01 nach dem ersten Blick auf die Lückenliste. Direkt nach todo. Reale config.yaml anpassen: nein.
+
+## Verifier note (iteration 1)
+
+REASONS:
+- Criterion 2 ("der fehlende Typ ist vorausgewählt") is covered by an E2E that passes while the action crashes: clicking the Spike Air row logs `[Unhandled error] TypeError: Cannot read properties of undefined (reading 'viewBox')` at drawBoard (main.ts:34) via pick → selectAirline → click handler. Cause: `typeOptions` lists and preselects seen types without a silhouette (here 'regional'); `typklassen = Object.keys(PLANE_PARTS)` holds only narrowbody. `pick()` sets `state.file.typklasse='regional'` and drawBoard throws on `PLANE_PARTS['regional']`; board not redrawn, state and board diverge, a save would write `spike/regional`. The test passes because it only checks `.layer-row` count 0 before switching to narrowbody. The real home server reports widebody/regional, so the automatic preselection will hit this often.
+- Same root cause in the select: seen types without silhouette appear as normal options; choosing one manually crashes drawBoard too.
+- Weak assertion in sightings.spec.ts "only gaps hides an airline whose seen types all have a file": `toHaveCount(0)` already passes during the loading state; it never shows that "nur Lücken" hides the airline (criterion 3). Wait for the loaded empty-state text ("Keine Lücken in den Sichtungen.") first.
+- Passed: npm test (767), typecheck, builds, editor-chromium 14; scope clean; README anchor exists; option values are plain type ids.
+
+SUGGESTED_FIX: Seen types without a PLANE_PARTS silhouette must not crash the editor: exclude them from preselection in `typeOptions` and show them disabled or marked (e.g. "· keine Silhouette"), or have `pick` refuse them with a status message instead of calling drawBoard. Add a unit test; make the E2E fail on unhandled page errors (collect `page.on('pageerror')`, assert none); make the "nur Lücken" E2E wait for the loaded empty-state text before asserting zero rows.
+
+ITERATION_HINT: likely-fixable
+
+## Verifier note (iteration 2)
+
+REASONS:
+- Check 1b, metric drift on criterion 2: iteration 1 asserted the missing type ('regional') is preselected and switched to narrowbody to load layers; iteration 2 asserts 'narrowbody' (the type WITH a file) is preselected and has no type switch, while the test title still says "type switch loads existing file".
+- Cause is the task, not the worker: PLANE_PARTS has only narrowbody. The mock criterion 2 requires (one airline on two types, one with file spike/narrowbody) makes the missing type non-drawable; with the iteration-1 crash fix, it can never be preselected or switched to. Criterion 2 cannot be satisfied in E2E today.
+- Everything else sound: npm test 769, typecheck, builds, editor-chromium 14/14 with no page errors; pageerror collector asserts [] per test; "nur Lücken" waits for the empty state; unit tests cover non-drawable exclusion and missing-type preselection; option values plain; pick() refuses non-drawable; criteria 1, 3, 4, 5 hold; scope clean.
+
+SUGGESTED_FIX: Re-word criterion 2 for the single-silhouette reality (missing type preselected only when drawable — unit test; non-drawable seen types listed disabled with "· keine Silhouette" and never preselected — E2E; existing file loads when its type is selected or preselected), or defer the "Typwechsel" E2E until a second silhouette exists. Rename the E2E title. Implementation can stay.
+
+ITERATION_HINT: task-under-specified
+
+## Salvage note
+
+Salvaged diff: `/Users/joshuatopfer/Documents/Projekte/Privat/PlanesAbove/.agentheim/salvage/livery-editor-q9nbe-escalated-iter2.patch` (git apply against a scratch checkout). Worktree kept: `/Users/joshuatopfer/Documents/Projekte/Privat/PlanesAbove/.worktrees/livery-editor-q9nbe` (branch `aw/livery-editor-q9nbe`, two wip commits). Escalated at iteration 2 (task-under-specified) — criterion 2 needs re-wording by the operator.

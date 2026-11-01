@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 0
+- **Backlog:** 1
 - **Todo:** 1
 - **Doing:** 1
 - **Done:** 10
@@ -54,6 +54,7 @@ prior-art matcher additionally checks `done-archive/` when present.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **livery-editor-fweas** — Typwechsel-E2E für die Sichtungsauswahl, sobald eine zweite Silhouette (z. B. widebody) existiert (chore) — `backlog/livery-editor-fweas-typwechsel-e2e-sobald-zweite-silhouette.md`
 <!-- backlog-list:end -->
 
 ## Pointers
