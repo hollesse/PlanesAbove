@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 13:31 -- Task verified and completed: livery-editor-atp95 - Typklassen-Select zeigt beim Start „double-decker“, obwohl narrowbody geladen ist
+
+**Type:** Work / Task completion
+**Task:** livery-editor-atp95 - Typklassen-Select zeigt beim Start „double-decker“, obwohl narrowbody geladen ist
+**Summary:** Typklassen-Select zeigt beim Start den geladenen Typ (narrowbody) statt der ersten Option
+**Duration:** 3m (13:29 → 13:32)
+**Verification:** PASS (iteration 1)
+**Files changed:** 2
+**Tests added:** 1
+**ADRs written:** none
+
+---
+
 ## 2026-11-01 13:28 -- Batch started: [livery-editor-atp95]
 
 **Type:** Work / Batch start

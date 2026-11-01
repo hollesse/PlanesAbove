@@ -388,3 +388,12 @@ test('draft rounding: handles per existing segment, drag, close, save, match the
   expect(JSON.parse(fs.readFileSync(path.join(EDITOR_OUT, 'draft-curve/narrowbody.json'), 'utf8'))).toEqual(fixture);
   await expectSameAsStory(page, 'liveries-pfade--draft-curve-narrowbody');
 });
+
+test('typklasse select shows the loaded type at start and switching still redraws', async ({ page }) => {
+  await page.goto('/');
+  const select = page.getByTestId('typklasse');
+  await expect(select).toHaveValue('narrowbody');
+  await expect(page.locator('svg[data-livery-render]').first()).toHaveAttribute('data-typklasse', 'narrowbody');
+  await select.selectOption('widebody');
+  await expect(page.locator('svg[data-livery-render]').first()).toHaveAttribute('data-typklasse', 'widebody');
+});

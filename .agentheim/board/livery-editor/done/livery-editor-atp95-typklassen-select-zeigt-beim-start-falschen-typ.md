@@ -1,7 +1,7 @@
 ---
 id: livery-editor-atp95
 title: Typklassen-Select zeigt beim Start „double-decker“, obwohl narrowbody geladen ist
-status: doing
+status: done
 type: bug
 context: livery-editor
 created: 2026-11-01
@@ -26,3 +26,6 @@ Das Select wird in `tools/livery-editor/src/main.ts` aus `typklassen` gebaut, oh
 
 ## Notes
 Betreiber-Bug 2026-11-01. Direkt nach todo.
+
+## Outcome
+Added `select.value = state.file.typklasse;` right after the typklasse select is built in tools/livery-editor/src/main.ts, so it shows narrowbody at start. New E2E in tests/e2e-editor/draw-and-compare.spec.ts checks the start value, the board's data-typklasse, and that switching to widebody redraws. npm test, typecheck and editor-chromium E2E all pass.

@@ -132,6 +132,7 @@ const input = (type: string, value: string, on: (v: string) => void, testid: str
 const row = (label: string, el: HTMLElement) => h('label', {}, h('span', { text: label }), el);
 
 const select = h('select', { attrs: { 'data-testid': 'typklasse' } }, ...typklassen.map((t) => h('option', { text: t, attrs: { value: t } })));
+select.value = state.file.typklasse;
 select.addEventListener('change', () => {
   if (sightings.selected) { pick(sightings.selected.liveryId, select.value); return; }
   state.file = { ...state.file, typklasse: select.value }; state.draft = { points: [] }; drawBoard();
