@@ -24,10 +24,32 @@ Betreiber-Wunsch 2026-10-28: „realistische Namen im Storybook in der Infoleist
 - Pages, Übergänge und Tests, die `SAMPLE_FLIGHTS` nutzen, laufen weiter; Assertions auf alte Beispieltexte („Frankfurt → New York“, `RECENT_TEXT`) nachziehen.
 
 ## Acceptance criteria
-- [ ] Jede Route in `SAMPLE_FLIGHTS` hat das Format „Stadt (IATA) → Stadt (IATA)“; kein Platzhalter-Betreiber mehr.
-- [ ] Die regulären Info-Leisten-Stories (ein Flugzeug, Route unbekannt, zwei Flugzeuge, Zuletzt) zeigen realistische Daten; mindestens ein regulärer Zustand mit langer Route.
+- [ ] `SAMPLE_FLIGHTS` enthält genau die Beispieldaten aus der Tabelle unter „Beispieldaten“ (Notes); jede Route hat das Format „Stadt (IATA) → Stadt (IATA)“ mit den Städtenamen exakt wie in `tables/airports.json`; kein Platzhalter-Betreiber („Privat“) und kein Platzhalter-Typ („Business-Jet“) mehr.
+- [ ] Ein Unit-Test prüft, dass jedes Routen-Label in `SAMPLE_FLIGHTS` (Start und Ziel) und jede `via`-Stadt so in `tables/airports.json` vorkommt (Stadt + IATA zum genannten ICAO-Code).
+- [ ] Die regulären Info-Leisten-Stories (Ein Flugzeug · Route bekannt, Route unbekannt, Zwei Flugzeuge, Zuletzt) zeigen diese Daten; „Zwei Flugzeuge“ (C + D) zeigt zwei lange Routen, C mit „über Varadero“ in der Eyebrow.
+- [ ] `RECENT_TEXT` sowie `LAST_ONE`/`LAST_TWO` in `transition-samples.ts` nutzen die neuen Callsigns (siehe Notes).
+- [ ] Assertions auf alte Beispieltexte nachgezogen (`tests/unit/info-bar.test.ts`, `tests/unit/screen.test.ts`, ggf. `tests/e2e/long-route.spec.ts` „short single route stays on one line“ – dort eine kurze Route wie A beibehalten oder explizit eine kurze Route setzen).
 - [ ] `npm test`, `npm run typecheck`, `npm run build`, `npx playwright test --project=webkit` grün (inkl. `long-route.spec.ts`).
 - [ ] Betreiber findet die Stories realistisch. [human-eye]
 
 ## Notes
 - Einstiegspunkte: `src/client/ui/domain/samples.ts`, `src/client/ui/stories/info-bar.stories.ts`, `pages.stories.ts`, `transitions.stories.ts`, `tests/e2e/long-route.spec.ts` (Assertion „Frankfurt → New York“ in „short single route stays on one line“).
+
+### Beispieldaten (Refinement 2026-11-01, Betreiber: „nimm einfach ein realistisches Beispiel“)
+Callsigns im ICAO-Format, wie der Dienst sie anzeigt (`DLH400`, nicht `LH400`). Höhe/Tempo/Phase wie bisher je Schlüssel, damit `formatMeta`/`formatStats`-Tests nur die Texte, nicht die Zahlen ändern. Flugzeug-Schlüssel/Lackierungen (`SAMPLE_PLANES`) bleiben unverändert.
+
+| Key | Betreiber | Callsign | Typ | Kennzeichen | Route | via |
+|---|---|---|---|---|---|---|
+| A | Lufthansa | DLH1450 | Airbus A320neo | D-AINA | Frankfurt (FRA) → Thessaloniki (SKG) | – |
+| B | NetJets Europe | NJE7GT | Embraer Phenom 300 | CS-PHJ | null (Route unbekannt) | – |
+| C | Condor | CFG2032 | Airbus A330-900 | D-ANRA | Frankfurt (FRA) → Montego Bay (MBJ) | Varadero |
+| D | Ryanair | RYR3TL | Boeing 737-800 | EI-DCL | Hahn (HHN) → Palma de Mallorca (PMI) | – |
+| E | Condor | CFG1512 | Airbus A321 | D-AIAD | Frankfurt (FRA) → Barcelona (BCN) | – |
+| F | easyJet | EZY8216 | Airbus A320 | G-EZWX | Berlin (BER) → London (LGW) | – |
+
+ICAO-Codes für den Tabellen-Test: EDDF, LGTS, MKJS, MUVR, EDFH, LEPA, LEBL, EDDB, EGKK.
+- `RECENT_TEXT` = `Zuletzt: Lufthansa DLH1450 · vor 6 Min`
+- `LAST_ONE` = `Zuletzt: Lufthansa DLH1450 · gerade eben`, `LAST_TWO` = `Zuletzt: Lufthansa DLH1450 · Ryanair RYR3TL · gerade eben`
+- Kopfkommentar in `samples.ts` anpassen („realistische Beispiele im Anzeigeformat“ statt „aus den Screens-Entwürfen“).
+- „Längste Route“-Stories bleiben unverändert (Benchmark SCQ → XRY).
+
