@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:45 -- Modeling / Captured: liveries-yafve - Silhouette und Detailschicht für widebody und regional-jet aus der Altgrafik (nach dem Narrowbody-Muster)
+
+**Type:** Modeling / Capture
+**BC:** liveries
+**Filed to:** todo
+**Summary:** Silhouette und Detailschicht für widebody und regional-jet — direkt nach todo
+
+---
+
 ## 2026-11-01 12:45 -- Modeling / Captured: livery-editor-tps9z - Gummiband beim Setzen eines Punkts (Segment folgt der Maus ab Mousedown, Punkt sitzt beim Loslassen) und Shift-Zwang waagerecht/senkrecht
 
 **Type:** Modeling / Capture
