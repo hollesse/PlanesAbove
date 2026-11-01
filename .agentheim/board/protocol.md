@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:51 -- Task verified and completed: livery-editor-tps9z - Gummiband beim Zeichnen (nächstes Segment folgt der Maus, Klick setzt den Punkt) und Shift-Zwang waagerecht/senkrecht
+
+**Type:** Work / Task completion
+**Task:** livery-editor-tps9z - Gummiband beim Zeichnen (nächstes Segment folgt der Maus, Klick setzt den Punkt) und Shift-Zwang waagerecht/senkrecht
+**Summary:** Gummiband: nächstes Segment folgt der Maus beim Zeichnen, Klick setzt den Punkt; Shift-Zwang waagerecht/senkrecht für Gummiband und Punkt
+**Duration:** 6m (12:47 → 12:53, eine Nachbesserung)
+**Verification:** PASS (iteration 2)
+**Files changed:** 4
+**Tests added:** 6
+**ADRs written:** none
+
+---
+
+## 2026-11-01 12:48 -- Verification failed: livery-editor-tps9z - Gummiband und Shift-Zwang
+
+**Type:** Work / Verification failure
+**Task:** livery-editor-tps9z - Gummiband beim Zeichnen und Shift-Zwang
+**Iteration:** 1 of 3
+**Reasons:** E2E prüft Endpunkt des Gummibands, Neustart am gesetzten Punkt und Verstecken bei Griff-Drag/Vorschau nicht
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-11-01 12:45 -- Batch started: [livery-editor-tps9z, liveries-yafve]
 
 **Type:** Work / Batch start

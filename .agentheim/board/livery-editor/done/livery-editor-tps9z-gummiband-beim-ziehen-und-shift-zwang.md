@@ -1,7 +1,7 @@
 ---
 id: livery-editor-tps9z
 title: Gummiband beim Zeichnen (nächstes Segment folgt der Maus, Klick setzt den Punkt) und Shift-Zwang waagerecht/senkrecht
-status: doing
+status: done
 type: feature
 context: livery-editor
 created: 2026-11-01
@@ -32,3 +32,19 @@ Heute sieht man ein Segment erst, wenn der Punkt gesetzt ist. Papa will, sobald 
 
 ## Notes
 Betreiber-Feedback vom 2026-11-01, präzisiert: kein Drücken/Halten — das Segment folgt der Maus, sobald gezeichnet wird; der Klick setzt. Direkt nach todo. Reale config.yaml anpassen: nein.
+
+## Verifier note (iteration 1)
+
+REASONS:
+- Criterion 2 only partly covered: the only non-Shift mousemove asserts just `toBeVisible()` on `draft-rubber`; nothing checks the band's `d` ends at the snapped mouse position.
+- "das Gummiband beginnt am neuen Punkt" has no test: after the click the mouse is never moved again inside the board and the band's new start point is never asserted.
+- No test shows the band stays hidden during a handle drag or in preview mode (both guards exist in main.ts, untested).
+- Suites not run (stopped at check 1).
+
+SUGGESTED_FIX: Extend rubber-band.spec.ts: after the first point and a non-Shift move, parse `draft-rubber`'s `d` and assert start [300,200] and end = snapped mouse position; after the click, move again and assert the band starts at the newly placed point; assert the band stays hidden while dragging a draft handle and in preview mode.
+
+ITERATION_HINT: likely-fixable
+
+## Outcome
+
+Rubber band implemented: once the draft has at least one point, every mousemove over the board draws a dashed `draft-rubber` path from the last point to the snapped mouse position; near the first point (close radius, closable draft) it snaps to the first point; mouseleave, preview and handle drags hide it. Shift projects onto the horizontal/vertical through the last point (|dx| >= |dy| -> horizontal), for both the band and the placed point. Pure logic `constrainAxis` and `rubberTarget` in `tools/livery-editor/board.ts` with unit tests; wiring in `tools/livery-editor/src/main.ts`. E2E in `tests/e2e-editor/rubber-band.spec.ts` (iteration 2 added a test asserting the band's start = last placed point and end = snapped mouse position, the band restarting at a newly placed point, and the band hidden while dragging a draft handle and in Space preview). npm test, typecheck and all 19 editor E2E tests green. The [human-eye] criterion is left to the operator.

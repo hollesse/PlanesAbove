@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { LiveryFile } from '../../src/client/ui/domain/livery-file';
-import { addPoint, canClose, closeDraft, closesAt, draftPathData, setDraftVia, isNearFirstPoint, CLOSE_RADIUS, snap } from './board';
+import type { Draft } from './board';
+import { addPoint, canClose, closeDraft, closesAt, draftPathData, setDraftVia, isNearFirstPoint, CLOSE_RADIUS, snap, constrainAxis, rubberTarget } from './board';
 
 const empty: LiveryFile = { version: 1, livery: 'spike', typklasse: 'narrowbody', fields: {}, layers: [] };
 
@@ -43,5 +44,25 @@ describe('draft rounding', () => {
   });
   it('draftPathData is an open path with quadratic segments', () => {
     expect(draftPathData({ points: pts, via: [[50, -20], null, null] })).toBe('M0 0 Q50 -40 100 0 L100 100');
+  });
+});
+
+describe('rubber band target', () => {
+  it('constrainAxis picks the dominant axis (tie -> horizontal)', () => {
+    expect(constrainAxis([10, 10], [50, 20])).toEqual([50, 10]);
+    expect(constrainAxis([10, 10], [20, 50])).toEqual([10, 50]);
+    expect(constrainAxis([10, 10], [30, 30])).toEqual([30, 10]);
+  });
+  it('rubberTarget is null for an empty draft, the mouse otherwise', () => {
+    expect(rubberTarget({ points: [] }, [5, 5], false)).toBeNull();
+    expect(rubberTarget({ points: [[0, 0]] }, [40, 30], false)).toEqual([40, 30]);
+  });
+  it('Shift constrains from the LAST point', () => {
+    expect(rubberTarget({ points: [[0, 0], [100, 100]] }, [150, 120], true)).toEqual([150, 100]);
+  });
+  it('snaps to the first point near it when closing is possible, even with Shift', () => {
+    const d: Draft = { points: [[0, 0], [100, 0], [100, 100]] };
+    expect(rubberTarget(d, [5, 5], true)).toEqual([0, 0]);
+    expect(rubberTarget({ points: [[0, 0], [100, 0]] }, [5, 5], false)).toEqual([5, 5]);
   });
 });

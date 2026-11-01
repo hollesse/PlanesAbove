@@ -16,6 +16,7 @@ supporting — Werkzeug für die Illustrationsarbeit; die Himmelsszene braucht n
 - **Ebene** — ein Pfad oder ein Logo mit Farbe bzw. Bild, Reihenfolge im Stapel und Verschiebung; optional mit Namen (max. 40 Zeichen, ohne Namen zeigt das Panel „Pfad n“). Das Ebenenpanel listet oben zuerst (`layers[]` läuft unten→oben); eine Ebene ist auswählbar (Auswahl = Editor-Zustand `state.selected`, Umriss im Brett), nach oben/unten verschiebbar, löschbar, färbbar, benennbar. Sichtbarkeit ist reiner Editor-Zustand: ausgeblendete Ebenen werden im Brett nicht gezeichnet, bleiben aber in der gespeicherten Datei.
 - **Pfad** — geschlossene gefärbte Form aus Punkten; wird ungeschnitten gespeichert.
 - **Shift-Zwang** — mit gehaltener Shift-Taste liegt der nächste Punkt waagerecht oder senkrecht zum vorigen.
+**Shift-Zwang** — mit gehaltener Shift-Taste liegt der nächste Punkt (und das Gummiband dorthin) waagerecht oder senkrecht zum vorigen Punkt; die dominante Achse gewinnt.
 - **Rundung** — Griff in der Mitte eines Segments der gewählten Ebene oder, beim Zeichnen, jedes bereits vorhandenen Entwurfssegments (`draft-handle-<i>`); Wegziehen setzt `via[i]` (Punkt auf der Kurve, ganzzahlig gefangen) und macht aus der Geraden eine Kurve (wie in Photoshop). Doppelklick auf den Griff setzt `via[i]` zurück auf null (gerade). Der Entwurf trägt `via`; beim Schließen wird es mit null auf `points.length` aufgefüllt (Schließsegment gerade), Escape verwirft es.
 - **Farbwahl** — Farbpicker je Ebene.
 - **Farbfeld** — Triebwerkskörper, Flügel und Höhenleitwerk: bekommen je nur eine Farbe, keinen Pfad; Rumpf-Pfade enden an ihrem Rand. Gezeichnet wird auf Rumpf und Finne.
@@ -30,6 +31,7 @@ supporting — Werkzeug für die Illustrationsarbeit; die Himmelsszene braucht n
 - **Deckkraft-Ansicht (Spike-Stand)** — Der Deckkraft-Regler der Silhouette blendet sie aus und zeigt dabei die ungeschnittenen Pfade (Geisterkopie); bei 100 % sieht man den Zuschnitt, bei 0 % den ganzen Pfad. Umsetzung: Option `silhouetteOpacity` von `renderLiverySvg`.
 - **Eckmarker**: quadratischer Overlay-Griff (`vertex-handle-<i>`) an jedem Eckpunkt der ausgewaehlten Pfad-Ebene; Ziehen setzt `points[i]` (gefangen), `via` bleibt unveraendert. Unterscheidet sich vom runden Rundungsgriff in der Segmentmitte.
 - **Vorschau** — solange die Leertaste gehalten wird (kein Textfeld fokussiert), ist das gesamte Overlay des Zeichenbretts (Auswahl, Marker, Griffe, Entwurf) ausgeblendet und Brett-Klicks sind wirkungslos; Loslassen bringt alles zurück, die Auswahl bleibt. Auswahl aufheben: Klick auf die gewählte Ebenenzeile oder Escape ohne Entwurf.
+- **Gummiband** — gestrichelte Vorschau des nächsten Segments vom letzten Entwurfspunkt zur Maus (kein Drücken nötig); nahe dem ersten Punkt rastet sie dort ein; verschwindet beim Verlassen des Boards.
 
 ## Aggregates
 _Noch nicht modelliert._

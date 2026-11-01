@@ -55,3 +55,15 @@ export function isNearFirstPoint(d: Draft, p: Point): boolean {
 
 /** Whether a click at p would close the draft (needs MIN_POINTS and proximity to the first point). */
 export const closesAt = (d: Draft, p: Point): boolean => canClose(d) && isNearFirstPoint(d, p);
+
+/** Shift constraint: project p onto the horizontal or vertical through `from` (|dx| >= |dy| -> horizontal). */
+export function constrainAxis(from: Point, p: Point): Point {
+  return Math.abs(p[0] - from[0]) >= Math.abs(p[1] - from[1]) ? [p[0], from[1]] : [from[0], p[1]];
+}
+
+/** Where the next segment ends for a mouse at p: the first point when a click would close, else p (Shift-constrained). Null while the draft is empty. */
+export function rubberTarget(d: Draft, p: Point, shift: boolean): Point | null {
+  if (!d.points.length) return null;
+  if (closesAt(d, p)) return d.points[0];
+  return shift ? constrainAxis(d.points[d.points.length - 1], p) : p;
+}

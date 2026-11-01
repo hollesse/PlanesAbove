@@ -7,7 +7,7 @@ import { movePoint, segmentHandle, setVia } from '../curve';
 import { LIVERY_FILES } from '../../../src/client/ui/assets/generated/liveries';
 import { LIVERY_ID, LiveryFileSchema } from '../../../src/client/ui/domain/livery-file';
 import { groupByAirline, typeOptions, type AirlineGroup, type SightingsResponse } from '../gaps';
-import { addPoint, closeDraft, draftPathData, setDraftVia, closesAt, snap, CLOSE_RADIUS, type Draft } from '../board';
+import { addPoint, closeDraft, draftPathData, setDraftVia, closesAt, snap, rubberTarget, CLOSE_RADIUS, type Draft } from '../board';
 
 // Walking-skeleton editor (spike): Typklasse choice, board with silhouette/details opacity, path tool, one colour, save.
 const typklassen = Object.keys(PLANE_PARTS);
@@ -30,6 +30,7 @@ const panel = document.getElementById('panel')!;
 const status = h('div', { attrs: { id: 'status', 'data-testid': 'status' } });
 
 let handleGesture = false;
+let dragging = false;
 function drawBoard() {
   const vb = PLANE_PARTS[state.file.typklasse].viewBox;
   const overlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -54,7 +55,8 @@ function drawBoard() {
       `<path data-testid="draft-path" d="${draftPathData(state.draft)}" fill="none" stroke="${state.pathColor}" stroke-width="3"/>` +
       pts.map((p) => `<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#fff" stroke="${state.pathColor}" stroke-width="2"/>`).join('') +
  pts.slice(1).map((_, i) => { const [x, y] = segmentHandle(state.draft, i); return `<circle class="curve-handle draft-handle" data-testid="draft-handle-${i}" data-segment="${i}" cx="${x}" cy="${y}" r="6" fill="#0a84ff" stroke="#fff" stroke-width="2" style="cursor:grab"/>`; }).join('') +
-      `<circle data-testid="first-point-ring" cx="${pts[0][0]}" cy="${pts[0][1]}" r="${CLOSE_RADIUS}" fill="none" stroke="${state.pathColor}" stroke-width="3" visibility="hidden"/>`;
+      `<circle data-testid="first-point-ring" cx="${pts[0][0]}" cy="${pts[0][1]}" r="${CLOSE_RADIUS}" fill="none" stroke="${state.pathColor}" stroke-width="3" visibility="hidden"/>` +
+      `<path data-testid="draft-rubber" d="" fill="none" stroke="${state.pathColor}" stroke-width="3" stroke-dasharray="6 5" pointer-events="none" visibility="hidden"/>`;
   }
   // a gesture that starts on a handle must not also add a draft point (its click bubbles to the overlay)
   overlay.addEventListener('mousedown', (e) => {
@@ -63,7 +65,7 @@ function drawBoard() {
     const handle = vertex ?? target.closest?.('.curve-handle');
     // a click that would close the draft wins over a draft handle lying on top of the first point
     if (!handle || (handle.classList.contains('draft-handle') && closesAt(state.draft, toBoard(e)))) { handleGesture = false; return; }
-    handleGesture = true;
+    handleGesture = true; dragging = true;
     e.preventDefault();
     const i = Number(handle.getAttribute(vertex ? 'data-vertex' : 'data-segment'));
     const isDraft = handle.classList.contains('draft-handle');
@@ -74,7 +76,7 @@ function drawBoard() {
       state.file = { ...state.file, layers: state.file.layers.map((l, k) => (k === state.selected && l.type === 'path' ? edit(l) : l)) };
       drawBoard();
     };
-    const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); };
+    const up = () => { dragging = false; document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); };
     document.addEventListener('mousemove', move);
     document.addEventListener('mouseup', up);
   });
@@ -99,14 +101,22 @@ function drawBoard() {
       state.draft = { points: [] };
       say(`Pfad geschlossen (${state.file.layers.length} Pfad/e).`);
     } else {
-      state.draft = addPoint(state.draft, p);
+      state.draft = addPoint(state.draft, rubberTarget(state.draft, p, e.shiftKey) ?? p);
     }
     drawBoard();
   });
   overlay.addEventListener('mousemove', (e) => {
     const ring = overlay.querySelector('[data-testid="first-point-ring"]');
     if (ring) ring.setAttribute('visibility', closesAt(state.draft, toBoard(e)) ? 'visible' : 'hidden');
+    const rubber = overlay.querySelector('[data-testid="draft-rubber"]');
+    if (!rubber) return;
+    const last = state.draft.points[state.draft.points.length - 1];
+    const target = dragging || board.classList.contains('preview') ? null : rubberTarget(state.draft, toBoard(e), e.shiftKey);
+    if (!target) { rubber.setAttribute('visibility', 'hidden'); return; }
+    rubber.setAttribute('d', `M${last[0]} ${last[1]} L${target[0]} ${target[1]}`);
+    rubber.setAttribute('visibility', 'visible');
   });
+  overlay.addEventListener('mouseleave', () => overlay.querySelector('[data-testid="draft-rubber"]')?.setAttribute('visibility', 'hidden'));
   board.replaceChildren();
   board.insertAdjacentHTML('afterbegin', renderLiverySvg(visibleFile(state.file, state.hidden), { silhouetteOpacity: state.silhouetteOpacity, detailsOpacity: state.detailsOpacity }));
   board.append(overlay);

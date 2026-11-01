@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 2
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 12
+- **Doing:** 0
+- **Done:** 13
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **livery-editor-tps9z** — Gummiband beim Zeichnen (nächstes Segment folgt der Maus, Klick setzt den Punkt) und Shift-Zwang waagerecht/senkrecht (feature) — `doing/livery-editor-tps9z-gummiband-beim-ziehen-und-shift-zwang.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **livery-editor-tps9z** — Gummiband beim Zeichnen (nächstes Segment folgt der Maus, Klick setzt den Punkt) und Shift-Zwang waagerecht/senkrecht (feature) — `done/livery-editor-tps9z-gummiband-beim-ziehen-und-shift-zwang.md`
 - **livery-editor-v90sn** — Auswahl aufheben (Panel-Klick auf die gewählte Zeile, Escape) und Vorschau mit gehaltener Leertaste ohne Overlay (feature) — `done/livery-editor-v90sn-keine-ebene-ausgewaehlt-und-vorschau-leertaste.md`
 - **livery-editor-q9nbe** — Sichtungen zweistufig: erst Airline (über alle Typen), dann Typklassen-Select mit Sichtungszahl und Lückenstatus je Typ (feature) — `done/livery-editor-q9nbe-auswahl-erst-airline-dann-typ-mit-zaehlern.md`
 - **livery-editor-ykjrk** — Auswahl Airline × Typklasse aus den Sichtungen des Heimservers mit Lückenfilter; Fallback Airline-Code-Textfeld und Typklassen-Select (feature) — `done/livery-editor-ykjrk-auswahl-airline-typklasse-aus-sichtungen.md`
