@@ -12,7 +12,7 @@ import { addPoint, closeDraft, draftPathData, setDraftVia, closesAt, snap, rubbe
 // Walking-skeleton editor (spike): Typklasse choice, board with silhouette/details opacity, path tool, one colour, save.
 const typklassen = Object.keys(PLANE_PARTS);
 const state = {
-  file: { version: 1, livery: 'spike', typklasse: typklassen[0], fields: { ...FIELD_DEFAULTS }, layers: [] } as unknown as LiveryFile,
+  file: { version: 1, livery: 'spike', typklasse: typklassen.includes('narrowbody') ? 'narrowbody' : typklassen[0], fields: { ...FIELD_DEFAULTS }, layers: [] } as unknown as LiveryFile,
   draft: { points: [] } as Draft,
   /** Index into file.layers (bottom -> top) of the selected layer, or null. The curve-handle tool builds on this. */
   selected: null as number | null,

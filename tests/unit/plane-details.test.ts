@@ -6,14 +6,14 @@ import { renderLiverySvg } from '../../src/client/ui/domain/livery-render';
 const read = (p: string) => readFileSync(`src/client/ui/assets/${p}`, 'utf8');
 const attr = (svg: string, cls: string) => svg.match(new RegExp(`class="${cls}"[^>]*\\sd="([^"]+)"`))![1];
 
-describe.each(['widebody', 'regional-jet'])('%s plane assets (liveries-yafve)', (t) => {
+describe.each(['widebody', 'regional-jet', 'jumbo-hump', 'double-decker'])('%s plane assets (liveries-yafve, liveries-ecn02)', (t) => {
   const legacy = read(`svg/${t}.svg`);
   const details = read(`planes/${t}/details.svg`);
   const parts = PLANE_PARTS[t];
   it('is a complete PLANE_PARTS entry', () => {
     expect(parts.viewBox).toBe('0 -60 1000 460');
     expect(parts.body).toContain('<path');
-    expect(Object.keys(parts.fields).sort()).toEqual(t === 'widebody' ? ['engines', 'tailplane', 'wings'] : ['engines', 'wings']);
+    expect(Object.keys(parts.fields).sort()).toEqual(t === 'regional-jet' ? ['engines', 'wings'] : ['engines', 'tailplane', 'wings']);
     expect(parts.outlines).toBeTruthy();
     expect(parts.details).toContain('<ellipse');
   });
@@ -30,5 +30,19 @@ describe.each(['widebody', 'regional-jet'])('%s plane assets (liveries-yafve)', 
     const svg = renderLiverySvg({ version: 1, livery: 'x', typklasse: t, fields: { engines: '#111111', wings: '#e1e3e1', tailplane: '#e1e3e1' }, layers: [{ type: 'path', points: [[300, 150], [700, 150], [700, 300], [300, 300]], color: '#d6001c' }] } as never);
     expect(svg).toContain('lv-outline');
     expect(svg).toContain('lv-details');
+  });
+});
+
+describe.each(['jumbo-hump', 'double-decker'])('%s fields all behind the body (liveries-ecn02)', (t) => {
+  it('has no front-layer field and engines/wings/tailplane carry their legacy geometry count', () => {
+    const sil = read(`planes/${t}/silhouette.svg`);
+    expect(sil).not.toContain('data-layer');
+    expect((sil.match(/<g id="field-engines">[\s\S]*?<\/g>/)![0].match(/<(path|rect)/g) ?? []).length).toBe(6);
+    expect(Object.values(PLANE_PARTS[t].fieldLayer ?? {}).every((l) => l === 'back')).toBe(true);
+  });
+  it('has one engine-detail pair (strut line + fan ellipse) per engine', () => {
+    const d = read(`planes/${t}/details.svg`);
+    expect(d.match(/<ellipse/g)!.length).toBe(2);
+    expect(d.match(/stroke-width="4"/g)!.length).toBe(2);
   });
 });

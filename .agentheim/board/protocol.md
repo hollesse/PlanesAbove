@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 13:25 -- Task verified and completed: liveries-ecn02 - Silhouette und Detailschicht für jumbo-hump und double-decker aus der Altgrafik (nach dem Widebody-Muster)
+
+**Type:** Work / Task completion
+**Task:** liveries-ecn02 - Silhouette und Detailschicht für jumbo-hump und double-decker aus der Altgrafik (nach dem Widebody-Muster)
+**Summary:** Silhouette und Detailschicht für jumbo-hump und double-decker nach dem Widebody-Muster; Editor startet wieder mit narrowbody
+**Duration:** 9m (13:16 → 13:25, eine Nachbesserung)
+**Verification:** PASS (iteration 2)
+**Files changed:** 8
+**Tests added:** 12
+**ADRs written:** none
+
+---
+
+## 2026-11-01 13:21 -- Verification failed: liveries-ecn02 - Silhouetten jumbo-hump/double-decker
+
+**Type:** Work / Verification failure
+**Task:** liveries-ecn02 - Silhouette und Detailschicht für jumbo-hump und double-decker
+**Iteration:** 1 of 3
+**Reasons:** editor-chromium rot: Editor startet mit alphabetisch erstem Typ (jetzt double-decker statt narrowbody), Quad-E2E erwartet narrowbody; Worker hatte Playwright nicht ausgeführt; Unit/typecheck/builds grün
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-11-01 13:16 -- Batch started: [liveries-ecn02]
 
 **Type:** Work / Batch start
