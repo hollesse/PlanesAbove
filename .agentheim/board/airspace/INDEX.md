@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 2
+- **Backlog:** 3
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 25
@@ -55,6 +55,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **airspace-yvdbz** — Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033) (feature) — `backlog/airspace-yvdbz-referenzfoto-endpunkt-und-fotopanel-editor.md`
 - **airspace-rrazj** — Lokale Vereinsflieger per Hex-Code erfassen und den Verein statt der Airline anzeigen (feature) — `backlog/airspace-rrazj-vereinsflieger-tabelle-verein-statt-airline-anzeigen.md`
 - **airspace-fehby** — Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.) (feature) — `backlog/airspace-fehby-keine-route-fuer-kleinflugzeuge-mit-registrierung-als-callsign.md`
 <!-- backlog-list:end -->

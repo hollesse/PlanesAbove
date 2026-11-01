@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:57 -- Modeling / Captured: airspace-yvdbz - Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033)
+
+**Type:** Modeling / Capture
+**BC:** airspace
+**Filed to:** backlog
+**Summary:** Referenzfoto-Endpunkt und Fotopanel im Editor (Backlog, braucht Refine)
+
+---
+
 ## 2026-11-01 11:57 -- Modeling / Captured: livery-editor-ykjrk - Auswahl Airline × Typklasse aus den Sichtungen des Heimservers mit Lückenfilter; Fallback Airline-Code-Textfeld und Typklassen-Select
 
 **Type:** Modeling / Capture
