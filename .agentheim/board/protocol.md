@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:08 -- Modeling / Captured: livery-editor-wcnxg - Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** todo
+**Summary:** Ebenenzeile mit Icon-Aktionen rechts (Stift, hoch, runter, Mülleimer), Umbenennen inline mit Haken, Farbfeld öffnet den Farbpicker der Ebene — Betreiber-Feedback, direkt nach todo
+
+---
+
 ## 2026-11-01 10:55 -- Work session ended
 
 **Type:** Work / Session end
