@@ -5,6 +5,26 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:30 -- Modeling / Captured: livery-editor-v90sn - Auswahl aufheben (Panel-Klick auf die gewählte Zeile, Escape) und Vorschau mit gehaltener Leertaste ohne Overlay
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** todo
+**Summary:** Auswahl aufheben per Panel-Klick/Escape, Vorschau ohne Overlay mit gehaltener Leertaste — Betreiber wählte Variante 3, direkt nach todo
+
+---
+
+## 2026-11-01 12:26 -- Verification failed: livery-editor-q9nbe - Sichtungen zweistufig
+
+**Type:** Work / Verification failure
+**Task:** livery-editor-q9nbe - Sichtungen zweistufig: erst Airline, dann Typklassen-Select mit Sichtungszahl und Lückenstatus je Typ
+**Iteration:** 1 of 3
+**Reasons:** Vorauswahl/Select bietet gesichtete Typen ohne Silhouette an (nur narrowbody vorhanden) → drawBoard wirft TypeError, E2E merkt es nicht; „nur Lücken“-E2E prüft im Ladezustand
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-11-01 12:23 -- Batch started: [livery-editor-q9nbe]
 
 **Type:** Work / Batch start
