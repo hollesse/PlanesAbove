@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:24 -- Capture / Captured: livery-editor-nxdzh - Ebenenpanel: Pfade als Ebenen sehen, auswählen, umsortieren, ein-/ausblenden
+
+**Type:** Capture
+**BC:** livery-editor
+**Filed to:** backlog
+**Summary:** Ebenenpanel: Pfade als Ebenen sehen, auswählen, umsortieren, ein-/ausblenden
+
+---
+
 ## 2026-11-01 10:24 -- Capture / Captured: livery-editor-hz0hb - Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf
 
 **Type:** Capture
