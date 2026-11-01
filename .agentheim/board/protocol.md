@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:24 -- Capture / Captured: livery-editor-ec2zz - Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve
+
+**Type:** Capture
+**BC:** livery-editor
+**Filed to:** backlog
+**Summary:** Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve
+
+---
+
 ## 2026-11-01 10:24 -- Capture / Captured: livery-editor-nxdzh - Ebenenpanel: Pfade als Ebenen sehen, auswählen, umsortieren, ein-/ausblenden
 
 **Type:** Capture

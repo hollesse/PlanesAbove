@@ -10,7 +10,7 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 2
+- **Backlog:** 3
 - **Todo:** 0
 - **Doing:** 0
 - **Done:** 2
@@ -44,6 +44,7 @@ prior-art matcher additionally checks `done-archive/` when present.
 
 ### Backlog
 <!-- backlog-list:start -->
+- **livery-editor-ec2zz** — Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve (feature) — `backlog/livery-editor-ec2zz-rundungen-griff-segmentmitte.md`
 - **livery-editor-nxdzh** — Ebenenpanel: Pfade als Ebenen sehen, auswählen, umsortieren, ein-/ausblenden (feature) — `backlog/livery-editor-nxdzh-ebenenpanel-pfade-umsortieren.md`
 - **livery-editor-hz0hb** — Pfad durch Klick auf den ersten Punkt schließen statt über den Knopf (feature) — `backlog/livery-editor-hz0hb-pfad-schliessen-per-klick-auf-ersten-punkt.md`
 <!-- backlog-list:end -->
