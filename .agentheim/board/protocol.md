@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 16:51 -- Modeling / Promoted: livery-editor-q0xd2 - Logo hochladen (SVG/PNG) über das Schreib-Plugin nach svg/logos/, danach sofort in der Logo-Liste und im LOGO-Index
+
+**Type:** Modeling / Promote
+**BC:** livery-editor
+**From → To:** backlog → todo
+
+---
+
 ## 2026-11-01 16:51 -- Task verified and completed: livery-editor-gn6gp - Logo-Ebene: vorhandenes Logo wählen, auf dem Brett platzieren (Transform-Rahmen: verschieben, skalieren, drehen), gerendert in Szene, Story und Editor
 
 **Type:** Work / Task completion
