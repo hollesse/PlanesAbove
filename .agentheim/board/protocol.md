@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 19:24 -- Modeling / Promoted: design-system-q7mxe - Größenfaktor je Typklasse: gleiche Klasse gleich groß, Klassenunterschied spürbar aber gedeckelt; Anordnung in Flugrichtung gestaffelt (vorn/unten, hinten/oben) auf gleicher Tiefe
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
 ## 2026-11-01 19:24 -- Modeling / Refined: design-system-q7mxe - Größenfaktor je Typklasse und gestaffelte Anordnung
 
 **Type:** Modeling / Refine

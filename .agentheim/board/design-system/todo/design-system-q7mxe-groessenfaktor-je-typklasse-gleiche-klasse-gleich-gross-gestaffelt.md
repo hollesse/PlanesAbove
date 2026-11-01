@@ -1,7 +1,7 @@
 ---
 id: design-system-q7mxe
 title: Größenfaktor je Typklasse: gleiche Klasse gleich groß, Klassenunterschied spürbar aber gedeckelt; Anordnung in Flugrichtung gestaffelt (vorn/unten, hinten/oben) auf gleicher Tiefe
-status: backlog
+status: todo
 type: feature
 context: design-system
 created: 2026-10-30
