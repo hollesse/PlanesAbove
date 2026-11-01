@@ -1,7 +1,7 @@
 ---
 id: airspace-fehby
 title: Keine Route für Kleinflugzeuge, deren Callsign die Registrierung ist (D-Exxx u. ä.)
-status: todo
+status: doing
 type: feature
 context: airspace
 created: 2026-10-30

@@ -1,7 +1,7 @@
 ---
 id: design-system-m4r7v
 title: Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei
-status: todo
+status: doing
 type: feature
 context: design-system
 created: 2026-10-28

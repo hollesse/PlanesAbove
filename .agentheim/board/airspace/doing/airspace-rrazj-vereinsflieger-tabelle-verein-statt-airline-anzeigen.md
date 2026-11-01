@@ -1,7 +1,7 @@
 ---
 id: airspace-rrazj
 title: Lokale Vereinsflieger per Hex-Code erfassen und den Verein statt der Airline anzeigen
-status: todo
+status: doing
 type: feature
 context: airspace
 created: 2026-10-30
