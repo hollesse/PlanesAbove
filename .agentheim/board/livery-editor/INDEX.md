@@ -11,13 +11,14 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 0
+- **Todo:** 1
 - **Doing:** 0
 - **Done:** 7
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
+- **livery-editor-rtnx3** — Eckpunkte eines geschlossenen Pfads als Marker zeigen und verschieben (feature) — `todo/livery-editor-rtnx3-eckpunkte-verschieben-geschlossener-pfad.md`
 <!-- todo-list:end -->
 
 ### Doing

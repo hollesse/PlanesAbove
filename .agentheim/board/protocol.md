@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:29 -- Modeling / Captured: livery-editor-rtnx3 - Eckpunkte eines geschlossenen Pfads als Marker zeigen und verschieben
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** todo
+**Summary:** Eckpunkte eines geschlossenen Pfads als Marker zeigen und verschieben — Betreiber-Feedback, direkt nach todo
+
+---
+
 ## 2026-11-01 11:24 -- Work session ended
 
 **Type:** Work / Session end
