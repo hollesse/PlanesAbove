@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 21:10 -- Batch started: [design-system-q7mxe]
+
+**Type:** Work / Batch start
+**Tasks:** design-system-q7mxe - Größenfaktor je Typklasse: gleiche Klasse gleich groß, Klassenunterschied spürbar aber gedeckelt; Anordnung in Flugrichtung gestaffelt (vorn/unten, hinten/oben) auf gleicher Tiefe
+**Parallel:** no (1 worker — only remaining ready task)
+
+---
+
 ## 2026-11-01 21:10 -- Task verified and completed: design-system-m4r7v - Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei
 
 **Type:** Work / Task completion
