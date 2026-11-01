@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:44 -- Batch started: [livery-editor-ec2zz]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-ec2zz - Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve
+**Parallel:** no (1 worker) — wave 2b, last ready task; dispatched after nxdzh landed so the curve handles build on the layer selection in main.ts
+
+---
+
 ## 2026-11-01 10:44 -- Task verified and completed: livery-editor-nxdzh - Ebenenpanel: Pfade als Ebenen sehen, auswählen, umsortieren, ein-/ausblenden, löschen, färben, benennen
 
 **Type:** Work / Task completion
