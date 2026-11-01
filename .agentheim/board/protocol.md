@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 18:30 -- Modeling / Refined: airspace-yvdbz - Referenzfoto nur aus Commons
+
+**Type:** Modeling / Refine
+**BC:** airspace
+**Status after:** backlog
+**Summary:** Referenzfoto-Endpunkt fragt nur Wikimedia Commons (eigene Kette, kein Planespotters-Fallback), weil Planespotters mit 280 px zum Nachzeichnen nicht reicht. ADR 0033 bekommt ein Amendment. Promotion wartet auf sighting-log-r3kw8.
+
+---
+
 ## 2026-11-01 18:29 -- Modeling / Promoted: sighting-log-r3kw8 - Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern
 
 **Type:** Modeling / Promote
