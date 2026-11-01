@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 10:29 -- Modeling / Promoted: liveries-yzshd - Trennlinie zwischen Rumpf und Finne wieder sichtbar machen
+
+**Type:** Modeling / Promote
+**BC:** liveries
+**From → To:** backlog → todo
+
+---
+
 ## 2026-11-01 10:29 -- Modeling / Promoted: liveries-wyypc - Narrowbody-Detailschicht: alle Cockpitfenster aus der Altgrafik übernehmen
 
 **Type:** Modeling / Promote

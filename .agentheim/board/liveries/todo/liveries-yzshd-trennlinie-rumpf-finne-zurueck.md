@@ -1,7 +1,7 @@
 ---
 id: liveries-yzshd
 title: Trennlinie zwischen Rumpf und Finne wieder sichtbar machen
-status: backlog
+status: todo
 type: bug
 context: liveries
 created: 2026-11-01
