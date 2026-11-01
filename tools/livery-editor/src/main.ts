@@ -185,7 +185,7 @@ function renderLayerPanel() {
       iconBtn(ICONS.up, 'Nach oben', `layer-up-${i}`, () => moveAt(i, 'up'), i === last),
       iconBtn(ICONS.down, 'Nach unten', `layer-down-${i}`, () => moveAt(i, 'down'), i === 0),
       iconBtn(ICONS.del, 'Löschen', `layer-delete-${i}`, () => { editing = null; removeAt(i); }));
-    return h('div', { attrs: { class: 'layer-row' + (i === selected ? ' selected' : ''), 'data-testid': `layer-row-${i}`, 'data-index': String(i) } }, eye, color, nameEl, actions);
+    return h('div', { attrs: { class: 'layer-row' + (i === selected ? ' selected' : '') + (editing === i ? ' editing' : ''), 'data-testid': `layer-row-${i}`, 'data-index': String(i) } }, eye, color, nameEl, actions);
   }));
   document.getElementById('board')!.dataset.selected = selected === null ? '' : String(selected);
 }

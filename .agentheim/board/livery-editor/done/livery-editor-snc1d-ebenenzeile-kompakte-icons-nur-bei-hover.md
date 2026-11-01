@@ -1,7 +1,7 @@
 ---
 id: livery-editor-snc1d
 title: Ebenenzeile: kompakte Icon-Buttons, nur bei Hover oder Auswahl sichtbar, Name bekommt die ganze Breite
-status: doing
+status: done
 type: feature
 context: livery-editor
 created: 2026-11-01
@@ -33,3 +33,6 @@ Die vier Icon-Buttons je Ebenenzeile erben das globale `button { padding: 6px 10
 
 ## Notes
 Betreiber-Feedback vom 2026-11-01 nach livery-editor-wcnxg; gewählt aus drei Vorschlägen (kompakt + Hover). Direkt nach todo. Nicht in diesem Task: Mehr-Menü, zweizeilige Ebenen.
+
+## Outcome
+Styles in tools/livery-editor/index.html: panel 320px, `.icon-btn` 22x22 with 14px glyph, `.layer-actions` collapsed (max-width 0, opacity 0, pointer-events none, 100ms transition) and expanded on `.layer-row:hover`, `.selected`, `.editing`, `:focus-within`. Row min-height 26px keeps layout stable. main.ts only adds an `editing` class to the row. Existing E2E now hover the row before clicking actions; new E2E test measures button size (<=24px), opacity 0 at rest, label width >=180px, hover reveal, and that confirm stays visible after the mouse leaves during rename. npm test, typecheck, editor-chromium all green. The [human-eye] criterion is left to the operator.

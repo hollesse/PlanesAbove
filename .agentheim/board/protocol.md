@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:24 -- Task verified and completed: livery-editor-snc1d - Ebenenzeile: kompakte Icon-Buttons, nur bei Hover oder Auswahl sichtbar, Name bekommt die ganze Breite
+
+**Type:** Work / Task completion
+**Task:** livery-editor-snc1d - Ebenenzeile: kompakte Icon-Buttons, nur bei Hover oder Auswahl sichtbar, Name bekommt die ganze Breite
+**Summary:** Ebenenzeile: Icon-Buttons 22 px, in Ruhe ausgeblendet und eingeklappt, sichtbar bei Hover, Auswahl, Fokus oder Umbenennen; Name in voller Breite, Panel 320 px
+**Duration:** 3m50s (11:21 → 11:25)
+**Verification:** PASS (iteration 1)
+**Files changed:** 3
+**Tests added:** 1
+**ADRs written:** none
+
+---
+
 ## 2026-11-01 11:21 -- Batch started: [livery-editor-snc1d]
 
 **Type:** Work / Batch start

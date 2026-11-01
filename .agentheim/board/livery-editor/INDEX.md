@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 6
+- **Doing:** 0
+- **Done:** 7
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **livery-editor-snc1d** — Ebenenzeile: kompakte Icon-Buttons, nur bei Hover oder Auswahl sichtbar, Name bekommt die ganze Breite (feature) — `doing/livery-editor-snc1d-ebenenzeile-kompakte-icons-nur-bei-hover.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **livery-editor-snc1d** — Ebenenzeile: kompakte Icon-Buttons, nur bei Hover oder Auswahl sichtbar, Name bekommt die ganze Breite (feature) — `done/livery-editor-snc1d-ebenenzeile-kompakte-icons-nur-bei-hover.md`
 - **livery-editor-wcnxg** — Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker (feature) — `done/livery-editor-wcnxg-ebenenzeile-icon-aktionen-inline-umbenennen.md`
 - **livery-editor-ec2zz** — Rundungen: Griff in der Segmentmitte macht aus der Geraden eine Kurve (feature) — `done/livery-editor-ec2zz-rundungen-griff-segmentmitte.md`
 - **livery-editor-nxdzh** — Ebenenpanel: Pfade als Ebenen sehen, auswählen, umsortieren, ein-/ausblenden, löschen, färben, benennen (feature) — `done/livery-editor-nxdzh-ebenenpanel-pfade-umsortieren.md`

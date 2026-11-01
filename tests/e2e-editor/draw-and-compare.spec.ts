@@ -120,6 +120,7 @@ test('layer panel: two overlapping paths, swap their order, hide one, save in pa
   await expect(page.locator('#board')).toHaveAttribute('data-selected', '1');
   await expect(page.getByTestId('selection-outline')).toHaveCount(1);
   const rename = async (i: number, name: string, old?: string) => {
+    await page.getByTestId(`layer-row-${i}`).hover();
     await page.getByTestId(`layer-rename-${i}`).click();
     if (old !== undefined) await expect(page.getByTestId(`layer-name-input-${i}`)).toHaveValue(old);
     await page.getByTestId(`layer-name-input-${i}`).fill(name);
@@ -130,6 +131,7 @@ test('layer panel: two overlapping paths, swap their order, hide one, save in pa
   await expect(page.locator('#board')).toHaveAttribute('data-selected', '0');
   await rename(0, 'Rot', 'Pfad 1');
   // renaming again pre-fills the current (explicit) name
+  await page.getByTestId('layer-row-0').hover();
   await page.getByTestId('layer-rename-0').click();
   await expect(page.getByTestId('layer-name-input-0')).toHaveValue('Rot');
   await page.getByTestId('layer-name-input-0').press('Escape');
@@ -142,12 +144,14 @@ test('layer panel: two overlapping paths, swap their order, hide one, save in pa
   await expect(page.getByTestId('layer-down-0')).toBeDisabled();
 
   // swap: Rot (row 0) goes up, above Blau
+  await page.getByTestId('layer-row-0').hover();
   await page.getByTestId('layer-up-0').click();
   await expect(rows.nth(0).getByTestId('layer-select')).toHaveText('Rot');
   await expect(page.locator('#board')).toHaveAttribute('data-selected', '1');
   // down arrow on the UNSELECTED row: select Blau (row 1, index 0), then move Rot (index 1) down
   await rows.nth(1).getByTestId('layer-select').click();
   await expect(page.locator('#board')).toHaveAttribute('data-selected', '0');
+  await page.getByTestId('layer-row-1').hover();
   await page.getByTestId('layer-down-1').click();
   await expect(rows.nth(0).getByTestId('layer-select')).toHaveText('Blau');
   await expect(rows.nth(1).getByTestId('layer-select')).toHaveText('Rot');
@@ -155,6 +159,7 @@ test('layer panel: two overlapping paths, swap their order, hide one, save in pa
   await expect(page.locator('#board')).toHaveAttribute('data-selected', '1');
   await expect(rows.nth(0)).toHaveClass(/selected/);
   // and back up again (Rot is index 0 now, unselected)
+  await page.getByTestId('layer-row-0').hover();
   await page.getByTestId('layer-up-0').click();
   await expect(rows.nth(0).getByTestId('layer-select')).toHaveText('Rot');
   await expect(rows.nth(1)).toHaveClass(/selected/);
@@ -228,6 +233,7 @@ test('layer row: inline rename with Escape, per-row colour, per-row delete', asy
   await expect(rows).toHaveCount(2);
   // Escape restores the old name
   const before = await page.getByTestId('layer-row-0').getByTestId('layer-select').textContent();
+  await page.getByTestId('layer-row-0').hover();
   await page.getByTestId('layer-rename-0').click();
   await expect(page.getByTestId('layer-rename-confirm-0')).toBeVisible();
   // an unnamed layer is pre-filled with its auto label
@@ -241,9 +247,49 @@ test('layer row: inline rename with Escape, per-row colour, per-row delete', asy
   // delete a layer OTHER than the selected one: select the coloured layer (index 0, panel row 1), delete index 1 -> the coloured one survives
   await rows.nth(1).getByTestId('layer-select').click();
   await expect(rows.nth(1)).toHaveClass(/selected/);
+  await page.getByTestId('layer-row-1').hover();
   await page.getByTestId('layer-delete-1').click();
   await expect(rows).toHaveCount(1);
   await expect(page.locator('svg[data-livery-render] .lv-paint path')).toHaveCount(1);
   await expect(page.locator('svg[data-livery-render] .lv-paint path').first()).toHaveAttribute('fill', '#123456');
   await expect(rows.nth(0)).toHaveClass(/selected/);
+});
+
+test('layer row: compact icons, hidden at rest, visible on hover/selection, kept while renaming, name has width', async ({ page }) => {
+  await page.goto('/');
+  const board = page.getByTestId('overlay');
+  const box = (await board.boundingBox())!;
+  const [vx, vy, vw, vh] = (await board.getAttribute('viewBox'))!.split(' ').map(Number);
+  const at = ([x, y]: number[]) => [box.x + ((x - vx) / vw) * box.width, box.y + ((y - vy) / vh) * box.height] as const;
+  for (const pts of [[[0, 0], [10, 0], [10, 10]], [[0, 20], [10, 20], [10, 30]]]) {
+    for (const p of pts) await page.mouse.click(...at(p));
+    await page.mouse.click(...at(pts[0]));
+  }
+  // index 1 is selected (panel row 0); index 0 is the unselected one
+  await page.mouse.move(0, 0);
+  const del0 = page.getByTestId('layer-delete-0');
+  await expect(del0.locator('..')).toHaveCSS('opacity', '0');
+  expect(await del0.evaluate((e) => getComputedStyle(e.parentElement!).pointerEvents)).toBe('none');
+  await expect(page.getByTestId('layer-delete-1').locator('..')).toHaveCSS('opacity', '1');
+  // every icon button is compact
+  for (const b of await page.locator('.layer-actions button').all()) {
+    const bb = (await b.boundingBox())!;
+    if (bb.width > 0) { expect(bb.width).toBeLessThanOrEqual(24); expect(bb.height).toBeLessThanOrEqual(24); }
+  }
+  // name of the unselected row at rest has room
+  const labelBox = (await page.getByTestId('layer-row-0').getByTestId('layer-select').boundingBox())!;
+  expect(labelBox.width).toBeGreaterThanOrEqual(180);
+  // hover reveals and makes clickable
+  await page.getByTestId('layer-row-0').hover();
+  await expect(del0.locator('..')).toHaveCSS('opacity', '1');
+  // renaming keeps field and confirm visible after the mouse leaves
+  await page.getByTestId('layer-rename-0').click();
+  await page.mouse.move(0, 0);
+  await expect(page.getByTestId('layer-rename-confirm-0').locator('..')).toHaveCSS('opacity', '1');
+  await expect(page.getByTestId('layer-name-input-0')).toBeVisible();
+  await page.getByTestId('layer-rename-confirm-0').click();
+  // hover then delete works
+  await page.getByTestId('layer-row-0').hover();
+  await del0.click();
+  await expect(page.getByTestId('layer-list').locator('[data-testid^="layer-row-"]')).toHaveCount(1);
 });
