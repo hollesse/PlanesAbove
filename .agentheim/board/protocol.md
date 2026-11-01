@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:45 -- Batch started: [livery-editor-tps9z, liveries-yafve]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-tps9z - Gummiband beim Setzen eines Punkts (Segment folgt der Maus ab Mousedown, Punkt sitzt beim Loslassen) und Shift-Zwang waagerecht/senkrecht, liveries-yafve - Silhouette und Detailschicht für widebody und regional-jet aus der Altgrafik (nach dem Narrowbody-Muster)
+**Parallel:** yes (2 workers) — both ready; different BCs and files (editor board.ts/main.ts vs. liveries SVG assets + tests)
+
+---
+
 ## 2026-11-01 12:45 -- Modeling / Captured: livery-editor-gn6gp - Logo hochladen (SVG/PNG) und als Ebene platzieren, skalieren, drehen; Ablage im Repo über das Schreib-Plugin
 
 **Type:** Modeling / Capture

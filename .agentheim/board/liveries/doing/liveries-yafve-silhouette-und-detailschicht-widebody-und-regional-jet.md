@@ -1,7 +1,7 @@
 ---
 id: liveries-yafve
 title: Silhouette und Detailschicht für widebody und regional-jet aus der Altgrafik (nach dem Narrowbody-Muster)
-status: todo
+status: doing
 type: feature
 context: liveries
 created: 2026-11-01

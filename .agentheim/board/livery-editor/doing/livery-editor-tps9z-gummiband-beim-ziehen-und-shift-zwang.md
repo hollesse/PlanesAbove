@@ -1,7 +1,7 @@
 ---
 id: livery-editor-tps9z
 title: Gummiband beim Setzen eines Punkts (Segment folgt der Maus ab Mousedown, Punkt sitzt beim Loslassen) und Shift-Zwang waagerecht/senkrecht
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-01
