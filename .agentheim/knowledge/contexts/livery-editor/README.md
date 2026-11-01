@@ -11,7 +11,7 @@ supporting — Werkzeug für die Illustrationsarbeit; die Himmelsszene braucht n
 
 ## Ubiquitous language
 - **Zeichenbrett** — die Fläche mit der leeren Silhouette einer Typklasse, über die gezeichnet wird; zeigt das beschnittene Ergebnis mit Detailschicht obenauf.
-- **Lücke** — eine im Sichtungsprotokoll gesehene Kombination Airline × Typklasse, für die keine Lackierung existiert; Filter „nur Lücken“.
+- **Lücke** — eine im Sichtungsprotokoll gesehene Kombination Airline × Typklasse, für die keine Lackierung existiert; Filter „nur Lücken“. Die Auswahl ist zweistufig: erst Airline (aggregiert über alle Typen, „n von m Typen fehlen“), dann Typklasse im Select mit Sichtungszahl und Status (fehlt/vorhanden).
 - **Referenzfoto** — echtes Foto der Airline auf dieser Typklasse aus der Fotokette der App (Commons, Planespotters als Fallback), nur zum Anschauen.
 - **Ebene** — ein Pfad oder ein Logo mit Farbe bzw. Bild, Reihenfolge im Stapel und Verschiebung; optional mit Namen (max. 40 Zeichen, ohne Namen zeigt das Panel „Pfad n“). Das Ebenenpanel listet oben zuerst (`layers[]` läuft unten→oben); eine Ebene ist auswählbar (Auswahl = Editor-Zustand `state.selected`, Umriss im Brett), nach oben/unten verschiebbar, löschbar, färbbar, benennbar. Sichtbarkeit ist reiner Editor-Zustand: ausgeblendete Ebenen werden im Brett nicht gezeichnet, bleiben aber in der gespeicherten Datei.
 - **Pfad** — geschlossene gefärbte Form aus Punkten; wird ungeschnitten gespeichert.
@@ -29,7 +29,6 @@ supporting — Werkzeug für die Illustrationsarbeit; die Himmelsszene braucht n
 - **Allow-List** — die feste Liste der Zielverzeichnisse im Repo, in die das Schreib-Plugin überhaupt schreiben darf; alles andere wird abgewiesen.
 - **Deckkraft-Ansicht (Spike-Stand)** — Der Deckkraft-Regler der Silhouette blendet sie aus und zeigt dabei die ungeschnittenen Pfade (Geisterkopie); bei 100 % sieht man den Zuschnitt, bei 0 % den ganzen Pfad. Umsetzung: Option `silhouetteOpacity` von `renderLiverySvg`.
 - **Eckmarker**: quadratischer Overlay-Griff (`vertex-handle-<i>`) an jedem Eckpunkt der ausgewaehlten Pfad-Ebene; Ziehen setzt `points[i]` (gefangen), `via` bleibt unveraendert. Unterscheidet sich vom runden Rundungsgriff in der Segmentmitte.
-- **Lücke** — eine im Sichtungsprotokoll gesehene Kombination Airline × Typklasse, für die keine Lackierung existiert; Filter „nur Lücken“. Die Auswahl ist zweistufig: erst Airline (aggregiert über alle Typen, „n von m Typen fehlen“), dann Typklasse im Select mit Sichtungszahl und Status (fehlt/vorhanden).
 
 ## Aggregates
 _Noch nicht modelliert._
