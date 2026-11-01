@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:08 -- Batch started: [livery-editor-wcnxg]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-wcnxg - Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker
+**Parallel:** scoped — builder asked for this change directly after trying the layer panel; only ready task
+
+---
+
 ## 2026-11-01 11:08 -- Modeling / Captured: livery-editor-wcnxg - Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker
 
 **Type:** Modeling / Capture

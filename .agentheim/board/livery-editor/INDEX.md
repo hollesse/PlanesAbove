@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 5
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **livery-editor-wcnxg** — Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker (feature) — `todo/livery-editor-wcnxg-ebenenzeile-icon-aktionen-inline-umbenennen.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **livery-editor-wcnxg** — Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker (feature) — `doing/livery-editor-wcnxg-ebenenzeile-icon-aktionen-inline-umbenennen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

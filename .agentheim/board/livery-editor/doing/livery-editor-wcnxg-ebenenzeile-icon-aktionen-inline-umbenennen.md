@@ -1,7 +1,7 @@
 ---
 id: livery-editor-wcnxg
 title: Ebenenzeile: Icon-Aktionen rechts (Stift, Pfeil hoch, Pfeil runter, Mülleimer), Umbenennen inline, Farbfeld öffnet den Farbpicker
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-01
