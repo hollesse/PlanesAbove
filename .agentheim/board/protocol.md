@@ -5,6 +5,26 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 19:06 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 12m
+**Completed:** 1 (first-try PASS: 0, re-dispatched: 1 [sky-scene-jpjt2: Iteration 2 nach Betreiberentscheidung (a), ICAO-Fallback gestrichen], skipped: 0)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** sky-scene-jpjt2: 2 (über zwei Sitzungen)
+**Commits:** 2 (1 task integration, 1 session end)
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (1 task)
+**Carry-over:** .agentheim/.dashboard/: left behind (owner: dashboard, untracked advisory state); Worktree sky-scene-jpjt2 entfernt (Patch bleibt in .agentheim/salvage/)
+**README delta:** sky-scene README §Ubiquitous language anchor "**Sprachcache**": anchor-missing — vom Conductor von Hand an Ort und Stelle ersetzt
+**Merge:** main vor Iteration 2 in den Worktree gemergt; Konflikt in der Projekt-README (Env-Var-Umstellung vs. Cache-Absatz) vom Conductor aufgelöst
+
+---
+
 ## 2026-11-01 19:05 -- Task verified and completed: sky-scene-jpjt2 - Sprachcache lesbar ablegen — Ordner je Adapter/Stimme/Kategorie, sprechender Dateiname mit Text-Hash-Suffix; Steckbrief wird nicht mehr als Datei gespeichert
 
 **Type:** Work / Task completion
