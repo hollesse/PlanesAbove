@@ -79,6 +79,8 @@
 .pa-slot-eq-single { left: 14%; width: 72%; top: 7.5cqw; }
 .pa-slot-eq-one { left: 4%; width: 44%; top: var(--pa-eq-t1, 16cqw); }
 .pa-slot-eq-two { left: 52%; width: 44%; top: var(--pa-eq-t2, 16cqw); }
+.pa-slot-eq-single, .pa-slot-eq-one, .pa-slot-eq-two { aspect-ratio: 1000 / 460; display: flex; align-items: center; }
+.pa-slot-eq-single > .pa-plane, .pa-slot-eq-one > .pa-plane, .pa-slot-eq-two > .pa-plane { flex: none; width: var(--pa-eq-w, 100%); margin-left: var(--pa-eq-ml, 0); }
 .pa-badge-slot-eq-one { left: 2.5%; top: calc(var(--pa-eq-t1, 16cqw) - 1cqw); }
 .pa-badge-slot-eq-two { left: 50.5%; top: calc(var(--pa-eq-t2, 16cqw) - 1cqw); }
 

@@ -4,6 +4,7 @@ import { renderBadge } from '../atoms/badge';
 import { h } from '../dom';
 import { renderPaintedPlane, type PaintedPlaneProps } from '../molecules/painted-plane';
 import type { PlaneSlot } from './scene-layer';
+import { planeBox } from '../domain/plane-size';
 
 /** Layout proposals: planes side by side at the same height, or the second one slightly lower (staggered). */
 export type EqualLayout = 'nebeneinander' | 'versetzt';
@@ -12,8 +13,11 @@ export const EQUAL_LAYOUTS: readonly EqualLayout[] = ['nebeneinander', 'versetzt
 /** Classes for the stage (or layer) that hosts equal slots; they define the vertical position variables. */
 export const equalLayoutClass = (layout: EqualLayout): string => (layout === 'versetzt' ? 'pa-eq pa-eq-staggered' : 'pa-eq');
 
-export const renderEqualPlaneSlot = (slot: PlaneSlot, plane: PaintedPlaneProps): HTMLElement =>
-  h('div', { class: `pa-slot pa-slot-eq-${slot}`, data: { slot } }, renderPaintedPlane(plane));
+/** The slot is equally wide for every Typklasse; the Groessenfaktor of the class only scales the silhouette inside it (design-system-q7mxe). */
+export const renderEqualPlaneSlot = (slot: PlaneSlot, plane: PaintedPlaneProps): HTMLElement => {
+  const { width, marginLeft } = planeBox(plane.type);
+  return h('div', { class: `pa-slot pa-slot-eq-${slot}`, data: { slot }, style: `--pa-eq-w:${(width * 100).toFixed(2)}%;--pa-eq-ml:${(marginLeft * 100).toFixed(2)}%` }, renderPaintedPlane(plane));
+};
 
 export const renderEqualBadgeSlot = (n: 1 | 2): HTMLElement =>
   h('div', { class: `pa-badge-slot pa-badge-slot-eq-${n === 1 ? 'one' : 'two'}`, data: { badge: String(n) } }, renderBadge({ n }));

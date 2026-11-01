@@ -1,7 +1,7 @@
 ---
 id: design-system-q7mxe
 title: Größenfaktor je Typklasse: gleiche Klasse gleich groß, Klassenunterschied spürbar aber gedeckelt; Anordnung in Flugrichtung gestaffelt (vorn/unten, hinten/oben) auf gleicher Tiefe
-status: doing
+status: done
 type: feature
 context: design-system
 created: 2026-10-30
@@ -44,3 +44,25 @@ Dieser Task regelt zwei Dinge, die danach offen bleiben:
 - Ursprüngliche Fassung dieses Tasks zielte auf ein "realistisches" Längenverhältnis Narrowbody/Widebody. Nach Rücksprache mit dem Betreiber (2026-10-31) umgeschrieben: Realismus ist nicht das Ziel, Gleichheit innerhalb einer Klasse und die Staffelung auf gleicher Tiefe sind es.
 - Pfade: `src/client/ui/organisms/scene-layer-equal.ts`, `src/client/ui/templates/screen-equal.ts`, `src/client/ui/stories/scene-equal.stories.ts`, `transitions-equal.stories.ts`, `equal-helpers.ts`. Die Variante `versetzt` wird nach Flugrichtung ausgerichtet; `nebeneinander` bleibt als Story bestehen.
 - Grundlage: `organisms/scene-layer-equal.ts`, `templates/screen-equal.ts`, Stories `scene-equal.stories.ts` / `transitions-equal.stories.ts`, Layout "Leicht versetzt" (Slot 1 top 8cqw, Slot 2 top 19,5cqw). Prüfen, ob die bisherige Versatzrichtung zur Flugrichtung der Silhouetten passt, ggf. spiegeln.
+
+## Verifier note (iteration 1)
+
+**REASONS:**
+- Check 4/5 (ubiquitous language / README sync): the diff introduces a new domain concept, **Größenfaktor je Typklasse**, but `readmeDelta` is `[]`. The concept appears as a user-visible story name (`scene-equal.stories.ts`, "Einzelflug (Größenfaktor)"), a test-suite name, and new domain-layer identifiers in `src/client/ui/domain/plane-size.ts` (`PLANE_SIZE`, `planeBox`, `NARROWBODY_FILL` = 0.65). The design-system README's `## Ubiquitous language` has no such term, although it routinely records operator-decided design rules with their numbers even while approval is open. After integration the README would be stale on the factor table, narrowbody = 65 % of slot width, factor also for a single plane, and the stagger rule.
+- Everything else verified: npm test (889 passed), typecheck, build-storybook exit 0; Playwright webkit equal-slots/stories/livery-front-fields 15/15 via scratch config; factor table matches; no SVG changed; stagger measured via bounding boxes.
+
+**SUGGESTED_FIX:** Add a README_DELTA op to the design-system README's `## Ubiquitous language` defining **Größenfaktor (je Typklasse)**: the factor table, narrowbody = 65 % slot width, scaling only the silhouette (SVGs unchanged), same factor for a single plane, code location `domain/plane-size.ts`, and the stagger rule (vorn = Nasenseite tiefer, gleiche Tiefe, Position trägt keine Größe) — marked "Abnahme offen (design-system-q7mxe)". No code changes needed.
+
+**ITERATION_HINT:** likely-fixable
+
+## Outcome
+
+Größenfaktor je Typklasse umgesetzt, ausschließlich als Skalierung der Silhouette im gleich breiten Slot; die Typklassen-SVGs sind unverändert.
+
+- `src/client/ui/domain/plane-size.ts`: Tabelle `PLANE_SIZE` (eine Konstante je Typklasse: Ziel-Länge relativ zur Narrowbody, gezeichnete Breite, viewBox) mit Herleitungskommentar; `NARROWBODY_FILL = 0.65`; `planeBox(type)` liefert Breite und Linksversatz (Anteile der Slotbreite), sodass die gezeichnete Fläche mittig im Slot sitzt.
+- `organisms/scene-layer-equal.ts`: `renderEqualPlaneSlot` setzt `--pa-eq-w` / `--pa-eq-ml` am Slot. `styles/ui.css`: Gleich-groß-Slots (single/one/two) bekommen festes Seitenverhältnis 1000:460, vertikale Zentrierung; das `.pa-plane` nimmt Breite/Versatz aus den Variablen. Live-Slots (`pa-slot-one/-two`) und Übergangs-Keyframes unverändert.
+- Staffelung: Die Silhouetten zeigen mit der Nase nach rechts; Slot 2 (rechts, Nasenseite = vorn) liegt in der Variante "Leicht versetzt" bereits tiefer (19,5cqw) als Slot 1 (8cqw), daher keine Spiegelung nötig. Slots/Variablen unverändert.
+- Neue Story "Einzelflug (Größenfaktor)" in `scene-equal.stories.ts` (Typklasse über Control Slot 1).
+- Tests: Unit (`tests/unit/equal-slots.test.ts`): Tabelle vollständig, Sichtbreite = 0,65 × Faktor je Klasse, mittig, gleiche Klasse gleiche Box, Staffelrichtung. E2E (`tests/e2e/equal-slots.spec.ts`, 4:3 und 5:3): je Klasse gleiche Breite/Höhe in beiden Slots (±1 px), sichtbare Breiten im Verhältnis zur Narrowbody (±0,03), Narrowbody 65 % ±3 %, kein Beschnitt (innerhalb Bühne, über der Info-Leiste), vorderes Flugzeug tiefer, Einzel-Slot (Glider 50 %, Double-Decker 130 %).
+- Ausgeführt: `npm test` (889 grün), `npm run typecheck`, `npm run build-storybook`; Playwright (webkit) mit temporärer Config im Scratchpad (nur Storybook-Server auf Port 6017, weil 5174 belegt): equal-slots und die übrigen Storybook-Specs grün; Specs, die `dist/server` brauchen (skeleton, stage-fill, photo-overlay, long-route), liefen mangels `npm run build` nicht und sind von der Änderung nicht berührt.
+- Offen: [human-eye]-Abnahme durch den Betreiber in Storybook; danach Übernahme in die App (Folgetask unten).

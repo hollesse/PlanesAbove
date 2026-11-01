@@ -37,3 +37,16 @@ const render = (a: Args): HTMLElement => {
 
 export const Nebeneinander: StoryObj<Args> & { name: string } = { name: 'Nebeneinander (gleiche Höhe)', render };
 export const Versetzt: StoryObj<Args> & { name: string } = { name: 'Leicht versetzt', args: { layout: 'versetzt' }, render };
+
+// Einzelflug (design-system-q7mxe): der Groessenfaktor der Typklasse gilt auch allein; Typklasse = "Slot 1".
+export const Einzelflug: StoryObj<Args> & { name: string } = {
+  name: 'Einzelflug (Größenfaktor)',
+  render: (a: Args): HTMLElement => {
+    const stage = renderScreenEqual({
+      aspect: a.aspect, layout: a.layout, sky: skyKey(a.time, a.weather), place: SAMPLE_PLACE, clock: SAMPLE_CLOCK,
+      planes: [withType({ plane: SAMPLE_PLANES.D, flight: SAMPLE_FLIGHTS.D }, a.typeOne)],
+    });
+    fitRoutesWhenMounted(stage);
+    return stage;
+  },
+};

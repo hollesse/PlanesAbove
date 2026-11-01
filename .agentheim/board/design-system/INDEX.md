@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 17
+- **Doing:** 0
+- **Done:** 18
 <!-- task-counts:end -->
 
 ### Todo
@@ -23,11 +23,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **design-system-q7mxe** — Größenfaktor je Typklasse: gleiche Klasse gleich groß, Klassenunterschied spürbar aber gedeckelt; Anordnung in Flugrichtung gestaffelt (vorn/unten, hinten/oben) auf gleicher Tiefe (feature) — `doing/design-system-q7mxe-groessenfaktor-je-typklasse-gleiche-klasse-gleich-gross-gestaffelt.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **design-system-q7mxe** — Größenfaktor je Typklasse: gleiche Klasse gleich groß, Klassenunterschied spürbar aber gedeckelt; Anordnung in Flugrichtung gestaffelt (vorn/unten, hinten/oben) auf gleicher Tiefe (feature) — `done/design-system-q7mxe-groessenfaktor-je-typklasse-gleiche-klasse-gleich-gross-gestaffelt.md`
 - **design-system-m4r7v** — Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei (feature) — `done/design-system-m4r7v-realistische-beispieldaten-info-leiste-stories.md`
 - **design-system-g83gh** — QR-Code als Link zurück zur Fotoseite im Foto-Overlay (Planespotters-Terms: URL als Text genügt nicht, QR-Code oder Anker Pflicht) (feature) — `done/design-system-g83gh-qr-code-als-link-zur-fotoseite-im-foto-overlay.md`
 - **design-system-pawdq** — Foto-Overlay-Baustein (Organism) in Storybook — Vollbild-Overlay mit Foto-Galerie, Attribution und X rechts oben zum Schließen (feature) — `done/design-system-pawdq-foto-overlay-baustein-galerie-mit-x-zum-schliessen-storybook.md`

@@ -6,6 +6,7 @@ import { renderTransition } from '../../src/client/ui/transitions/player';
 import { renderEqualBadgeSlot, renderEqualPlaneSlot, renderSceneLayerEqual } from '../../src/client/ui/organisms/scene-layer-equal';
 import { sampleTransitionData } from '../../src/client/ui/domain/transition-samples';
 import { retypeData } from '../../src/client/ui/stories/equal-helpers';
+import { NARROWBODY_FILL, PLANE_SIZE, planeBox } from '../../src/client/ui/domain/plane-size';
 import { readFileSync } from 'node:fs';
 import * as scene from '../../src/client/ui/stories/scene-equal.stories';
 import * as trans from '../../src/client/ui/stories/transitions-equal.stories';
@@ -78,5 +79,33 @@ describe('Entwurf: zwei Flugzeuge gleich groß (design-system-pyheh)', () => {
     expect([d.from[0].plane.type, d.from[1].plane.type, d.to[0].plane.type, d.to[1].plane.type]).toEqual(['glider', 'helicopter', 'glider', 'helicopter']);
     const e = retypeData(sampleTransitionData('two-to-one-a'), ['glider', 'helicopter']);
     expect(e.to[0].plane.type).toBe('helicopter');
+  });
+
+  describe('Größenfaktor je Typklasse (design-system-q7mxe)', () => {
+    const table: Record<string, number> = { 'double-decker': 1.3, 'jumbo-hump': 1.25, widebody: 1.2, narrowbody: 1, 'regional-jet': 0.85, turboprop: 0.8, helicopter: 0.75, 'business-jet': 0.65, 'light-aircraft': 0.5, glider: 0.5 };
+    it('has one constant per Typklasse with the decided length', () => {
+      expect(Object.keys(PLANE_SIZE).sort()).toEqual([...PLANE_TYPE_IDS].sort());
+      for (const [t, l] of Object.entries(table)) expect(PLANE_SIZE[t as keyof typeof PLANE_SIZE].length, t).toBe(l);
+    });
+    it('the visible width relative to the slot is NARROWBODY_FILL * length for every class, centred', () => {
+      for (const t of PLANE_TYPE_IDS) {
+        const s = PLANE_SIZE[t];
+        const { width, marginLeft } = planeBox(t);
+        expect((width * s.drawn) / s.vbW, t).toBeCloseTo(NARROWBODY_FILL * s.length, 5);
+        const left = marginLeft + ((s.x - s.vbX) / s.vbW) * width;
+        expect(left + (width * s.drawn) / s.vbW / 2, t).toBeCloseTo(0.5, 5);
+      }
+      expect(NARROWBODY_FILL).toBe(0.65);
+    });
+    it('the slot carries the box as CSS variables; same class gives the identical box in every slot', () => {
+      const a = renderEqualPlaneSlot('one', { type: 'widebody' });
+      const b = renderEqualPlaneSlot('two', { type: 'widebody' });
+      expect(a.style.getPropertyValue('--pa-eq-w')).toBe(b.style.getPropertyValue('--pa-eq-w'));
+      expect(a.style.getPropertyValue('--pa-eq-w')).not.toBe(renderEqualPlaneSlot('one', { type: 'glider' }).style.getPropertyValue('--pa-eq-w'));
+    });
+    it('the flight-direction stagger: slot two (nose side, front) sits lower than slot one', () => {
+      const m = /--pa-eq-t1: ([\d.]+)cqw;\s*--pa-eq-t2: ([\d.]+)cqw/.exec(css.match(/\.pa-eq-staggered \{([^}]*)\}/)![1])!;
+      expect(Number(m[2])).toBeGreaterThan(Number(m[1]));
+    });
   });
 });
