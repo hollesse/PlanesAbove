@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:57 -- Modeling / Captured: sighting-log-js2t1 - Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033)
+
+**Type:** Modeling / Capture
+**BC:** sighting-log
+**Filed to:** todo
+**Summary:** Endpunkt sightings-by-class nach ADR 0033
+
+---
+
 ## 2026-11-01 11:36 -- Work session ended
 
 **Type:** Work / Session end
