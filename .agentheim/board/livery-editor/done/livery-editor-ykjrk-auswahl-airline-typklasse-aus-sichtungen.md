@@ -1,7 +1,7 @@
 ---
 id: livery-editor-ykjrk
 title: Auswahl Airline × Typklasse aus den Sichtungen des Heimservers mit Lückenfilter; Fallback Airline-Code-Textfeld und Typklassen-Select
-status: doing
+status: done
 type: feature
 context: livery-editor
 created: 2026-11-01
@@ -35,3 +35,6 @@ Papa soll im Editor sehen, welche Airline × Typklasse über dem Haus wirklich f
 
 ## Notes
 Betreiber-Entscheidung 2026-11-01: Fallback = Airline-Code-Textfeld + Typklassen-Select. Der Server-Endpunkt entsteht parallel in sighting-log-js2t1; der Editor testet gegen den Contract aus ADR 0033, nicht gegen den laufenden Server. Reale config.yaml anpassen: nein (die Heimserver-URL lebt in `.env.local`, git-ignoriert).
+
+## Outcome
+Sichtungen section at the top of the editor panel: fetches GET /api/stats/sightings-by-class?days=N (default 90), rows via pure computeGaps (tools/livery-editor/gaps.ts: Lücke = no LIVERY_FILES entry for lower-cased prefix/typklasse, onlyGaps filter, sort by count, airline null -> "Airline fehlt im Katalog"). Controls: Tage number field (refetches), "nur Lücken" checkbox (default on). Click on a row sets livery-id and Typklasse; an existing file is loaded into the board (selected/hidden reset), else an empty board. Fetch error, non-2xx or no proxy shows "Heimserver nicht erreichbar"; the livery-id text field (aria-invalid vs LIVERY_ID) and the Typklasse select always work. vite.config.ts exports proxyFor(env) (/api -> PLANESABOVE_HOME_URL, none when unset), reading process.env or git-ignored .env.local via loadEnv. Tests: gaps.test.ts, vite.config.test.ts, tests/e2e-editor/sightings.spec.ts (4 mocked/unmocked E2E); npm test, typecheck and editor-chromium (14) green. Note: the "list reads like a gap list" criterion is left to the operator [human-eye].

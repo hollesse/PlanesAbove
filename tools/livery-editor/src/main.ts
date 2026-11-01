@@ -4,6 +4,9 @@ import { FIELD_DEFAULTS, pathData, renderLiverySvg } from '../../../src/client/u
 import type { LiveryFile, PathLayer } from '../../../src/client/ui/domain/livery-file';
 import { layerLabel, moveItem, moveLayer, NAME_MAX, recolorLayer, removeItem, removeLayer, renameLayer, visibleFile, type Direction } from '../layers';
 import { movePoint, segmentHandle, setVia } from '../curve';
+import { LIVERY_FILES } from '../../../src/client/ui/assets/generated/liveries';
+import { LIVERY_ID, LiveryFileSchema } from '../../../src/client/ui/domain/livery-file';
+import { computeGaps, type SightingsResponse } from '../gaps';
 import { addPoint, closeDraft, draftPathData, setDraftVia, closesAt, snap, CLOSE_RADIUS, type Draft } from '../board';
 
 // Walking-skeleton editor (spike): Typklasse choice, board with silhouette/details opacity, path tool, one colour, save.
@@ -210,9 +213,59 @@ saveBtn.addEventListener('click', async () => {
 
 const fieldColor = (k: 'engines' | 'wings' | 'tailplane', label: string) => row(label, input('color', state.file.fields[k]!, (v) => { state.file = { ...state.file, fields: { ...state.file.fields, [k]: v } }; drawBoard(); }, `field-${k}`));
 
+const liveryIdInput = input('text', state.file.livery, (v) => { state.file = { ...state.file, livery: v }; liveryIdInput.setAttribute('aria-invalid', String(!LIVERY_ID.test(v))); }, 'livery-id');
+
+// ---- Sichtungen: Abkürzung zum Setzen von Lackierungs-ID + Typklasse (ADR 0033); der Editor funktioniert auch ohne Heimserver ----
+const sightings = { days: 90, onlyGaps: true, response: null as SightingsResponse | null, failed: false };
+const sightingList = h('div', { attrs: { 'data-testid': 'sighting-list', id: 'sighting-list' } });
+function pick(liveryId: string, typklasse: string) {
+  const existing = LIVERY_FILES[`${liveryId}/${typklasse}`];
+  const parsed = existing === undefined ? null : LiveryFileSchema.safeParse(existing);
+  state.file = parsed?.success ? structuredClone(parsed.data) : { ...state.file, livery: liveryId, typklasse, layers: [] };
+  state.hidden = state.file.layers.map(() => false);
+  state.selected = null; state.draft = { points: [] }; editing = null;
+  liveryIdInput.value = liveryId; liveryIdInput.setAttribute('aria-invalid', String(!LIVERY_ID.test(liveryId)));
+  select.value = typklasse;
+  renderLayerPanel(); drawBoard();
+  say(parsed?.success ? `Lackierung ${liveryId}/${typklasse} geladen.` : `Neue Lackierung ${liveryId}/${typklasse}.`);
+}
+function renderSightings() {
+  if (sightings.failed) { sightingList.replaceChildren(h('div', { text: 'Heimserver nicht erreichbar', attrs: { 'data-testid': 'sightings-unreachable', class: 'error' } })); return; }
+  if (!sightings.response) { sightingList.replaceChildren(h('div', { text: 'Lade Sichtungen …' })); return; }
+  const rows = computeGaps(sightings.response.rows, LIVERY_FILES, { onlyGaps: sightings.onlyGaps });
+  sightingList.replaceChildren(...(rows.length ? rows.map((r) => {
+    const b = h('button', { attrs: { type: 'button', class: 'sighting-row' + (r.gap ? ' gap' : ''), 'data-testid': 'sighting-row', 'data-livery': r.liveryId, 'data-typklasse': r.typklasse } },
+      h('span', { text: r.airline, attrs: { class: 'sighting-airline' } }), h('span', { text: r.typklasse }), h('span', { text: `${r.count}×` }), ...(r.gap ? [h('span', { text: 'Lücke', attrs: { class: 'gap-badge' } })] : []));
+    b.addEventListener('click', () => pick(r.liveryId, r.typklasse));
+    return b;
+  }) : [h('div', { text: sightings.onlyGaps ? 'Keine Lücken in den Sichtungen.' : 'Keine Sichtungen.' })]));
+}
+let sightingsRequest = 0;
+async function loadSightings() {
+  const mine = ++sightingsRequest;
+  sightings.response = null; sightings.failed = false; renderSightings();
+  try {
+    const res = await fetch(`/api/stats/sightings-by-class?days=${sightings.days}`);
+    if (!res.ok) throw new Error(String(res.status));
+    const body = (await res.json()) as SightingsResponse;
+    if (!Array.isArray(body.rows)) throw new Error('bad body');
+    if (mine === sightingsRequest) sightings.response = body;
+  } catch {
+    if (mine === sightingsRequest) sightings.failed = true;
+  }
+  if (mine === sightingsRequest) renderSightings();
+}
+const daysInput = input('number', String(sightings.days), (v) => { const n = Math.floor(Number(v)); if (n >= 1) { sightings.days = n; void loadSightings(); } }, 'sightings-days', { min: '1', step: '1' });
+const onlyGapsBox = input('checkbox', '', () => { sightings.onlyGaps = onlyGapsBox.checked; renderSightings(); }, 'sightings-only-gaps');
+onlyGapsBox.checked = true;
+
 panel.append(
+  h('h2', { text: 'Sichtungen' }),
+  row('Tage', daysInput),
+  row('nur Lücken', onlyGapsBox),
+  sightingList,
   h('h2', { text: 'Lackierung' }),
-  row('Lackierungs-ID', input('text', state.file.livery, (v) => { state.file = { ...state.file, livery: v }; }, 'livery-id')),
+  row('Lackierungs-ID', liveryIdInput),
   row('Typklasse', select),
   h('h2', { text: 'Deckkraft' }),
   row('Silhouette', input('range', '1', (v) => { state.silhouetteOpacity = Number(v); drawBoard(); }, 'opacity-silhouette', { min: '0', max: '1', step: '0.05' })),
@@ -233,6 +286,7 @@ panel.append(
 );
 renderLayerPanel();
 drawBoard();
+void loadSightings();
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') { state.draft = { points: [] }; drawBoard(); }
 });

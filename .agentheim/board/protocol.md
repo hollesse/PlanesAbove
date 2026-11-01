@@ -5,6 +5,19 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 12:05 -- Task verified and completed: livery-editor-ykjrk - Auswahl Airline × Typklasse aus den Sichtungen des Heimservers mit Lückenfilter; Fallback Airline-Code-Textfeld und Typklassen-Select
+
+**Type:** Work / Task completion
+**Task:** livery-editor-ykjrk - Auswahl Airline × Typklasse aus den Sichtungen des Heimservers mit Lückenfilter; Fallback Airline-Code-Textfeld und Typklassen-Select
+**Summary:** Abschnitt Sichtungen im Editor: Lückenliste vom Heimserver (Tage-Schwelle, nur Lücken), Klick setzt Airline-Code und Typklasse und lädt vorhandene Lackierung; Vite-Proxy aus PLANESABOVE_HOME_URL; Fallback Textfeld + Select
+**Duration:** 7m30s (11:57 → 12:05)
+**Verification:** PASS (iteration 1)
+**Files changed:** 7
+**Tests added:** 10
+**ADRs written:** none
+
+---
+
 ## 2026-11-01 12:03 -- Task verified and completed: sighting-log-js2t1 - Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033)
 
 **Type:** Work / Task completion

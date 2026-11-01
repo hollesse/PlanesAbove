@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 0
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 9
+- **Doing:** 0
+- **Done:** 10
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **livery-editor-ykjrk** — Auswahl Airline × Typklasse aus den Sichtungen des Heimservers mit Lückenfilter; Fallback Airline-Code-Textfeld und Typklassen-Select (feature) — `doing/livery-editor-ykjrk-auswahl-airline-typklasse-aus-sichtungen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **livery-editor-ykjrk** — Auswahl Airline × Typklasse aus den Sichtungen des Heimservers mit Lückenfilter; Fallback Airline-Code-Textfeld und Typklassen-Select (feature) — `done/livery-editor-ykjrk-auswahl-airline-typklasse-aus-sichtungen.md`
 - **livery-editor-ypj22** — Rundungen schon beim Zeichnen des Entwurfs setzen, nicht erst nach dem Schließen (feature) — `done/livery-editor-ypj22-rundungen-schon-beim-zeichnen.md`
 - **livery-editor-rtnx3** — Eckpunkte eines geschlossenen Pfads als Marker zeigen und verschieben (feature) — `done/livery-editor-rtnx3-eckpunkte-verschieben-geschlossener-pfad.md`
 - **livery-editor-snc1d** — Ebenenzeile: kompakte Icon-Buttons, nur bei Hover oder Auswahl sichtbar, Name bekommt die ganze Breite (feature) — `done/livery-editor-snc1d-ebenenzeile-kompakte-icons-nur-bei-hover.md`
