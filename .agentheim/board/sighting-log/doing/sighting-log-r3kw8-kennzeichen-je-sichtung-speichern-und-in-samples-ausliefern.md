@@ -1,7 +1,7 @@
 ---
 id: sighting-log-r3kw8
 title: Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern
-status: todo
+status: doing
 type: feature
 context: sighting-log
 created: 2026-11-01

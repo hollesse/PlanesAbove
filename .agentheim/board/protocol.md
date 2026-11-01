@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 18:30 -- Batch started: [sighting-log-r3kw8]
+
+**Type:** Work / Batch start
+**Tasks:** sighting-log-r3kw8 - Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern
+**Parallel:** scoped — builder named sighting-log-r3kw8, airspace-yvdbz follows once r3kw8 is done (depends on it)
+
+---
+
 ## 2026-11-01 18:30 -- Modeling / Refined: airspace-yvdbz - Referenzfoto nur aus Commons
 
 **Type:** Modeling / Refine

@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 5
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **sighting-log-r3kw8** — Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern (feature) — `todo/sighting-log-r3kw8-kennzeichen-je-sichtung-speichern-und-in-samples-ausliefern.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **sighting-log-r3kw8** — Kennzeichen je Sichtung speichern (Spalte registration) und in den samples von /api/stats/sightings-by-class ausliefern (feature) — `doing/sighting-log-r3kw8-kennzeichen-je-sichtung-speichern-und-in-samples-ausliefern.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
