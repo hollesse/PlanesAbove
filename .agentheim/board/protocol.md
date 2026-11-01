@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 11:57 -- Modeling / Captured: livery-editor-ykjrk - Auswahl Airline × Typklasse aus den Sichtungen des Heimservers mit Lückenfilter; Fallback Airline-Code-Textfeld und Typklassen-Select
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** todo
+**Summary:** Editor wählt Airline × Typklasse aus den Sichtungen mit Lückenfilter; Fallback Textfeld + Select
+
+---
+
 ## 2026-11-01 11:57 -- Modeling / Captured: sighting-log-js2t1 - Endpunkt GET /api/stats/sightings-by-class — Sichtungen je Airline × Typklasse (ADR 0033)
 
 **Type:** Modeling / Capture
