@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 20:59 -- Modeling / Promoted: design-system-m4r7v - Realistische Beispieldaten in den Info-Leisten-Stories (Routen als „Stadt (IATA)“, echte Callsigns, Typen und Kennzeichen), lange Routen in jedem Zustand mit dabei
+
+**Type:** Modeling / Promote
+**BC:** design-system
+**From → To:** backlog → todo
+
+---
+
 ## 2026-11-01 19:42 -- Modeling / Refined: airspace-rrazj - clubs.json normalisiert (Vereins-ID)
 
 **Type:** Modeling / Refine
