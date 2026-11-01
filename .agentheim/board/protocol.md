@@ -5,6 +5,25 @@ Newest entries on top.
 
 ---
 
+## 2026-11-01 18:43 -- Work session ended
+
+**Type:** Work / Session end
+**Duration:** 20m (18:30 – 18:50)
+**Completed:** 2 (first-try PASS: 2, re-dispatched: 0, skipped: 0)
+**Bounced:** 0
+**Failed:** 0
+**Escalated after verification:** 0 (sky-scene-jpjt2 bleibt eskaliert, wartet auf Betreiberentscheidung)
+**Lost-result re-dispatches:** 0
+**Lost-result escalations:** 0
+**Dispatches:** sighting-log-r3kw8: 1, airspace-yvdbz: 1
+**Commits:** 6 (2 batch start, 2 task integrations, 1 promote, 1 session end)
+**Vision-conformance:** none — batch aligns with vision
+**Batch mix:** 100% product-facing / 0% harness / 0% bookkeeping (2 tasks)
+**Carry-over:** .agentheim/.dashboard/: left behind (owner: dashboard, untracked advisory state); .worktrees/sky-scene-jpjt2: kept (owner: sky-scene-jpjt2, escalated 2026-10-31, salvaged: .agentheim/salvage/sky-scene-jpjt2-escalated-iter1.patch)
+**Verifier note:** Editor-E2E lief über eine temporäre Config auf Port 5199, weil 5174 vom laufenden Editor des Betreibers belegt war; draw-and-compare/logo-Specs (brauchen storybook-static) liefen in dieser Sitzung nicht.
+
+---
+
 ## 2026-11-01 18:42 -- Task verified and completed: airspace-yvdbz - Referenzfoto-Endpunkt GET /api/photos/reference und Fotopanel im Lackierungs-Editor (ADR 0033)
 
 **Type:** Work / Task completion
