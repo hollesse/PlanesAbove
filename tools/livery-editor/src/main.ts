@@ -342,43 +342,61 @@ function pick(liveryId: string, typklasse: string) {
   void updatePhoto();
   say(parsed?.success ? `Lackierung ${liveryId}/${typklasse} geladen.` : `Neue Lackierung ${liveryId}/${typklasse}.`);
 }
-// ---- Fotopanel: erstes Referenzfoto der gewählten Kombination (ADR 0033 §2); fragt die Samples nacheinander ab ----
+// ---- Fotopanel: Galerie der Referenzfotos der gewählten Kombination (ADR 0033 §2) ----
+// Ein Foto je Kennzeichen (das neueste, der Server sortiert), höchstens 20. Geladen wird nacheinander: das erste sofort, das nächste im Hintergrund vorab.
 const photoPanel = document.getElementById('photo')!;
-type RefPhoto = { imageUrl: string; photographer: string; source: string; pageUrl: string; licenceText: string };
+type RefPhoto = { imageUrl: string; photographer: string; source: string; pageUrl: string; licenceText: string; date?: string };
+type GalleryItem = { registration: string | null; photo: RefPhoto };
 let photoRequest = 0;
 function showPhoto(...nodes: (HTMLElement | string)[]) { photoPanel.replaceChildren(h('h2', { text: 'Referenzfoto' }), ...nodes.map((n) => (typeof n === 'string' ? h('div', { text: n, attrs: { 'data-testid': 'photo-state' } }) : n))); }
+function showGallery(found: GalleryItem[], index: number, more: boolean, onGo: (delta: number) => void) {
+  const it = found[index];
+  const p = it.photo;
+  const nav = (label: string, testid: string, delta: number, disabled: boolean) => { const b = h('button', { text: label, attrs: { type: 'button', 'data-testid': testid, ...(disabled ? { disabled: '' } : {}) } }); b.addEventListener('click', () => onGo(delta)); return b; };
+  showPhoto(
+    h('img', { attrs: { src: p.imageUrl, alt: 'Referenzfoto', 'data-testid': 'photo-img' } }),
+    h('div', { attrs: { class: 'photo-nav' } }, nav('‹', 'photo-prev', -1, index === 0), h('span', { text: `${index + 1} / ${found.length}${more ? '+' : ''}`, attrs: { 'data-testid': 'photo-pos' } }), nav('›', 'photo-next', 1, index + 1 >= found.length)),
+    h('div', { attrs: { class: 'photo-credit', 'data-testid': 'photo-credit' } },
+      h('div', { text: [it.registration, p.date ? p.date.slice(0, 10) : ''].filter(Boolean).join(' · '), attrs: { 'data-testid': 'photo-caption-head' } }),
+      h('span', { text: `${p.photographer} · ${p.source} · ${p.licenceText} · ` }),
+      h('a', { text: 'Seite öffnen', attrs: { href: p.pageUrl, target: '_blank', rel: 'noopener noreferrer', 'data-testid': 'photo-link' } })),
+  );
+}
 async function updatePhoto() {
   const mine = ++photoRequest;
   const g = sightings.selected;
   const row = g && sightings.response?.rows.find((r) => r.prefix === g.prefix && r.typklasse === state.file.typklasse);
   if (!row) { showPhoto('Keine Sichtung gewählt'); return; }
   showPhoto('Lade Foto …');
-  let failed = 0;
-  const samples = row.samples ?? [];
-  for (const s of samples) {
-    try {
-      const q = new URLSearchParams({ icao24: s.icao24 });
-      if (s.registration) q.set('registration', s.registration);
-      const res = await fetch(`/api/photos/reference?${q}`);
-      if (!res.ok) throw new Error(String(res.status));
-      const body = (await res.json()) as { status: string; photos?: RefPhoto[] };
-      if (mine !== photoRequest) return;
-      if (body.status === 'ok' && body.photos?.length) {
-        const p = body.photos[0];
-        showPhoto(
-          h('img', { attrs: { src: p.imageUrl, alt: 'Referenzfoto', 'data-testid': 'photo-img' } }),
-          h('div', { attrs: { class: 'photo-credit', 'data-testid': 'photo-credit' } }, h('span', { text: `${p.photographer} · ${p.source} · ${p.licenceText} · ` }), h('a', { text: 'Seite öffnen', attrs: { href: p.pageUrl, target: '_blank', rel: 'noopener noreferrer', 'data-testid': 'photo-link' } })),
-        );
-        return;
-      }
-    } catch {
-      failed++;
-      if (mine !== photoRequest) return;
+  const samples = (row.samples ?? []).filter((s) => s.registration);
+  const found: GalleryItem[] = [];
+  let next = 0; let failed = 0; let index = 0; let pumping = false;
+  const render = () => {
+    if (mine !== photoRequest) return;
+    if (found.length > 0) showGallery(found, index, next < samples.length, (d) => { index = Math.min(Math.max(index + d, 0), found.length - 1); render(); void pump(); });
+    else if (next >= samples.length) { if (samples.length > 0 && failed === samples.length) showPhoto(h('div', { text: 'Foto nicht verfügbar', attrs: { class: 'error', 'data-testid': 'photo-state' } })); else showPhoto('Kein Foto'); }
+  };
+  // one request at a time: until the current and the next photo are known
+  const pump = async () => {
+    if (pumping) return;
+    pumping = true;
+    while (mine === photoRequest && next < samples.length && found.length < index + 2) {
+      const s = samples[next++];
+      try {
+        const q = new URLSearchParams({ icao24: s.icao24 });
+        if (s.registration) q.set('registration', s.registration);
+        const res = await fetch(`/api/photos/reference?${q}`);
+        if (!res.ok) throw new Error(String(res.status));
+        const body = (await res.json()) as { status: string; photos?: RefPhoto[] };
+        if (mine !== photoRequest) return;
+        if (body.status === 'ok' && body.photos?.length) found.push({ registration: s.registration ?? null, photo: body.photos[0] });
+      } catch { failed++; }
+      render();
     }
-  }
-  if (mine !== photoRequest) return;
-  if (samples.length > 0 && failed === samples.length) showPhoto(h('div', { text: 'Foto nicht verfügbar', attrs: { class: 'error', 'data-testid': 'photo-state' } }));
-  else showPhoto('Kein Foto');
+    pumping = false;
+  };
+  render();
+  await pump();
 }
 function renderTypeSelect() {
   const { options, preselected } = typeOptions(sightings.selected, typklassen, Object.keys(PLANE_PARTS));

@@ -87,6 +87,19 @@ describe('CommonsPhotoSource', () => {
     const ids = 'photos' in r ? r.photos.map((p) => p.id) : [];
     expect(ids).toEqual(['102', '101']); // search `index` order; 102 matches via its (HTML) description only
   });
+  it('sorts newest first by DateTimeOriginal, falling back to the upload timestamp; a photo with neither carries no date', async () => {
+    const page = (id: number, index: number, extmetadata: object, timestamp: string) => ({ pageid: id, title: `File:D-AIXA ${id}.jpg`, index, imageinfo: [{ thumburl: `https://u/${id}.jpg`, descriptionurl: `https://c/${id}`, timestamp, extmetadata }] });
+    const body = JSON.stringify({ query: { pages: {
+      1: page(1, 1, { DateTimeOriginal: { value: '2015-03-01 10:00:00' } }, '2024-01-01T00:00:00Z'),
+      2: page(2, 2, { DateTimeOriginal: { value: '<time>2021-06-15</time>' } }, '2021-07-01T00:00:00Z'),
+      3: page(3, 3, {}, '2019-01-01T00:00:00Z'),
+      4: page(4, 4, {}, ''),
+    } } });
+    const r = await make(reply(200, body)).lookup(Q);
+    if (!('photos' in r)) throw new Error('unavailable');
+    expect(r.photos.map((p) => p.id)).toEqual(['2', '3', '1', '4']);
+    expect(r.photos.map((p) => p.date)).toEqual(['2021-06-15T00:00:00.000Z', '2019-01-01T00:00:00.000Z', '2015-03-01T10:00:00.000Z', undefined]); // no DateTimeOriginal and no timestamp: no date, sorted last
+  });
   it('credit: artist (HTML stripped, entities decoded) · licence · Wikimedia Commons; page = file page', async () => {
     const r = await make(reply(200, fixture('commons-hit'))).lookup(Q);
     expect('photos' in r && r.photos).toEqual([

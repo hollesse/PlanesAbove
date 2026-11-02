@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 1
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 16
+- **Doing:** 0
+- **Done:** 17
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **livery-editor-c24r8** — Reference-photo gallery - the newest Commons photo for each registration, up to 20 to click through (feature) — `doing/livery-editor-c24r8-referenzfoto-galerie-je-kennzeichen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **livery-editor-c24r8** — Reference-photo gallery - the newest Commons photo for each registration, up to 20 to click through (feature) — `done/livery-editor-c24r8-referenzfoto-galerie-je-kennzeichen.md`
 - **livery-editor-q0xd2** — Logo hochladen (SVG/PNG) über das Schreib-Plugin nach svg/logos/, danach sofort in der Logo-Liste und im LOGO-Index (feature) — `done/livery-editor-q0xd2-logo-upload-ueber-schreib-plugin.md`
 - **livery-editor-gn6gp** — Logo-Ebene: vorhandenes Logo wählen, auf dem Brett platzieren (Transform-Rahmen: verschieben, skalieren, drehen), gerendert in Szene, Story und Editor (feature) — `done/livery-editor-gn6gp-logo-upload-und-platzierung.md`
 - **livery-editor-atp95** — Typklassen-Select zeigt beim Start „double-decker“, obwohl narrowbody geladen ist (bug) — `done/livery-editor-atp95-typklassen-select-zeigt-beim-start-falschen-typ.md`

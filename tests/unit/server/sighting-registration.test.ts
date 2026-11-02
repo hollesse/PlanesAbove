@@ -44,12 +44,12 @@ describe('registration column', () => {
     obs('a1', { registration: 'D-BBBB' }, NOW + 2000);
     expect(regs(db)).toEqual([{ icao24: 'a1', registration: 'D-AAAA' }]);
   });
-  it('delivers the registration in samples', () => {
+  it('delivers the registration in samples; sightings without one are no samples', () => {
     const { db, obs } = mk();
     obs('a1', { registration: 'D-AIXA' });
     obs('a2');
     const s = sightingsByClass(db, { days: 7, nowMs: NOW + 1000 }).rows[0].samples;
-    expect(s.map((x) => [x.icao24, x.registration]).sort()).toEqual([['a1', 'D-AIXA'], ['a2', null]]);
+    expect(s.map((x) => [x.icao24, x.registration])).toEqual([['a1', 'D-AIXA']]);
   });
 });
 

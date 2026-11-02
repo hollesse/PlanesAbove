@@ -8,7 +8,7 @@ export interface SightingsByClassRow { prefix: string; airline: string | null; t
 export interface SightingsByClass { days: number; standort: StandortFilter; rows: SightingsByClassRow[] }
 
 const prefixOf = (callsign: string | null): string => (callsign && /^[A-Z]{3}[0-9]/.test(callsign) ? callsign.slice(0, 3) : '?');
-const MAX_SAMPLES = 3;
+const MAX_SAMPLES = 20;
 
 /** Same Standort semantics as liveryStats; `hasPoints` false = database from before migration 0006. */
 export function sightingsByClass(db: StatsDb, opts: { days: number; nowMs: number; standort?: StandortFilter; hasPoints?: boolean }): SightingsByClass {
@@ -33,7 +33,8 @@ export function sightingsByClass(db: StatsDb, opts: { days: number; nowMs: numbe
     if (!g) { g = { prefix, airline: null, typklasse: r.typklasse, count: 0, lastSeenMs: r.lastSeenMs, samples: [] }; groups.set(key, g); }
     g.count++;
     if (g.airline === null) g.airline = r.airline;
-    if (g.samples.length < MAX_SAMPLES) g.samples.push({ icao24: r.icao24, registration: r.registration, callsign: r.callsign, lastSeenMs: r.lastSeenMs });
+    // one sample per registration (newest sighting wins); a photo needs a registration, so sightings without one are no samples
+    if (r.registration && g.samples.length < MAX_SAMPLES && !g.samples.some((x) => x.registration === r.registration)) g.samples.push({ icao24: r.icao24, registration: r.registration, callsign: r.callsign, lastSeenMs: r.lastSeenMs });
   }
   return {
     days: opts.days,

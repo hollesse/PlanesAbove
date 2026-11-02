@@ -5,6 +5,30 @@ Newest entries on top.
 
 ---
 
+## 2026-11-02 13:14 -- Task verified and completed: livery-editor-c24r8 - Reference-photo gallery - the newest Commons photo for each registration, up to 20 to click through
+
+**Type:** Work / Task completion
+**Task:** livery-editor-c24r8 - Reference-photo gallery - the newest Commons photo for each registration, up to 20 to click through
+**Summary:** Referenzfoto-Galerie im Editor: je Kennzeichen das neueste Commons-Foto, bis zu 20, lazy geladen
+**Duration:** 9m
+**Verification:** PASS (iteration 2)
+**Files changed:** 9
+**Tests added:** 4
+**ADRs written:** 0039
+
+---
+
+## 2026-11-02 13:11 -- Verification failed: livery-editor-c24r8 - Reference-photo gallery - the newest Commons photo for each registration, up to 20 to click through
+
+**Type:** Work / Verification failure
+**Task:** livery-editor-c24r8 - Reference-photo gallery - the newest Commons photo for each registration, up to 20 to click through
+**Iteration:** 1 of 3
+**Reasons:** ADR 0033 §1/§2 contract changed (samples 3→20 per registration, newest-first + Photo.date) without an ADR amendment, README Referenzfoto bullet still describes a single photo (delta only appended an English bullet)
+**Iteration hint:** likely-fixable
+**Next:** re-dispatched worker
+
+---
+
 ## 2026-11-02 13:05 -- Batch started: [livery-editor-c24r8]
 
 **Type:** Work / Batch start

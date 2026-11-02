@@ -15,6 +15,8 @@ export interface Photo {
   /** Ready-made credit line shown next to the image. */
   licenceText: string;
   /** Pixel size of `imageUrl` as the source's response states it (not measured; absent when the source gives none). */
+  /** When the photo was taken (ISO 8601, Commons: DateTimeOriginal, falling back to the upload timestamp); absent when the source gives none. */
+  date?: string;
   size?: { width: number; height: number };
 }
 
