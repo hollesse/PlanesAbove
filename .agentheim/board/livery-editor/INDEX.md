@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 1
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 16
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **livery-editor-c24r8** — Reference-photo gallery - the newest Commons photo for each registration, up to 20 to click through (feature) — `todo/livery-editor-c24r8-referenzfoto-galerie-je-kennzeichen.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **livery-editor-c24r8** — Reference-photo gallery - the newest Commons photo for each registration, up to 20 to click through (feature) — `doing/livery-editor-c24r8-referenzfoto-galerie-je-kennzeichen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)

@@ -1,7 +1,7 @@
 ---
 id: livery-editor-c24r8
 title: Reference-photo gallery - the newest Commons photo for each registration, up to 20 to click through
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-02
