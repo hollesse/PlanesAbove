@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-02 16:59 -- Batch started: [livery-editor-jrh3c]
+
+**Type:** Work / Batch start
+**Tasks:** livery-editor-jrh3c - Farbpalette der Airline - die in ihren Lackierungen schon genutzten Farben als Felder zum Anklicken, damit alle Typklassen dieselben Farben bekommen
+**Parallel:** scoped — builder named livery-editor-jrh3c; no other ready tasks dispatched
+
+---
+
 ## 2026-11-02 16:56 -- Modeling / Captured: livery-editor-jrh3c - Farbpalette der Airline - die in ihren Lackierungen schon genutzten Farben als Felder zum Anklicken, damit alle Typklassen dieselben Farben bekommen
 
 **Type:** Modeling / Capture

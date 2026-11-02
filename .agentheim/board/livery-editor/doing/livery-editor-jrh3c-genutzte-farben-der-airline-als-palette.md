@@ -1,7 +1,7 @@
 ---
 id: livery-editor-jrh3c
 title: Farbpalette der Airline - die in ihren Lackierungen schon genutzten Farben als Felder zum Anklicken, damit alle Typklassen dieselben Farben bekommen
-status: todo
+status: doing
 type: feature
 context: livery-editor
 created: 2026-11-02
