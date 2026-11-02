@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-02 13:04 -- Modeling / Captured: livery-editor-c24r8 - Reference-photo gallery - the newest Commons photo for each registration, up to 20 to click through
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** todo
+**Summary:** Referenzfoto-Galerie im Editor: je Kennzeichen (bis 20, Sichtungen dedupliziert) das neueste Commons-Foto, lazy geladen, zum Durchblättern.
+
+---
+
 ## 2026-11-01 21:20 -- Work session ended
 
 **Type:** Work / Session end
