@@ -1,7 +1,7 @@
 ---
 id: liveries-bgfwz
 title: Rumpf und Finne standardmäßig wirklich weiß (#FFFFFF statt hellgrau #F4F4F2) in der Render-Funktion der Lackierungsdateien
-status: todo
+status: doing
 type: bug
 context: liveries
 created: 2026-11-02

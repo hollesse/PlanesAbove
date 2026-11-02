@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-02 17:17 -- Batch started: [liveries-bgfwz]
+
+**Type:** Work / Batch start
+**Tasks:** liveries-bgfwz - Rumpf und Finne standardmäßig wirklich weiß (#FFFFFF statt hellgrau #F4F4F2) in der Render-Funktion der Lackierungsdateien
+**Parallel:** scoped — builder named liveries-bgfwz; no other ready tasks dispatched
+
+---
+
 ## 2026-11-02 17:15 -- Modeling / Captured: liveries-bgfwz - Rumpf und Finne standardmäßig wirklich weiß (#FFFFFF statt hellgrau #F4F4F2) in der Render-Funktion der Lackierungsdateien
 
 **Type:** Modeling / Capture

@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 6
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **liveries-bgfwz** — Rumpf und Finne standardmäßig wirklich weiß (#FFFFFF statt hellgrau #F4F4F2) in der Render-Funktion der Lackierungsdateien (bug) — `todo/liveries-bgfwz-rumpf-und-finne-standardmaessig-weiss.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **liveries-bgfwz** — Rumpf und Finne standardmäßig wirklich weiß (#FFFFFF statt hellgrau #F4F4F2) in der Render-Funktion der Lackierungsdateien (bug) — `doing/liveries-bgfwz-rumpf-und-finne-standardmaessig-weiss.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
