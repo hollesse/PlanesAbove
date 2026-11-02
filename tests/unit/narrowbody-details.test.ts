@@ -5,10 +5,11 @@ const details = readFileSync('src/client/ui/assets/planes/narrowbody/details.svg
 const legacy = readFileSync('src/client/ui/assets/svg/narrowbody.svg', 'utf8');
 
 describe('narrowbody details.svg cockpit windows', () => {
-  it('contains the complete paint-window-line path of the legacy graphic', () => {
+  it('keeps the side cockpit windows of the legacy graphic (windshield follows the new nose, liveries-ygdxc)', () => {
     const legacyD = legacy.match(/class="paint-window-line"[^>]*\sd="([^"]+)"/)![1];
-    expect(legacyD.match(/M/g)!.length).toBeGreaterThan(1);
-    expect(details).toContain(`fill="#3A3F44" d="${legacyD}"`);
+    const subs = legacyD.split(/ (?=M)/);
+    expect(subs.length).toBeGreaterThan(1);
+    for (const sub of subs.slice(1)) expect(details).toContain(sub);
   });
   it('keeps engine inlet ring and fan', () => {
     expect(details).toContain('<ellipse');

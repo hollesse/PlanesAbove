@@ -1,7 +1,7 @@
 ---
 id: liveries-ygdxc
 title: Realistische Rumpfspitze für alle fünf Silhouetten im neuen Format - stumpf gerundete Nase aus mehreren tangentenstetigen Kurven statt einer Spitze aus zwei Kurven
-status: doing
+status: done
 type: feature
 context: liveries
 created: 2026-11-02
@@ -65,3 +65,9 @@ passen. Beim jumbo-hump betrifft das nur die Nase, nicht den Buckel.
 - Die Editor-E2E vergleicht Brett und Story pixelweise — Storybook vor dem Lauf neu bauen (siehe liveries-bgfwz).
 - Prior art: liveries-wyypc (Cockpitfenster narrowbody), liveries-yafve / liveries-ecn02 (Silhouetten der
   übrigen Typen), liveries-yzshd (Trennlinie Rumpf/Finne, Umriss-Masken).
+
+## Outcome
+
+Replaced the two-quadratic nose corner of narrowbody, widebody, regional-jet, jumbo-hump (nose only, hump untouched; crown joins the hump curve tangent-continuously at 930/168) and double-decker with 4-5 cubic Beziers (G1 with belly/top line): chin rises gently to a blunt tip at 40% of nose height, crown descends in a long gentle arc, steeper at the windshield. Tip x, belly (y=260) and top lines unchanged (tip x within +-5). outline-fuselage and the #body fuselage carry identical nose geometry. The first (curved) cockpit-window subpath in each details.svg was replaced by a windshield band offset inward along the new crown (jumbo-hump: windshield band added ahead of the hump windows); side windows untouched.
+
+Tests: new tests/unit/nose-shape.test.ts (35 tests: >=3 curve segments, max turning angle between consecutive samples < 20 deg [verified failing on old geometry], tip x/belly/top within +-5, tip at 33-47% height, outline vs body nose equal, window points inside fuselage polygon, windshield reaches the nose). Legacy-comparison assertions in plane-details.test.ts and narrowbody-details.test.ts were relaxed (legacy fuselage outline and legacy windshield subpath no longer apply; side windows and fin outline still checked); livery-render-layers snapshot updated deliberately (only nose geometry in the body/clip/outline strings changed). Full unit suite and typecheck green; full editor E2E (34 tests, Storybook rebuilt from the worktree, temp config deleted) green. Visually checked via rendered PNG.
