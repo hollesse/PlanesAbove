@@ -1,7 +1,7 @@
 ---
 id: liveries-ygdxc
 title: Realistische Rumpfspitze für alle fünf Silhouetten im neuen Format - stumpf gerundete Nase aus mehreren tangentenstetigen Kurven statt einer Spitze aus zwei Kurven
-status: todo
+status: doing
 type: feature
 context: liveries
 created: 2026-11-02

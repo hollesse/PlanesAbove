@@ -5,6 +5,14 @@ Newest entries on top.
 
 ---
 
+## 2026-11-02 17:26 -- Batch started: [liveries-ygdxc]
+
+**Type:** Work / Batch start
+**Tasks:** liveries-ygdxc - Realistische Rumpfspitze für alle fünf Silhouetten im neuen Format - stumpf gerundete Nase aus mehreren tangentenstetigen Kurven statt einer Spitze aus zwei Kurven
+**Parallel:** scoped — builder named liveries-ygdxc; no other ready tasks dispatched
+
+---
+
 ## 2026-11-02 17:26 -- Modeling / Captured: liveries-ygdxc - Realistische Rumpfspitze für alle fünf Silhouetten im neuen Format - stumpf gerundete Nase aus mehreren tangentenstetigen Kurven statt einer Spitze aus zwei Kurven
 
 **Type:** Modeling / Capture

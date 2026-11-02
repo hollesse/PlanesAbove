@@ -11,18 +11,18 @@ Catalog of this bounded context's tasks by status.
 
 <!-- task-counts:start -->
 - **Backlog:** 0
-- **Todo:** 1
-- **Doing:** 0
+- **Todo:** 0
+- **Doing:** 1
 - **Done:** 7
 <!-- task-counts:end -->
 
 ### Todo
 <!-- todo-list:start -->
-- **liveries-ygdxc** — Realistische Rumpfspitze für alle fünf Silhouetten im neuen Format - stumpf gerundete Nase aus mehreren tangentenstetigen Kurven statt einer Spitze aus zwei Kurven (feature) — `todo/liveries-ygdxc-realistische-rumpfspitze-alle-typklassen.md`
 <!-- todo-list:end -->
 
 ### Doing
 <!-- doing-list:start -->
+- **liveries-ygdxc** — Realistische Rumpfspitze für alle fünf Silhouetten im neuen Format - stumpf gerundete Nase aus mehreren tangentenstetigen Kurven statt einer Spitze aus zwei Kurven (feature) — `doing/liveries-ygdxc-realistische-rumpfspitze-alle-typklassen.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
