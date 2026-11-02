@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-02 17:15 -- Modeling / Captured: liveries-bgfwz - Rumpf und Finne standardmäßig wirklich weiß (#FFFFFF statt hellgrau #F4F4F2) in der Render-Funktion der Lackierungsdateien
+
+**Type:** Modeling / Capture
+**BC:** liveries
+**Filed to:** todo
+**Summary:** BODY_FILL der Render-Funktion von #F4F4F2 auf #FFFFFF; alte CSS-Lackierungen, Silhouetten-Fallbacks und Farbfeld-Standards bleiben.
+
+---
+
 ## 2026-11-02 17:04 -- Work session ended
 
 **Type:** Work / Session end
