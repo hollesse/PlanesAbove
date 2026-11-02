@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-02 16:56 -- Modeling / Captured: livery-editor-jrh3c - Farbpalette der Airline - die in ihren Lackierungen schon genutzten Farben als Felder zum Anklicken, damit alle Typklassen dieselben Farben bekommen
+
+**Type:** Modeling / Capture
+**BC:** livery-editor
+**Filed to:** todo
+**Summary:** Airline-Palette im Editor: alle schon genutzten Farben der Airline (alle Typklassen plus offener Entwurf) als Felder; Klick färbt die gewählte Ebene oder setzt die Zeichenfarbe.
+
+---
+
 ## 2026-11-02 13:15 -- Work session ended
 
 **Type:** Work / Session end
