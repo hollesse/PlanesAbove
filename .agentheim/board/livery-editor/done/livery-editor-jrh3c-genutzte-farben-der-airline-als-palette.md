@@ -1,7 +1,7 @@
 ---
 id: livery-editor-jrh3c
 title: Farbpalette der Airline - die in ihren Lackierungen schon genutzten Farben als Felder zum Anklicken, damit alle Typklassen dieselben Farben bekommen
-status: doing
+status: done
 type: feature
 context: livery-editor
 created: 2026-11-02
@@ -66,3 +66,11 @@ Reine Ableitung aus Dateien, kein neues Dateiformat, kein Server-Endpunkt.
   Typklasse taucht erst nach dem Regenerieren des Index auf — akzeptiert.
 - Offen für später (nicht in diesem Task): Farben benennen („Lufthansa-Blau“), Palette auch in Farbfeldern
   (engines/wings/tailplane) per Klick setzen.
+
+## Outcome
+
+Airline-Palette im Editor umgesetzt. Reine Funktion `airlinePalette(liveryId, files, current)` in `tools/livery-editor/palette.ts` (7 Unit-Tests): sammelt Pfad-Farben und Farbfelder aller Dateien `<livery>/*` plus den offenen Entwurf (der Entwurf ersetzt seine gespeicherte Datei gleichen Schluessels, damit nichts doppelt zaehlt), dedupliziert lowercase, sortiert nach Haeufigkeit, stabil nach erstem Vorkommen. Farbfelder, die noch auf dem Renderer-Standard (`FIELD_DEFAULTS`) stehen, zaehlen nicht mit - sonst waere die Palette fuer eine neue Airline mit leerem Brett nie leer (Abweichung/Praezisierung gegenueber dem Task-Text, noetig fuer das Hinweis-Kriterium).
+
+UI in `tools/livery-editor/src/main.ts` (`renderPalette`, aufgerufen am Ende von `drawBoard` und beim Aendern der Lackierungs-ID): Felder `palette-swatch` (`data-color`, Tooltip/aria-label = Hex) bzw. Hinweis `palette-empty`, im linken Panel direkt unter dem Feld "Farbe" (ueberdeckt das Brett nicht). Klick: Pfad-Ebene gewaehlt -> `recolorLayer` + Ebenenpanel neu; sonst `state.pathColor` und das Feld `path-color` ziehen mit. CSS in `index.html`.
+
+E2E `tests/e2e-editor/palette.spec.ts` (4 Tests): Farbe aus anderer Typklasse + Hinweis bei unbekannter Airline, Klick mit Auswahl, Klick ohne Auswahl, neue Entwurfsfarbe ohne Speichern. Gesamte Editor-E2E-Suite (34) lokal gruen auf Port 5176 mit temporaerer Config (geloescht) und statischem Storybook aus dem Haupt-Tree; `npm test` (898) und `typecheck` gruen. Das [human-eye]-Kriterium (Platzierung/Zeichenfluss) bleibt dem Nutzer.

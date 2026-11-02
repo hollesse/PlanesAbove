@@ -31,6 +31,7 @@ supporting — Werkzeug für die Illustrationsarbeit; die Himmelsszene braucht n
 - **Eckmarker**: quadratischer Overlay-Griff (`vertex-handle-<i>`) an jedem Eckpunkt der ausgewaehlten Pfad-Ebene; Ziehen setzt `points[i]` (gefangen), `via` bleibt unveraendert. Unterscheidet sich vom runden Rundungsgriff in der Segmentmitte.
 - **Vorschau** — solange die Leertaste gehalten wird (kein Textfeld fokussiert), ist das gesamte Overlay des Zeichenbretts (Auswahl, Marker, Griffe, Entwurf) ausgeblendet und Brett-Klicks sind wirkungslos; Loslassen bringt alles zurück, die Auswahl bleibt. Auswahl aufheben: Klick auf die gewählte Ebenenzeile oder Escape ohne Entwurf.
 - **Gummiband** — gestrichelte Vorschau des nächsten Segments vom letzten Entwurfspunkt zur Maus (kein Drücken nötig); nahe dem ersten Punkt rastet sie dort ein; verschwindet beim Verlassen des Boards.
+- **Airline-Palette** — Reihe von Farbfeldern im Editor mit allen Farben, die in den gespeicherten Lackierungen einer Airline (alle Typklassen) und im offenen Entwurf schon vorkommen: Pfad-Ebenen-Farben und Farbfelder (Triebwerke/Flügel/Höhenleitwerk), die nicht noch auf dem Renderer-Standard stehen; Logos tragen keine Farbe. Ohne Unterschied von Groß-/Kleinschreibung dedupliziert, häufigste zuerst. Klick färbt die gewählte Pfad-Ebene, sonst setzt er die Zeichenfarbe. Reine Ableitung (`tools/livery-editor/palette.ts`, `airlinePalette`), kein Dateiformat.
 
 ## Aggregates
 _Noch nicht modelliert._

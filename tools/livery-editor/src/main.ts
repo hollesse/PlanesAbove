@@ -9,6 +9,7 @@ import { logoFrame, newLogoLayer, rotationFromHandle, scaleFromCorner, snapRotat
 import { LIVERY_FILES } from '../../../src/client/ui/assets/generated/liveries';
 import { LIVERY_ID, LiveryFileSchema } from '../../../src/client/ui/domain/livery-file';
 import { groupByAirline, typeOptions, type AirlineGroup, type SightingsResponse } from '../gaps';
+import { airlinePalette } from '../palette';
 import { addPoint, closeDraft, draftPathData, setDraftVia, closesAt, snap, rubberTarget, CLOSE_RADIUS, type Draft } from '../board';
 
 // Walking-skeleton editor (spike): Typklasse choice, board with silhouette/details opacity, path tool, one colour, save.
@@ -29,6 +30,7 @@ for (const k of Object.keys(state.file.fields) as (keyof LiveryFile['fields'])[]
 
 const board = document.getElementById('board')!;
 const panel = document.getElementById('panel')!;
+const paletteEl = h('div', { attrs: { 'data-testid': 'palette', id: 'palette' } });
 const status = h('div', { attrs: { id: 'status', 'data-testid': 'status' } });
 
 let handleGesture = false;
@@ -126,6 +128,23 @@ function drawBoard() {
   board.replaceChildren();
   board.insertAdjacentHTML('afterbegin', renderLiverySvg(visibleFile(state.file, state.hidden), { silhouetteOpacity: state.silhouetteOpacity, detailsOpacity: state.detailsOpacity }));
   board.append(overlay);
+  renderPalette();
+}
+
+/** Airline palette: colours already used by this airline (all Typklassen + the open draft); a click recolours the selected path layer, else sets the draw colour. */
+function renderPalette() {
+  const colors = airlinePalette(state.file.livery, LIVERY_FILES, state.file);
+  if (!colors.length) { paletteEl.replaceChildren(h('span', { attrs: { 'data-testid': 'palette-empty' }, text: 'Noch keine Farben für diese Airline.' })); return; }
+  paletteEl.replaceChildren(...colors.map((c) => {
+    const b = h('button', { attrs: { type: 'button', class: 'palette-swatch', 'data-testid': 'palette-swatch', 'data-color': c, title: c, 'aria-label': c } });
+    b.style.background = c;
+    b.addEventListener('click', () => {
+      const sel = state.selected === null ? undefined : state.file.layers[state.selected];
+      if (sel && sel.type === 'path') { state.file = recolorLayer(state.file, state.selected!, c); drawBoard(); renderLayerPanel(); return; }
+      state.pathColor = c; pathColorInput.value = c; drawBoard();
+    });
+    return b;
+  }));
 }
 
 /** Transform frame of the selected logo layer: body (drag = move), four corner handles (scale), one rotation handle. */
@@ -324,7 +343,7 @@ saveBtn.addEventListener('click', async () => {
 
 const fieldColor = (k: 'engines' | 'wings' | 'tailplane', label: string) => row(label, input('color', state.file.fields[k]!, (v) => { state.file = { ...state.file, fields: { ...state.file.fields, [k]: v } }; drawBoard(); }, `field-${k}`));
 
-const liveryIdInput = input('text', state.file.livery, (v) => { state.file = { ...state.file, livery: v }; liveryIdInput.setAttribute('aria-invalid', String(!LIVERY_ID.test(v))); }, 'livery-id');
+const liveryIdInput = input('text', state.file.livery, (v) => { state.file = { ...state.file, livery: v }; liveryIdInput.setAttribute('aria-invalid', String(!LIVERY_ID.test(v))); renderPalette(); }, 'livery-id');
 
 // ---- Sichtungen: Abkürzung zum Setzen von Lackierungs-ID + Typklasse (ADR 0033); der Editor funktioniert auch ohne Heimserver ----
 const sightings = { days: 90, onlyGaps: true, response: null as SightingsResponse | null, failed: false, selected: null as AirlineGroup | null };
@@ -441,6 +460,7 @@ const daysInput = input('number', String(sightings.days), (v) => { const n = Mat
 const onlyGapsBox = input('checkbox', '', () => { sightings.onlyGaps = onlyGapsBox.checked; renderSightings(); }, 'sightings-only-gaps');
 onlyGapsBox.checked = true;
 
+const pathColorInput = input('color', state.pathColor, (v) => { state.pathColor = v; drawBoard(); }, 'path-color');
 panel.append(
   h('h2', { text: 'Sichtungen' }),
   row('Tage', daysInput),
@@ -454,7 +474,9 @@ panel.append(
   row('Details', input('range', '1', (v) => { state.detailsOpacity = Number(v); drawBoard(); }, 'opacity-details', { min: '0', max: '1', step: '0.05' })),
   h('h2', { text: 'Pfadwerkzeug' }),
   h('div', { text: 'Klicks setzen Punkte; Klick auf den ersten Punkt schließt den Pfad, Escape verwirft den Entwurf. Griffe an den Segmenten der gewählten Ebene ziehen rundet, Doppelklick macht wieder gerade.' }),
-  row('Farbe', input('color', state.pathColor, (v) => { state.pathColor = v; drawBoard(); }, 'path-color')),
+  row('Farbe', pathColorInput),
+  h('div', { text: 'Farben der Airline' }),
+  paletteEl,
   undoBtn,
   h('h2', { text: 'Ebenen (oben zuerst)' }),
   layerList,

@@ -12,8 +12,8 @@ Catalog of this bounded context's tasks by status.
 <!-- task-counts:start -->
 - **Backlog:** 1
 - **Todo:** 0
-- **Doing:** 1
-- **Done:** 17
+- **Doing:** 0
+- **Done:** 18
 <!-- task-counts:end -->
 
 ### Todo
@@ -22,11 +22,11 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
-- **livery-editor-jrh3c** — Farbpalette der Airline - die in ihren Lackierungen schon genutzten Farben als Felder zum Anklicken, damit alle Typklassen dieselben Farben bekommen (feature) — `doing/livery-editor-jrh3c-genutzte-farben-der-airline-als-palette.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
 <!-- done-list:start -->
+- **livery-editor-jrh3c** — Farbpalette der Airline - die in ihren Lackierungen schon genutzten Farben als Felder zum Anklicken, damit alle Typklassen dieselben Farben bekommen (feature) — `done/livery-editor-jrh3c-genutzte-farben-der-airline-als-palette.md`
 - **livery-editor-c24r8** — Reference-photo gallery - the newest Commons photo for each registration, up to 20 to click through (feature) — `done/livery-editor-c24r8-referenzfoto-galerie-je-kennzeichen.md`
 - **livery-editor-q0xd2** — Logo hochladen (SVG/PNG) über das Schreib-Plugin nach svg/logos/, danach sofort in der Logo-Liste und im LOGO-Index (feature) — `done/livery-editor-q0xd2-logo-upload-ueber-schreib-plugin.md`
 - **livery-editor-gn6gp** — Logo-Ebene: vorhandenes Logo wählen, auf dem Brett platzieren (Transform-Rahmen: verschieben, skalieren, drehen), gerendert in Szene, Story und Editor (feature) — `done/livery-editor-gn6gp-logo-upload-und-platzierung.md`
