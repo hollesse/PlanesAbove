@@ -17,13 +17,13 @@ describe.each(['widebody', 'regional-jet', 'jumbo-hump', 'double-decker'])('%s p
     expect(parts.outlines).toBeTruthy();
     expect(parts.details).toContain('<ellipse');
   });
-  it('keeps the side cockpit windows of the legacy graphic (windshield follows the new nose, liveries-ygdxc)', () => {
+  it('contains the complete paint-window-line path of the legacy graphic', () => {
     const d = attr(legacy, 'paint-window-line');
-    const subs = d.split(/ (?=M)/);
-    expect(subs.length).toBeGreaterThan(1);
-    for (const sub of subs.slice(1)) expect(details).toContain(sub);
+    expect(d.match(/M/g)!.length).toBeGreaterThan(1);
+    expect(details).toContain(`fill="#3A3F44" d="${d}"`);
   });
-  it('uses the legacy tail outline (the fuselage nose is new, liveries-ygdxc)', () => {
+  it('uses the legacy fuselage and tail outlines', () => {
+    expect(parts.outlines!.fuselage).toBe(attr(legacy, 'fuselage-outline'));
     expect(parts.outlines!.fin).toBe(attr(legacy, 'tail-outline'));
   });
   it('renders without error with all layers', () => {
