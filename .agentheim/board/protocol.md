@@ -5,6 +5,15 @@ Newest entries on top.
 
 ---
 
+## 2026-11-02 17:26 -- Modeling / Captured: liveries-ygdxc - Realistische Rumpfspitze für alle fünf Silhouetten im neuen Format - stumpf gerundete Nase aus mehreren tangentenstetigen Kurven statt einer Spitze aus zwei Kurven
+
+**Type:** Modeling / Capture
+**BC:** liveries
+**Filed to:** todo
+**Summary:** Rumpfnase aller fünf neuen Silhouetten neu: stumpf gerundet aus mehreren tangentenstetigen Kurven statt Knick; Umriss, Zuschnitt und Cockpitfenster konsistent.
+
+---
+
 ## 2026-11-02 17:21 -- Work session ended
 
 **Type:** Work / Session end
