@@ -25,3 +25,11 @@ describe('field layering front/back (ADR 0038)', () => {
     expect(svg.slice(0, svg.indexOf('lv-front-fields'))).not.toContain('lv-field-engines');
   });
 });
+
+describe('Rumpf und Finne standardmaessig weiss', () => {
+  it('a livery file without paths renders the lv-body group with fill #FFFFFF', () => {
+    const svg = renderLiverySvg({ version: 1, livery: 'x', typklasse: 'narrowbody', fields: {}, layers: [] } as never);
+    expect(svg).toMatch(/<g class="lv-body" fill="#FFFFFF">/);
+    expect(svg).not.toMatch(/F4F4F2/i);
+  });
+});

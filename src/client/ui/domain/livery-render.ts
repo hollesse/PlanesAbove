@@ -7,7 +7,7 @@ import type { LiveryFile, LogoLayer, PathLayer } from './livery-file';
 // front colour fields, details. Front fields (ADR 0038, e.g. rear engines) are cut out of the paths' clip area.
 
 export const OUTLINE = '#1F2A33';
-export const BODY_FILL = '#F4F4F2';
+export const BODY_FILL = '#FFFFFF';
 export const FIELD_DEFAULTS = { engines: '#C9CCCB', wings: '#E1E3E1', tailplane: '#E1E3E1' } as const;
 
 export interface RenderOptions {

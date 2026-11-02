@@ -1,7 +1,7 @@
 ---
 id: liveries-bgfwz
 title: Rumpf und Finne standardmäßig wirklich weiß (#FFFFFF statt hellgrau #F4F4F2) in der Render-Funktion der Lackierungsdateien
-status: doing
+status: done
 type: bug
 context: liveries
 created: 2026-11-02
@@ -44,3 +44,7 @@ Storybook, Himmelsszene.
 - `tools/livery-editor/index.html` nutzt `#F4F4F2` als Hintergrund des Fotopanels — Editor-Chrome, nicht betroffen.
 - Weiß mit dunklem Umriss (`OUTLINE #1F2A33`) bleibt auf dem Himmel gut sichtbar; auf dem weißen
   Editor-Hintergrund trennt der Umriss.
+
+## Outcome
+
+BODY_FILL in src/client/ui/domain/livery-render.ts changed from #F4F4F2 to #FFFFFF. FIELD_DEFAULTS, liveries.ts, the SVG assets and tools/livery-editor/index.html untouched. New unit test in tests/unit/livery-render-layers.test.ts asserts the lv-body group has fill #FFFFFF for a livery without paths. Snapshot livery-render-layers.test.ts.snap updated deliberately; diff shows only the lv-body fill changing. npm test (899 passed) and typecheck green. No other test asserted the old colour. Editor E2E and pixel-baseline projects were not run (no assertions on the colour found in tests/).
