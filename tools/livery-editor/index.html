@@ -13,9 +13,9 @@
     #board svg { display: block; width: 100%; height: auto; }
     #board svg.overlay { position: absolute; inset: 0; cursor: crosshair; }
     #board.preview svg.overlay { visibility: hidden; }
-    #photo { width: 380px; flex: none; padding: 16px; box-sizing: border-box; overflow-y: auto; background: #F4F4F2; border-left: 1px solid #C9CCCB; display: flex; flex-direction: column; gap: 8px; }
+    #photo { width: 900px; margin-top: 16px; padding: 16px; box-sizing: border-box; background: #F4F4F2; border: 1px solid #C9CCCB; display: flex; flex-direction: column; gap: 8px; } /* under the board: keeps the board at full width on a laptop screen */
     #photo h2 { font-size: 12px; text-transform: uppercase; margin: 0; letter-spacing: .06em; }
-    #photo img { width: 100%; height: auto; display: block; background: #D8D6CC; }
+    #photo img { width: 100%; height: auto; max-height: 480px; object-fit: contain; display: block; background: #D8D6CC; }
     #photo .photo-credit { font-size: 12px; }
     #photo .error { color: #b00020; }
     #status { min-height: 1.4em; }
@@ -48,8 +48,7 @@
 </head>
 <body>
   <div id="panel"></div>
-  <div id="stage"><div id="board"></div></div>
-  <aside id="photo" data-testid="photo-panel"></aside>
+  <div id="stage"><div id="board"></div><aside id="photo" data-testid="photo-panel"></aside></div>
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

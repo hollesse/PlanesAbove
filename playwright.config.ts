@@ -25,7 +25,6 @@ export default defineConfig({
   projects: [
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-    // viewport: sidebar 320 + board 900 (+48 padding) + photo panel 380 must fit side by side, otherwise the photo panel covers the board's right part
-    { name: 'editor-chromium', testDir: 'tests/e2e-editor', use: { ...devices['Desktop Chrome'], viewport: { width: 1720, height: 1000 }, baseURL: `http://127.0.0.1:${EDITOR_PORT}` } },
+    { name: 'editor-chromium', testDir: 'tests/e2e-editor', use: { ...devices['Desktop Chrome'], baseURL: `http://127.0.0.1:${EDITOR_PORT}` } },
   ],
 });
