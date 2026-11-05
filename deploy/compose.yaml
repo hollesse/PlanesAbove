@@ -2,7 +2,7 @@
 # https://planesabove.jtoepfer.de (Traefik, Wildcard-Zertifikat, keine ports:).
 # Images baut .github/workflows/deploy.yml (Tests als Gate); Doco-CD erkennt neue Digests, kein Watchtower mehr.
 # Konfiguration (ADR 0030): Defaults stecken im Image (repo config.yaml), hier nur die Werte pro Installation.
-# Pflicht-Secrets (${NAME}) und optionale (${NAME:-}) werden in ZimaDeploy unter /apps/planesabove eingetragen.
+# Pflicht-Secrets (ohne Default) und optionale (mit Default) werden in ZimaDeploy unter /apps/planesabove eingetragen.
 services:
   planesabove:
     image: ghcr.io/hollesse/planesabove:main   # Rollback: auf sha-<commit> pinnen
