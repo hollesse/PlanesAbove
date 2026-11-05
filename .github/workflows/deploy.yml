@@ -1,9 +1,10 @@
-# Continuous deployment (ADR 0022): test -> build images -> push to GHCR; Watchtower on the home server pulls them.
+# Continuous deployment (ADR 0022): test -> build images -> push to GHCR; Doco-CD (ZimaDeploy, deploy/compose.yaml) pulls them.
 name: deploy
 
 on:
   push:
     branches: [main]
+    paths-ignore: ["deploy/**"]
   workflow_dispatch:
     inputs:
       force_tts:

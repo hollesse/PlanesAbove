@@ -1,0 +1,56 @@
+# PlanesAbove im Homelab über ZimaDeploy/Doco-CD (https://deploy.jtoepfer.de). Erreichbar nur im Tailnet:
+# https://planesabove.jtoepfer.de (Traefik, Wildcard-Zertifikat, keine ports:).
+# Images baut .github/workflows/deploy.yml (Tests als Gate); Doco-CD erkennt neue Digests, kein Watchtower mehr.
+# Konfiguration (ADR 0030): Defaults stecken im Image (repo config.yaml), hier nur die Werte pro Installation.
+# Pflicht-Secrets (${NAME}) und optionale (${NAME:-}) werden in ZimaDeploy unter /apps/planesabove eingetragen.
+services:
+  planesabove:
+    image: ghcr.io/hollesse/planesabove:main   # Rollback: auf sha-<commit> pinnen
+    restart: unless-stopped
+    depends_on: [tts]
+    environment:
+      TZ: Europe/Berlin
+      PLANESABOVE_LAT: ${PLANESABOVE_LAT}
+      PLANESABOVE_LON: ${PLANESABOVE_LON}
+      PLANESABOVE_PLACE: ${PLANESABOVE_PLACE}
+      PLANESABOVE_RADIUS_KM: ${PLANESABOVE_RADIUS_KM:-30}
+      PLANESABOVE_DATA_DIR: /data
+      PLANESABOVE_SPEECH_ADAPTER: ${PLANESABOVE_SPEECH_ADAPTER:-piper}
+      PLANESABOVE_SPEECH_ENDPOINT: http://tts:5000
+      PLANESABOVE_SPEECH_VOICE: ${PLANESABOVE_SPEECH_VOICE:-}
+      PLANESABOVE_FLIGHTAWARE_ENABLED: ${PLANESABOVE_FLIGHTAWARE_ENABLED:-false}   # opt-in, kostet Geld
+      PLANESABOVE_CONFIG_OVERRIDE: ${PLANESABOVE_CONFIG_OVERRIDE:-}               # z. B. /data/override.yaml
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
+      FLIGHTAWARE_API_KEY: ${FLIGHTAWARE_API_KEY:-}
+      HEARTBEAT_URL: ${HEARTBEAT_URL:-}
+    volumes:
+      - /DATA/AppData/homelab/apps/planesabove:/data   # SQLite (Sichtungslog), Audio-Cache, optional override.yaml
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: proxy
+      traefik.http.routers.planesabove.rule: Host(`planesabove.jtoepfer.de`)
+      traefik.http.services.planesabove.loadbalancer.server.port: "8080"
+    networks: [proxy, internal]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  # Piper-TTS-Sidecar, nur intern als http://tts:5000 erreichbar
+  tts:
+    image: ghcr.io/hollesse/planesabove-tts:main
+    restart: unless-stopped
+    networks: [internal]
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+networks:
+  proxy:
+    external: true
+  internal: {}
