@@ -28,7 +28,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.docker.network: proxy
-      traefik.http.routers.planesabove.rule: Host(`planesabove.jtoepfer.de`)
+      traefik.http.routers.planesabove.rule: Host(`planesabove.jtoepfer.de`) || Host(`planesabove.lan.jtoepfer.de`)
       traefik.http.services.planesabove.loadbalancer.server.port: "8080"
     networks: [proxy, internal]
     healthcheck:
