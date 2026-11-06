@@ -15,6 +15,10 @@ export const EDITOR_LOGOS_OUT = path.join(os.tmpdir(), 'pa-editor-logos-out');
 export default defineConfig({
   testDir: 'tests/e2e',
   fullyParallel: true,
+  // One worker: the editor specs share one editor server and one EDITOR_OUT directory (they wipe it in beforeEach
+  // and assert on its whole listing), so two files running side by side corrupt each other. The Storybook
+  // projects are two tests, so a single worker costs nothing there.
+  workers: 1,
   reporter: [['list']],
   use: { baseURL: `http://127.0.0.1:${PORT}` },
   webServer: [
