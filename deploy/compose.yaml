@@ -7,9 +7,7 @@ services:
   planesabove:
     image: ghcr.io/hollesse/planesabove:main   # Rollback: auf sha-<commit> pinnen
     restart: unless-stopped
-    depends_on:
-      init-data: { condition: service_completed_successfully }
-      tts: { condition: service_started }
+    depends_on: [tts]
     environment:
       TZ: Europe/Berlin
       PLANESABOVE_LAT: ${PLANESABOVE_LAT}
@@ -42,16 +40,6 @@ services:
     logging:
       driver: json-file
       options: { max-size: "10m", max-file: "3" }
-
-  # Einmal-Job vor dem Start: Docker legt den Host-Ordner als root an, die App läuft aber als node (UID 1000)
-  # und könnte die SQLite-Datei sonst nicht öffnen ("unable to open database file").
-  init-data:
-    image: busybox:1.36
-    restart: "no"
-    command: ["chown", "-R", "1000:1000", "/data"]
-    volumes:
-      - /DATA/AppData/homelab/apps/planesabove:/data
-    network_mode: none
 
   # Piper-TTS-Sidecar, nur intern als http://tts:5000 erreichbar
   tts:
