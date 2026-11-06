@@ -1,5 +1,6 @@
 # PlanesAbove im Homelab über ZimaDeploy/Doco-CD (https://deploy.jtoepfer.de). Erreichbar nur im Tailnet:
 # https://planesabove.jtoepfer.de (Traefik, Wildcard-Zertifikat, keine ports:), im Heimnetz ohne Tailscale: https://planesabove.lan.jtoepfer.de
+# Storybook (Designsystem) unter https://planesabove-storybook.jtoepfer.de bzw. planesabove-storybook.lan.jtoepfer.de.
 # Images baut .github/workflows/deploy.yml (Tests als Gate); Doco-CD erkennt neue Digests, kein Watchtower mehr.
 # Konfiguration (ADR 0030): Defaults stecken im Image (repo config.yaml), hier nur die Werte pro Installation.
 # Pflicht-Secrets (ohne Default) und optionale (mit Default) werden in ZimaDeploy unter /apps/planesabove eingetragen.
@@ -37,6 +38,20 @@ services:
       timeout: 5s
       retries: 3
       start_period: 20s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  # Storybook-Designsystem (ADR 0002), statisch per nginx, eigene Subdomain
+  storybook:
+    image: ghcr.io/hollesse/planesabove-storybook:main
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: proxy
+      traefik.http.routers.planesabove-storybook.rule: Host(`planesabove-storybook.jtoepfer.de`) || Host(`planesabove-storybook.lan.jtoepfer.de`)
+      traefik.http.services.planesabove-storybook.loadbalancer.server.port: "8080"
+    networks: [proxy]
     logging:
       driver: json-file
       options: { max-size: "10m", max-file: "3" }

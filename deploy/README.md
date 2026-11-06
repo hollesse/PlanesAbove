@@ -8,6 +8,8 @@ außerhalb dieses Repos tun.
 - `deploy/compose.yaml` beschreibt den Stack. Image: `ghcr.io/hollesse/planesabove:main`.
 - Subdomain und Traefik-Router heißen wie das Repo, klein geschrieben mit Bindestrichen:
   `planesabove.jtoepfer.de`. Zweiter Name im Heimnetz: `planesabove.lan.jtoepfer.de`.
+- Zweiter Service `storybook` (Image `ghcr.io/hollesse/planesabove-storybook:main`, Dockerfile in
+  `docker/storybook/`) liefert das Designsystem unter `planesabove-storybook.jtoepfer.de`.
 - Keine `ports:`. Jeder Service, der erreichbar sein soll, hängt im externen Netz `proxy`
   und bekommt Traefik-Labels (siehe Vorlage).
 - Persistente Daten nur unter `/DATA/AppData/homelab/apps/planesabove/`.
