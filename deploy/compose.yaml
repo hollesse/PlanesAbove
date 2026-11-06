@@ -1,5 +1,5 @@
 # PlanesAbove im Homelab über ZimaDeploy/Doco-CD (https://deploy.jtoepfer.de). Erreichbar nur im Tailnet:
-# https://planesabove.jtoepfer.de (Traefik, Wildcard-Zertifikat, keine ports:).
+# https://planesabove.jtoepfer.de (Traefik, Wildcard-Zertifikat, keine ports:), im Heimnetz ohne Tailscale: https://planesabove.lan.jtoepfer.de
 # Images baut .github/workflows/deploy.yml (Tests als Gate); Doco-CD erkennt neue Digests, kein Watchtower mehr.
 # Konfiguration (ADR 0030): Defaults stecken im Image (repo config.yaml), hier nur die Werte pro Installation.
 # Pflicht-Secrets (ohne Default) und optionale (mit Default) werden in ZimaDeploy unter /apps/planesabove eingetragen.
