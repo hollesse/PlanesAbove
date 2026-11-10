@@ -111,7 +111,9 @@ jobs:
     # Official Playwright image: browsers and WebKit system libraries are already inside, so no
     # `playwright install --with-deps` (that apt step took 5 minutes on a slow mirror). The image tag MUST
     # match the @playwright/test version in package-lock.json, otherwise Playwright downloads browsers anyway.
-    # The image ships a newer Node without prebuilt better-sqlite3 binaries, so setup-node pins Node 22 inside it.
+    # The image has no C toolchain, and better-sqlite3 wants to compile there. The e2e run never opens a
+    # database (Storybook, editor and the server bundle with better-sqlite3 marked external), so install
+    # scripts are skipped. setup-node pins Node 22 like the other jobs.
     container: mcr.microsoft.com/playwright:v1.64.1-noble
     steps:
       - uses: actions/checkout@v4
@@ -119,5 +121,5 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      - run: npm ci --ignore-scripts
       - run: npm run e2e
