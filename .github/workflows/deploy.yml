@@ -108,11 +108,16 @@ jobs:
   e2e:
     needs: test
     runs-on: ubuntu-latest
-    # Official Playwright image: browsers, WebKit system libraries and Node 22 are already inside, so no
+    # Official Playwright image: browsers and WebKit system libraries are already inside, so no
     # `playwright install --with-deps` (that apt step took 5 minutes on a slow mirror). The image tag MUST
     # match the @playwright/test version in package-lock.json, otherwise Playwright downloads browsers anyway.
+    # The image ships a newer Node without prebuilt better-sqlite3 binaries, so setup-node pins Node 22 inside it.
     container: mcr.microsoft.com/playwright:v1.64.1-noble
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
       - run: npm ci
       - run: npm run e2e
