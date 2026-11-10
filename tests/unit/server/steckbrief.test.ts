@@ -61,6 +61,10 @@ describe('composeSpeechParts (Satzbausteine, sky-scene-b7w2n)', () => {
     expect(partsOf({ routeLegs: ['Frankfurt (FRA)', 'EDXX'] })).toHaveLength(1);
     expect(partsOf({ altitudeM: 0 })).toHaveLength(1);
   });
+  it('helicopter: "Hubschrauber" with masculine article and pronoun', () => {
+    expect(partsOf({ typklasse: 'helicopter', airlineName: 'ADAC', altitudeM: 480, verticalRateMs: 6 })).toEqual(['Das ist ein Hubschrauber der ADAC.', 'Der Hubschrauber fliegt in fünfhundert Metern Höhe.', 'Er befindet sich gerade im Steigflug.']);
+    expect(partsOf({ typklasse: 'helicopter', typeName: 'Airbus H145', altitudeM: 480 })[1]).toBe('Der Hubschrauber fliegt in fünfhundert Metern Höhe.');
+  });
   it('rounds altitude to 500 m, below 1000 m to 100 m', () => {
     expect([7480, 7240, 850].map(roundAltitudeM)).toEqual([7500, 7000, 900]);
   });
@@ -74,6 +78,11 @@ describe('cache layout of the blocks (sky-scene-jpjt2)', () => {
     expect(key({ ...f, airlineName: undefined, airlineIcao: undefined }, 0)).toBe('typ-airline/A320');
     expect(key({ airlineName: 'Lufthansa', airlineIcao: 'DLH' }, 0)).toBe('typ-airline/Flugzeug_DLH');
     expect(key({}, 0)).toBe('typ-airline/Flugzeug');
+    expect(key({ typklasse: 'helicopter' }, 0)).toBe('typ-airline/Hubschrauber');
+  });
+  it('helicopter altitude and phase blocks have their own keys', () => {
+    expect(key({ typklasse: 'helicopter', altitudeM: 3480 }, 1)).toBe('hoehe/hubschrauber-3500');
+    expect(key({ typklasse: 'helicopter', altitudeM: 3480, verticalRateMs: -9 }, 2)).toBe('phase/hubschrauber-sinkflug');
   });
   it('route: IATA from the label; altitude and phase keys', () => {
     expect(key({ routeLegs: ['Frankfurt (FRA)', 'Istanbul (IST)'] }, 1)).toBe('route/FRA-IST');

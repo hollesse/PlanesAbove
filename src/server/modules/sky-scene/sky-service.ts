@@ -98,7 +98,7 @@ export class SkyService {
     const route = !info ? null : info.legs.length > 2 ? `${info.legs[0]} → ${info.legs[info.legs.length - 1]}` : info.text;
     const { tc, airline, livery, typeCode } = this.identify(a);
     const altitudeM = a.altitudeM ?? 0;
-    const parts = composeSpeechParts({ airlineName: airline?.name, typeName: tc.typeName, typeCode: typeCode ?? a.typeCode, airlineIcao: airline?.prefix || undefined, altitudeM: a.altitudeM, verticalRateMs: a.verticalRateMs, routeLegs: info?.legs }, this.d.config.sources.route.plausibility.phaseMinRateMs);
+    const parts = composeSpeechParts({ airlineName: airline?.name, typeName: tc.typeName, typeCode: typeCode ?? a.typeCode, airlineIcao: airline?.prefix || undefined, altitudeM: a.altitudeM, verticalRateMs: a.verticalRateMs, routeLegs: info?.legs, typklasse: tc.typklasse }, this.d.config.sources.route.plausibility.phaseMinRateMs);
     const text = parts.map((p) => p.text).join(' ');
     return {
       icao24: a.icao24,
@@ -106,7 +106,7 @@ export class SkyService {
       flight: {
         operator: airline?.name ?? '',
         callsign: a.callsign,
-        aircraft: tc.typeName ?? a.typeCode ?? 'Flugzeug',
+        aircraft: tc.typeName ?? a.typeCode ?? (tc.typklasse === 'helicopter' ? 'Hubschrauber' : 'Flugzeug'),
         registration: a.registration ?? '',
         route,
         via: info?.via ?? [],
