@@ -25,9 +25,9 @@ sky:
   time: day
   weather: clear
 
-# Skeleton: only the white Standard-Lackierung is drawn. Set true to use airline liveries where the catalog has one.
+# Airline liveries from the catalog are drawn where one exists; set false to draw only the white Standard-Lackierung.
 liveries:
-  enabled: false
+  enabled: true
 
 sources:
   # Contact address REQUIRED while photo sources are active (Planespotters expects a descriptive User-Agent with e-mail or URL; boot warns without one).
