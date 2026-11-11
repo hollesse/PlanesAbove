@@ -3,9 +3,10 @@
    sky reaches every edge. The plain vh/% declarations stay first as a fallback for engines without dvh. */
 html, body { margin: 0; height: 100%; height: 100dvh; background: #0d0f12; overflow: hidden; -webkit-text-size-adjust: 100%; }
 body { display: flex; align-items: center; justify-content: center; }
-/* The 4:3 screen fills the iPad; on other displays it is letterboxed. */
-#app { width: min(100vw, calc(100vh * 4 / 3)); width: min(100dvw, calc(100dvh * 4 / 3)); }
-#app .pa-screen { border: none; }
-#app { position: relative; }
+/* Responsive stage (Querformat): the scene fills the whole screen for every format between 4:3 and 5:3 - the range the
+   layout is designed and tested for (every iPad lies in it: 4:3, 1.43:1, 1.52:1). Wider displays are letterboxed to 5:3,
+   narrower ones (portrait) are pillarboxed to 4:3 until a portrait layout exists. */
+#app { position: relative; width: min(100vw, calc(100vh * 5 / 3)); height: min(100vh, calc(100vw * 3 / 4)); width: min(100dvw, calc(100dvh * 5 / 3)); height: min(100dvh, calc(100dvw * 3 / 4)); }
+#app .pa-screen { border: none; aspect-ratio: auto; height: 100%; }
 /* Foto-Overlay host: covers the whole screen, sits next to (not inside) the re-rendered stage; only present while a overlay is open. */
 #app .pa-photo-host { position: absolute; inset: 0; width: auto; height: auto; background: transparent; z-index: 30; }
