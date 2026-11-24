@@ -20,10 +20,13 @@ scene:
 # PLANESABOVE_SPEECH_ADAPTER, PLANESABOVE_SPEECH_ENDPOINT (compose files do). Code defaults: 8080, ./data, piper, http://tts:5000.
 logLevel: info             # debug | info | warn | error (PLANESABOVE_LOG_LEVEL)
 
-# Placeholder sky until the weather module exists (ADR 0006): dawn|day|dusk|night x clear|light|overcast|fog|rain|snow|storm
+# Himmel = Tageszeit x Wetterlage (ADR 0006).
 sky:
-  time: day
-  weather: clear
+  time: auto               # auto = from the sun position at location (computed locally, no network); or pin one: dawn|day|dusk|night
+  weather: clear           # placeholder until the weather source exists: clear|light|overcast|fog|rain|snow|storm
+  sun:                     # solar elevation thresholds for time: auto (degrees)
+    nightBelowDeg: -6      # below: Nacht (-6 = end of civil twilight)
+    dayAboveDeg: 4         # above: Tag; in between Morgen- (sun rising) or Abenddämmerung (sun falling)
 
 # Airline liveries from the catalog are drawn where one exists; set false to draw only the white Standard-Lackierung.
 liveries:

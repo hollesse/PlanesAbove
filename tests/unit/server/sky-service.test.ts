@@ -29,6 +29,15 @@ const P = (icao24: string, distanceKm: number, extra: object = {}) => ({ icao24,
 const A320 = { callsign: 'DLH400', typeCode: 'A20N', registration: 'D-AIBI' };
 
 describe('SkyService Takt', () => {
+  it('Himmel: Tageszeit follows the sun at the location (time: auto), a pinned time wins (ADR 0006)', async () => {
+    const { svc, clock } = rig([{ at: 0, planes: [] }]);
+    expect(svc.state().sky).toEqual({ time: 'day', weather: 'clear' }); // 10:00 UTC in Frankfurt
+    await clock.advance(6.5 * 3600_000); // 16:30 UTC, after sunset
+    expect(svc.state().sky.time).toBe('dusk');
+    await clock.advance(3600_000);
+    expect(svc.state().sky.time).toBe('night');
+    expect(rig([{ at: 0, planes: [] }], 'sky: { time: night, weather: fog }').svc.state().sky).toEqual({ time: 'night', weather: 'fog' });
+  });
   it('empty sky: no planes, no recent', async () => {
     const { svc } = rig([{ at: 0, planes: [] }]);
     await svc.tick();

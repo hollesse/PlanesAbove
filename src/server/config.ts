@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { DEFAULT_CLOSED_AIRSPACES } from './modules/airspace/closed-airspace';
 import { FLIGHT_SOURCE_NAMES } from './modules/airspace/flight-source-names';
 import { PHOTO_SOURCE_NAMES, type PhotoSourceName } from './modules/airspace/photo-source';
+import { DEFAULT_SUN_THRESHOLDS } from './modules/weather/sun';
 const FLIGHTAWARE_DEFAULTS = { timeoutMs: 8000, monthlyBudgetUsd: 4.5, monthlyRequestCap: 900, usageSyncMinutes: 30, usageLagMinutes: 15, billingPeriodStartDay: 1 };
 const PLAUSIBILITY_DEFAULTS = { corridorBaseKm: 50, corridorPercent: 8, corridorMaxKm: 150, originZoneKm: 60, destinationZoneKm: 80, minHeadingCheckAltitudeM: 3000, maxHeadingDeviationDeg: 65, maxClimbDistanceKm: 400, climbMetersPerKm: 150, descentMetersPerKm: 80, profileSlackM: 1500, phaseMaxAltitudeM: 8000, phaseMinRateMs: 5, detourHeadingDeviationDeg: 90, closedAirspaceSampleKm: 100, closedAirspaces: DEFAULT_CLOSED_AIRSPACES, capReliefHeadingDeg: 20, capReliefCrossTrackRatio: 0.4 };
 const ROUTE_DEFAULTS = { enabled: true, order: ['hexdb' as const, 'adsbdb' as const, 'vrs' as const], hexdb: { timeoutMs: 5000, backoffMinutes: 5 }, adsbdb: { timeoutMs: 5000, backoffMinutes: 5 }, timeoutMs: 300000, snapshotRefreshHours: 24, cacheTtlHours: 6, negativeTtlMinutes: 10, compareAll: false, flightaware: FLIGHTAWARE_DEFAULTS, plausibility: PLAUSIBILITY_DEFAULTS };
@@ -25,11 +26,16 @@ const schema = z.object({
   pollIntervalSeconds: z.number().positive().default(30),
   dataDir: z.string().default('./data'),
   logLevel: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
-  /** Placeholder sky until the weather module exists (ADR 0006 stretch). */
+  /** Himmel (ADR 0006): Tageszeit from the local sun position (`auto`) or pinned; Wetterlage is a placeholder until the weather source exists. */
   sky: z.object({
-    time: z.enum(['dawn', 'day', 'dusk', 'night']).default('day'),
+    time: z.enum(['auto', 'dawn', 'day', 'dusk', 'night']).default('auto'),
     weather: z.enum(['clear', 'light', 'overcast', 'fog', 'rain', 'snow', 'storm']).default('clear'),
-  }).default({ time: 'day', weather: 'clear' }),
+    /** Solar elevation thresholds in degrees: Nacht below nightBelowDeg, Tag above dayAboveDeg, Dämmerung in between. */
+    sun: z.object({
+      nightBelowDeg: z.number().min(-18).max(0).default(DEFAULT_SUN_THRESHOLDS.nightBelowDeg),
+      dayAboveDeg: z.number().min(0).max(20).default(DEFAULT_SUN_THRESHOLDS.dayAboveDeg),
+    }).default(DEFAULT_SUN_THRESHOLDS),
+  }).default({ time: 'auto', weather: 'clear', sun: DEFAULT_SUN_THRESHOLDS }),
   liveries: z.object({ enabled: z.boolean().default(true) }).default({ enabled: true }),
   sources: z.object({
     userAgent: z.string().default('PlanesAbove/0.1 (self-hosted, single household)'),

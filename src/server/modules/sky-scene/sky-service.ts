@@ -13,6 +13,7 @@ import type { SightingRepository } from '../sighting-log/repository';
 import type { AudioService } from './audio-service';
 import { assignSlots, emptySlots, type Slots } from './slots';
 import { composeSpeechParts } from './steckbrief';
+import { skyTimeAt } from '../weather/sun';
 
 export interface FlightHealth { lastSuccessAt: number | null; lastTickAt: number | null; consecutiveFailures: number; lastErrorClass: string | null }
 
@@ -150,7 +151,7 @@ export class SkyService {
       lastSuccessAt: this.health.lastSuccessAt,
       place: config.place,
       clock: clockLabel,
-      sky: config.sky,
+      sky: { time: config.sky.time === 'auto' ? skyTimeAt(now, config.location, config.sky.sun) : config.sky.time, weather: config.sky.weather },
       planes: this.planes,
       recent: this.planes.length === 0 ? this.recentText(now) : undefined,
       client: config.client,
