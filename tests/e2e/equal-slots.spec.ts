@@ -23,7 +23,9 @@ for (const aspect of ['4:3', '5:3']) {
         expect(b.t, sel).toBeGreaterThanOrEqual(stage.t);
         expect(b.b, sel).toBeLessThanOrEqual(bar.t);
       }
-      expect(one.r).toBeLessThanOrEqual(two.l);
+      // nebeneinander: no overlap. versetzt (App, sky-scene-h8c2v): the slots may overlap towards the middle; front plane right and lower.
+      if (layout === 'nebeneinander') expect(one.r).toBeLessThanOrEqual(two.l);
+      else { expect(two.l).toBeGreaterThan(one.l); expect(two.t).toBeGreaterThan(one.t); }
     });
   }
 }
@@ -78,7 +80,7 @@ for (const aspect of ['4:3', '5:3']) {
         expect(b.t, t).toBeGreaterThanOrEqual(b.stageT);
         expect(b.b, t).toBeLessThanOrEqual(b.barT);
       }
-      expect(one.r, t).toBeLessThanOrEqual(two.l);
+      expect((two.l + two.r) / 2, t).toBeGreaterThan((one.l + one.r) / 2); // overlap towards the middle is allowed (sky-scene-h8c2v)
       expect(two.t, 'front plane (slot two, nose side) sits lower').toBeGreaterThan(one.t);
       expect(two.b).toBeGreaterThan(one.b);
       void f;
