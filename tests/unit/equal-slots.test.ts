@@ -82,7 +82,7 @@ describe('Entwurf: zwei Flugzeuge gleich groß (design-system-pyheh)', () => {
   });
 
   describe('Größenfaktor je Typklasse (design-system-q7mxe)', () => {
-    const table: Record<string, number> = { 'double-decker': 1.3, 'jumbo-hump': 1.25, widebody: 1.2, narrowbody: 1, 'regional-jet': 0.85, turboprop: 0.8, helicopter: 0.75, 'business-jet': 0.65, 'light-aircraft': 0.5, glider: 0.5 };
+    const table: Record<string, number> = { 'double-decker': 1.3, 'jumbo-hump': 1.25, widebody: 1.2, narrowbody: 1, 'regional-jet': 0.85, turboprop: 0.8, helicopter: 0.5, 'business-jet': 0.5, 'light-aircraft': 0.35, glider: 0.35 };
     it('has one constant per Typklasse with the decided length', () => {
       expect(Object.keys(PLANE_SIZE).sort()).toEqual([...PLANE_TYPE_IDS].sort());
       for (const [t, l] of Object.entries(table)) expect(PLANE_SIZE[t as keyof typeof PLANE_SIZE].length, t).toBe(l);

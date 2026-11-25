@@ -38,7 +38,7 @@ test('the equal-slot transitions are playable stories', async ({ page, request, 
 });
 
 // design-system-q7mxe: Groessenfaktor je Typklasse, gemessen an der sichtbaren (gezeichneten) Breite der Silhouette.
-const TYPES: Record<string, number> = { 'double-decker': 1.3, 'jumbo-hump': 1.25, widebody: 1.2, narrowbody: 1, 'regional-jet': 0.85, turboprop: 0.8, helicopter: 0.75, 'business-jet': 0.65, 'light-aircraft': 0.5, glider: 0.5 };
+const TYPES: Record<string, number> = { 'double-decker': 1.3, 'jumbo-hump': 1.25, widebody: 1.2, narrowbody: 1, 'regional-jet': 0.85, turboprop: 0.8, helicopter: 0.5, 'business-jet': 0.5, 'light-aircraft': 0.35, glider: 0.35 };
 type Page = import('@playwright/test').Page;
 const open = async (page: Page, request: import('@playwright/test').APIRequestContext, baseURL: string | undefined, name: string, args: string) => {
   const index = (await (await request.get(`${baseURL}/index.json`)).json()) as { entries: Record<string, Entry> };
@@ -96,7 +96,7 @@ for (const aspect of ['4:3', '5:3']) {
       expect(b.r).toBeLessThanOrEqual(b.stageR);
       expect(b.b).toBeLessThanOrEqual(b.barT);
     }
-    expect(Math.abs(vis.glider / vis.narrowbody - 0.5)).toBeLessThanOrEqual(0.03);
+    expect(Math.abs(vis.glider / vis.narrowbody - 0.35)).toBeLessThanOrEqual(0.03);
     expect(Math.abs(vis['double-decker'] / vis.narrowbody - 1.3)).toBeLessThanOrEqual(0.03);
   });
 }

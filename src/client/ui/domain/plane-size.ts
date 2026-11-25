@@ -1,4 +1,6 @@
 // Groessenfaktor je Typklasse (design-system-q7mxe, Betreiber-Entscheidung 2026-11-01, Variante "Deutlich").
+// Nachjustiert 2026-11-25 (Chef, nach Test auf dem iPad: Kleinflugzeuge zu gross): helicopter 0.75->0.5, business-jet 0.65->0.5,
+// light-aircraft und glider 0.5->0.35.
 // Rein ueber Skalierung der fertigen Silhouette im Slot; die Typklassen-SVGs selbst bleiben unveraendert.
 //
 // Herleitung: Ziel ist die sichtbare Rumpflaenge relativ zur Narrowbody (`length`). Die Narrowbody fuellt NARROWBODY_FILL der
@@ -19,10 +21,10 @@ export const PLANE_SIZE: Record<PlaneType, PlaneSize> = {
   narrowbody: { length: 1, drawn: 938, x: 62, vbX: 0, vbW: 1000 },
   'regional-jet': { length: 0.85, drawn: 850, x: 150, vbX: 0, vbW: 1000 },
   turboprop: { length: 0.8, drawn: 860, x: 140, vbX: 0, vbW: 1000 },
-  helicopter: { length: 0.75, drawn: 914, x: 66, vbX: -310, vbW: 1620 },
-  'business-jet': { length: 0.65, drawn: 564, x: 304, vbX: 0, vbW: 1000 },
-  'light-aircraft': { length: 0.5, drawn: 306, x: 365, vbX: 0, vbW: 1000 },
-  glider: { length: 0.5, drawn: 350, x: 340, vbX: 0, vbW: 1000 },
+  helicopter: { length: 0.5, drawn: 914, x: 66, vbX: -310, vbW: 1620 },
+  'business-jet': { length: 0.5, drawn: 564, x: 304, vbX: 0, vbW: 1000 },
+  'light-aircraft': { length: 0.35, drawn: 306, x: 365, vbX: 0, vbW: 1000 },
+  glider: { length: 0.35, drawn: 350, x: 340, vbX: 0, vbW: 1000 },
 };
 
 /** Width of the silhouette element and its left margin, both as a fraction of the slot width (drawn area centred in the slot). */
