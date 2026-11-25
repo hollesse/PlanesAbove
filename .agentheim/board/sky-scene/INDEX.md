@@ -10,9 +10,9 @@ Catalog of this bounded context's tasks by status.
 ## Tasks by status
 
 <!-- task-counts:start -->
-- **Backlog:** 2
+- **Backlog:** 1
 - **Todo:** 0
-- **Doing:** 0
+- **Doing:** 1
 - **Done:** 10
 <!-- task-counts:end -->
 
@@ -22,6 +22,7 @@ Catalog of this bounded context's tasks by status.
 
 ### Doing
 <!-- doing-list:start -->
+- **sky-scene-h8c2v** — Größenfaktor je Typklasse und gestaffelte Anordnung in die App übernehmen (feature, Abnahme offen) — `doing/sky-scene-h8c2v-gr-enfaktor-je-typklasse-und-gestaffelte-anordnung-in-die-ap.md`
 <!-- doing-list:end -->
 
 ### Done (most recent first; older entries kept for prior-art search)
@@ -52,7 +53,6 @@ prior-art matcher additionally checks `done-archive/` when present.
 
 ### Backlog
 <!-- backlog-list:start -->
-- **sky-scene-h8c2v** — Größenfaktor je Typklasse und gestaffelte Anordnung in die App übernehmen (feature) — `backlog/sky-scene-h8c2v-gr-enfaktor-je-typklasse-und-gestaffelte-anordnung-in-die-ap.md`
 - **sky-scene-q7m3w** — /healthz meldet Zustand der Sprachausgabe (Budget, letzter Fehler) (feature) — `backlog/sky-scene-q7m3w-healthz-meldet-zustand-der-sprachausgabe-budget-letzter-fehl.md`
 <!-- backlog-list:end -->
 

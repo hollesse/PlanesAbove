@@ -1,7 +1,7 @@
 // The thin kiosk client (ADR 0004/0008): polls /api/state, renders the approved design-system screen, narrates on tap,
 // holds the Vorlese-Sperre, recovers by itself. Imports UI only from the design-system barrel (ADR 0002).
 import type { SceneState } from '../../shared/state';
-import { TRANSITIONS, TRANSITION_MS, fitRoutesWhenMounted, playTransition, renderPhotoOverlay, renderScreen, renderTransitionStage, type ScreenPlane } from '../ui';
+import { EQUAL_TRANSITIONS, TRANSITION_MS, equalLayoutClass, fitRoutesWhenMounted, playTransition, renderEqualBadgeSlot, renderEqualPlaneSlot, renderPhotoOverlay, renderScreenEqual, renderTransitionStage, type EqualLayout, type ScreenPlane } from '../ui';
 import type { Photo } from '../ui/domain/photo';
 import { pickTransition } from './transition-plan';
 import { backoffMs, badgeTarget, dayKey, reloadDue, staleSince, tapTarget, toScreenProps } from './logic';
@@ -24,6 +24,10 @@ export interface AppDeps {
 }
 
 export interface App { speak(index: number): void; openPhoto(index: number): void; closePhoto(): void; pollNow(): Promise<void>; readonly sperre: VorleseSperre<SceneState>; readonly uebergangSperre: VorleseSperre<SceneState> }
+
+// Gleich breite Slots, Groessenfaktor je Typklasse, in Flugrichtung gestaffelt (design-system-q7mxe, sky-scene-h8c2v).
+const LAYOUT: EqualLayout = 'versetzt';
+const EQUAL_SLOTS = { plane: renderEqualPlaneSlot, badge: renderEqualBadgeSlot };
 
 export function startApp(d: AppDeps): App {
   let current: SceneState | undefined;
@@ -57,7 +61,7 @@ export function startApp(d: AppDeps): App {
   const render = (): void => {
     if (!current) return;
     const stale = staleNow(current);
-    const stage = renderScreen(toScreenProps(current, stale));
+    const stage = renderScreenEqual({ ...toScreenProps(current, stale), layout: LAYOUT });
     mount(stage);
     fitRoutesWhenMounted(stage);
     d.root.dataset.stale = stale ? 'true' : 'false';
@@ -73,11 +77,12 @@ export function startApp(d: AppDeps): App {
     const prev = current;
     current = s;
     const id = pickTransition(prev?.planes, s.planes);
-    const spec = TRANSITIONS.find((t) => t.id === id);
+    const spec = EQUAL_TRANSITIONS.find((t) => t.id === id);
     if (!prev || !spec) { render(); return; }
     const toScreen = (planes: SceneState['planes']): ScreenPlane[] => planes.map((p) => ({ plane: { type: p.plane.type, livery: p.plane.livery }, flight: p.flight }));
     const stale = staleNow(s);
-    const stage = renderTransitionStage(spec, { from: toScreen(prev.planes), to: toScreen(s.planes), sky: s.sky, place: s.place, clock: s.clock, stale, recent: { from: prev.recent, to: s.recent } });
+    const stage = renderTransitionStage(spec, { from: toScreen(prev.planes), to: toScreen(s.planes), sky: s.sky, place: s.place, clock: s.clock, stale, recent: { from: prev.recent, to: s.recent } }, undefined, EQUAL_SLOTS);
+    stage.className += ` ${equalLayoutClass(LAYOUT)}`;
     mount(stage);
     fitRoutesWhenMounted(stage);
     playTransition(stage);

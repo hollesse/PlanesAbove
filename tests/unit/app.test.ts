@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { startApp, type AppDeps } from '../../src/client/app/app';
 import type { Timers } from '../../src/client/app/sperre';
 import type { SceneState, ScenePlane } from '../../src/shared/state';
+import { planeBox } from '../../src/client/ui/domain/plane-size';
 
 const plane = (id: string): ScenePlane => ({ icao24: id, plane: { type: 'narrowbody', livery: 'def' }, flight: { operator: 'Lufthansa', callsign: 'DLH400', aircraft: 'Airbus A320neo', registration: '', route: null, altitudeM: 11000, speedKmh: 800, phase: 'level' }, speech: { text: 't', audioUrl: `/audio/${id}.wav` } });
 const state = (ids: string[], o: Partial<SceneState> = {}): SceneState => ({ buildId: 'b1', serverTime: 0, stale: false, lastSuccessAt: 0, place: 'Test', clock: '10:00', sky: { time: 'day', weather: 'clear' }, planes: ids.map(plane), client: { pollIntervalSeconds: 10, staleAfterMinutes: 5, reloadAt: '04:00', speechWatchdogSeconds: 60 }, ...o });
@@ -28,6 +29,26 @@ describe('startApp (client composition)', () => {
     expect(r.root.dataset.planes).toBe('a');
     expect(r.root.querySelector('.pa-screen')).toBeTruthy();
     expect(r.root.dataset.speaking).toBe('false');
+  });
+  it('shows two planes in equally wide, staggered slots with the Groessenfaktor of their Typklasse (sky-scene-h8c2v)', async () => {
+    const two = state(['a', 'b']); two.planes[1] = { ...two.planes[1], plane: { type: 'glider', livery: 'def' } };
+    const r = rig(two); await r.flush();
+    const stage = r.root.querySelector<HTMLElement>('.pa-screen')!;
+    expect(stage.classList.contains('pa-eq-staggered')).toBe(true);
+    expect(r.root.querySelectorAll('.pa-slot-eq-one, .pa-slot-eq-two')).toHaveLength(2);
+    expect(r.root.querySelectorAll('.pa-slot-one, .pa-slot-two')).toHaveLength(0);
+    const w = (sel: string) => parseFloat(r.root.querySelector<HTMLElement>(sel)!.style.getPropertyValue('--pa-eq-w'));
+    expect(w('.pa-slot-eq-one')).toBeCloseTo(planeBox('narrowbody').width * 100, 1);
+    expect(w('.pa-slot-eq-two')).toBeCloseTo(planeBox('glider').width * 100, 1);
+  });
+  it('plays plane transitions in the equal-slot layout', async () => {
+    const r = rig(state(['a'])); await r.flush();
+    r.set(state(['a', 'b'])); await r.app.pollNow();
+    expect(r.root.dataset.transition).toBe('one-to-two');
+    const stage = r.root.querySelector<HTMLElement>('.pa-screen')!;
+    expect(stage.classList.contains('pa-eq-staggered')).toBe(true);
+    expect(stage.querySelectorAll('.pa-slot-one, .pa-slot-two, .pa-slot-single')).toHaveLength(0);
+    expect(stage.querySelector('.pa-slot-eq-two')).toBeTruthy();
   });
   it('speaking locks the scene; a newer selection waits for the end of the audio', async () => {
     const r = rig(state(['a'])); await r.flush();
