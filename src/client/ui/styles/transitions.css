@@ -37,8 +37,11 @@
 @keyframes pa-big-bar{0%,77%{transform:translateY(105%)}100%{transform:translateY(0)}}
 
 /* Entwurf (design-system-pyheh): plane keyframes for equal slots (see transitions/catalog-equal.ts). cqw = screen width; single slot: left 14 %, 72 % wide, top 7.5cqw. */
-@keyframes pae-pa2-plane1{0%,22%{transform:translate(0,0) scale(1)}48%,100%{transform:translate(-10cqw,calc(var(--pa-eq-t1,16cqw) - 7.5cqw)) scale(.6111)}}
-@keyframes pae-pa5-p1{0%,44%{transform:translate(0,0) scale(1)}72%,100%{transform:translate(10cqw,calc(7.5cqw - var(--pa-eq-t1,16cqw))) scale(1.6364)}}
-@keyframes pae-pa6-p2{0%,46%{transform:translate(0,0) scale(1)}76%,100%{transform:translate(-38cqw,calc(7.5cqw - var(--pa-eq-t2,16cqw))) scale(1.6364)}}
+@keyframes pae-pa2-plane1{0%,22%{transform:translate(0,0) scale(1)}48%,100%{transform:translate(var(--pa-eq-dx1,-10cqw),calc(var(--pa-eq-t1,16cqw) - 7.5cqw)) scale(var(--pa-eq-s,.6111))}}
+@keyframes pae-pa5-p1{0%,44%{transform:translate(0,0) scale(1)}72%,100%{transform:translate(calc(-1 * var(--pa-eq-dx1,-10cqw)),calc(7.5cqw - var(--pa-eq-t1,16cqw))) scale(var(--pa-eq-si,1.6364))}}
+@keyframes pae-pa6-p2{0%,46%{transform:translate(0,0) scale(1)}76%,100%{transform:translate(calc(-1 * var(--pa-eq-dx2,38cqw)),calc(7.5cqw - var(--pa-eq-t2,16cqw))) scale(var(--pa-eq-si,1.6364))}}
 @keyframes pae-pa6-p1{0%,14%{transform:translateX(0)}50%,100%{transform:translateX(110cqw)}}
 @keyframes pae-pa7-pout{0%,8%{transform:translateX(0)}40%,100%{transform:translateX(110cqw)}}
+/* Geometrie der Gleich-gross-Slots fuer die Keyframes oben: dx = Slot-left - 14 (in cqw), s = Slotbreite / 72, si = 1 / s. */
+.pa-eq { --pa-eq-dx1: -10cqw; --pa-eq-dx2: 38cqw; --pa-eq-s: .6111; --pa-eq-si: 1.6364; }
+.pa-eq-staggered { --pa-eq-dx1: -11cqw; --pa-eq-dx2: 25cqw; --pa-eq-s: .8056; --pa-eq-si: 1.2414; }

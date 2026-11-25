@@ -74,15 +74,18 @@
 /* Entwurf (design-system-pyheh): two EQUAL plane slots. Own classes; pa-slot-one/-two above stay as they are.
    Tops are in cqw (share of the screen WIDTH), so the planes sit in the sky above the bar at 4:3 and 5:3
    (sky height = 69 % of the screen: 51.7cqw at 4:3, 41.4cqw at 5:3; a slot is 44cqw * 0.46 = 20.2cqw high). */
-.pa-eq { --pa-eq-t1: 16cqw; --pa-eq-t2: 16cqw; }
-.pa-eq-staggered { --pa-eq-t1: 8cqw; --pa-eq-t2: 19.5cqw; }
+.pa-eq { --pa-eq-t1: 16cqw; --pa-eq-t2: 16cqw; --pa-eq-l1: 4%; --pa-eq-l2: 52%; --pa-eq-sw: 44%; --pa-eq-b1: 2.5%; --pa-eq-b2: 50.5%; --pa-eq-bt: -1cqw; }
+/* Gestaffelt (App, sky-scene-h8c2v): groessere Slots (58 %), die sich zur Mitte hin ueberlappen; vertikal staerker versetzt.
+   Slot-Hoehe 58cqw * 0.46 = 26.7cqw; Slot 2 endet bei 14.5 + 26.7 = 41.2cqw < 41.4cqw (Himmel bei 5:3).
+   Plakette 1 links oben am hinteren Flugzeug, Plakette 2 rechts oben vor der Nase des vorderen (frei vom hinteren Flugzeug). */
+.pa-eq-staggered { --pa-eq-t1: 5.5cqw; --pa-eq-t2: 14.5cqw; --pa-eq-l1: 3%; --pa-eq-l2: 39%; --pa-eq-sw: 58%; --pa-eq-b1: 3%; --pa-eq-b2: 93%; --pa-eq-bt: 3cqw; }
 .pa-slot-eq-single { left: 14%; width: 72%; top: 7.5cqw; }
-.pa-slot-eq-one { left: 4%; width: 44%; top: var(--pa-eq-t1, 16cqw); }
-.pa-slot-eq-two { left: 52%; width: 44%; top: var(--pa-eq-t2, 16cqw); }
+.pa-slot-eq-one { left: var(--pa-eq-l1, 4%); width: var(--pa-eq-sw, 44%); top: var(--pa-eq-t1, 16cqw); }
+.pa-slot-eq-two { left: var(--pa-eq-l2, 52%); width: var(--pa-eq-sw, 44%); top: var(--pa-eq-t2, 16cqw); }
 .pa-slot-eq-single, .pa-slot-eq-one, .pa-slot-eq-two { aspect-ratio: 1000 / 460; display: flex; align-items: center; }
 .pa-slot-eq-single > .pa-plane, .pa-slot-eq-one > .pa-plane, .pa-slot-eq-two > .pa-plane { flex: none; width: var(--pa-eq-w, 100%); margin-left: var(--pa-eq-ml, 0); }
-.pa-badge-slot-eq-one { left: 2.5%; top: calc(var(--pa-eq-t1, 16cqw) - 1cqw); }
-.pa-badge-slot-eq-two { left: 50.5%; top: calc(var(--pa-eq-t2, 16cqw) - 1cqw); }
+.pa-badge-slot-eq-one { left: var(--pa-eq-b1, 2.5%); top: calc(var(--pa-eq-t1, 16cqw) + var(--pa-eq-bt, -1cqw)); }
+.pa-badge-slot-eq-two { left: var(--pa-eq-b2, 50.5%); top: calc(var(--pa-eq-t2, 16cqw) + var(--pa-eq-bt, -1cqw)); }
 
 /* Foto-Overlay (Organism, design-system-pawdq): liegt abgedunkelt ueber der Szene; Foto im 4:3-Rahmen, Attribution darunter */
 .pa-photo-overlay { position: absolute; inset: 0; z-index: 10; background: rgba(15, 20, 25, 0.78); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2cqw; padding: 4cqw 5cqw 3cqw; box-sizing: border-box; color: var(--pa-sky-ink-light); font-family: var(--pa-font-mono); }
